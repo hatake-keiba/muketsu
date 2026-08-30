@@ -55,7 +55,7 @@
     .baba-btn.active { background: #e65100; color: #fff; border-color: #d84315; }
     .slider-container { display: flex; align-items: center; flex-grow: 1; background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 2px 6px; }
     .sim-side-label { font-size: 10px; font-weight: bold; white-space: nowrap; }
-    .text-red { color: #d32f2f; }
+    .text-red { color: #8a9a83; }
     input[type=range].blue-slider { -webkit-appearance: none; appearance: none; flex-grow: 1; margin: 0 6px; height: 6px; background: var(--track-bg,#e0e0e0); border-radius: 3px; outline: none; transition: background 0.3s; }
     input[type=range].blue-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--thumb-color,#9e9e9e); cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.4); transition: background 0.3s; }
     @keyframes btn-pulse { 0% { box-shadow: 0 0 0 0 rgba(211,47,47,0.7); } 70% { box-shadow: 0 0 0 12px rgba(211,47,47,0); } 100% { box-shadow: 0 0 0 0 rgba(211,47,47,0); } }
@@ -1046,12 +1046,12 @@ input[type=number], input[type=text], textarea, select {
   <div style="display:flex; gap:4px; align-items:center;">
     <span style="font-size:10px; font-weight:700; color:#1c2e1f; white-space:nowrap;">想定隊列</span>
 
-                  <select id="pace-pred-select" onchange="updateRaceText('pacePred', this.value)" style="font-size:11px; padding:2px 4px; border-radius:3px; border:1px solid #ccc; font-weight:bold; color:#d32f2f;">
+                  <select id="pace-pred-select" onchange="updateRaceText('pacePred', this.value)" style="font-size:11px; padding:2px 4px; border-radius:3px; border:1px solid #ccc; font-weight:bold; color:#1c2e1f;">
                     <option value="ハイペース">ハイペース</option>
                     <option value="ミドルペース" selected>ミドルペース</option>
                     <option value="スローペース">スローペース</option>
                   </select>
-                  <select id="tb-pred-select" onchange="updateRaceText('tbPred', this.value)" style="font-size:11px; padding:2px 4px; border-radius:3px; border:1px solid #ccc; font-weight:bold; color:#1565c0;">
+                  <select id="tb-pred-select" onchange="updateRaceText('tbPred', this.value)" style="font-size:11px; padding:2px 4px; border-radius:3px; border:1px solid #ccc; font-weight:bold; color:#1c2e1f;">
                     <option value="内前有利">内前有利</option>
                     <option value="フラット" selected>フラット</option>
                     <option value="外差し有利">外差し有利</option>
@@ -1077,7 +1077,7 @@ input[type=number], input[type=text], textarea, select {
               <div class="ai-pace-area">
           <div class="ai-pace-header">
             <span class="ai-pace-label">📝 メモ</span>
-            <button id="ai-mic-btn" style="display:none;" onclick="toggleAIMic()">🎤</button>
+            <button id="ai-mic-btn" style="display:none;" onclick="toggleAIMic()"></button>
           </div>
                    <textarea id="ai-pace-comment" class="ai-pace-textarea"
             placeholder="「1番：トモの踏み込み良い」「〇〇(馬名)：パドック気配抜群」のように入力し「各馬へ反映」を押すと、上の表のメモ欄に自動リンクします。"
