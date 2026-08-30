@@ -738,11 +738,32 @@ input[type=number], input[type=text], textarea, select {
         font-family:"Zen Kaku Gothic New",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif !important; }
   .app-container{ max-width:1100px; }
 
-  /* カード・パネルを白＋淡ボーダー＋大きめ角丸に */
+  /* カード・パネルを白＋淡ボーダー＋大きめ角丸に（＝トップレベルの箱だけカード化） */
   .race-card, .nav-area, .system-section, .filter-panel, .ticket-builder,
-  .simulator-wrapper, .main-table-area, .pace-board, .graph-container{
+  .simulator-wrapper, .main-table-area, .graph-container, .memo-card{
     background:var(--mk-card) !important; border:1px solid var(--mk-line) !important;
-    border-radius:16px !important; box-shadow:0 1px 2px rgba(60,90,63,.05) !important; }
+    border-radius:16px !important; box-shadow:0 1px 2px rgba(60,90,63,.05) !important;
+    margin:12px !important; }
+
+  /* カード規則性：カードの“中の箱”はカード扮装を解除（枠・影・角丸・余白を消して素の帯に） */
+  .pace-board{ background:transparent !important; border:none !important;
+    border-radius:0 !important; box-shadow:none !important; margin:0 !important; padding:6px 0 0 !important; }
+
+  /* メモ独立カード */
+  .memo-card{ overflow:hidden; }
+  .memo-card-head{ display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    padding:12px 16px 8px; }
+  .memo-card-title{ font-family:"Playfair Display",serif; font-weight:600;
+    color:var(--mk-dark); font-size:15px; letter-spacing:.02em; }
+  .memo-card-sub{ font-size:10px; color:#9aa892; letter-spacing:.04em; }
+  .memo-card-textarea{ width:calc(100% - 32px); display:block; margin:0 16px 14px;
+    min-height:96px; font-size:12.5px; line-height:1.7; padding:11px 13px;
+    border:1px solid var(--mk-line) !important; border-radius:12px !important;
+    background:#fcfdfb; color:#2b332a; resize:vertical; box-sizing:border-box;
+    font-family:"Zen Kaku Gothic New",sans-serif; transition:border-color .2s, box-shadow .2s; }
+  .memo-card-textarea:focus{ outline:none; border-color:var(--mk-accent) !important;
+    box-shadow:0 0 0 3px rgba(92,138,70,.12) !important; background:#fff; }
+  .memo-card-textarea::placeholder{ color:#b6c1ac; }
 
   /* 見出し帯：グレー→ダーク緑テキスト・白地 */
   .section-title{ background:var(--mk-tint) !important; color:var(--mk-dark) !important;
@@ -1067,18 +1088,21 @@ input[type=number], input[type=text], textarea, select {
             </div>
           </div>
         </div>
-              <div class="ai-pace-area">
-          <div class="ai-pace-header">
-            <span class="ai-pace-label">📝 メモ</span>
-            <button id="ai-mic-btn" style="display:none;" onclick="toggleAIMic()"></button>
-          </div>
-                   <textarea id="ai-pace-comment" class="ai-pace-textarea"
-            placeholder="このレースのメモを自由に記入…"
-            oninput="saveAIComment(this.value)"></textarea>
-
-        </div>
 
       </div>
+
+      <!-- ▼ メモ：独立カード（localStorage永続化・リロードで消えない） ▼ -->
+      <div class="memo-card">
+        <div class="memo-card-head">
+          <span class="memo-card-title">📝 メモ</span>
+          <span class="memo-card-sub">自分の予想を書き残す・自動保存</span>
+          <button id="ai-mic-btn" style="display:none;" onclick="toggleAIMic()"></button>
+        </div>
+        <textarea id="ai-pace-comment" class="memo-card-textarea"
+          placeholder="このレースの予想・狙い・気づきを自由に記入…（入力すると自動で保存されます）"
+          oninput="saveAIComment(this.value)"></textarea>
+      </div>
+      <!-- ▲ メモカード ▲ -->
 
           <div class="main-table-area">
         <!-- ▼ 基準タイムを開閉式に変更 ▼ -->
@@ -2527,22 +2551,55 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
       if(_micRecognition) { try { _micRecognition.stop(); } catch(e) {} _micRecognition = null; }
     }
     
-    function saveAIComment(val) { if(!currentRaceId) return; racesData[currentRaceId].comment = val; }
-    
+    // ===== レース自由メモの永続化（localStorage）=====
+    // リロードでも消えないよう保存。キーは「レースID＋先頭3頭馬名」で週替わりを判別。
+    const MEMO_LS_KEY = 'muketsu_race_memos_v1';
+    function _loadMemoStore(){
+      try { return JSON.parse(localStorage.getItem(MEMO_LS_KEY) || '{}') || {}; }
+      catch(e){ return {}; }
+    }
+    function _saveMemoStore(store){
+      try { localStorage.setItem(MEMO_LS_KEY, JSON.stringify(store)); }
+      catch(e){ /* localStorage不可でも動作は継続 */ }
+    }
+    function _memoKey(raceId){
+      const r = racesData[raceId];
+      if(!r) return raceId;
+      const sig = (r.horses || []).slice(0,3).map(h => (h.name||'').slice(0,4)).join('_');
+      return raceId + '|' + sig;
+    }
+    function saveAIComment(val) {
+      if(!currentRaceId) return;
+      racesData[currentRaceId].comment = val;
+      const store = _loadMemoStore();
+      const key = _memoKey(currentRaceId);
+      if(val && val.trim()) store[key] = val; else delete store[key];
+      _saveMemoStore(store);
+    }
+
     function clearAIComment() {
       const ta = document.getElementById('ai-pace-comment');
       if(ta) ta.value = '';
-      if(currentRaceId) racesData[currentRaceId].comment = '';
+      if(currentRaceId){
+        racesData[currentRaceId].comment = '';
+        const store = _loadMemoStore();
+        delete store[_memoKey(currentRaceId)];
+        _saveMemoStore(store);
+      }
     }
-    
+
     function restoreAIComment() {
       if(!currentRaceId) return;
       const ta = document.getElementById('ai-pace-comment');
       if(!ta) return;
-      var c = racesData[currentRaceId].comment || '';
+      // 永続化メモを最優先で復元
+      const store = _loadMemoStore();
+      var saved = store[_memoKey(currentRaceId)];
+      var c = (saved !== undefined && saved !== null) ? saved : (racesData[currentRaceId].comment || '');
       // AI自動生成文（【…】で始まる）は会員メモに出さない
       if(/^\s*【/.test(c)) c='';
       ta.value = c;
+      racesData[currentRaceId].comment = c;
     }
     
     function cleanAndSummarizeAIComment() {
