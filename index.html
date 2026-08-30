@@ -65,14 +65,14 @@
     .pace-horses { display: flex; flex-wrap: wrap; gap: 2px; flex-grow: 1; min-height: 28px; padding: 2px; }
     .waku-box { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 3px; font-weight: bold; font-size: 12px; box-shadow: inset 0 0 2px rgba(0,0,0,.3); transition: transform 0.1s; }
     .waku-box:hover { transform: scale(1.1); }
-    .waku-1 { background: #fbfbf9; color: #2a2a26; border: 1px solid #dcdcd4; box-sizing: border-box; }
-    .waku-2 { background: #4a4a47; color: #f4f4f0; }
-    .waku-3 { background: #cf7368; color: #fff; }
-    .waku-4 { background: #6a95b4; color: #fff; }
-    .waku-5 { background: #ecd479; color: #3a3320; }
-    .waku-6 { background: #7daa270; color: #fff; }
-    .waku-7 { background: #dca869; color: #3a2e18; }
-    .waku-8 { background: #c47a95; color: #fff; }
+    .waku-1 { background: #ffffff; color: #2a2a26; border: 1px solid #d0d0c8; box-sizing: border-box; }
+    .waku-2 { background: #33322f; color: #ffffff; }
+    .waku-3 { background: #e2544a; color: #fff; }
+    .waku-4 { background: #4b93cf; color: #fff; }
+    .waku-5 { background: #f5d64b; color: #3a3320; }
+    .waku-6 { background: #58b25a; color: #fff; }
+    .waku-7 { background: #f0aa43; color: #3a2e18; }
+    .waku-8 { background: #dd6f96; color: #fff; }
     .horse-board-icon { position: absolute; display: flex; flex-direction: column; align-items: center; cursor: grab; touch-action: none; transform: translate(-50%,-50%); }
     .horse-board-icon.dragging { transition: none !important; opacity: 0.6; z-index: 9999 !important; }
     .ai-pace-area { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 6px 8px; }
@@ -1036,11 +1036,11 @@ input[type=number], input[type=text], textarea, select {
             
             <!-- ▼ 追加：展開図を見るためのボタン ▼ -->
             <div style="text-align: center; margin: 4px 0;">
-              <button id="toggle-track-btn" style="background:#333; color:#fff; border:none; padding:4px 16px; border-radius:12px; font-size:11px; font-weight:bold; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.2);" onclick="togglePaceTrack()">▼ 展開図を見る</button>
+              <button id="toggle-track-btn" style="display:none;" onclick="togglePaceTrack()">▼ 展開図を見る</button>
             </div>
             
             <!-- ▼ 変更：初期状態では非表示（display:none）にしておく ▼ -->
-            <div id="pace-track-area" style="display:none; flex-direction: column; border-top: 1px dashed #ccc; padding-top: 8px;">
+            <div id="pace-track-area" style="display:flex; flex-direction: column; border-top: 1px dashed #ccc; padding-top: 8px;">
               <div id="pace-control-bar" style="display:none; justify-content: space-between; align-items: center; margin-bottom: 4px; flex-wrap:wrap; gap:4px;">
 
   <div style="display:flex; gap:4px; align-items:center;">
@@ -3204,11 +3204,9 @@ function buildNavigation() {
       if(markerCb) markerCb.checked = false;
       document.querySelectorAll('.detail-col').forEach(el => el.classList.add('hidden'));
 
-      // 2. 展開図を隠す
+      // 2. 展開図は常時表示（開いたまま）
       const trackArea = document.getElementById('pace-track-area');
-      const trackBtn = document.getElementById('toggle-track-btn');
-      if(trackArea) trackArea.style.display = 'none';
-      if(trackBtn) trackBtn.innerHTML = '▼ 展開図を見る';
+      if(trackArea) trackArea.style.display = 'flex';
 
 // 3. グラフアレンジを隠す
       const arrangePanel = document.getElementById('graph-arrange-panel');
@@ -6499,7 +6497,7 @@ document.querySelectorAll('.nav-race-btn').forEach(btn => {
     // --- ▲ ここまで全体表示・絞り込み機能のコード ▲ ---
 
     // ▼▼ ここから追加：展開図の開閉用JS ▼▼
-    let isPaceTrackOpen = false;
+    let isPaceTrackOpen = true;
     function togglePaceTrack() {
       isPaceTrackOpen = !isPaceTrackOpen;
       const trackArea = document.getElementById('pace-track-area');
