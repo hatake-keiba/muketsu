@@ -869,6 +869,25 @@ input[type=number], input[type=text], textarea, select {
     border-radius:20px !important; padding:8px 18px !important; font-size:12px; font-weight:700;
     cursor:pointer; box-shadow:none !important; }
   .ai-talk-note{ font-size:9.5px; color:#a9b3a0; margin:8px 0 0; }
+  .ai-key-toggle{ margin-left:auto; font-size:10px; font-weight:700; color:#6f7d68;
+    background:#fff; border:1px solid var(--mk-line); border-radius:999px; padding:3px 10px; cursor:pointer; }
+  .ai-key-panel{ background:#fff; border:1px solid var(--mk-line); border-radius:10px; padding:10px 12px; margin-bottom:10px; }
+  .ai-key-label{ display:block; font-size:11px; font-weight:700; color:var(--mk-dark); margin-bottom:5px; }
+  .ai-key-input{ flex:1; min-width:200px; font-size:12px; padding:7px 10px; border:1px solid var(--mk-line) !important; border-radius:8px !important; }
+  .ai-key-help{ font-size:10px; color:#9aa892; margin:7px 0 0; line-height:1.5; }
+  .ai-chat-log{ background:#fff; border:1px solid var(--mk-line); border-radius:10px; padding:10px;
+    min-height:70px; max-height:320px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; }
+  .ai-chat-empty{ font-size:11px; color:#a9b3a0; line-height:1.6; text-align:center; padding:12px 6px; }
+  .ai-msg{ font-size:12.5px; line-height:1.7; padding:8px 11px; border-radius:12px; max-width:88%; white-space:pre-wrap; word-break:break-word; }
+  .ai-msg.user{ align-self:flex-end; background:var(--mk-dark); color:#eef3e8; border-bottom-right-radius:4px; }
+  .ai-msg.bot{ align-self:flex-start; background:#eef3ea; color:#243021; border-bottom-left-radius:4px;
+    font-family:"Zen Kaku Gothic New",sans-serif; }
+  .ai-msg.bot.loading{ color:#8a9a83; font-style:italic; }
+  .ai-chat-inputbar{ display:flex; gap:7px; align-items:flex-end; margin-top:9px; }
+  .ai-chat-input{ flex:1; font-size:13px; line-height:1.6; padding:9px 11px; border:1px solid var(--mk-line) !important;
+    border-radius:10px !important; resize:vertical; font-family:"Zen Kaku Gothic New",sans-serif; background:#fcfdfb; }
+  .ai-chat-input:focus{ outline:none; border-color:var(--mk-accent) !important; box-shadow:0 0 0 3px rgba(92,138,70,.12) !important; }
+  #ai-chat-send{ padding:9px 16px !important; border-radius:10px !important; white-space:nowrap; align-self:stretch; }
 
   /* 見出し帯：グレー→ダーク緑テキスト・白地 */
   .section-title{ background:var(--mk-tint) !important; color:var(--mk-dark) !important;
@@ -1224,11 +1243,27 @@ input[type=number], input[type=text], textarea, select {
       </div>
       <!-- ▼ AI相談（壁打ち）スロット ▼ -->
       <div class="ai-talk-slot">
-        <div class="ai-talk-head"><span class="ai-talk-dot"></span>AI相談（壁打ち）</div>
+        <div class="ai-talk-head">
+          <span class="ai-talk-dot"></span>AI相談（壁打ち）
+          <button class="ai-key-toggle" onclick="toggleAiKeyPanel()" title="APIキー設定">⚙️ キー設定</button>
+        </div>
         <div class="ai-talk-body">
-          <p class="ai-talk-lead">上のメモや出馬表をもとに、AIに考えを整理してもらえます。</p>
-          <button class="ai-talk-btn" onclick="window.openAiSetupModal && window.openAiSetupModal()">🤖 AIに相談する</button>
-          <p class="ai-talk-note">※ AI相談機能は準備中です</p>
+          <div id="ai-key-panel" class="ai-key-panel" style="display:none;">
+            <label class="ai-key-label">あなたの Gemini API キー</label>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <input type="password" id="ai-key-input" class="ai-key-input" placeholder="AIza... から始まるキー" />
+              <button class="pill-btn" onclick="saveAiKey()">保存</button>
+            </div>
+            <p class="ai-key-help">キーはこの端末のブラウザにのみ保存され、外部に送信されません。<a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" style="color:#5c8a46;">無料キーを取得 ↗</a></p>
+          </div>
+          <div id="ai-chat-log" class="ai-chat-log">
+            <div class="ai-chat-empty">メモや出馬表をもとに壁打ちできます。下の欄に質問や相談を入力してください。</div>
+          </div>
+          <div class="ai-chat-inputbar">
+            <textarea id="ai-chat-input" class="ai-chat-input" rows="2" placeholder="例）この人気馬、消しでいいと思う？相談したい"></textarea>
+            <button id="ai-chat-send" class="ai-talk-btn" onclick="sendAiChat()">送信</button>
+          </div>
+          <p class="ai-talk-note">※ 現在のレースのメモ・出馬表を参考にAIが回答します</p>
         </div>
       </div>
       <!-- ▲ メモカードここまで ▲ -->
@@ -3343,6 +3378,134 @@ function buildNavigation() {
       sel.classList.toggle('is-active', !!st);
     }
 
+    /* ===== AI相談（壁打ち）：Gemini API（会員が自分のキーを入力） ===== */
+    const AI_KEY_LS = 'muketsu_gemini_key';
+    // レースごとの会話履歴（メモリ内）
+    const aiChatHistory = {};
+
+    function toggleAiKeyPanel(){
+      const p = document.getElementById('ai-key-panel');
+      if(!p) return;
+      const show = p.style.display === 'none';
+      p.style.display = show ? 'block' : 'none';
+      if(show){
+        const inp = document.getElementById('ai-key-input');
+        try { inp.value = localStorage.getItem(AI_KEY_LS) || ''; } catch(e){}
+      }
+    }
+    function saveAiKey(){
+      const inp = document.getElementById('ai-key-input');
+      const v = (inp.value || '').trim();
+      try { if(v) localStorage.setItem(AI_KEY_LS, v); else localStorage.removeItem(AI_KEY_LS); } catch(e){}
+      document.getElementById('ai-key-panel').style.display = 'none';
+      alert(v ? 'APIキーを保存しました。' : 'APIキーを削除しました。');
+    }
+    function _getAiKey(){ try { return localStorage.getItem(AI_KEY_LS) || ''; } catch(e){ return ''; } }
+
+    // 現在レースの文脈（メモ＋出馬表）を組み立て
+    function _buildRaceContext(){
+      if(!currentRaceId || !racesData[currentRaceId]) return '（レース未選択）';
+      const r = racesData[currentRaceId];
+      const memo = (document.getElementById('ai-pace-comment')?.value || '').trim();
+      const lines = (r.horses || []).slice().sort((a,b)=>(a.num||0)-(b.num||0)).map(h=>{
+        const parts = [`${h.num}番 ${h.name||''}`];
+        if(h.jockey) parts.push(`騎手:${h.jockey}`);
+        if(h.style) parts.push(`脚質:${h.style}`);
+        if(h.shisu!=null && h.shisu!=='') parts.push(`指数:${h.shisu}`);
+        if(h.deki) parts.push(`デキ:${h.deki}`);
+        if(h.odds!=null && h.odds!=='-' && h.odds!=='') parts.push(`単勝:${h.odds}`);
+        if(h.memo) parts.push(`短評:${h.memo}`);
+        return '・' + parts.join(' / ');
+      });
+      let ctx = `【レース名】${r.raceName || currentRaceId}\n`;
+      if(memo) ctx += `【私のメモ】${memo}\n`;
+      ctx += `【出馬表】\n${lines.join('\n')}`;
+      return ctx;
+    }
+
+    function _appendAiMsg(role, text){
+      const log = document.getElementById('ai-chat-log');
+      const empty = log.querySelector('.ai-chat-empty');
+      if(empty) empty.remove();
+      const div = document.createElement('div');
+      div.className = 'ai-msg ' + (role==='user'?'user':'bot');
+      div.textContent = text;
+      log.appendChild(div);
+      log.scrollTop = log.scrollHeight;
+      return div;
+    }
+
+    async function sendAiChat(){
+      const inp = document.getElementById('ai-chat-input');
+      const q = (inp.value || '').trim();
+      if(!q) return;
+      const key = _getAiKey();
+      if(!key){
+        alert('先に「⚙️ キー設定」からご自分の Gemini API キーを入力してください。');
+        toggleAiKeyPanel();
+        return;
+      }
+      inp.value = '';
+      _appendAiMsg('user', q);
+      const rid = currentRaceId || '_';
+      if(!aiChatHistory[rid]) aiChatHistory[rid] = [];
+      const loading = _appendAiMsg('bot', '考え中…');
+      loading.classList.add('loading');
+      const sendBtn = document.getElementById('ai-chat-send');
+      sendBtn.disabled = true;
+
+      // システム指示（運営ノウハウはここに将来差し込む）
+      const system = 'あなたは競馬新聞ツール「MUKETSU」の相談相手AIです。利用者が自分の予想を整理する“壁打ち”役に徹してください。'
+        + '断定的な購入指示や「絶対当たる」等の表現は避け、根拠を添えて考える材料を返します。'
+        + '出馬表・利用者のメモが与えられたら、それを踏まえて簡潔（目安3〜6行）に答えてください。日本語で。';
+      const context = _buildRaceContext();
+      // 会話履歴（直近6往復）＋今回
+      const hist = aiChatHistory[rid].slice(-6);
+      const contents = [];
+      contents.push({ role:'user', parts:[{ text: system + '\n\n以下は今見ているレースの情報です。\n' + context }] });
+      contents.push({ role:'model', parts:[{ text:'了解しました。レース情報を把握しました。相談をどうぞ。' }] });
+      hist.forEach(m => contents.push({ role: m.role, parts:[{ text: m.text }] }));
+      contents.push({ role:'user', parts:[{ text: q }] });
+
+      try {
+        const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + encodeURIComponent(key);
+        const resp = await fetch(url, {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ contents, generationConfig:{ temperature:0.7, maxOutputTokens:600 } })
+        });
+        const data = await resp.json();
+        if(!resp.ok){
+          const msg = (data && data.error && data.error.message) ? data.error.message : ('HTTP '+resp.status);
+          throw new Error(msg);
+        }
+        const ans = (((data.candidates||[])[0]||{}).content||{}).parts?.map(p=>p.text).join('') || '（応答が空でした）';
+        loading.classList.remove('loading');
+        loading.textContent = ans.trim();
+        aiChatHistory[rid].push({ role:'user', text:q });
+        aiChatHistory[rid].push({ role:'model', text:ans.trim() });
+      } catch(err){
+        loading.classList.remove('loading');
+        loading.textContent = '⚠️ エラー: ' + err.message + '\n（キーが正しいか、無料枠の上限に達していないかご確認ください）';
+      } finally {
+        const log = document.getElementById('ai-chat-log'); log.scrollTop = log.scrollHeight;
+        sendBtn.disabled = false;
+      }
+    }
+
+    // レース切替時にチャットログを復元
+    function restoreAiChat(){
+      const log = document.getElementById('ai-chat-log');
+      if(!log) return;
+      const rid = currentRaceId || '_';
+      const hist = aiChatHistory[rid] || [];
+      if(hist.length === 0){
+        log.innerHTML = '<div class="ai-chat-empty">メモや出馬表をもとに壁打ちできます。下の欄に質問や相談を入力してください。</div>';
+        return;
+      }
+      log.innerHTML = '';
+      hist.forEach(m => _appendAiMsg(m.role==='user'?'user':'bot', m.text));
+    }
+
     function updateRaceStatus(val) {
       if(!currentRaceId) return;
       if(val === 'custom') {
@@ -5109,6 +5272,7 @@ renderCourseFeature(); // ←★★ここに1行追加するだけです！★�
       renderTicketBuilder();
       updateHaranBadge(currentRaceId);
       restoreAIComment();
+      if(typeof restoreAiChat === 'function') restoreAiChat();
       renderStandardTime();
       // レース質タブの表示をこのレースの状態に同期
       (function(){
