@@ -4224,8 +4224,8 @@ window.drawOaChartModal = function() {
       });
       
       // 被り防止：馬名(馬番の下)を考慮し縦を重く見る楕円距離で分離
-      const MINX = 0.11, MINY = 0.19; // 縦は名前分だけ大きく確保
-      for(let s = 0; s < 22; s++) {
+      const MINX = 0.11, MINY = 0.22; // 縦は名前分だけ大きく確保
+      for(let s = 0; s < 30; s++) {
         for(let i = 0; i < horses.length; i++) {
           for(let j = i + 1; j < horses.length; j++) {
             let dx = horses[i]._autoX - horses[j]._autoX, dy = horses[i]._autoY - horses[j]._autoY;
