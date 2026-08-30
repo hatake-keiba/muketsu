@@ -20,14 +20,14 @@
     .system-content { padding: 6px; border-top: 1px dashed #e8e6df; }
     #data-input { width: 100%; height: 50px; font-size: 10px; padding: 4px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; resize: vertical; }
     .btn-primary { background: #1a1a1a; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
-    .btn-success { background: #c3ec3f; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
+    .btn-success { background: #1a1a1a; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
     .btn-danger { background: #d32f2f; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
     .nav-area { background: #fff; padding: 6px; border-radius: 6px; margin-bottom: 8px; display: flex; flex-wrap: wrap; gap: 4px; }
     .race-btn { background: #f5f5f5; border: 1px solid #ccc; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; color: #555; transition: background 0.2s, color 0.2s; display: flex; flex-direction: column; align-items: center; line-height: 1.2; min-width: 52px; }
     .race-btn.active { background: #1a1a1a; color: #fff; border-color: #1557b0; }
     /* レース質タグ：モノ＋ライムで統一（非アクティブ=ペーパー / アクティブ=黒＋ライム縁） */
     .race-btn[class*="status-"] { background: #f4f2ec; border-color: #e8e6df; color: #3d3d3a; }
-    .race-btn[class*="status-"].active { background: #1a1a1a; color: #f4f2ec; border-color: #1a1a1a; box-shadow: inset 0 0 0 2px #c3ec3f; }
+    .race-btn[class*="status-"].active { background: #1a1a1a; color: #f4f2ec; border-color: #1a1a1a; }
     .race-btn.has-star { border-top: 2px solid #ff9800; }
    .tab-venue { font-size: 13px; font-weight: bold; }
     .tab-time { font-size: 10px; color: #94a3b8; margin-top: 1px; }
@@ -64,10 +64,10 @@
     .waku-8 { background: #dd6f96; color: #fff; }
     .horse-board-icon { position: absolute; display: flex; flex-direction: column; align-items: center; cursor: grab; touch-action: none; transform: translate(-50%,-50%); }
     .horse-board-icon.dragging { transition: none !important; opacity: 0.6; z-index: 9999 !important; }
-    .ai-pace-area { background: #f4f2ec; border-left: 4px solid #c3ec3f; padding: 6px 8px; }
+    .ai-pace-area { background: #f4f2ec; border-left: 4px solid #1a1a1a; padding: 6px 8px; }
     .ai-pace-header { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; flex-wrap: wrap; }
     .ai-pace-label { font-size: 11px; font-weight: bold; color: #1a1a1a; }
-    .ai-mic-btn { background: #c3ec3f; color: #fff; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s; }
+    .ai-mic-btn { background: #1a1a1a; color: #fff; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s; }
     .ai-mic-btn.recording { background: #d32f2f; animation: mic-pulse 0.8s infinite; }
     @keyframes mic-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
     .ai-pace-textarea { width: 100%; min-height: 70px; font-size: 11px; padding: 6px; border: 1px solid #dcdad3; border-radius: 4px; resize: vertical; box-sizing: border-box; background: #fff; line-height: 1.6; font-family: inherit; }
@@ -249,10 +249,10 @@
     .confirm-ev-value { font-size: 13px; font-weight: bold; color: #d32f2f; min-width: 36px; text-align: right; }
     .confirm-rates-row { font-size: 9px; color: #333; white-space: nowrap; background: #f8f8f8; border-radius: 3px; padding: 1px 5px; }
     
-    .ticket-builder { background: #f4f2ec; border-top: 2px solid #c3ec3f; padding: 0; }
+    .ticket-builder { background: #f4f2ec; border-top: 2px solid #1a1a1a; padding: 0; }
     .ticket-builder-header { background: #e8e6df; padding: 6px 10px; font-size: 12px; font-weight: bold; color: #1a1a1a; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .tb-type-select { padding: 4px 6px; font-weight: bold; border: 1px solid #c3ec3f; font-size: 12px; border-radius: 4px; background: #fff; }
-    .tb-points-badge { background: #fff; border: 1px solid #c3ec3f; border-radius: 12px; padding: 2px 10px; font-size: 12px; font-weight: bold; color: #1a1a1a; }
+    .tb-type-select { padding: 4px 6px; font-weight: bold; border: 1px solid #1a1a1a; font-size: 12px; border-radius: 4px; background: #fff; }
+    .tb-points-badge { background: #fff; border: 1px solid #1a1a1a; border-radius: 12px; padding: 2px 10px; font-size: 12px; font-weight: bold; color: #1a1a1a; }
     .tb-ai-btn { background: #1a1a1a; color: #fff; border: none; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; margin-left: auto; }
     
     .tb-mark-section { padding: 6px 8px; border-bottom: 1px solid #e8e6df; }
@@ -336,14 +336,14 @@
     #pace-horse-layer { position: absolute; inset: 0; z-index: 15; pointer-events: none; }
     
     .oa-textarea-memo { width: 100%; height: 45px; font-size: 11px; padding: 6px; border: 1px solid #4a4a8a; border-radius: 4px; background: #0d0d1e; color: #fff; resize: vertical; font-family: inherit; }
-    .bar-ev-high { background: linear-gradient(90deg, #c3ec3f, #d4f34a) !important; box-shadow: 0 0 0 2px rgba(195,236,63,.4); }
+    .bar-ev-high { background: linear-gradient(90deg, #1a1a1a, #3d3d3a) !important; box-shadow: 0 0 0 2px rgba(0,0,0,.18); }
     .koso-match { background-color: #fff9c4 !important; border: 1px solid #fbc02d !important; border-radius: 3px; }
     .koso-starred { background-color: #ffcc80 !important; box-shadow: inset 0 0 0 2px #ff9800 !important; }
     
     .nav-race-btn.dimmed { opacity: 0.35; filter: grayscale(35%); transition: opacity .35s ease, filter .35s ease; }
     @keyframes muketsuGlow {
-      0%,100% { box-shadow: 0 0 0 1px rgba(195,236,63,.45), 0 0 10px rgba(195,236,63,.28), 0 0 20px rgba(195,236,63,.14); }
-      50%     { box-shadow: 0 0 0 1px rgba(195,236,63,.65), 0 0 16px rgba(195,236,63,.45), 0 0 30px rgba(195,236,63,.22); }
+      0%,100% { box-shadow: 0 0 0 1px rgba(0,0,0,.28), 0 0 10px rgba(195,236,63,.28), 0 0 20px rgba(195,236,63,.14); }
+      50%     { box-shadow: 0 0 0 1px rgba(195,236,63,.65), 0 0 16px rgba(0,0,0,.28), 0 0 30px rgba(195,236,63,.22); }
     }
     .nav-race-btn.highlight {
       background:#ffffff !important;
@@ -353,14 +353,14 @@
       animation: muketsuGlow 2.4s ease-in-out infinite;
       transition: all .3s ease;
     }
-    @media (prefers-reduced-motion: reduce){ .nav-race-btn.highlight{ animation:none; box-shadow:0 0 0 1px rgba(195,236,63,.5),0 0 14px rgba(195,236,63,.3);} }
+    @media (prefers-reduced-motion: reduce){ .nav-race-btn.highlight{ animation:none; box-shadow:0 0 0 1px rgba(0,0,0,.35),0 0 14px rgba(195,236,63,.3);} }
   /* ▼▼ 追加：ナビゲーションボタンが光るエフェクト ▼▼ */
   .nav-race-btn { transition: all 0.2s ease; }
   .nav-race-btn.active.is-turf,
   .nav-race-btn.active.is-dirt {
     background: #1a1a1a !important;
     border: 2px solid #1a1a1a !important;
-    box-shadow: 0 0 0 3px rgba(195,236,63,.5) !important;
+    box-shadow: 0 0 0 3px rgba(0,0,0,.35) !important;
     transform: scale(1.05);
     z-index: 10;
     position: relative;
@@ -687,7 +687,7 @@ input[type=number], input[type=text], textarea, select {
 .tb-odds-section > div > div { border-color: #fbd38d !important; }
 /* ▼▼ オッズ解析パネル専用CSS ▼▼ */
 .oa-container { font-family: sans-serif; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e8e6df; }
-.oa-ai-recommend { background: #f4f2ec; border-left: 5px solid #c3ec3f; padding: 12px; margin-bottom: 15px; border-radius: 4px; font-size: 13px; font-weight: bold; color: #1a1a1a; display: flex; align-items: center; gap: 10px; }
+.oa-ai-recommend { background: #f4f2ec; border-left: 5px solid #1a1a1a; padding: 12px; margin-bottom: 15px; border-radius: 4px; font-size: 13px; font-weight: bold; color: #1a1a1a; display: flex; align-items: center; gap: 10px; }
 .oa-chart-wrapper { width: 100%; max-width: 500px; margin: 0 auto 20px; position: relative; }
 .oa-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: center; }
 .oa-table th { background-color: #f8f9fa; font-weight: bold; padding: 6px; border: 1px solid #ddd; }
@@ -722,8 +722,8 @@ input[type=number], input[type=text], textarea, select {
     --mk-ink2:#3d3d3a;
     --mk-mute:#9b9a92;          /* 補助テキスト：ミュートグレー */
     --mk-dark:#1a1a1a;          /* “濃”は黒に */
-    --mk-accent:#c3ec3f;        /* ライムイエロー（強調1点） */
-    --mk-accent2:#d4f34a;
+    --mk-accent:#1a1a1a;        /* ライムイエロー（強調1点） */
+    --mk-accent2:#3d3d3a;
     --mk-tint:#f4f2ec;          /* 淡い面 */
     --mk-lime-ink:#1a1a1a;      /* ライム上に載せる文字は黒 */
   }
@@ -799,8 +799,8 @@ input[type=number], input[type=text], textarea, select {
   .pill-sm{ font-size:10.5px !important; padding:5px 12px !important; }
   .pill-ghost{ background:#fff !important; color:#8a9483 !important; }
   .pill-ghost:hover{ background:#f4f2ec !important; color:var(--mk-dark) !important; }
-  .pill-accent{ background:var(--mk-accent) !important; color:#1a1a1a !important; border-color:var(--mk-accent) !important; }
-  .pill-accent:hover{ opacity:.9; background:var(--mk-accent) !important; color:#1a1a1a !important; }
+  .pill-accent{ background:#1a1a1a !important; color:#f4f2ec !important; border-color:#1a1a1a !important; }
+  .pill-accent:hover{ opacity:.9; background:#1a1a1a !important; color:#f4f2ec !important; }
 
   /* 小タイトル（各馬評価 / 勝率設定） */
   .sub-head{ display:flex; align-items:center; gap:10px; padding:12px 16px 8px !important;
@@ -860,7 +860,7 @@ input[type=number], input[type=text], textarea, select {
 
   /* カードの中の“中の箱”は素の帯 */
   .pace-board{ background:transparent !important; border:none !important;
-    border-radius:0 !important; box-shadow:none !important; margin:0 !important; padding:6px 0 0 !important; }
+    border-radius:0 !important; box-shadow:none !important; margin:0 !important; padding:6px 16px 0 !important; }
   /* 脚質行に遊び：淡い帯＋左に脚質色のアクセント。文字が線に被らないよう余白確保 */
   /* 脚質の小カード：色を使わず全部グレーで統一 */
   .pace-row{ background:#f1f2f0 !important; box-shadow:inset 3px 0 0 #b8bdb4 !important; }
@@ -872,18 +872,18 @@ input[type=number], input[type=text], textarea, select {
     border:none !important; border-radius:0 !important; box-shadow:none !important; margin:0 !important;
     padding:0 10px 10px !important; }
   /* 勝率設定：項目見出し（各馬評価テーブルのヘッダと同じ体裁） */
-  .graph-head{ display:flex; align-items:center; gap:0; background:#e7eee0; border-bottom:2px solid #dcdad3;
+  .graph-head{ display:flex; align-items:center; gap:0; background:#f0eee8; border-bottom:2px solid #dcdad3;
     padding:8px 4px; margin:0 10px; font-family:"Zen Kaku Gothic New",sans-serif; font-size:10px; font-weight:700;
-    color:#3d4a39; letter-spacing:.02em; }
+    color:#3d3d3a; letter-spacing:.02em; }
   .graph-head .gh-mark{ width:26px; text-align:center; flex:0 0 auto; }
   .graph-head .gh-num{ width:28px; text-align:center; flex:0 0 auto; }
   .graph-head .gh-name{ width:88px; text-align:left; flex:0 0 auto; }
   .graph-head .gh-bar{ flex:1 1 auto; text-align:left; padding-left:6px; }
   .graph-head .gh-val{ width:75px; text-align:right; flex:0 0 auto; padding-right:6px; }
   /* 勝率設定の行：白/淡緑のシマウマ＋余白（各馬評価と統一） */
-  .stat-card .horse-row{ margin:0 !important; padding:6px 4px !important; border-bottom:1px solid #eef0ea; }
+  .stat-card .horse-row{ margin:0 !important; padding:6px 4px !important; border-bottom:1px solid #efeee8; }
   .stat-card .horse-row:nth-child(odd){ background:#ffffff; }
-  .stat-card .horse-row:nth-child(even){ background:#f6f9f3; }
+  .stat-card .horse-row:nth-child(even){ background:#f7f6f1; }
   /* 印：背景なし・印文字だけ（各馬評価と同じ） */
   .stat-card .graph-mark-btn{ width:26px !important; height:24px !important; background:transparent !important;
     color:#1a1a1a !important; border-radius:0 !important; font-size:14px !important; font-weight:700 !important; box-shadow:none !important; }
@@ -899,9 +899,9 @@ input[type=number], input[type=text], textarea, select {
   .stat-card .bar-col{ height:22px !important; background:#f0eee8; border-radius:9px; overflow:hidden; }
   .stat-card .visual-bar{ height:22px !important; top:0 !important; border-radius:9px !important; opacity:1 !important; }
   /* 勝率数値：黒地にライム文字で強調 */
-  .stat-card .val-col-inner{ background:#1a1a1a !important; border:none !important; border-radius:9px !important; padding:3px 8px !important; }
-  .stat-card .val-col{ color:#c3ec3f !important; font-weight:800 !important; }
-  .stat-card .val-col-inner span, .stat-card .val-col-inner button{ color:#8f8e86 !important; }
+  .stat-card .val-col-inner{ background:#f0eee8 !important; border:1px solid #e8e6df !important; border-radius:9px !important; padding:3px 8px !important; }
+  .stat-card .val-col{ color:#1a1a1a !important; font-weight:800 !important; }
+  .stat-card .val-col-inner span, .stat-card .val-col-inner button{ color:#9b9a92 !important; }
 
   /* メモ（②内） */
   .memo-card{ overflow:hidden; }
@@ -916,15 +916,15 @@ input[type=number], input[type=text], textarea, select {
     background:#fcfdfb; color:#2b332a; resize:vertical; box-sizing:border-box;
     font-family:"Zen Kaku Gothic New",sans-serif; transition:border-color .2s, box-shadow .2s; }
   .memo-card-textarea:focus{ outline:none; border-color:var(--mk-accent) !important;
-    box-shadow:0 0 0 3px rgba(195,236,63,.35) !important; background:#fff; }
+    box-shadow:0 0 0 3px rgba(0,0,0,.18) !important; background:#fff; }
   .memo-card-textarea::placeholder{ color:#b6c1ac; font-family:"Zen Kaku Gothic New",sans-serif; }
 
   /* AI相談スロット（②内） */
   .ai-talk-slot{ margin:2px 18px 14px; border:1px dashed #dcdad3; border-radius:12px;
-    background:#f6f9f3; }
+    background:#f7f6f1; }
   .ai-talk-head{ gap:8px; }
   .ai-talk-dot{ width:8px; height:8px; border-radius:50%; background:var(--mk-accent);
-    box-shadow:0 0 0 3px rgba(195,236,63,.45); flex:0 0 auto; }
+    box-shadow:0 0 0 3px rgba(0,0,0,.28); flex:0 0 auto; }
   .ai-talk-body{ padding:0 14px 12px; }
   .ai-talk-lead{ font-size:11.5px; color:#9b9a92; line-height:1.6; margin:0 0 9px; }
   .ai-talk-btn{ background:var(--mk-dark) !important; color:#f4f2ec !important; border:none !important;
@@ -948,7 +948,7 @@ input[type=number], input[type=text], textarea, select {
   .ai-chat-inputbar{ display:flex; gap:7px; align-items:flex-end; margin-top:9px; }
   .ai-chat-input{ flex:1; font-size:13px; line-height:1.6; padding:9px 11px; border:1px solid var(--mk-line) !important;
     border-radius:10px !important; resize:vertical; font-family:"Zen Kaku Gothic New",sans-serif; background:#fcfdfb; }
-  .ai-chat-input:focus{ outline:none; border-color:var(--mk-accent) !important; box-shadow:0 0 0 3px rgba(195,236,63,.35) !important; }
+  .ai-chat-input:focus{ outline:none; border-color:var(--mk-accent) !important; box-shadow:0 0 0 3px rgba(0,0,0,.18) !important; }
   #ai-chat-send{ padding:9px 16px !important; border-radius:10px !important; white-space:nowrap; align-self:stretch; }
 
   /* AI課金ロック：未課金はグレーアウト＋オーバーレイ、課金者はアクティベート */
@@ -984,7 +984,7 @@ input[type=number], input[type=text], textarea, select {
   .data-table-container{ padding:6px 10px 12px; }
   .data-table{ border-collapse:separate !important; border-spacing:0 !important; font-size:11px !important; }
   /* ヘッダ：淡いセージ地＋濃緑文字（濃グリーンをやめて軽く） */
-  .data-table thead th{ background:#e7eee0 !important; color:#3d4a39 !important;
+  .data-table thead th{ background:#f0eee8 !important; color:#3d3d3a !important;
     font-family:"Zen Kaku Gothic New",sans-serif !important; font-weight:700 !important;
     font-size:10px !important; letter-spacing:.02em; padding:9px 4px !important; white-space:nowrap;
     border:none !important; border-bottom:2px solid #dcdad3 !important; position:sticky; top:0; }
@@ -994,9 +994,9 @@ input[type=number], input[type=text], textarea, select {
   /* 行：ゼブラ＋余白＋区切りは淡いライン（tdに塗ってtr背景を確実に反映） */
   .data-table tbody tr{ transition:background .15s; }
   .data-table tbody tr:nth-child(odd) td{ background:#ffffff; }
-  .data-table tbody tr:nth-child(even) td{ background:#f6f9f3; }
+  .data-table tbody tr:nth-child(even) td{ background:#f7f6f1; }
   .data-table tbody tr:hover td{ background:#eef4e8 !important; }
-  .data-table td{ border:none !important; border-bottom:1px solid #eef0ea !important;
+  .data-table td{ border:none !important; border-bottom:1px solid #efeee8 !important;
     padding:7px 4px !important; font-size:11px !important; vertical-align:middle; color:#2b332a !important; }
   /* 馬名：明朝で少し格を出す・左寄せ */
   .data-table .td-name{ font-family:"Zen Kaku Gothic New",sans-serif !important; font-weight:700 !important;
@@ -1015,9 +1015,9 @@ input[type=number], input[type=text], textarea, select {
     border-radius:7px !important; background:#fff !important; font-size:11px !important; padding:4px 5px !important;
     color:#2b332a !important; }
   .data-table input[type=number]:focus, .data-table select:focus{ outline:none;
-    border-color:var(--mk-accent) !important; box-shadow:0 0 0 2px rgba(195,236,63,.4) !important; }
+    border-color:var(--mk-accent) !important; box-shadow:0 0 0 2px rgba(0,0,0,.22) !important; }
   .memo-input{ width:130px !important; }
-  .memo-input:focus{ background:#fbfdf9 !important; box-shadow:0 0 0 2px rgba(195,236,63,.4) !important; }
+  .memo-input:focus{ background:#fbfdf9 !important; box-shadow:0 0 0 2px rgba(0,0,0,.22) !important; }
   /* 詳細表示時：列が増えるので全体をコンパクトにして横スクロールを抑える */
   .data-table.detail-open td, .data-table.detail-open thead th{ padding:5px 2px !important; font-size:9.5px !important; }
   .data-table.detail-open .td-name{ font-size:11px !important; max-width:88px !important; }
@@ -1032,11 +1032,11 @@ input[type=number], input[type=text], textarea, select {
 
   /* ボタン群をダーク緑ピル/セージに（機能色は個別維持されるものは後段で調整可） */
   .btn-primary{ background:var(--mk-dark) !important; color:#f4f2ec !important; border:none !important; border-radius:20px !important; }
-  .btn-success{ background:var(--mk-accent) !important; color:#1a1a1a !important; border:none !important; border-radius:20px !important; font-weight:700 !important; }
+  .btn-success{ background:#1a1a1a !important; color:#f4f2ec !important; border:none !important; border-radius:20px !important; font-weight:700 !important; }
   .btn-danger{ background:#b06a5e !important; color:#fff !important; border:none !important; border-radius:20px !important; }
   .sync-btn{ background:var(--mk-dark) !important; border-radius:16px !important; }
   .baba-btn{ border-radius:16px !important; border-color:var(--mk-line) !important; }
-  .baba-btn.active{ background:var(--mk-accent) !important; border-color:var(--mk-accent) !important; color:#1a1a1a !important; }
+  .baba-btn.active{ background:#1a1a1a !important; border-color:#1a1a1a !important; color:#f4f2ec !important; }
 
   /* レース選択ボタン：白＋淡緑、選択は淡緑 */
   .nav-race-btn{ background:#f3f8ee !important; border:1px solid var(--mk-line) !important; color:#3f4a3d !important; border-radius:10px !important;
@@ -1053,7 +1053,7 @@ input[type=number], input[type=text], textarea, select {
   <div id="site-title" style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:28px 26px;background:#1a1a1a;border-radius:22px;margin:12px;position:relative;overflow:hidden;">
     <div style="text-align:left;">
       <div style="font-family:'Fraunces','Helvetica Neue',serif;font-weight:900;color:#f4f2ec;font-size:clamp(34px,8vw,60px);letter-spacing:.18em;line-height:1;text-indent:.18em;">MUKETSU</div>
-      <div style="color:#c3ec3f;font-size:10px;letter-spacing:.34em;text-indent:.34em;font-weight:700;margin-top:12px;">PACE ANALYSIS NEWSPAPER</div>
+      <div style="color:#c9c8c0;font-size:10px;letter-spacing:.34em;text-indent:.34em;font-weight:700;margin-top:12px;">PACE ANALYSIS NEWSPAPER</div>
     </div>
     <div style="text-align:right;">
       <div style="color:#f4f2ec;font-size:12px;font-weight:700;letter-spacing:.08em;">無血で勝つ・回収</div>
@@ -2425,11 +2425,11 @@ function getTodayStr(){const d=new Date();const jst=new Date(d.getTime()+9*60*60
 
     const HARAN_LEVELS = [{threshold:45,stars:'★★★★★',color:'#c0392b'},{threshold:57,stars:'★★★★☆',color:'#e67e22'},{threshold:67,stars:'★★★☆☆',color:'#f39c12'},{threshold:73,stars:'★★☆☆☆',color:'#1a1a1a'},{threshold:80,stars:'★☆☆☆☆',color:'#2980b9'}];
     const TIER_BAR_COLORS = [
-      'linear-gradient(90deg, #c3ec3f, #d4f34a)', /* 1層目: ライム（最上位を強調） */
-      'linear-gradient(90deg, #2b2b28, #4a4a44)', /* 2層目: ダーク */
-      'linear-gradient(90deg, #bdbcb4, #d6d5cd)'  /* 3層目以降: グレー */
+      'linear-gradient(90deg, #1a1a1a, #3d3d3a)', /* 1層目: 最も濃い（上位） */
+      'linear-gradient(90deg, #6a6a63, #8a8a82)', /* 2層目: 中間グレー */
+      'linear-gradient(90deg, #c2c1b9, #d8d7cf)'  /* 3層目以降: 淡いグレー */
     ];
-    const TIER_BAR_DEFAULT = 'linear-gradient(90deg, #2b2b28, #55554e)';
+    const TIER_BAR_DEFAULT = 'linear-gradient(90deg, #3d3d3a, #6a6a63)';
 
     const COURSE_BIAS_MAP = {}; // ★中身を空っぽにして初期設定の暴走を止める
 
@@ -4114,7 +4114,7 @@ function applyGlobalFilter() {
 
         // ★スライダーの色を「10」基準で塗りつぶすように変更し、アースカラーに対応
         // スライダーは緑の濃淡で表現（内/前＝淡い緑, 外/後＝濃い緑, 中央＝無色）
-        const GREEN_LIGHT='#c3ec3f', GREEN_LIGHT_TC='#1a1a1a', GREEN_DARK='#1a1a1a', GREEN_DARK_TC='#1a1a1a', TRACK_BASE='#e8e6df';
+        const GREEN_LIGHT='#1a1a1a', GREEN_LIGHT_TC='#1a1a1a', GREEN_DARK='#1a1a1a', GREEN_DARK_TC='#1a1a1a', TRACK_BASE='#e8e6df';
         if(biasEl) {
           const v = race.biasVal, p = ((v+10)/20)*100;
           let bg, tc;
@@ -4871,15 +4871,16 @@ window.drawOaChartModal = function() {
       if(bgLayer) {
         const isDirt = race.info && race.info.includes('ダ') && !isStraight;
         const baba = race.baba || '良';
-        let baseColor = isDirt ? '#efe6da' : '#eef0ea', trackColor = isDirt ? '#ddc6a8' : '#8f8e86';
+        // 展開図フィールド：芝＝緑 / ダート＝薄茶（ここだけ緑を使う）
+        let baseColor = isDirt ? '#e9dcc6' : '#dcecc9', trackColor = isDirt ? '#c9ab7e' : '#8fb26a';
         if(!isDirt) {
-          if(baba === '稍') { trackColor = '#d8d6cd'; }
-          else if(baba === '重') { trackColor = '#cfcdc4'; }
-          else if(baba === '不') { trackColor = '#bdbbb2'; }
+          if(baba === '稍') { trackColor = '#9fb87e'; }
+          else if(baba === '重') { trackColor = '#a7ad8c'; }
+          else if(baba === '不') { trackColor = '#9ba187'; }
         } else {
-          if(baba === '稍') { trackColor = '#d3bd9e'; }
-          else if(baba === '重') { trackColor = '#c9ad86'; }
-          else if(baba === '不') { trackColor = '#bd9d72'; }
+          if(baba === '稍') { trackColor = '#c2a271'; }
+          else if(baba === '重') { trackColor = '#b8975f'; }
+          else if(baba === '不') { trackColor = '#a8874f'; }
         }
         
         const startLineX = 5; // 後方（左端）
@@ -4968,10 +4969,10 @@ window.drawOaChartModal = function() {
           // 有利馬は「金色リング＋有利タグ」で明確化（薄緑背景に埋もれないよう暖色に）
           const isFav = favScore > 0;
           const favGlow = isFav
-            ? 'box-shadow:0 0 0 2.5px #c3ec3f,0 0 0 4.5px rgba(195,236,63,.5),0 2px 5px rgba(0,0,0,0.3);'
+            ? 'box-shadow:0 0 0 2.5px #1a1a1a,0 0 0 4.5px rgba(0,0,0,.35),0 2px 5px rgba(0,0,0,0.3);'
             : 'box-shadow:0 2px 4px rgba(0,0,0,0.3);';
           const favTag = isFav
-            ? `<span style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:#c3ec3f;color:#1a1a1a;font-size:7.5px;font-weight:800;line-height:1;padding:2px 4px;border-radius:6px;letter-spacing:.02em;white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.25);z-index:5;">有利</span>`
+            ? `<span style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#1a1a1a;font-size:7.5px;font-weight:800;line-height:1;padding:2px 4px;border-radius:6px;letter-spacing:.02em;white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.25);z-index:5;">有利</span>`
             : '';
           let innerHTML = `<div style="position:relative;">${favTag}<div class="waku-box waku-${h.waku}" style="width:24px;height:24px;font-size:13px;${favGlow}border-radius:4px;">${h.num}</div></div><span style="display:${nameDisplay};font-family:'Zen Kaku Gothic New',sans-serif;font-size:9px;font-weight:700;color:${isFav?'#1a1a1a':'#1a1a1a'};text-shadow:0 1px 2px rgba(255,255,255,.9);margin-top:3px;letter-spacing:0;">${shortName}</span>`;
           
@@ -5158,8 +5159,8 @@ window.drawOaChartModal = function() {
         if(isHarvilleCalculated) {
           barWidthPct = Math.min((h.winRate / 60) * 100, 100);
           let ev = (!isNaN(tOdds) && h.winRate > 0) ? (tOdds * h.winRate / 100) : 0;
-          if(ev >= 1.0) { barStyle = 'linear-gradient(90deg, #c3ec3f, #d4f34a)'; } /* 妙味＝ライム */
-          else { barStyle = 'linear-gradient(90deg, #2b2b28, #55554e)'; } /* それ以外＝ダーク */
+          if(ev >= 1.0) { barStyle = 'linear-gradient(90deg, #1a1a1a, #3d3d3a)'; } /* 妙味＝濃い */
+          else { barStyle = 'linear-gradient(90deg, #a8a79f, #c6c5bd)'; } /* それ以外＝淡グレー */
         } else {
           if(graphSortKey === 'odds') {
             barWidthPct = (!isNaN(tOdds) && tOdds > 0) ? Math.min(80 / tOdds, 100) : 0;
@@ -5534,7 +5535,7 @@ renderCourseFeature(); // ←★★ここに1行追加するだけです！★�
       if(pb) {
         pb.textContent = `${b.tickets.length} 点`;
         pb.style.background = '#fff';
-        pb.style.borderColor = '#c3ec3f';
+        pb.style.borderColor = '#1a1a1a';
         pb.style.color = '#1a1a1a';
       }
       
@@ -5895,7 +5896,7 @@ function autoGenerateTickets(mode = 'win') {
       b.marks1 = []; b.marks2 = []; b.marks3 = []; b.tickets = [];
       const oI = document.getElementById('odds-input'); if(oI) oI.value = '';
       const bg = document.getElementById('tb-points-badge');
-      if(bg) { bg.textContent = '0 点'; bg.style.background = '#fff'; bg.style.borderColor = '#c3ec3f'; bg.style.color = '#1a1a1a'; }
+      if(bg) { bg.textContent = '0 点'; bg.style.background = '#fff'; bg.style.borderColor = '#1a1a1a'; bg.style.color = '#1a1a1a'; }
       
       setAiBtnActive('none'); // リセットしたらAIモードの色を解除
       renderTicketBuilder();
@@ -5913,7 +5914,7 @@ function autoGenerateTickets(mode = 'win') {
       b.marks1 = []; b.marks2 = []; b.marks3 = []; b.tickets = [];
       const oI = document.getElementById('odds-input'); if(oI) oI.value = '';
       const bg = document.getElementById('tb-points-badge');
-      if(bg) { bg.textContent = '0 点'; bg.style.background = '#fff'; bg.style.borderColor = '#c3ec3f'; bg.style.color = '#1a1a1a'; }
+      if(bg) { bg.textContent = '0 点'; bg.style.background = '#fff'; bg.style.borderColor = '#1a1a1a'; bg.style.color = '#1a1a1a'; }
       renderTicketBuilder();
     }
     
