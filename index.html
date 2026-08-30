@@ -859,12 +859,29 @@ input[type=number], input[type=text], textarea, select {
   .big-card #race-info-head{ padding:14px 18px 10px !important; }
   .big-card .main-table-area{ border-top:none !important; }
 
-  /* 大カードの見出し */
-  .bc-head{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
-    padding:13px 18px 6px; border-bottom:1px solid var(--mk-line); margin-bottom:2px; }
-  .bc-title{ font-family:"Zen Kaku Gothic New",sans-serif; font-weight:700;
-    color:var(--mk-dark); font-size:16px; letter-spacing:.08em; }
+  /* ===== エディトリアル共通部品 ===== */
+  /* 大カードの見出し＝小ラベル(eyebrow)＋特大タイトル。線でなく余白で区切る */
+  .bc-head{ display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    padding:20px 22px 14px; border-bottom:none !important; margin-bottom:0; }
+  .bc-title{ font-family:"Zen Kaku Gothic New",sans-serif; font-weight:900 !important;
+    color:var(--mk-dark); font-size:24px !important; letter-spacing:.01em; line-height:1.05; }
   .bc-sub{ font-size:10px; color:#9b9a92; letter-spacing:.05em; }
+  /* eyebrow（見出しの上の小ラベル） */
+  .mk-eyebrow{ display:block; font-size:10px; font-weight:800; letter-spacing:.16em;
+    color:#9b9a92; margin:0 0 3px; }
+  /* 黄マーカー（要語の下線ハイライト） */
+  .mk-mark{ background:linear-gradient(transparent 52%, var(--mk-lime) 52%); padding:0 3px; }
+  /* メトリックカード（数字を主役に） */
+  .metric-card{ background:#fff; border-radius:16px; padding:15px 16px; }
+  .metric-card.dark{ background:#1a1a1a; }
+  .metric-lbl{ font-size:10px; font-weight:700; color:#9b9a92; letter-spacing:.03em; }
+  .metric-card.dark .metric-lbl{ color:#8f8e86; }
+  .metric-val{ font-size:26px; font-weight:900; color:#1a1a1a; line-height:1; margin-top:6px; }
+  .metric-card.dark .metric-val{ color:var(--mk-lime); }
+  .metric-bar{ height:6px; background:#efeee8; border-radius:4px; margin-top:10px; overflow:hidden; }
+  .metric-card.dark .metric-bar{ background:#3d3d3a; }
+  .metric-bar>i{ display:block; height:100%; background:#1a1a1a; border-radius:4px; }
+  .metric-card.dark .metric-bar>i{ background:var(--mk-lime); }
 
   /* カードの中の“中の箱”は素の帯 */
   .pace-board{ background:transparent !important; border:none !important;
@@ -1226,8 +1243,14 @@ input[type=number], input[type=text], textarea, select {
     <div class="race-card" id="main-tool" style="display:none;">
       <!-- ①レース情報＋シミュレーター -->
       <section class="big-card">
-        <div class="bc-head">
-          <span class="bc-title">レース情報</span>
+        <div class="bc-head" style="align-items:flex-start;">
+          <div style="flex:1;min-width:0;">
+            <span class="mk-eyebrow">RACE INFORMATION</span>
+            <div id="race-info-title" style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;color:#1a1a1a;font-size:28px;letter-spacing:.005em;line-height:1.08;">—</div>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
+              <span id="race-info-haran" style="font-size:10px;color:#9b9a92;background:#f4f2ec;border:1px solid #e8e6df;border-radius:10px;padding:2px 9px;font-weight:700;letter-spacing:.04em;"></span>
+            </div>
+          </div>
           <select id="race-status-select" class="race-quality-tab" onchange="updateRaceStatus(this.value)">
             <option value="">レース質を選択</option>
             <option value="勝負">勝負レース</option>
@@ -1239,37 +1262,37 @@ input[type=number], input[type=text], textarea, select {
             <option value="custom">自由入力...</option>
           </select>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding:0 18px 12px;"><span id="race-info-title" style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;color:#1a1a1a;font-size:21px;letter-spacing:.02em;">—</span><span id="race-info-haran" style="font-size:10px;color:#9b9a92;background:#f4f2ec;border:1px solid #e8e6df;border-radius:10px;padding:2px 9px;font-weight:700;letter-spacing:.04em;"></span></div>
 
         <!-- 中項目：馬場・コンディション -->
-        <div class="sub-head"><span class="sub-head-ttl">馬場・コンディション</span></div>
-        <div style="display:grid;grid-template-columns:1fr auto;gap:16px;margin-top:12px;padding:0 18px 4px;align-items:center;">
-          <div style="display:flex;flex-direction:column;gap:17px;">
-            <div>
-              <div style="font-size:9px;color:#9b9a92;letter-spacing:.1em;margin-bottom:4px;">馬場状態</div>
-              <div id="bb-going-seg" style="display:grid;grid-template-columns:repeat(4,1fr);border:1px solid #e8e6df;border-radius:20px;overflow:hidden;">
-                <span data-g="良" style="font-size:12px;font-weight:700;padding:8px 4px;color:#9b9a92;text-align:center;white-space:nowrap;">良</span>
-                <span data-g="稍重" style="font-size:12px;font-weight:700;padding:8px 4px;color:#9b9a92;border-left:1px solid #f4f2ec;text-align:center;white-space:nowrap;">稍重</span>
-                <span data-g="重" style="font-size:12px;font-weight:700;padding:8px 4px;color:#9b9a92;border-left:1px solid #f4f2ec;text-align:center;white-space:nowrap;">重</span>
-                <span data-g="不良" style="font-size:12px;font-weight:700;padding:8px 4px;color:#9b9a92;border-left:1px solid #f4f2ec;text-align:center;white-space:nowrap;">不良</span>
-              </div>
+        <div class="sub-head"><span class="mk-eyebrow" style="margin:0;">CONDITION</span><span class="sub-head-ttl">馬場・コンディション</span></div>
+        <div style="padding:4px 18px 8px;">
+          <div style="font-size:9px;color:#9b9a92;letter-spacing:.1em;margin-bottom:6px;">馬場状態</div>
+          <div id="bb-going-seg" style="display:grid;grid-template-columns:repeat(4,1fr);border:1px solid #e8e6df;border-radius:20px;overflow:hidden;">
+            <span data-g="良" style="font-size:12px;font-weight:700;padding:9px 4px;color:#9b9a92;text-align:center;white-space:nowrap;">良</span>
+            <span data-g="稍重" style="font-size:12px;font-weight:700;padding:9px 4px;color:#9b9a92;border-left:1px solid #f4f2ec;text-align:center;white-space:nowrap;">稍重</span>
+            <span data-g="重" style="font-size:12px;font-weight:700;padding:9px 4px;color:#9b9a92;border-left:1px solid #f4f2ec;text-align:center;white-space:nowrap;">重</span>
+            <span data-g="不良" style="font-size:12px;font-weight:700;padding:9px 4px;color:#9b9a92;border-left:1px solid #f4f2ec;text-align:center;white-space:nowrap;">不良</span>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;">
+            <div class="metric-card" id="bb-cush-wrap" style="background:#f7f6f1;">
+              <div class="metric-lbl">クッション値</div>
+              <div class="metric-val" id="bb-cush-v">—</div>
+              <div class="metric-bar"><i id="bb-cush-bar" style="width:0%;"></i></div>
+              <div style="display:flex;justify-content:space-between;font-size:8px;color:#b8b7af;margin-top:5px;"><span>柔 7</span><span>硬 12</span></div>
             </div>
-            <div id="bb-cush-wrap">
-              <div style="display:flex;justify-content:space-between;font-size:10px;color:#9b9a92;margin-bottom:3px;"><span>クッション値</span><span id="bb-cush-v" style="color:#1a1a1a;font-weight:700;">—</span></div>
-              <div style="height:9px;background:#e8e6df;border-radius:5px;overflow:hidden;"><div id="bb-cush-bar" style="height:100%;width:0%;background:#1a1a1a;border-radius:4px;transition:width .4s;"></div></div>
-              <div style="display:flex;justify-content:space-between;font-size:8px;color:#b9c4b2;margin-top:1px;"><span>柔 7</span><span>硬 12</span></div>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:10px;color:#9b9a92;margin-bottom:3px;"><span id="bb-moist-label">含水率(芝)</span><span id="bb-moist-v" style="color:#1a1a1a;font-weight:700;">—</span></div>
-              <div style="height:9px;background:#e8e6df;border-radius:5px;overflow:hidden;"><div id="bb-moist-bar" style="height:100%;width:0%;background:#1a1a1a;border-radius:4px;transition:width .4s,background .3s;"></div></div>
-              <div style="display:flex;justify-content:space-between;font-size:8px;color:#b9c4b2;margin-top:1px;"><span>乾 0%</span><span>湿 25%</span></div>
+            <div class="metric-card dark">
+              <div class="metric-lbl" id="bb-moist-label">含水率(芝)</div>
+              <div class="metric-val" id="bb-moist-v">—</div>
+              <div class="metric-bar"><i id="bb-moist-bar" style="width:0%;"></i></div>
+              <div style="display:flex;justify-content:space-between;font-size:8px;color:#7a7a72;margin-top:5px;"><span>乾 0%</span><span>湿 25%</span></div>
             </div>
           </div>
 
-          <div class="visual" style="text-align:center;width:172px;">
-            <a id="jra-baba-link" href="#" target="_blank" rel="noopener" style="display:inline-block;font-size:9px;color:#1a1a1a;text-decoration:none;margin-bottom:4px;border-bottom:1px dotted #dcdad3;">JRA公式 馬場情報 ↗</a>
+          <div class="visual" style="text-align:center;margin-top:14px;">
+            <a id="jra-baba-link" href="#" target="_blank" rel="noopener" style="display:inline-block;font-size:9px;color:#1a1a1a;text-decoration:none;margin-bottom:6px;border-bottom:1px dotted #dcdad3;">JRA公式 馬場情報 ↗</a>
             <canvas class="trk" id="bb-track" data-br="0" data-turn="0" data-sp="0" data-di="0" style="width:172px;max-width:172px;aspect-ratio:1;display:block;margin:0 auto;background:linear-gradient(#fbfdfc,#eef4f2);border:1px solid #dfe6ec;border-radius:8px;"></canvas>
-            <div id="bb-wind-cap" style="font-size:10px;color:#7a828a;margin-top:5px;line-height:1.4;">—<span id="bb-wind-time" style="color:#b8bdc3;margin-left:4px;"></span></div>
+            <div id="bb-wind-cap" style="font-size:10px;color:#7a828a;margin-top:6px;line-height:1.4;">—<span id="bb-wind-time" style="color:#b8bdc3;margin-left:4px;"></span></div>
           </div>
         </div>
       <!-- AI/10分前オッズは別途新設予定のため下部に退避（機能温存・非表示） -->
@@ -3821,7 +3844,12 @@ function buildNavigation() {
       if(titleEl) titleEl.textContent = raceId + timeDisp + (r.info ? ` ${r.info}` : '') + (r.raceName ? ` ${r.raceName}` : '');
       // レース情報ヘッダ（別枠）にも反映
       var _rit=document.getElementById('race-info-title');
-      if(_rit) _rit.textContent = (r.basho||'') + raceId.replace(/\D/g,'') + 'R' + (r.info?(' '+r.info):'') + (r.raceName?(' '+r.raceName):'');
+      if(_rit){
+        const _head = (r.basho||'') + raceId.replace(/\D/g,'') + 'R' + (r.info?(' '+r.info):'');
+        const _esc = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');
+        // レース名（未勝利など）を黄マーカーで強調
+        _rit.innerHTML = _esc(_head) + (r.raceName?(' <span class="mk-mark">'+_esc(r.raceName)+'</span>'):'');
+      }
       if(typeof updateBabaBar==='function') updateBabaBar(r.basho);
 
       const starMarker = document.getElementById('race-star-marker');
@@ -8816,7 +8844,7 @@ window.closeDetailedData2Modal = function() {
     if(g('bb-moist-bar')){
       const p=mv!=null?Math.max(0,Math.min(100,mv/25*100)):0;
       g('bb-moist-bar').style.width=p+'%';
-      g('bb-moist-bar').style.background = isDirt ? '#a5744a' : '#1a1a1a';
+      g('bb-moist-bar').style.background = isDirt ? '#c9a06a' : '#ccf23f';
     }
     // 風トラックcanvas
     const w=(window._WIND&&window._WIND.wind&&basho)?window._WIND.wind[basho]:null;
