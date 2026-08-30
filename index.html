@@ -943,7 +943,7 @@ input[type=number], input[type=text], textarea, select {
           </div>
           <div class="baba-chip" style="background:#eef3ea;border-radius:12px;padding:7px 12px;min-width:74px;">
             <div style="font-size:9px;color:#8a9a83;letter-spacing:.08em;">風</div>
-            <div id="bb-wind" style="font-size:15px;font-weight:700;color:#1c2e1f;">—</div>
+            <div id="bb-wind" style="font-size:15px;font-weight:700;color:#1c2e1f;">—</div><div id="bb-wind-time" style="font-size:9px;color:#a9b4a2;"></div>
           </div>
         </div>
       </div>
@@ -8095,11 +8095,16 @@ window.closeDetailedData2Modal = function() {
 </script>
 <script>
   window._BABA=null;
+  window._WIND=null;
   window.loadBabaJson=async function(){
     try{
       const r=await fetch('https://hatake-keiba.github.io/baba_hist.json',{cache:'no-store'});
       if(r.ok){ const d=await r.json(); const days=Object.keys(d).sort(); window._BABA=d[days[days.length-1]]||null; }
     }catch(e){ console.error('baba json', e); }
+    try{
+      const rw=await fetch('https://hatake-keiba.github.io/muketsu/wind.json',{cache:'no-store'});
+      if(rw.ok){ window._WIND=await rw.json(); }
+    }catch(e){ console.error('wind json', e); }
   };
   window.updateBabaBar=function(basho){
     const g=id=>document.getElementById(id);
@@ -8108,7 +8113,12 @@ window.closeDetailedData2Modal = function() {
     if(g('bb-going')) g('bb-going').textContent=(b.tgoing||'—');
     if(g('bb-cush'))  g('bb-cush').textContent =(b.cush!=null?b.cush:'—');
     if(g('bb-moist')) g('bb-moist').textContent=(b.tmoist!=null?b.tmoist+'%':'—');
-    if(g('bb-wind'))  g('bb-wind').textContent ='取得予定';
+    if(g('bb-wind')){
+      var w=(window._WIND&&window._WIND.wind&&basho)?window._WIND.wind[basho]:null;
+      g('bb-wind').textContent = w ? (w.label + (w.sp?(' '+w.sp+'m'):'')) : '—';
+      var wt=document.getElementById('bb-wind-time');
+      if(wt && w && w.time) wt.textContent = w.time;
+    }
   };
   (function(){
     function boot(){
