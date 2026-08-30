@@ -3314,7 +3314,9 @@ function buildNavigation() {
     
     function syncRaceQualityTab(){
       const sel = document.getElementById('race-status-select');
-      if(sel) sel.classList.toggle('is-active', !!sel.value);
+      if(!sel) return;
+      const st = (currentRaceId && racesData[currentRaceId]) ? (racesData[currentRaceId].status || '') : sel.value;
+      sel.classList.toggle('is-active', !!st);
     }
 
     function updateRaceStatus(val) {
