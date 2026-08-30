@@ -1077,10 +1077,7 @@ input[type=number], input[type=text], textarea, select {
               <div class="ai-pace-area">
           <div class="ai-pace-header">
             <span class="ai-pace-label">📝 メモ</span>
-            <button class="ai-mic-btn" id="ai-mic-btn" onclick="toggleAIMic()" title="音声入力">🎤</button>
-            <span style="font-size:10px; color:#666; margin-left:2px;">録音</span>
-            <button class="btn-success" style="padding:4px 12px;font-size:11px;margin-left:auto;background:#e65100;" onclick="applyMemoToHorses()">📋 各馬へ反映</button>
-            <button class="btn-danger" style="padding:4px 12px;font-size:11px;margin-left:6px;" onclick="clearAIComment()">🔄 リセット</button>
+            <button id="ai-mic-btn" style="display:none;" onclick="toggleAIMic()">🎤</button>
           </div>
                    <textarea id="ai-pace-comment" class="ai-pace-textarea"
             placeholder="「1番：トモの踏み込み良い」「〇〇(馬名)：パドック気配抜群」のように入力し「各馬へ反映」を押すと、上の表のメモ欄に自動リンクします。"
@@ -4363,7 +4360,13 @@ window.drawOaChartModal = function() {
         
         sortedForGate.forEach((h, idx) => {
           let targetX, targetY, opacity = '1', nameDisplay = 'block';
-          if(step === 0) { targetX = 0.5; targetY = 0.5; opacity = '0'; }
+          if(step === 0) {
+            // 静的表示：最初から隊列（step1相当）を見せる
+            targetX = gateX;
+            if(isStraight) targetY = 0.25 + (idx / Math.max(1, sortedForGate.length - 1)) * 0.5;
+            else targetY = 0.75 - (idx / Math.max(1, sortedForGate.length - 1)) * 0.5;
+            nameDisplay = 'none';
+          }
           else if(step === 1) {
             targetX = gateX;
             if(isStraight) targetY = 0.25 + (idx / Math.max(1, sortedForGate.length - 1)) * 0.5;
@@ -4389,7 +4392,7 @@ window.drawOaChartModal = function() {
             wrapper.style.left = `calc(${targetX * 100}%)`;
             wrapper.style.top = `calc(${targetY * 100}%)`;
             wrapper.style.opacity = opacity;
-            wrapper.style.pointerEvents = step === 0 ? 'none' : 'auto';
+            wrapper.style.pointerEvents = 'auto';
             setupDragEvents(wrapper, h);
             horseLayer.appendChild(wrapper);
             setTimeout(() => {
@@ -4403,7 +4406,7 @@ window.drawOaChartModal = function() {
             wrapper.style.left = `calc(${targetX * 100}%)`;
             wrapper.style.top = `calc(${targetY * 100}%)`;
             wrapper.style.opacity = opacity;
-            wrapper.style.pointerEvents = step === 0 ? 'none' : 'auto';
+            wrapper.style.pointerEvents = 'auto';
           }
         });
         
