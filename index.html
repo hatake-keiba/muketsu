@@ -38,7 +38,7 @@
     .sim-header { background: #fff8e1; color: #d84315; font-size: 11px; font-weight: bold; padding: 6px 8px; border-bottom: 1px solid #ffcc80; display: flex; align-items: center; gap: 6px; }
     .sim-content { padding: 6px; }
     .sim-row { display: flex; align-items: center; margin-bottom: 6px; gap: 6px; }
-    .sim-label { font-size: 11px; font-weight: bold; color: #d84315; width: 45px; }
+    .sim-label { font-size: 11px; font-weight: bold; color: #1a1a1a; width: 45px; }
     .baba-btns { display: flex; gap: 4px; }
     .baba-btn { background: #fff; border: 1px solid #ccc; padding: 2px 8px; font-size: 11px; font-weight: bold; border-radius: 3px; cursor: pointer; }
     .baba-btn.active { background: #e65100; color: #fff; border-color: #d84315; }
@@ -901,8 +901,9 @@ input[type=number], input[type=text], textarea, select {
     border-radius:0 !important; box-shadow:none !important; margin:0 !important; padding:6px 16px 0 !important; }
   /* 脚質行に遊び：淡い帯＋左に脚質色のアクセント。文字が線に被らないよう余白確保 */
   /* 脚質の小カード：色を使わず全部グレーで統一 */
-  .pace-row{ background:#f1f2f0 !important; box-shadow:inset 3px 0 0 #b8bdb4 !important; }
-  .pace-label{ color:#5a6155 !important; }
+  /* 脚質ミニカード：テーマの薄ベージュ地＋左に薄茶アクセント */
+  .pace-row{ background:#f4f2ec !important; box-shadow:inset 3px 0 0 #c9b98f !important; border:1px solid #e8e6df !important; }
+  .pace-label{ color:#3d3d3a !important; }
   .stat-card .graph-section-title{ background:var(--mk-tint) !important; color:var(--mk-dark) !important;
     border:none !important; border-bottom:1px solid var(--mk-line) !important;
     border-left:none !important; }
@@ -937,8 +938,8 @@ input[type=number], input[type=text], textarea, select {
     text-overflow:ellipsis; }
   .stat-card .horse-name{ display:none !important; } /* 旧オーバーレイ名は不使用 */
   /* バー＝傾向色。太めトラック・角丸 */
-  .stat-card .bar-col{ height:22px !important; background:transparent !important; border-radius:9px; overflow:visible; }
-  .stat-card .visual-bar{ height:22px !important; top:0 !important; border-radius:9px !important; opacity:1 !important; }
+  .stat-card .bar-col{ height:12px !important; background:transparent !important; border-radius:0 !important; overflow:visible; }
+  .stat-card .visual-bar{ height:12px !important; top:0 !important; border-radius:0 !important; opacity:1 !important; }
   /* 勝率数値：黒地にライム文字で強調 */
   .stat-card .val-col-inner{ background:#f0eee8 !important; border:1px solid #e8e6df !important; border-radius:9px !important; padding:3px 8px !important; }
   .stat-card .val-col{ color:#1a1a1a !important; font-weight:800 !important; }
