@@ -3445,7 +3445,7 @@ function buildNavigation() {
           // データ無し：グレーアウトの空ボタン（クリック不可）
           const empty = document.createElement('div');
           empty.className = 'nav-race-btn nav-race-empty';
-          empty.style.cssText = 'padding:4px; text-align:center; border:1px solid #edf1e8; border-radius:10px; background:#f3f5f0; color:#b9c4b2; opacity:.6; cursor:default;';
+          empty.style.cssText = 'padding:5px 4px; min-height:44px; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; border:1px solid #edf1e8; border-radius:10px; background:#f3f5f0; color:#b9c4b2; opacity:.6; cursor:default;';
           empty.innerHTML = `<div class="r-num" style="font-size:12px; font-weight:bold; color:#b9c4b2;">${rn}R</div><div style="font-size:9px; color:#c3ccbc; margin-top:2px;">—</div>`;
           buttonsDiv.appendChild(empty);
           continue;
@@ -3460,7 +3460,7 @@ function buildNavigation() {
         btn.id = 'btn-' + rId;
         const isSelected = rId === currentRaceId;
         btn.className = 'nav-race-btn ' + (isDirt ? 'is-dirt' : 'is-turf') + (isSelected ? ' active' : '');
-        btn.style.cssText = `padding: 4px; text-align: center; border: 1px solid #e2e8f0; border-radius: 4px; cursor: pointer; background: #fff; ${bottomBorder}`;
+        btn.style.cssText = `padding: 5px 4px; min-height:44px; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align: center; border: 1px solid #e2e8f0; border-radius: 10px; cursor: pointer; background: #fff;`;
         btn.onclick = () => { selectRace(rId); };
         // 発走時刻の行は常に確保（空でも高さを揃える）＝目次のカタつき防止
         btn.innerHTML = `<div class="r-num" style="font-size:12px; font-weight:bold; color: #666;">${rn}R</div><div class="r-time" style="font-size:9px; font-weight:bold; color: ${timeColor}; margin-top:2px; min-height:12px;">${timeStr || '—'}</div>`;
