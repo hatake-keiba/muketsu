@@ -4332,8 +4332,14 @@ window.drawOaChartModal = function() {
         let textTop = isStraight ? "内 ラチ" : "大 外 ↑", textBottom = isStraight ? "外 ラチ ↓" : "内 ラチ";
         
         let bgSvg = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;"><defs>${gX}${gY}</defs><rect width="100" height="100" fill="${baseColor}" /><rect x="0" y="15" width="100" height="70" fill="${trackColor}" />${race.tenkaiVal!==0?`<rect x="0" y="15" width="100" height="70" fill="url(#gX)" style="mix-blend-mode:multiply;" />`:''}${race.biasVal!==0?`<rect x="0" y="15" width="100" height="70" fill="url(#gY)" style="mix-blend-mode:multiply;" />`:''}<rect x="${startLineX-0.6}" y="15" width="1.2" height="70" fill="#9aa9a0" opacity="0.55" /></svg>`;
-        const _dir = isLeft ? '→ 進路' : '← 進路';
-        const textOverlay = `<div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;font-family:'Zen Kaku Gothic New',sans-serif;"><div style="position:absolute;top:6px;left:50%;transform:translateX(-50%);color:#6b7a6b;font-size:10px;font-weight:700;letter-spacing:2px;">${_dir}</div></div>`;
+        // 進路：左回り=馬は右へ進む(→) / 右回り=左へ進む(←)。isLeft変数はrightでtrueの逆命名なので実回りで判定
+        const realLeft = (currentCourseDir === 'left');
+        const _dir = realLeft ? 'コース：左回り →' : (isStraight ? '直線コース' : 'コース：右回り ←');
+        const textOverlay = `<div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;font-family:'Zen Kaku Gothic New',sans-serif;">
+          <div style="position:absolute;top:5px;left:50%;transform:translateX(-50%);color:#6b7a6b;font-size:9px;font-weight:700;letter-spacing:1px;background:rgba(255,255,255,.6);padding:1px 8px;border-radius:8px;">${_dir}</div>
+          <div style="position:absolute;top:19%;left:6px;color:#8a9a83;font-size:9px;font-weight:700;">内ラチ</div>
+          <div style="position:absolute;bottom:5px;left:6px;color:#8a9a83;font-size:9px;font-weight:700;">外ラチ</div>
+        </div>`;
         bgLayer.innerHTML = bgSvg + textOverlay;
       }
       
@@ -4387,7 +4393,14 @@ window.drawOaChartModal = function() {
           
           let wrapper = document.getElementById('horse-idx-' + h.num);
           let shortName = h.name.replace(/[^ァ-ヴー・]+[A-Za-z0-9]*/g, '').substring(0, 3) || h.name.substring(0, 3);
-          let innerHTML = `<div class="waku-box waku-${h.waku}" style="width:24px;height:24px;font-size:13px;box-shadow:0 2px 4px rgba(0,0,0,0.3);border-radius:4px;">${h.num}</div><span style="display:${nameDisplay};font-family:'Zen Kaku Gothic New',sans-serif;font-size:9px;font-weight:700;color:#1c2e1f;text-shadow:0 1px 2px rgba(255,255,255,.9);margin-top:2px;letter-spacing:0;">${shortName}</span>`;
+          // 有利判定：展開(前/後)×脚質、バイアス(内/外)×枠 が噛み合う馬を軽くハイライト
+          let favScore = 0;
+          if(race.tenkaiVal < 0 && (h.style==='逃'||h.style==='先')) favScore++;
+          if(race.tenkaiVal > 0 && (h.style==='差'||h.style==='追')) favScore++;
+          if(race.biasVal < 0 && h.waku <= 3) favScore++;
+          if(race.biasVal > 0 && h.waku >= 6) favScore++;
+          const favGlow = favScore>0 ? 'box-shadow:0 0 0 2px rgba(92,138,70,.55),0 0 10px rgba(92,138,70,.5),0 2px 4px rgba(0,0,0,0.25);' : 'box-shadow:0 2px 4px rgba(0,0,0,0.3);';
+          let innerHTML = `<div class="waku-box waku-${h.waku}" style="width:24px;height:24px;font-size:13px;${favGlow}border-radius:4px;">${h.num}</div><span style="display:${nameDisplay};font-family:'Zen Kaku Gothic New',sans-serif;font-size:9px;font-weight:700;color:#1c2e1f;text-shadow:0 1px 2px rgba(255,255,255,.9);margin-top:2px;letter-spacing:0;">${shortName}</span>`;
           
           if(!wrapper) {
             wrapper = document.createElement('div');
