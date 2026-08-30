@@ -60,9 +60,9 @@
     input[type=range].blue-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--thumb-color,#9e9e9e); cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.4); transition: background 0.3s; }
     @keyframes btn-pulse { 0% { box-shadow: 0 0 0 0 rgba(211,47,47,0.7); } 70% { box-shadow: 0 0 0 12px rgba(211,47,47,0); } 100% { box-shadow: 0 0 0 0 rgba(211,47,47,0); } }
     .pace-board { background: #fff; border-top: 1px solid #eee; padding: 6px; font-size: 11px; }
-    .pace-row { display: flex; align-items: center; margin-bottom: 4px; border-radius: 4px; transition: background 0.2s; }
-    .pace-label { width: 36px; font-weight: bold; color: #555; flex-shrink: 0; }
-    .pace-horses { display: flex; flex-wrap: wrap; gap: 2px; flex-grow: 1; min-height: 28px; padding: 2px; }
+    .pace-row { display: flex; align-items: center; margin-bottom: 7px; border-radius: 8px; transition: background 0.2s; padding: 3px 8px 3px 0; }
+    .pace-label { width: 48px; font-weight: bold; color: #4a5a46; flex-shrink: 0; padding-left: 14px; letter-spacing: .04em; }
+    .pace-horses { display: flex; flex-wrap: wrap; gap: 3px; flex-grow: 1; min-height: 30px; padding: 3px 4px 3px 10px; }
     .waku-box { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 3px; font-weight: bold; font-size: 12px; box-shadow: inset 0 0 2px rgba(0,0,0,.3); transition: transform 0.1s; }
     .waku-box:hover { transform: scale(1.1); }
     .waku-1 { background: #ffffff; color: #2a2a26; border: 1px solid #d0d0c8; box-sizing: border-box; }
@@ -727,7 +727,7 @@ input[type=number], input[type=text], textarea, select {
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Old+Mincho:wght@600;700;900&family=Zen+Kurenaido&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Old+Mincho:wght@600;700;900&family=Zen+Maru+Gothic:wght@400;500;700&display=swap">
 <style id="muketsu-theme">
   :root{
     --mk-bg:#f7faf5; --mk-card:#ffffff; --mk-line:#e6ece0; --mk-line2:#edf1e8;
@@ -795,6 +795,13 @@ input[type=number], input[type=text], textarea, select {
   /* カードの中の“中の箱”は素の帯 */
   .pace-board{ background:transparent !important; border:none !important;
     border-radius:0 !important; box-shadow:none !important; margin:0 !important; padding:6px 0 0 !important; }
+  /* 脚質行に遊び：淡い帯＋左に脚質色のアクセント。文字が線に被らないよう余白確保 */
+  .pace-row{ background:#f5f8f1 !important; }
+  .pace-row[data-style="逃"]{ box-shadow:inset 3px 0 0 #d98a3d; }
+  .pace-row[data-style="先"]{ box-shadow:inset 3px 0 0 #e0b23e; }
+  .pace-row[data-style="差"]{ box-shadow:inset 3px 0 0 #5c8a46; }
+  .pace-row[data-style="追"]{ box-shadow:inset 3px 0 0 #7a8f72; }
+  .pace-label{ color:#3d4a39 !important; }
   .stat-card .graph-section-title{ background:var(--mk-tint) !important; color:var(--mk-dark) !important;
     border:none !important; border-bottom:1px solid var(--mk-line) !important;
     border-left:none !important; }
@@ -812,7 +819,7 @@ input[type=number], input[type=text], textarea, select {
     min-height:100px; font-size:14px; line-height:1.9; padding:13px 15px;
     border:1px solid var(--mk-line) !important; border-radius:12px !important;
     background:#fcfdfb; color:#2b332a; resize:vertical; box-sizing:border-box;
-    font-family:"Zen Kurenaido","Zen Kaku Gothic New",sans-serif; transition:border-color .2s, box-shadow .2s; }
+    font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif; transition:border-color .2s, box-shadow .2s; }
   .memo-card-textarea:focus{ outline:none; border-color:var(--mk-accent) !important;
     box-shadow:0 0 0 3px rgba(92,138,70,.12) !important; background:#fff; }
   .memo-card-textarea::placeholder{ color:#b6c1ac; font-family:"Zen Kaku Gothic New",sans-serif; }
@@ -1149,7 +1156,7 @@ input[type=number], input[type=text], textarea, select {
                 <button style="display:none;" onclick="clearCanvas()">クリア</button>
                 <button style="display:none;" onclick="resetRaceStart()">リセット</button>
               </div>
-              <div id="pace-canvas" style="flex-grow: 1; position: relative; border-radius: 10px; overflow: hidden; min-height: 360px;">
+              <div id="pace-canvas" style="flex-grow: 1; position: relative; border-radius: 14px; overflow: hidden; min-height: 340px; margin: 4px 12px 12px; border: 1px solid #e6ece0; box-shadow: inset 0 0 0 1px rgba(255,255,255,.4);">
                  <div id="pace-bg-layer" style="position:absolute; inset:0; z-index:1; pointer-events:none;"></div>
                  <canvas id="pace-draw-layer"></canvas>
                  <div id="pace-horse-layer"></div>
@@ -3731,22 +3738,24 @@ function applyGlobalFilter() {
 
 
         // ★スライダーの色を「10」基準で塗りつぶすように変更し、アースカラーに対応
+        // スライダーは緑の濃淡で表現（内/前＝淡い緑, 外/後＝濃い緑, 中央＝無色）
+        const GREEN_LIGHT='#a7c98f', GREEN_LIGHT_TC='#6f9463', GREEN_DARK='#3f6d3a', GREEN_DARK_TC='#2f5a2c', TRACK_BASE='#e7ede2';
         if(biasEl) {
           const v = race.biasVal, p = ((v+10)/20)*100;
           let bg, tc;
-          if(v < 0) { bg=`linear-gradient(to right, #e2e8f0 ${p}%, #3b9487 ${p}%, #3b9487 50%, #e2e8f0 50%)`; tc='#1a5c53'; }
-          else if(v > 0) { bg=`linear-gradient(to right, #e2e8f0 50%, #d39e55 50%, #d39e55 ${p}%, #e2e8f0 ${p}%)`; tc='#a57335'; }
-          else { bg='#e2e8f0'; tc='#cbd5e1'; }
+          if(v < 0) { bg=`linear-gradient(to right, ${TRACK_BASE} ${p}%, ${GREEN_LIGHT} ${p}%, ${GREEN_LIGHT} 50%, ${TRACK_BASE} 50%)`; tc=GREEN_LIGHT_TC; }
+          else if(v > 0) { bg=`linear-gradient(to right, ${TRACK_BASE} 50%, ${GREEN_DARK} 50%, ${GREEN_DARK} ${p}%, ${TRACK_BASE} ${p}%)`; tc=GREEN_DARK_TC; }
+          else { bg=TRACK_BASE; tc='#c3d1b8'; }
           biasEl.style.setProperty('--track-bg', bg);
           biasEl.style.setProperty('--thumb-color', tc);
         }
-        
+
         if(tenkaiEl) {
           const v = race.tenkaiVal, p = ((v+10)/20)*100;
           let bg, tc;
-          if(v < 0) { bg=`linear-gradient(to right, #e2e8f0 ${p}%, #e06c6c ${p}%, #e06c6c 50%, #e2e8f0 50%)`; tc='#b34747'; }
-          else if(v > 0) { bg=`linear-gradient(to right, #e2e8f0 50%, #3b9487 50%, #3b9487 ${p}%, #e2e8f0 ${p}%)`; tc='#1a5c53'; }
-          else { bg='#e2e8f0'; tc='#cbd5e1'; }
+          if(v < 0) { bg=`linear-gradient(to right, ${TRACK_BASE} ${p}%, ${GREEN_LIGHT} ${p}%, ${GREEN_LIGHT} 50%, ${TRACK_BASE} 50%)`; tc=GREEN_LIGHT_TC; }
+          else if(v > 0) { bg=`linear-gradient(to right, ${TRACK_BASE} 50%, ${GREEN_DARK} 50%, ${GREEN_DARK} ${p}%, ${TRACK_BASE} ${p}%)`; tc=GREEN_DARK_TC; }
+          else { bg=TRACK_BASE; tc='#c3d1b8'; }
           tenkaiEl.style.setProperty('--track-bg', bg);
           tenkaiEl.style.setProperty('--thumb-color', tc);
         }
