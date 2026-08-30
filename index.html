@@ -773,7 +773,7 @@ input[type=number], input[type=text], textarea, select {
   .tb-ti-cell{ display:inline-flex; align-items:baseline; gap:3px; font-size:12px; font-weight:700;
     color:#2b332a; font-variant-numeric:tabular-nums; white-space:nowrap; }
   .tb-ti-cell em{ font-style:normal; font-size:9px; font-weight:700; color:#9b9a92; letter-spacing:.03em; }
-  .tb-ev-good{ color:#5a8a1e; } .tb-ev-bad{ color:#b06a5e; }
+  .tb-ev-good{ color:#1a1a1a; } .tb-ev-bad{ color:#b06a5e; }
   .tb-del-btn{ background:transparent !important; border:none !important; cursor:pointer; font-size:13px;
     padding:2px !important; flex:0 0 auto; margin-left:auto; }
 
@@ -8543,7 +8543,7 @@ window.parseTsv2Paste = function() {
 
     if(totalUpdated > 0) {
         logEl.innerHTML = `✅ ${totalUpdated}頭の陣営・コース適性データを取り込みました！`;
-        logEl.style.color = "#5a8a1e";
+        logEl.style.color = "#1a1a1a";
         if (typeof renderMainTable === 'function') renderMainTable();
     } else {
         logEl.innerHTML = `⚠️ データが見つかりませんでした。<br>上の「出馬表データの新規取り込み」でメインデータが読み込まれているか確認してください。`;
