@@ -759,6 +759,38 @@ input[type=number], input[type=text], textarea, select {
   #main-tool{ background:transparent !important; border:none !important;
     border-radius:0 !important; box-shadow:none !important; margin:0 !important; padding:0 !important; }
 
+  /* 買い目ビルダー：オレンジの旧デザインを緑基調に統一 */
+  .tb-odds-section{ background:#f5f8f1 !important; border-top:1px solid var(--mk-line) !important; padding:14px !important; }
+  .odds-update-bar{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    background:#fff; border:1px solid var(--mk-line); border-radius:12px; padding:12px 14px; }
+  .odds-update-info{ display:flex; flex-direction:column; gap:2px; }
+  .odds-update-title{ font-size:12px; font-weight:700; color:var(--mk-dark); letter-spacing:.03em; }
+  .odds-update-note{ font-size:10px; color:#9aa892; }
+  .odds-update-btn{ font-family:"Zen Kaku Gothic New",sans-serif; font-size:12.5px; font-weight:700;
+    color:#eef3e8; background:var(--mk-dark); border:none; border-radius:999px; padding:9px 20px;
+    cursor:pointer; box-shadow:none; transition:opacity .2s; white-space:nowrap; }
+  .odds-update-btn:hover{ opacity:.88; }
+
+  /* 統一ピルボタン（緑・角丸・落ち着いた） */
+  .pill-btn{ font-family:"Zen Kaku Gothic New",sans-serif; font-size:11px; font-weight:700;
+    color:var(--mk-dark); background:#eef3ea; border:1px solid var(--mk-line) !important;
+    border-radius:999px !important; padding:6px 14px !important; cursor:pointer;
+    box-shadow:none !important; transition:background .2s,border-color .2s,color .2s; }
+  .pill-btn:hover{ background:var(--mk-dark); color:#eef3e8; border-color:var(--mk-dark) !important; }
+
+  /* レース情報のデータリンク行（シミュレーター下） */
+  .race-data-links{ display:flex; gap:8px; flex-wrap:wrap; padding:2px 14px 14px; }
+
+  /* ③アウトプットアレンジのツールバー */
+  .arrange-toolbar{ display:flex; justify-content:flex-end; align-items:center; gap:10px;
+    padding:8px 14px; background:transparent; flex-wrap:wrap; }
+
+  /* 基準タイム：ダーク→ライトに統一 */
+  .std-time-details{ background:#f5f8f1 !important; border-bottom:1px solid var(--mk-line) !important; }
+  .std-time-summary{ padding:8px 14px; font-size:11px; font-weight:700; color:var(--mk-dark);
+    cursor:pointer; user-select:none; outline:none; letter-spacing:.03em; }
+  .std-time-details .main-table-sort-bar{ background:#f5f8f1 !important; }
+
   /* レース質を選択（タブ風ピル・セレクト） */
   .race-quality-tab{ margin-left:auto; -webkit-appearance:none; appearance:none;
     font-family:"Zen Kaku Gothic New",sans-serif !important; font-size:11px; font-weight:700;
@@ -1167,6 +1199,10 @@ input[type=number], input[type=text], textarea, select {
         </div>
 
       </div>
+        <!-- ▼ レース情報のデータリンク（シミュレーター下） ▼ -->
+        <div class="race-data-links">
+          <button class="pill-btn" onclick="showDetailedData2Modal()">📊 コース・陣営データ</button>
+        </div>
       </section>
       <!-- ①ここまで -->
 
@@ -1205,28 +1241,21 @@ input[type=number], input[type=text], textarea, select {
           <span class="bc-title">アウトプットアレンジ</span>
         </div>
           <div class="main-table-area">
-        <!-- ▼ 基準タイムを開閉式に変更 ▼ -->
-        <details style="background: #2a2a4a; border-bottom: 1px solid #3a3a6a;">
-          <summary style="padding: 6px 8px; font-size: 11px; font-weight: bold; color: #b0bec5; cursor: pointer; user-select: none; outline: none;">
-            ▼ 基準タイム
-          </summary>
+        <!-- ▼ 基準タイム（ライトテーマに統一） ▼ -->
+        <details class="std-time-details">
+          <summary class="std-time-summary">▼ 基準タイム</summary>
           <div class="main-table-sort-bar" style="border-bottom: none; padding-top: 0;">
             <div id="standard-time-container"></div>
           </div>
         </details>
         <!-- ▲ ここまで ▲ -->
-                 <!-- ▼ ボタンを追加 ▼ -->
-       <div style="text-align: right; padding: 4px 8px; background: #fff; display: flex; justify-content: flex-end; align-items: center; gap: 8px;">
-          <label id="marker-toggle-label" style="font-size: 11px; font-weight: bold; color: #e65100; display: none; cursor: pointer; user-select: none;">
+        <!-- ▼ ③のツールバー（上位マーカー＋詳細列トグル）※コース陣営はレース情報へ移動 -->
+        <div class="arrange-toolbar">
+          <label id="marker-toggle-label" style="font-size: 11px; font-weight: 700; color: var(--mk-dark); display: none; cursor: pointer; user-select: none;">
             <input type="checkbox" id="marker-toggle-cb" onchange="toggleMarkers(this.checked)"> 👑 上位マーカー表示
           </label>
-   <!-- ▼▼▼ 陣営データ画面（モーダル）を開くボタン ▼▼▼ -->
-    <button class="btn-success" style="background:#3b9487; border:1px solid #2c7a6f; padding:2px 8px; font-size:10px; border-radius:12px; margin-right:6px;" onclick="showDetailedData2Modal()">📊 コース・陣営データ</button>
-    <!-- ▲▲▲ ここまで ▲▲▲ -->
-  
-          <button id="toggle-detail-btn" class="btn-primary" style="background:#607d8b; padding:2px 8px; font-size:10px; border-radius:12px;" onclick="toggleDetailCols()">▶ 詳細データを開く</button>
+          <button id="toggle-detail-btn" class="pill-btn" onclick="toggleDetailCols()">▶ 詳細データを開く</button>
         </div>
-        <!-- ▲ ボタンを追加 ▲ -->
 
         <!-- ▼ コース傾向用の枠（陣営モード時のみ表示） ▼ -->
         <div id="camp-course-feature" style="display:none; background:#f8fafc; border-left:4px solid #d39e55; padding:6px 10px; font-size:11px; font-weight:bold; color:#333; margin:4px 8px; border-radius:3px;"></div>
@@ -1358,29 +1387,17 @@ input[type=number], input[type=text], textarea, select {
           <div style="padding:14px;text-align:center;color:#999;font-size:11px;">馬番を選んで上部の「買い目 ⬇」を押してください</div>
         </div>
         <div class="tb-odds-section">
-          <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <div style="flex:1; min-width:280px; background:#fff; padding:6px; border-radius:4px; border:1px solid #ffcc80;">
-              <div style="font-size:11px; font-weight:bold; color:#e65100; margin-bottom:4px;">単複オッズ反映 (人気順)</div>
-              <textarea id="tanfuku-odds-input" style="width:100%; height:45px; border:1px solid #ccc; font-size:11px; padding:4px; box-sizing:border-box; border-radius:3px;" placeholder="※人気順の単複オッズ表をコピペ..."></textarea>
-              <div style="text-align:right; margin-top:4px;">
-                <button class="btn-success" style="padding:4px 8px; font-size:10px; background:#e65100;" onclick="applyTanfukuOdds('tanfuku-odds-input')">単複を反映</button>
-              </div>
+          <!-- オッズはnetkeibaからリアルタイム自動取得。コピペ欄は廃止。 -->
+          <textarea id="tanfuku-odds-input" style="display:none;"></textarea>
+          <textarea id="odds-input" style="display:none;" oninput="onOddsInputChange()"></textarea>
+          <div class="odds-update-bar">
+            <div class="odds-update-info">
+              <span class="odds-update-title">選択した買い目のオッズ</span>
+              <span class="odds-update-note" id="odds-update-note">netkeibaから自動取得します</span>
             </div>
-            <div style="flex:1; min-width:280px; background:#fff; padding:6px; border-radius:4px; border:1px solid #ffcc80;">
-              <div style="font-size:11px; font-weight:bold; color:#1565c0; margin-bottom:4px;">連勝式オッズ反映 (馬連/3連単など)</div>
-              <textarea id="odds-input" style="width:100%; height:45px; border:1px solid #ccc; font-size:11px; padding:4px; box-sizing:border-box; border-radius:3px;" placeholder="※人気順の買い目オッズ表をコピペ..." oninput="onOddsInputChange()"></textarea>
-              <div style="display:flex; justify-content:flex-end; margin-top:4px; gap:4px;">
-                <button class="btn-danger" style="padding:4px 8px; font-size:10px;" onclick="document.getElementById('odds-input').value='';renderTicketBuilder();">リセット</button>
-                <button class="btn-success" style="padding:4px 8px; font-size:10px; background:#1565c0;" onclick="extractAndApplyOdds()">抽出＆配分</button>
-                <button class="btn-primary" style="padding:4px 8px; font-size:10px;" onclick="parseAndCalculate()">再計算</button>
-              </div>
-            </div>
+            <button class="odds-update-btn" onclick="syncOddsFromGAS()">🔄 オッズ更新</button>
           </div>
-                   <div style="margin-top:6px; text-align:right;">
-            <span style="font-size:10px; background:#ffe0b2; color:#e65100; padding:2px 6px; border-radius:3px;">GAS設定済みは右ボタン→</span>
-            <button class="sync-btn" style="padding:4px 8px; font-size:11px; display:inline-flex;" onclick="syncOddsFromGAS()">全オッズ自動取得</button>
-          </div>
-          
+
        <!-- ▼▼ 追加：レポート出力ボタン ▼▼ -->
           <div style="text-align: center; margin-top: 15px; margin-bottom: 10px;">
               <button style="background:#3b9487; color:#fff; font-weight:bold; width: 100%; max-width: 400px; font-size: 14px; padding: 10px; border-radius: 6px; border:1px solid #2c7a6f; box-shadow: none; cursor:pointer;" onclick="openFinalReport()">最終見解レポートを出力</button>
