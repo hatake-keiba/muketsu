@@ -883,6 +883,14 @@ input[type=number], input[type=text], textarea, select {
   .metric-card.dark .metric-bar{ background:#3d3d3a; }
   .metric-bar>i{ display:block; height:100%; background:#1a1a1a; border-radius:4px; }
   .metric-card.dark .metric-bar>i{ background:var(--mk-lime); }
+  /* 馬場メトリクス：芝=2枚 / ダート=1枚（1枚のときは横フル幅でバランス維持） */
+  .bb-metrics{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px; }
+  .bb-metrics.dirt-mode{ grid-template-columns:1fr; }
+  /* 風トラック：スマホの左右隙間をなくし、幅いっぱいに（過大化は抑える） */
+  .bb-track-wrap{ margin-top:16px; text-align:center; }
+  .bb-track-wrap .trk{ width:100%; max-width:280px; aspect-ratio:1; display:block;
+    margin:0 auto; background:linear-gradient(#fbfdfc,#eef4f2); border:1px solid #dfe6ec; border-radius:14px; }
+  @media(max-width:560px){ .bb-track-wrap .trk{ max-width:none; } }
 
   /* カードの中の“中の箱”は素の帯 */
   .pace-board{ background:transparent !important; border:none !important;
@@ -1269,7 +1277,7 @@ input[type=number], input[type=text], textarea, select {
             <span data-g="不良" style="font-size:12px;font-weight:700;padding:9px 4px;color:#9b9a92;border-left:1px solid #f4f2ec;text-align:center;white-space:nowrap;">不良</span>
           </div>
 
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;">
+          <div class="bb-metrics" id="bb-metrics">
             <div class="metric-card" id="bb-cush-wrap" style="background:#f7f6f1;">
               <div class="metric-lbl">クッション値</div>
               <div class="metric-val" id="bb-cush-v">—</div>
@@ -1284,10 +1292,10 @@ input[type=number], input[type=text], textarea, select {
             </div>
           </div>
 
-          <div class="visual" style="text-align:center;margin-top:14px;">
-            <a id="jra-baba-link" href="#" target="_blank" rel="noopener" style="display:inline-block;font-size:9px;color:#1a1a1a;text-decoration:none;margin-bottom:6px;border-bottom:1px dotted #dcdad3;">JRA公式 馬場情報 ↗</a>
-            <canvas class="trk" id="bb-track" data-br="0" data-turn="0" data-sp="0" data-di="0" style="width:172px;max-width:172px;aspect-ratio:1;display:block;margin:0 auto;background:linear-gradient(#fbfdfc,#eef4f2);border:1px solid #dfe6ec;border-radius:8px;"></canvas>
-            <div id="bb-wind-cap" style="font-size:10px;color:#7a828a;margin-top:6px;line-height:1.4;">—<span id="bb-wind-time" style="color:#b8bdc3;margin-left:4px;"></span></div>
+          <div class="bb-track-wrap">
+            <canvas class="trk" id="bb-track" data-br="0" data-turn="0" data-sp="0" data-di="0"></canvas>
+            <div id="bb-wind-cap" style="font-size:10px;color:#7a828a;margin-top:8px;line-height:1.4;text-align:center;">—<span id="bb-wind-time" style="color:#b8bdc3;margin-left:4px;"></span></div>
+            <a id="jra-baba-link" href="#" target="_blank" rel="noopener" style="display:inline-block;font-size:9px;color:#1a1a1a;text-decoration:none;margin-top:4px;border-bottom:1px dotted #dcdad3;">JRA公式 馬場情報 ↗</a>
           </div>
         </div>
       <!-- AI/10分前オッズは別途新設予定のため下部に退避（機能温存・非表示） -->
@@ -8822,6 +8830,9 @@ window.closeDetailedData2Modal = function() {
     // クッション値：ダートは非表示（芝のみ）
     var cwrap=g('bb-cush-wrap');
     if(cwrap) cwrap.style.display = isDirt ? 'none' : '';
+    // ダート時はメトリクスを1列にして含水率カードを横フル幅に（バランス維持）
+    var _metrics=g('bb-metrics');
+    if(_metrics) _metrics.classList.toggle('dirt-mode', !!isDirt);
     const cv=b&&b.cush!=null?b.cush:null;
     if(!isDirt){
       if(g('bb-cush-v')) g('bb-cush-v').textContent = cv!=null?cv:'—';
