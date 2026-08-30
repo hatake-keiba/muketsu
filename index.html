@@ -6066,23 +6066,37 @@ function autoGenerateTickets(mode = 'win') {
       if(statusEl) { statusEl.textContent = '⏳ 取得中...'; statusEl.style.color = '#e65100'; }
       
       try {
-        const schedData = await callGAS(gasUrl + '?action=schedule');
-        if(!schedData.ok) throw new Error(schedData.error || 'スケジュール取得失敗');
-        
-        let raceId12 = null;
-        if(schedData.races && Array.isArray(schedData.races)) {
-          for(const r of schedData.races) {
-            const char = VENUE_CODE_TO_CHAR[r.venueCode] || '';
-            if(char === placeChar && r.raceNum === raceNo) { raceId12 = r.race_id; break; }
+        const PLACE_CHAR_TO_CODE = {'札':'01','函':'02','福':'03','新':'04','東':'05','中':'06','名':'07','京':'08','阪':'09','小':'10'};
+        const targetCode = PLACE_CHAR_TO_CODE[placeChar] || '';
+        const targetRaceStr = String(raceNo).padStart(2, '0');
+
+        // 対象日候補：今日 → 直近14日以内の土日（開催がない日はGASが空を返すので順に試す）
+        function ymd(d){ return '' + d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0'); }
+        const dateCandidates = [];
+        const today = new Date();
+        for(let i=0; i<=14; i++){
+          const d = new Date(today.getFullYear(), today.getMonth(), today.getDate()-i);
+          const dow = d.getDay();
+          if(i===0 || dow===0 || dow===6) dateCandidates.push(ymd(d)); // 今日＋土日
+        }
+
+        let raceId12 = null, usedDate = null;
+        for(const dateStr of dateCandidates){
+          const schedData = await callGAS(gasUrl + '?action=schedule&date=' + dateStr);
+          if(!schedData || !schedData.ok) continue;
+          let found = null;
+          if(schedData.races && Array.isArray(schedData.races)) {
+            for(const r of schedData.races) {
+              const char = VENUE_CODE_TO_CHAR[r.venueCode] || '';
+              if(char === placeChar && r.raceNum === raceNo) { found = r.race_id; break; }
+            }
           }
+          if(!found && schedData.raceIds && Array.isArray(schedData.raceIds)) {
+            found = schedData.raceIds.find(id => id.slice(4,6) === targetCode && id.slice(10,12) === targetRaceStr) || null;
+          }
+          if(found){ raceId12 = found; usedDate = dateStr; break; }
         }
-        if(!raceId12 && schedData.raceIds && Array.isArray(schedData.raceIds)) {
-          const PLACE_CHAR_TO_CODE = {'札':'01','函':'02','福':'03','新':'04','東':'05','中':'06','名':'07','京':'08','阪':'09','小':'10'};
-          const targetCode = PLACE_CHAR_TO_CODE[placeChar] || '';
-          const targetRaceStr = String(raceNo).padStart(2, '0');
-          raceId12 = schedData.raceIds.find(id => id.slice(4,6) === targetCode && id.slice(10,12) === targetRaceStr) || null;
-        }
-        if(!raceId12) throw new Error(`本日のスケジュールに ${currentRaceId} が見つかりません。`);
+        if(!raceId12) throw new Error(`直近の開催日に ${currentRaceId} が見つかりません。\n（枠順・オッズはレース当日〜前日にnetkeibaへ掲載されます）`);
         
         const oddsData = await callGAS(`${gasUrl}?action=odds&race_id=${raceId12}&type=1`);
         if(!oddsData.ok) throw new Error(oddsData.error || 'オッズ取得失敗');
