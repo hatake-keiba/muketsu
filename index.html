@@ -3069,37 +3069,35 @@ function buildNavigation() {
     // ★ 変更：1行に6個（1〜6R）きっちり並べて改行させるように設定
     buttonsDiv.style.cssText = 'display:grid; grid-template-columns:repeat(6, 1fr); gap:4px; padding:4px 8px;';
     
-     groups[basho].forEach(rId => {
+     const bashoChar = groups[basho][0].replace(/\d+/,'');
+     for(let rn=1; rn<=12; rn++){
+        const rId = bashoChar + rn;
         const r = racesData[rId];
-        const rNum = rId.match(/\d+/)[0];
-        const timeStr = r.departureTime || '';
 
+        if(!r){
+          // データ無し：グレーアウトの空ボタン（クリック不可）
+          const empty = document.createElement('div');
+          empty.className = 'nav-race-btn nav-race-empty';
+          empty.style.cssText = 'padding:4px; text-align:center; border:1px solid #edf1e8; border-radius:10px; background:#f3f5f0; color:#b9c4b2; opacity:.6; cursor:default;';
+          empty.innerHTML = `<div class="r-num" style="font-size:12px; font-weight:bold; color:#b9c4b2;">${rn}R</div><div style="font-size:9px; color:#c3ccbc; margin-top:2px;">—</div>`;
+          buttonsDiv.appendChild(empty);
+          continue;
+        }
+
+        const timeStr = r.departureTime || '';
         const isDirt = (r.info && r.info.includes('ダ')) || (r.surface && r.surface.includes('ダ'));
-        const timeColor = isDirt ? '#a57335' : '#1a5c53'; 
+        const timeColor = isDirt ? '#a57335' : '#1a5c53';
         const bottomBorder = isDirt ? 'border-bottom: 2px solid #eaddd5;' : 'border-bottom: 2px solid #cbd5e1;';
 
         const btn = document.createElement('div');
         btn.id = 'btn-' + rId;
         const isSelected = rId === currentRaceId;
-        
-        // ▼ 修正：光るためのクラス（is-turf / is-dirt / active）を設定
         btn.className = 'nav-race-btn ' + (isDirt ? 'is-dirt' : 'is-turf') + (isSelected ? ' active' : '');
-        
-        // 普段は枠線を下だけにしてスッキリさせる
-        btn.style.cssText = `
-            padding: 4px; text-align: center; border: 1px solid #e2e8f0; border-radius: 4px; 
-            cursor: pointer; background: #fff; ${bottomBorder}
-        `;
-        
-        btn.onclick = () => { selectRace(rId); }; 
-
-        btn.innerHTML = `
-            <div class="r-num" style="font-size:12px; font-weight:bold; color: #666;">${rNum}R</div>
-            <div style="font-size:9px; font-weight:bold; color: ${timeColor}; margin-top:2px;">${timeStr}</div>
-        `;
-        
+        btn.style.cssText = `padding: 4px; text-align: center; border: 1px solid #e2e8f0; border-radius: 4px; cursor: pointer; background: #fff; ${bottomBorder}`;
+        btn.onclick = () => { selectRace(rId); };
+        btn.innerHTML = `<div class="r-num" style="font-size:12px; font-weight:bold; color: #666;">${rn}R</div><div style="font-size:9px; font-weight:bold; color: ${timeColor}; margin-top:2px;">${timeStr}</div>`;
         buttonsDiv.appendChild(btn);
-    });
+     }
 
 
     groupContainer.appendChild(buttonsDiv);
