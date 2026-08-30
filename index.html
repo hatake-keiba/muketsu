@@ -4223,15 +4223,22 @@ window.drawOaChartModal = function() {
         h._autoX = Math.max(0.05, Math.min(0.95, finalX)); // 進行方向固定（右=前/ゴール方向）
       });
       
-      for(let s = 0; s < 14; s++) {
+      // 被り防止：馬名(馬番の下)を考慮し縦を重く見る楕円距離で分離
+      const MINX = 0.11, MINY = 0.19; // 縦は名前分だけ大きく確保
+      for(let s = 0; s < 22; s++) {
         for(let i = 0; i < horses.length; i++) {
           for(let j = i + 1; j < horses.length; j++) {
             let dx = horses[i]._autoX - horses[j]._autoX, dy = horses[i]._autoY - horses[j]._autoY;
-            let dist = Math.sqrt(dx * dx + dy * dy), minDist = 0.115;
-            if(dist < minDist && dist > 0) {
-              let push = (minDist - dist) / 2, pushX = (dx / dist) * push, pushY = (dy / dist) * push;
-              horses[i]._autoX += pushX; horses[i]._autoY += pushY;
-              horses[j]._autoX -= pushX; horses[j]._autoY -= pushY;
+            // 正規化距離（X,Yで別々の最小間隔）
+            let nx = dx / MINX, ny = dy / MINY;
+            let nd = Math.sqrt(nx*nx + ny*ny);
+            if(nd < 1 && nd > 0.0001){
+              let scale = (1 - nd) / 2;
+              horses[i]._autoX += (nx/nd) * scale * MINX; horses[i]._autoY += (ny/nd) * scale * MINY;
+              horses[j]._autoX -= (nx/nd) * scale * MINX; horses[j]._autoY -= (ny/nd) * scale * MINY;
+            } else if(nd <= 0.0001){
+              // 完全一致は微小にずらす
+              horses[i]._autoY += 0.02; horses[j]._autoY -= 0.02;
             }
           }
         }
