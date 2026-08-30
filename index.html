@@ -5778,7 +5778,14 @@ function autoGenerateTickets(mode = 'win') {
       if(b.type.includes('3連') && b.marks3.length === 0) b.marks3 = [...b.marks2];
       
       if(b.type === '単勝' || b.type === '複勝') {
-        b.marks1.forEach(m1 => { const comb = String(m1); if(!added.has(comb)) { added.add(comb); newTickets.push({type:b.type, comb, odds:0}); } });
+        // 単勝・複勝は出馬表の既存オッズから自動で入れる（GAS不要）
+        const _hz = racesData[currentRaceId].horses;
+        b.marks1.forEach(m1 => { const comb = String(m1); if(!added.has(comb)) { added.add(comb);
+          const h = _hz.find(x => x.num === m1);
+          let od = 0;
+          if(h){ if(b.type==='単勝'){ od = parseFloat(h.odds)||0; }
+                 else { const fo = (h.fukuOdds!=null?String(h.fukuOdds):'').match(/[\d.]+/); od = fo?parseFloat(fo[0]):0; } }
+          newTickets.push({type:b.type, comb, odds: od}); } });
       } else if(b.type === '馬連' || b.type === 'ワイド') {
         b.marks1.forEach(m1 => { b.marks2.forEach(m2 => { if(m1 !== m2) { const nums = [m1, m2].sort((x,y) => x - y); const comb = `${nums[0]}-${nums[1]}`; if(!added.has(comb)) { added.add(comb); newTickets.push({type:b.type, comb, odds:0}); } } }); });
       } else if(b.type === '馬単') {
