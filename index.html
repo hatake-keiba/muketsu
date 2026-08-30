@@ -1399,7 +1399,7 @@ input[type=number], input[type=text], textarea, select {
               <div class="ai-chat-empty">競馬データを踏まえたAIに、このレースの相談ができます。<br>下の欄に質問や気になることを入力してください。</div>
             </div>
             <div class="ai-chat-inputbar">
-              <textarea id="ai-chat-input" class="ai-chat-input" rows="2" placeholder="例）この人気馬、消しでいいと思う？相談したい"></textarea>
+              <textarea id="ai-chat-input" class="ai-chat-input" rows="2" placeholder="例）この人気馬、消しでいいと思う？相談したい（Enterで送信 / Shift+Enterで改行）" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAiChat();}"></textarea>
               <button id="ai-chat-send" class="ai-talk-btn" onclick="sendAiChat()">送信</button>
             </div>
             <p class="ai-talk-note">※ このレースの出馬表・過去データ・あなたのメモを踏まえてAIが回答します</p>
