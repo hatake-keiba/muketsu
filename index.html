@@ -929,11 +929,11 @@ input[type=number], input[type=text], textarea, select {
   .data-table thead th:first-child{ border-top-left-radius:10px; }
   .data-table thead th:last-child{ border-top-right-radius:10px; }
   .data-table thead th.editable-header:hover{ background:#2a4227 !important; }
-  /* 行：ゼブラ＋余白＋区切りは淡いライン */
+  /* 行：ゼブラ＋余白＋区切りは淡いライン（tdに塗ってtr背景を確実に反映） */
   .data-table tbody tr{ transition:background .15s; }
-  .data-table tbody tr:nth-child(odd){ background:#ffffff !important; }
-  .data-table tbody tr:nth-child(even){ background:#f6f9f3 !important; }
-  .data-table tbody tr:hover{ background:#eef4e8 !important; }
+  .data-table tbody tr:nth-child(odd) td{ background:#ffffff; }
+  .data-table tbody tr:nth-child(even) td{ background:#f6f9f3; }
+  .data-table tbody tr:hover td{ background:#eef4e8 !important; }
   .data-table td{ border:none !important; border-bottom:1px solid #eef0ea !important;
     padding:7px 4px !important; font-size:11px !important; vertical-align:middle; color:#2b332a !important; }
   /* 馬名：明朝で少し格を出す・左寄せ */
