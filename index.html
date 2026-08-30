@@ -759,6 +759,29 @@ input[type=number], input[type=text], textarea, select {
   #main-tool{ background:transparent !important; border:none !important;
     border-radius:0 !important; box-shadow:none !important; margin:0 !important; padding:0 !important; }
 
+  /* ===== 買い目ビルダー：操作バー・結果を見やすく整備 ===== */
+  .tb-toolbar{ display:flex; flex-direction:column; gap:8px; padding:12px 14px;
+    background:#f5f8f1; border-bottom:1px solid var(--mk-line); }
+  .tb-toolbar-row{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .tb-toolbar-lbl{ font-size:10.5px; font-weight:700; color:#7a8573; min-width:44px; letter-spacing:.04em; }
+  .tb-type-select{ font-family:"Zen Kaku Gothic New",sans-serif !important; font-size:12px !important;
+    font-weight:700; color:var(--mk-dark) !important; background:#fff !important;
+    border:1px solid var(--mk-line) !important; border-radius:999px !important; padding:6px 14px !important; cursor:pointer; }
+  .tb-points-badge{ font-size:11px; font-weight:700; color:#6f7d68; background:#eef3ea;
+    border:1px solid var(--mk-line); border-radius:999px; padding:5px 12px; }
+  /* 買い目1件＝2段カード（何の数字か em ラベルで明示） */
+  .tb-ticket-item{ display:flex !important; flex-direction:column; gap:6px; background:#fff !important;
+    border:1px solid var(--mk-line) !important; border-radius:12px !important; padding:10px 12px !important;
+    margin:8px 12px 0 !important; }
+  .tb-ti-main{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .tb-ti-name{ font-family:"Zen Old Mincho",serif; font-weight:700; font-size:14px; color:var(--mk-dark); letter-spacing:.02em; }
+  .tb-ti-metrics{ display:flex; flex-wrap:wrap; gap:6px 14px; }
+  .tb-ti-cell{ display:flex; flex-direction:column; font-size:12.5px; font-weight:700; color:#2b332a;
+    font-variant-numeric:tabular-nums; }
+  .tb-ti-cell em{ font-style:normal; font-size:9px; font-weight:700; color:#9aa892; letter-spacing:.05em; margin-bottom:1px; }
+  .tb-ev-good{ color:#2f7d2b; } .tb-ev-bad{ color:#b06a5e; }
+  .tb-del-btn{ background:transparent !important; border:none !important; cursor:pointer; font-size:14px; padding:2px 4px !important; }
+
   /* 買い目ビルダー：オレンジの旧デザインを緑基調に統一 */
   .tb-odds-section{ background:#f5f8f1 !important; border-top:1px solid var(--mk-line) !important; padding:14px !important; }
   .odds-update-bar{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
@@ -777,6 +800,22 @@ input[type=number], input[type=text], textarea, select {
     border-radius:999px !important; padding:6px 14px !important; cursor:pointer;
     box-shadow:none !important; transition:background .2s,border-color .2s,color .2s; }
   .pill-btn:hover{ background:var(--mk-dark); color:#eef3e8; border-color:var(--mk-dark) !important; }
+  /* 小ピル・バリエーション（買い目/勝率設定の操作用） */
+  .pill-sm{ font-size:10.5px !important; padding:5px 12px !important; }
+  .pill-ghost{ background:#fff !important; color:#8a9483 !important; }
+  .pill-ghost:hover{ background:#f0f2ec !important; color:var(--mk-dark) !important; }
+  .pill-accent{ background:var(--mk-accent) !important; color:#fff !important; border-color:var(--mk-accent) !important; }
+  .pill-accent:hover{ opacity:.9; background:var(--mk-accent) !important; color:#fff !important; }
+
+  /* 小タイトル（各馬評価 / 勝率設定） */
+  .sub-head{ display:flex; align-items:center; gap:10px; padding:12px 16px 8px !important;
+    background:transparent !important; border:none !important; border-bottom:1px solid var(--mk-line) !important;
+    border-left:none !important; margin:0 !important; }
+  .sub-head-ttl{ font-family:"Zen Old Mincho",serif; font-weight:700; font-size:14px;
+    color:var(--mk-dark); letter-spacing:.06em; }
+  .sub-head-btn{ margin-left:auto; font-family:"Zen Kaku Gothic New",sans-serif; font-size:10.5px; font-weight:700;
+    color:#6f7d68; background:#eef3ea; border:1px solid var(--mk-line); border-radius:999px; padding:5px 12px; cursor:pointer; }
+  .sub-head-btn:hover{ background:var(--mk-dark); color:#eef3e8; }
 
   /* レース情報のデータリンク行（シミュレーター下） */
   .race-data-links{ display:flex; gap:8px; flex-wrap:wrap; padding:2px 14px 14px; }
@@ -828,12 +867,9 @@ input[type=number], input[type=text], textarea, select {
   .pace-board{ background:transparent !important; border:none !important;
     border-radius:0 !important; box-shadow:none !important; margin:0 !important; padding:6px 0 0 !important; }
   /* 脚質行に遊び：淡い帯＋左に脚質色のアクセント。文字が線に被らないよう余白確保 */
-  .pace-row{ background:#f5f8f1 !important; }
-  .pace-row[data-style="逃"]{ box-shadow:inset 3px 0 0 #d98a3d; }
-  .pace-row[data-style="先"]{ box-shadow:inset 3px 0 0 #e0b23e; }
-  .pace-row[data-style="差"]{ box-shadow:inset 3px 0 0 #5c8a46; }
-  .pace-row[data-style="追"]{ box-shadow:inset 3px 0 0 #7a8f72; }
-  .pace-label{ color:#3d4a39 !important; }
+  /* 脚質の小カード：色を使わず全部グレーで統一 */
+  .pace-row{ background:#f1f2f0 !important; box-shadow:inset 3px 0 0 #b8bdb4 !important; }
+  .pace-label{ color:#5a6155 !important; }
   .stat-card .graph-section-title{ background:var(--mk-tint) !important; color:var(--mk-dark) !important;
     border:none !important; border-bottom:1px solid var(--mk-line) !important;
     border-left:none !important; }
@@ -921,11 +957,11 @@ input[type=number], input[type=text], textarea, select {
   .main-table-area{ border-top:none !important; }
   .data-table-container{ padding:6px 10px 12px; }
   .data-table{ border-collapse:separate !important; border-spacing:0 !important; font-size:11px !important; }
-  /* ヘッダ：ダーク緑・角丸・行間広め */
-  .data-table thead th{ background:var(--mk-dark) !important; color:#dfe8d6 !important;
+  /* ヘッダ：淡いセージ地＋濃緑文字（濃グリーンをやめて軽く） */
+  .data-table thead th{ background:#e7eee0 !important; color:#3d4a39 !important;
     font-family:"Zen Kaku Gothic New",sans-serif !important; font-weight:700 !important;
     font-size:10px !important; letter-spacing:.02em; padding:9px 4px !important; white-space:nowrap;
-    border:none !important; position:sticky; top:0; }
+    border:none !important; border-bottom:2px solid #cdd8c4 !important; position:sticky; top:0; }
   .data-table thead th:first-child{ border-top-left-radius:10px; }
   .data-table thead th:last-child{ border-top-right-radius:10px; }
   .data-table thead th.editable-header:hover{ background:#2a4227 !important; }
@@ -955,6 +991,14 @@ input[type=number], input[type=text], textarea, select {
     border-color:var(--mk-accent) !important; box-shadow:0 0 0 2px rgba(92,138,70,.14) !important; }
   .memo-input{ width:130px !important; }
   .memo-input:focus{ background:#fbfdf9 !important; box-shadow:0 0 0 2px rgba(92,138,70,.16) !important; }
+  /* 詳細表示時：列が増えるので全体をコンパクトにして横スクロールを抑える */
+  .data-table.detail-open td, .data-table.detail-open thead th{ padding:5px 2px !important; font-size:9.5px !important; }
+  .data-table.detail-open .td-name{ font-size:11px !important; max-width:88px !important; }
+  .data-table.detail-open .memo-input{ width:80px !important; }
+  .data-table.detail-open input[type=number]{ width:34px !important; padding:3px 2px !important; }
+  .data-table.detail-open select{ padding:3px 2px !important; }
+  .data-table.detail-open .waku-box{ width:18px !important; height:18px !important; font-size:10px !important; }
+  .data-table.detail-open .user-mark-btn{ width:16px !important; height:16px !important; font-size:9px !important; }
   /* マーカー上位のハイライトは淡緑系に統一（ゼブラより優先） */
   .data-table tbody tr td.rank-1, .rank-1{ background:#e7f1dd !important; }
   .data-table tbody tr td.rank-2, .rank-2{ background:#f0f6ea !important; }
@@ -1336,10 +1380,14 @@ input[type=number], input[type=text], textarea, select {
           <span class="bc-title">アウトプットアレンジ</span>
         </div>
           <div class="main-table-area">
-        <!-- 基準タイム・詳細データトグルは撤去。互換のため参照要素だけ非表示で残す -->
+        <!-- 小タイトル：各馬評価（＋詳細表示トグル） -->
+        <div class="sub-head">
+          <span class="sub-head-ttl">各馬評価</span>
+          <button id="toggle-detail-btn" class="sub-head-btn" onclick="toggleDetailCols()">＋ 詳細</button>
+        </div>
+        <!-- 互換のため非表示で残す -->
         <div id="standard-time-container" style="display:none;"></div>
         <label id="marker-toggle-label" style="display:none;"><input type="checkbox" id="marker-toggle-cb" onchange="toggleMarkers(this.checked)"></label>
-        <button id="toggle-detail-btn" style="display:none;" onclick="toggleDetailCols()"></button>
 
         <!-- ▼ コース傾向用の枠（陣営モード時のみ表示） ▼ -->
         <div id="camp-course-feature" style="display:none; background:#f8fafc; border-left:4px solid #d39e55; padding:6px 10px; font-size:11px; font-weight:bold; color:#333; margin:4px 8px; border-radius:3px;"></div>
@@ -1374,18 +1422,16 @@ input[type=number], input[type=text], textarea, select {
                </div>
       </div>
 
-      <!-- ▼ 勝率ページ：シミュレーターとは別カード ▼ -->
+      <!-- ▼ 勝率設定（アウトプットアレンジ内の小セクション） ▼ -->
       <div class="stat-card">
-             <div class="graph-section-title">
-        <div style="font-size:11px;display:flex;align-items:center;flex-wrap:wrap;">▼ グラフ＆印 <span id="haran-badge-2"></span></div>
-        <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
-          <span style="font-size:11px;font-weight:bold;">勝率計: <span id="total-val" style="color:#d32f2f;">0.0</span>%</span>
-          <button class="btn-success" style="padding:2px 4px;font-size:10px;" onclick="normalizeTo100(true)">100%</button>
-          <button class="btn-danger" style="padding:2px 4px;font-size:10px;" onclick="resetGraph()">リセット</button>
-          
-          <!-- 正しいグラフ用の確定ボタンに戻す -->
-          <button class="btn-success" style="background:#d39e55; border:1px solid #b88645; padding:2px 10px; font-size:10px; border-radius:12px; margin-left:4px;" onclick="calculateHarville()">確定(連/複)</button>
-          
+             <div class="graph-section-title sub-head">
+        <span class="sub-head-ttl">勝率設定</span>
+        <span id="haran-badge-2" style="display:none;"></span>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto;">
+          <span style="font-size:11px;font-weight:700;color:#6f7d68;">合計 <span id="total-val" style="color:var(--mk-dark);font-weight:800;">0.0</span>%</span>
+          <button class="pill-btn pill-sm" onclick="normalizeTo100(true)">100%</button>
+          <button class="pill-btn pill-sm pill-ghost" onclick="resetGraph()">リセット</button>
+          <button class="pill-btn pill-sm pill-accent" onclick="calculateHarville()">確定</button>
         </div>
       </div>
 
@@ -1413,15 +1459,16 @@ input[type=number], input[type=text], textarea, select {
           <span class="bc-title">買い目ビルダー</span>
         </div>
       <div class="ticket-builder">
-        <div class="ticket-builder-header">
-          買い目ビルダー
-          <span style="font-size:10px;font-weight:normal;color:#2e7d32;">← 軸・相手を選んで買い目を組み立て</span>
-          <div style="display:flex;align-items:center;gap:6px;margin-left:auto;">
-            
-           <button id="btn-ai-win" class="tb-ai-mode-btn" style="line-height:1.3;" onclick="setAiBtnActive('win'); autoGenerateTickets('win')">AI推奨<br><span style="font-size:9px;font-weight:normal;">(勝率)</span></button>
-            <button id="btn-ai-ev" class="tb-ai-mode-btn" style="line-height:1.3;" onclick="setAiBtnActive('ev'); autoGenerateTickets('ev')">AI推奨<br><span style="font-size:9px;font-weight:normal;">(期待値)</span></button>
-            <button class="tb-ai-mode-btn" style="color:#64748b !important; padding:4px 12px;" onclick="resetTickets()">クリア</button>
-
+        <!-- 操作バー：AI推奨・券種・買い目生成（ボタンサイズ統一） -->
+        <div class="tb-toolbar">
+          <div class="tb-toolbar-row">
+            <span class="tb-toolbar-lbl">AI推奨</span>
+            <button id="btn-ai-win" class="pill-btn pill-sm" onclick="setAiBtnActive('win'); autoGenerateTickets('win')">勝率で</button>
+            <button id="btn-ai-ev" class="pill-btn pill-sm" onclick="setAiBtnActive('ev'); autoGenerateTickets('ev')">期待値で</button>
+            <button class="pill-btn pill-sm pill-ghost" onclick="resetTickets()">クリア</button>
+          </div>
+          <div class="tb-toolbar-row">
+            <span class="tb-toolbar-lbl">券種</span>
             <select id="ticket-type" class="tb-type-select" onchange="changeTicketType(this.value)">
               <option>単勝</option>
               <option>複勝</option>
@@ -1431,8 +1478,8 @@ input[type=number], input[type=text], textarea, select {
               <option>3連複</option>
               <option>3連単</option>
             </select>
-            <div class="tb-points-badge" id="tb-points-badge">0 点</div>
-            <button class="btn-success" style="padding:3px 10px;font-size:11px;" onclick="generateTickets()">買い目 ⬇</button>
+            <span class="tb-points-badge" id="tb-points-badge">0 点</span>
+            <button class="pill-btn pill-sm pill-accent" style="margin-left:auto;" onclick="generateTickets()">買い目を作る</button>
           </div>
         </div>
         
@@ -1461,23 +1508,22 @@ input[type=number], input[type=text], textarea, select {
         </div>
 
         <div class="tb-budget-row">
-          <span style="font-size:11px;font-weight:bold;color:#e65100;">予算:</span>
-          <input type="number" id="budget-input" value="3000" style="width:70px;padding:3px;font-size:12px;border:1px solid #ccc;border-radius:4px;" oninput="updateBudget(this.value)" onchange="updateBudget(this.value)">
-          <span style="font-size:11px;font-weight:bold;">円</span>
-          <button class="btn-danger" style="padding:3px 6px;font-size:11px;" onclick="resetTickets()">リセット</button>
-          <button class="btn-primary" style="background:#607d8b;padding:3px 6px;font-size:11px;" onclick="copyTickets()">コピー</button>
+          <span style="font-size:11px;font-weight:700;color:var(--mk-dark);">予算</span>
+          <input type="number" id="budget-input" value="3000" style="width:74px;padding:5px 7px;font-size:12px;border:1px solid var(--mk-line);border-radius:8px;" oninput="updateBudget(this.value)" onchange="updateBudget(this.value)">
+          <span style="font-size:11px;font-weight:700;color:var(--mk-dark);">円</span>
+          <button class="pill-btn pill-sm pill-ghost" style="margin-left:auto;" onclick="resetTickets()">リセット</button>
+          <button class="pill-btn pill-sm" onclick="copyTickets()">コピー</button>
         </div>
         <div class="tb-ticket-list" id="ticket-list-area">
-          <div style="padding:14px;text-align:center;color:#999;font-size:11px;">馬番を選んで上部の「買い目 ⬇」を押してください</div>
+          <div style="padding:16px;text-align:center;color:#9aa892;font-size:11px;">馬番を選んで「買い目を作る」を押してください</div>
         </div>
         <div class="tb-odds-section">
-          <!-- オッズはnetkeibaからリアルタイム自動取得。コピペ欄は廃止。 -->
           <textarea id="tanfuku-odds-input" style="display:none;"></textarea>
           <textarea id="odds-input" style="display:none;" oninput="onOddsInputChange()"></textarea>
           <div class="odds-update-bar">
             <div class="odds-update-info">
               <span class="odds-update-title">選択した買い目のオッズ</span>
-              <span class="odds-update-note" id="odds-update-note">netkeibaから自動取得します</span>
+              <span class="odds-update-note" id="odds-update-note">最新のオッズに更新します</span>
             </div>
             <button class="odds-update-btn" onclick="syncOddsFromGAS()">🔄 オッズ更新</button>
           </div>
@@ -1618,7 +1664,7 @@ input[type=number], input[type=text], textarea, select {
     <!-- GASモーダル -->
     <div id="gas-modal" class="modal">
       <div class="gas-modal-box">
-        <h2>GAS設定ガイド — Netkeibaオッズ自動取得</h2>
+        <h2>GAS設定ガイド — オッズ自動取得</h2>
         <div class="gas-step">
           <div style="display:flex;align-items:center;margin-bottom:6px;">
             <span class="gas-step-num">1</span>
@@ -1652,7 +1698,7 @@ input[type=number], input[type=text], textarea, select {
     <!-- GASモーダル -->
     <div id="gas-modal" class="modal">
       <div class="gas-modal-box">
-        <h2>⚙️ GAS設定ガイド — Netkeibaオッズ自動取得</h2>
+        <h2>⚙️ GAS設定ガイド — オッズ自動取得</h2>
         <div class="gas-step">
           <div style="display:flex;align-items:center;margin-bottom:6px;">
             <span class="gas-step-num">1</span>
@@ -5433,7 +5479,7 @@ renderCourseFeature(); // ←★★ここに1行追加するだけです！★�
       listArea.innerHTML = '';
       
       if(b.tickets.length === 0) {
-        listArea.innerHTML = '<div style="padding:14px;text-align:center;color:#999;font-size:11px;">馬番を選んで上部の「買い目 ⬇」を押してください</div>';
+        listArea.innerHTML = '<div style="padding:16px;text-align:center;color:#9aa892;font-size:11px;">馬番を選んで「買い目を作る」を押してください</div>';
         _updateStatsPanel(0, 0, 0, 0);
         return;
       }
@@ -5455,7 +5501,19 @@ renderCourseFeature(); // ←★★ここに1行追加するだけです！★�
           evClass = ev >= 1.0 ? 'good' : 'bad';
         }
         const payoutAmount = (t.odds > 0 && t.money > 0) ? Math.round(t.money * t.odds) : 0;
-        listArea.innerHTML += `<div class="tb-ticket-item"><span class="tb-ticket-name">${t.type} ${t.comb}</span><span class="tb-ticket-rate">的中率: ${t.prob?(t.prob*100).toFixed(1)+'%':'---'}</span><span class="tb-ev-badge ${evClass}">${evText}</span><span class="tb-ticket-odds">${t.odds>0?t.odds.toFixed(1)+'倍':'---'}</span><span class="tb-ticket-money">${t.money>0?t.money+'円':'-'}</span><span class="tb-ticket-payout" style="color:#d84315;font-weight:bold;">${payoutAmount>0?'払戻:'+payoutAmount.toLocaleString()+'円':'-'}</span><button class="tb-del-btn" onclick="delTicket(${i})">🗑</button></div>`;
+        listArea.innerHTML += `<div class="tb-ticket-item">
+          <div class="tb-ti-main">
+            <span class="tb-ti-name">${t.type} ${t.comb}</span>
+            <button class="tb-del-btn" onclick="delTicket(${i})">🗑</button>
+          </div>
+          <div class="tb-ti-metrics">
+            <span class="tb-ti-cell"><em>オッズ</em>${t.odds>0?t.odds.toFixed(1)+'倍':'—'}</span>
+            <span class="tb-ti-cell"><em>的中率</em>${t.prob?(t.prob*100).toFixed(1)+'%':'—'}</span>
+            <span class="tb-ti-cell"><em>期待値</em><b class="tb-ev-${evClass}">${t.prob&&t.odds>0?(t.prob*t.odds).toFixed(2):'—'}</b></span>
+            <span class="tb-ti-cell"><em>金額</em>${t.money>0?t.money+'円':'—'}</span>
+            <span class="tb-ti-cell"><em>払戻</em>${payoutAmount>0?payoutAmount.toLocaleString()+'円':'—'}</span>
+          </div>
+        </div>`;
       });
       _updateStatsPanel(totalProb, goseiOdds, totalEv, totalPurchased);
     }
@@ -6983,16 +7041,12 @@ document.querySelectorAll('.nav-race-btn').forEach(btn => {
         else el.classList.add('hidden');
       });
       const btn = document.getElementById('toggle-detail-btn');
-      if(btn) {
-        btn.innerHTML = isDetailOpen ? '◀ 詳細データを閉じる' : '▶ 詳細データを開く';
-        btn.style.background = isDetailOpen ? '#455a64' : '#607d8b';
-      }
-      
-      // ★詳細データが開いた時だけ、チェックボックスを表示する
+      if(btn) btn.innerHTML = isDetailOpen ? '− 詳細' : '＋ 詳細';
+      // 詳細を開いたら表全体をコンパクト化（横スクロールを極力なくす）
+      const tbl = document.getElementById('main-data-table');
+      if(tbl) tbl.classList.toggle('detail-open', isDetailOpen);
       const label = document.getElementById('marker-toggle-label');
-      if(label) {
-        label.style.display = isDetailOpen ? 'flex' : 'none';
-      }
+      if(label) label.style.display = isDetailOpen ? 'flex' : 'none';
     }
     // --- ▲ ここまで全体表示・絞り込み機能のコード ▲ ---
 
