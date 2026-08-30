@@ -3290,7 +3290,7 @@ function buildNavigation() {
       if (simHeader && simWrapper) {
         if (isDirtRace) {
           // ダートの場合（オレンジ・茶色系）
-          simHeader.innerHTML = 'ダートバイアス・シミュレーター <span style="color:#757575;font-weight:normal;font-size:10px;">(スライダーで勝率が変動)</span>';
+          simHeader.innerHTML = 'レースシミュレーター <span style="color:#757575;font-weight:normal;font-size:10px;">(スライダーで勝率が変動)</span>';
           simHeader.style.background = '#fff8e1';
           simHeader.style.color = '#d84315';
           simHeader.style.borderBottom = '1px solid #ffcc80';
@@ -3299,7 +3299,7 @@ function buildNavigation() {
           simLabels.forEach(el => el.style.color = '#d84315');
         } else {
           // 芝の場合（クリーンな緑系）
-          simHeader.innerHTML = '芝バイアス・シミュレーター <span style="color:#757575;font-weight:normal;font-size:10px;">(スライダーで勝率が変動)</span>';
+          simHeader.innerHTML = 'レースシミュレーター <span style="color:#757575;font-weight:normal;font-size:10px;">(スライダーで勝率が変動)</span>';
           simHeader.style.background = '#f0fdf4'; 
           simHeader.style.color = '#1a5c53'; 
           simHeader.style.borderBottom = '1px solid #a5d6a7';
