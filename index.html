@@ -921,10 +921,9 @@ input[type=number], input[type=text], textarea, select {
   /* AI相談スロット（②内） */
   .ai-talk-slot{ margin:2px 18px 14px; border:1px dashed #cdd8c4; border-radius:12px;
     background:#f6f9f3; }
-  .ai-talk-head{ display:flex; align-items:center; gap:7px; padding:10px 14px 6px;
-    font-size:12px; font-weight:700; color:var(--mk-dark); letter-spacing:.04em; }
+  .ai-talk-head{ gap:8px; }
   .ai-talk-dot{ width:8px; height:8px; border-radius:50%; background:var(--mk-accent);
-    box-shadow:0 0 0 3px rgba(92,138,70,.18); }
+    box-shadow:0 0 0 3px rgba(92,138,70,.18); flex:0 0 auto; }
   .ai-talk-body{ padding:0 14px 12px; }
   .ai-talk-lead{ font-size:11.5px; color:#6f7d68; line-height:1.6; margin:0 0 9px; }
   .ai-talk-btn{ background:var(--mk-dark) !important; color:#eef3e8 !important; border:none !important;
@@ -1218,8 +1217,10 @@ input[type=number], input[type=text], textarea, select {
             <option value="custom">自由入力...</option>
           </select>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding:0 18px;"><span id="race-info-title" style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;color:#1c2e1f;font-size:21px;letter-spacing:.02em;">—</span><span id="race-info-haran" style="font-size:10px;color:#8a9285;background:#f0f2ec;border:1px solid #e2e6dc;border-radius:10px;padding:2px 9px;font-weight:700;letter-spacing:.04em;"></span></div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding:0 18px 12px;"><span id="race-info-title" style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;color:#1c2e1f;font-size:21px;letter-spacing:.02em;">—</span><span id="race-info-haran" style="font-size:10px;color:#8a9285;background:#f0f2ec;border:1px solid #e2e6dc;border-radius:10px;padding:2px 9px;font-weight:700;letter-spacing:.04em;"></span></div>
 
+        <!-- 中項目：馬場・コンディション -->
+        <div class="sub-head"><span class="sub-head-ttl">馬場・コンディション</span></div>
         <div style="display:grid;grid-template-columns:1fr auto;gap:16px;margin-top:12px;padding:0 18px 4px;align-items:center;">
           <div style="display:flex;flex-direction:column;gap:17px;">
             <div>
@@ -1262,8 +1263,9 @@ input[type=number], input[type=text], textarea, select {
       
 
        <div class="simulator-wrapper">
-        <div class="sim-header">レースシミュレーター
-          <span style="color:#757575;font-weight:normal;font-size:10px;">(スライダーで勝率が変動)</span>
+        <div class="sub-head">
+          <span class="sub-head-ttl">レースシミュレーター</span>
+          <span style="font-size:10px;color:#9aa892;font-weight:400;">スライダーで勝率が変動</span>
         </div>
 
                      <div class="sim-content">
@@ -1317,7 +1319,7 @@ input[type=number], input[type=text], textarea, select {
             </div>
             
             <!-- ▼ 変更：初期状態では非表示（display:none）にしておく ▼ -->
-            <div id="pace-track-area" style="display:flex; flex-direction: column; border-top: 1px dashed #ccc; padding-top: 8px;">
+            <div id="pace-track-area" style="display:flex; flex-direction: column; padding-top: 4px;">
               <div id="pace-control-bar" style="display:none;">
                 <select id="pace-pred-select" onchange="updateRaceText('pacePred', this.value)">
                   <option value="ハイペース">ハイペース</option>
@@ -1360,9 +1362,9 @@ input[type=number], input[type=text], textarea, select {
         </div>
       <!-- ▼ メモ（localStorage永続化・リロードで消えない） ▼ -->
       <div class="memo-card">
-        <div class="memo-card-head">
-          <span class="memo-card-title">📝 メモ</span>
-          <span class="memo-card-sub">自分の予想を書き残す・自動保存</span>
+        <div class="sub-head">
+          <span class="sub-head-ttl">メモ</span>
+          <span style="font-size:10px;color:#9aa892;font-weight:400;">自分の予想を書き残す・自動保存</span>
           <button id="ai-mic-btn" style="display:none;" onclick="toggleAIMic()"></button>
         </div>
         <textarea id="ai-pace-comment" class="memo-card-textarea"
@@ -1371,8 +1373,8 @@ input[type=number], input[type=text], textarea, select {
       </div>
       <!-- ▼ AI相談（壁打ち）スロット：課金者のみアクティベート・未課金はグレーアウト ▼ -->
       <div class="ai-talk-slot" id="ai-talk-slot">
-        <div class="ai-talk-head">
-          <span class="ai-talk-dot"></span>AI相談（壁打ち）
+        <div class="sub-head ai-talk-head">
+          <span class="ai-talk-dot"></span><span class="sub-head-ttl">AI相談（壁打ち）</span>
           <span class="ai-lock-badge" id="ai-lock-badge">🔒 有料機能</span>
         </div>
         <!-- 中身（グレーアウト対象） -->
