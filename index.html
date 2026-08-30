@@ -340,7 +340,7 @@
     #pace-horse-layer { position: absolute; inset: 0; z-index: 15; pointer-events: none; }
     
     .oa-textarea-memo { width: 100%; height: 45px; font-size: 11px; padding: 6px; border: 1px solid #4a4a8a; border-radius: 4px; background: #0d0d1e; color: #fff; resize: vertical; font-family: inherit; }
-    .bar-ev-high { background: linear-gradient(90deg, #c2e935, #ccf23f) !important; box-shadow: none !important; }
+    .bar-ev-high { background: linear-gradient(90deg, #b8a06a, #cbb583) !important; box-shadow: none !important; }
     .koso-match { background-color: #fff9c4 !important; border: 1px solid #fbc02d !important; border-radius: 3px; }
     .koso-starred { background-color: #ffcc80 !important; box-shadow: inset 0 0 0 2px #ff9800 !important; }
     
@@ -1520,12 +1520,12 @@ input[type=number], input[type=text], textarea, select {
              <div class="sub-head">
         <span class="sub-head-ttl">勝率グラフ</span>
         <span id="haran-badge-2" style="display:none;"></span>
-        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto;">
-          <span style="font-size:11px;font-weight:700;color:#9b9a92;">合計 <span id="total-val" style="color:var(--mk-dark);font-weight:800;">0.0</span>%</span>
-          <button class="pill-btn pill-sm" onclick="normalizeTo100(true)">100%</button>
-          <button class="pill-btn pill-sm pill-ghost" onclick="resetGraph()">リセット</button>
-          <button class="pill-btn pill-sm pill-accent" onclick="calculateHarville()">確定</button>
-        </div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:0 18px 10px;">
+        <span style="font-size:11px;font-weight:700;color:#9b9a92;margin-right:auto;">合計 <span id="total-val" style="color:var(--mk-dark);font-weight:800;">0.0</span>%</span>
+        <button class="pill-btn pill-sm" onclick="normalizeTo100(true)">100%</button>
+        <button class="pill-btn pill-sm pill-ghost" onclick="resetGraph()">リセット</button>
+        <button class="pill-btn pill-sm pill-accent" onclick="calculateHarville()">確定</button>
       </div>
 
       
@@ -2490,11 +2490,11 @@ function getTodayStr(){const d=new Date();const jst=new Date(d.getTime()+9*60*60
     const HARAN_LEVELS = [{threshold:45,stars:'★★★★★',color:'#c0392b'},{threshold:57,stars:'★★★★☆',color:'#e67e22'},{threshold:67,stars:'★★★☆☆',color:'#f39c12'},{threshold:73,stars:'★★☆☆☆',color:'#1a1a1a'},{threshold:80,stars:'★☆☆☆☆',color:'#2980b9'}];
     /* グラフバーは蛍光イエロー〜ライム（唯一の彩色アクセント）。上位ほど鮮やか */
     const TIER_BAR_COLORS = [
-      'linear-gradient(90deg, #c2e935, #ccf23f)', /* 1層目: 鮮やかな蛍光ライム */
-      'linear-gradient(90deg, #b3c95e, #c4d67a)', /* 2層目: 淡い蛍光 */
-      'linear-gradient(90deg, #d3d8bd, #e0e4cf)'  /* 3層目以降: ごく淡い */
+      'linear-gradient(90deg, #b8a06a, #cbb583)', /* 1層目: 濃い薄茶（テーマ色） */
+      'linear-gradient(90deg, #cdbb92, #ddceac)', /* 2層目: 中間の薄茶 */
+      'linear-gradient(90deg, #e2dcc9, #ece7d8)'  /* 3層目以降: ごく淡い */
     ];
-    const TIER_BAR_DEFAULT = 'linear-gradient(90deg, #c2e935, #ccf23f)';
+    const TIER_BAR_DEFAULT = 'linear-gradient(90deg, #b8a06a, #cbb583)';
 
     const COURSE_BIAS_MAP = {}; // ★中身を空っぽにして初期設定の暴走を止める
 
@@ -5260,9 +5260,9 @@ window.drawOaChartModal = function() {
           barWidthPct = Math.min((h.winRate / _barDenom) * 100, 100);
           // グラフバーは蛍光ライム。勝率が高いほど鮮やか（低い馬は淡い蛍光）
           const wr = h.winRate || 0;
-          if(wr >= 15) { barStyle = 'linear-gradient(90deg, #c2e935, #ccf23f)'; }
-          else if(wr >= 7) { barStyle = 'linear-gradient(90deg, #b3c95e, #c4d67a)'; }
-          else { barStyle = 'linear-gradient(90deg, #d3d8bd, #e0e4cf)'; }
+          if(wr >= 15) { barStyle = 'linear-gradient(90deg, #b8a06a, #cbb583)'; }
+          else if(wr >= 7) { barStyle = 'linear-gradient(90deg, #cdbb92, #ddceac)'; }
+          else { barStyle = 'linear-gradient(90deg, #e2dcc9, #ece7d8)'; }
         } else {
           if(graphSortKey === 'odds') {
             barWidthPct = (!isNaN(tOdds) && tOdds > 0) ? Math.min(80 / tOdds, 100) : 0;
