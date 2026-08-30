@@ -925,25 +925,36 @@ input[type=number], input[type=text], textarea, select {
     <div class="nav-area" id="nav-area" style="display:none;"></div>
 
     <div class="race-card" id="main-tool" style="display:none;">
-      <div id="race-info-head" style="padding:14px 16px 10px;background:#fff;border-bottom:1px solid #edf1e8;">
+      <div id="race-info-head" style="padding:14px 16px 12px;background:#fff;border-bottom:1px solid #edf1e8;">
         <div style="font-size:10px;letter-spacing:.18em;color:#8a9a83;font-weight:700;">RACE INFO ─ レース情報</div>
         <div id="race-info-title" style="font-family:'Playfair Display',serif;font-weight:600;color:#1c2e1f;font-size:20px;margin-top:3px;">—</div>
-        <div id="baba-bar" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;">
-          <div class="baba-chip" style="background:#eef3ea;border-radius:12px;padding:7px 12px;min-width:74px;">
-            <div style="font-size:9px;color:#8a9a83;letter-spacing:.08em;">馬場状態</div>
-            <div id="bb-going" style="font-size:15px;font-weight:700;color:#1c2e1f;">—</div>
+
+        <div style="display:grid;grid-template-columns:1fr auto;gap:14px;margin-top:12px;align-items:start;">
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div>
+              <div style="font-size:9px;color:#8a9a83;letter-spacing:.1em;margin-bottom:4px;">馬場状態</div>
+              <div id="bb-going-seg" style="display:inline-flex;border:1px solid #dbe3d4;border-radius:20px;overflow:hidden;">
+                <span data-g="良" style="font-size:12px;font-weight:700;padding:5px 14px;color:#8a9a83;">良</span>
+                <span data-g="稍重" style="font-size:12px;font-weight:700;padding:5px 14px;color:#8a9a83;border-left:1px solid #eef3ea;">稍重</span>
+                <span data-g="重" style="font-size:12px;font-weight:700;padding:5px 14px;color:#8a9a83;border-left:1px solid #eef3ea;">重</span>
+                <span data-g="不良" style="font-size:12px;font-weight:700;padding:5px 14px;color:#8a9a83;border-left:1px solid #eef3ea;">不良</span>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;color:#8a9a83;margin-bottom:3px;"><span>クッション値</span><span id="bb-cush-v" style="color:#2f6d3a;font-weight:700;">—</span></div>
+              <div style="height:7px;background:#eef3ea;border-radius:4px;overflow:hidden;"><div id="bb-cush-bar" style="height:100%;width:0%;background:#5c8a46;border-radius:4px;transition:width .4s;"></div></div>
+              <div style="display:flex;justify-content:space-between;font-size:8px;color:#b9c4b2;margin-top:1px;"><span>柔 7</span><span>硬 12</span></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;color:#8a9a83;margin-bottom:3px;"><span>含水率(芝)</span><span id="bb-moist-v" style="color:#1c2e1f;font-weight:700;">—</span></div>
+              <div style="height:7px;background:#eef3ea;border-radius:4px;overflow:hidden;"><div id="bb-moist-bar" style="height:100%;width:0%;background:#6f9ec2;border-radius:4px;transition:width .4s;"></div></div>
+              <div style="display:flex;justify-content:space-between;font-size:8px;color:#b9c4b2;margin-top:1px;"><span>乾 0%</span><span>湿 25%</span></div>
+            </div>
           </div>
-          <div class="baba-chip" style="background:#eef3ea;border-radius:12px;padding:7px 12px;min-width:74px;">
-            <div style="font-size:9px;color:#8a9a83;letter-spacing:.08em;">クッション値</div>
-            <div id="bb-cush" style="font-size:15px;font-weight:700;color:#2f6d3a;">—</div>
-          </div>
-          <div class="baba-chip" style="background:#eef3ea;border-radius:12px;padding:7px 12px;min-width:74px;">
-            <div style="font-size:9px;color:#8a9a83;letter-spacing:.08em;">含水率</div>
-            <div id="bb-moist" style="font-size:15px;font-weight:700;color:#1c2e1f;">—</div>
-          </div>
-          <div class="baba-chip" style="background:#eef3ea;border-radius:12px;padding:7px 12px;min-width:74px;">
-            <div style="font-size:9px;color:#8a9a83;letter-spacing:.08em;">風</div>
-            <div id="bb-wind" style="font-size:15px;font-weight:700;color:#1c2e1f;">—</div><div id="bb-wind-time" style="font-size:9px;color:#a9b4a2;"></div>
+
+          <div class="visual" style="text-align:center;width:150px;">
+            <canvas class="trk" id="bb-track" data-br="0" data-turn="0" data-sp="0" data-di="0" style="width:150px;max-width:150px;aspect-ratio:1;display:block;margin:0 auto;background:linear-gradient(#fbfdfc,#eef4f2);border:1px solid #dfe6ec;border-radius:8px;"></canvas>
+            <div id="bb-wind-cap" style="font-size:10px;color:#7a828a;margin-top:5px;line-height:1.4;">—<span id="bb-wind-time" style="color:#b8bdc3;margin-left:4px;"></span></div>
           </div>
         </div>
       </div>
@@ -8109,17 +8120,77 @@ window.closeDetailedData2Modal = function() {
   window.updateBabaBar=function(basho){
     const g=id=>document.getElementById(id);
     const b=(window._BABA&&basho)?window._BABA[basho]:null;
-    if(!b){ ['bb-going','bb-cush','bb-moist','bb-wind'].forEach(i=>{if(g(i))g(i).textContent='—';}); return; }
-    if(g('bb-going')) g('bb-going').textContent=(b.tgoing||'—');
-    if(g('bb-cush'))  g('bb-cush').textContent =(b.cush!=null?b.cush:'—');
-    if(g('bb-moist')) g('bb-moist').textContent=(b.tmoist!=null?b.tmoist+'%':'—');
-    if(g('bb-wind')){
-      var w=(window._WIND&&window._WIND.wind&&basho)?window._WIND.wind[basho]:null;
-      g('bb-wind').textContent = w ? (w.label + (w.sp?(' '+w.sp+'m'):'')) : '—';
-      var wt=document.getElementById('bb-wind-time');
-      if(wt && w && w.time) wt.textContent = w.time;
-    }
+    // 馬場4段ハイライト
+    const going=b?(b.tgoing||''):'';
+    const seg=document.getElementById('bb-going-seg');
+    if(seg) seg.querySelectorAll('span').forEach(sp=>{
+      const on = sp.dataset.g===going;
+      sp.style.background = on ? '#1c2e1f' : 'transparent';
+      sp.style.color = on ? '#eef3e8' : '#8a9a83';
+    });
+    // クッション値メーター(7-12を0-100%)
+    const cv=b&&b.cush!=null?b.cush:null;
+    if(g('bb-cush-v')) g('bb-cush-v').textContent = cv!=null?cv:'—';
+    if(g('bb-cush-bar')){ const p=cv!=null?Math.max(0,Math.min(100,(cv-7)/(12-7)*100)):0; g('bb-cush-bar').style.width=p+'%'; }
+    // 含水率メーター(0-25%を0-100%)
+    const mv=b&&b.tmoist!=null?b.tmoist:null;
+    if(g('bb-moist-v')) g('bb-moist-v').textContent = mv!=null?mv+'%':'—';
+    if(g('bb-moist-bar')){ const p=mv!=null?Math.max(0,Math.min(100,mv/25*100)):0; g('bb-moist-bar').style.width=p+'%'; }
+    // 風トラックcanvas
+    const w=(window._WIND&&window._WIND.wind&&basho)?window._WIND.wind[basho]:null;
+    const cvEl=document.getElementById('bb-track');
+    if(cvEl && w){
+      cvEl.dataset.br=(w.br!=null?w.br:0); cvEl.dataset.turn=(w.turn!=null?w.turn:0);
+      cvEl.dataset.sp=(w.sp!=null?w.sp:0); cvEl.dataset.di=(w.di!=null?w.di:0);
+    } else if(cvEl){ cvEl.dataset.sp=0; }
+    const cap=document.getElementById('bb-wind-cap');
+    if(cap){ cap.firstChild.nodeValue = w ? (w.label + (w.sp?(' '+w.sp+'m/s'):'')) : '—'; }
+    const wt=document.getElementById('bb-wind-time');
+    if(wt) wt.textContent = (w&&w.time)?w.time:'';
+    if(typeof window._drawTrackOnce==='function') window._drawTrackOnce();
   };
+
+  // トラック＋風 canvas描画（WIND_TRACK_DESIGN.md 実物）
+  (function(){
+    const rad=d=>d*Math.PI/180;
+    function draw(cv,el){
+      const dpr=window.devicePixelRatio||1,r=cv.getBoundingClientRect(),W=r.width,H=r.height;
+      if(!W||!H) return;
+      cv.width=W*dpr;cv.height=H*dpr;const g=cv.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
+      const br=+cv.dataset.br,sp=+cv.dataset.sp,di=+cv.dataset.di,tn=cv.dataset.turn==='1'?1:-1;
+      const S=Math.min(W,H),cx=W/2,cy=H/2,th=rad(br),cs=Math.cos(th),sn=Math.sin(th),L=S*0.30,Wd=S*0.135;
+      const toS=(lx,ly)=>[cx+lx*cs-ly*sn,cy+lx*sn+ly*cs];
+      g.fillStyle="#9aa9a0";g.font="bold 10px sans-serif";g.textAlign="center";g.textBaseline="middle";
+      [["北",0],["東",90],["南",180],["西",270]].forEach(([t,a])=>{const rr=rad(a);g.fillText(t,cx+Math.sin(rr)*S*0.45,cy-Math.cos(rr)*S*0.45);});
+      g.save();g.translate(cx,cy);g.rotate(th);g.scale(tn,1);
+      g.fillStyle="rgba(0,134,110,.06)";g.strokeStyle="#9aa9a0";g.lineWidth=1.5;
+      g.beginPath();g.roundRect(-Wd,-L,2*Wd,2*L,Wd);g.fill();g.stroke();
+      g.strokeStyle="#dfe6ec";g.lineWidth=1;g.beginPath();g.roundRect(-Wd*.46,-L+Wd*.55,Wd*.92,2*L-Wd*1.1,Wd*.46);g.stroke();
+      const chev=(x,y,dir,s,col,lw)=>{g.strokeStyle=col;g.lineWidth=lw;g.lineCap="round";g.lineJoin="round";g.beginPath();g.moveTo(x-s,y);g.lineTo(x,y+dir*s);g.lineTo(x+s,y);g.stroke();};
+      g.strokeStyle="#2f7d2b";g.lineWidth=2;g.beginPath();g.moveTo(Wd,L-Wd*.7);g.lineTo(Wd,-L+Wd*.7);g.stroke();
+      g.beginPath();g.moveTo(Wd-6,-L+Wd*.7);g.lineTo(Wd+6,-L+Wd*.7);g.stroke();
+      [-L*.4,-L*.05,L*.3].forEach(y=>chev(Wd,y,-1,5.5,"#2f7d2b",3));
+      g.strokeStyle="#9aa9a0";g.lineWidth=1.4;g.beginPath();g.moveTo(-Wd,-L+Wd*.7);g.lineTo(-Wd,L-Wd*.7);g.stroke();
+      [-L*.3,L*.05,L*.4].forEach(y=>chev(-Wd,y,1,4.5,"#9aa9a0",2.4));
+      g.restore();
+      g.font="bold 10px sans-serif";let p=toS(tn*(Wd+14),0);g.fillStyle="#2f7d2b";g.fillText("直線",p[0],p[1]);
+      p=toS(tn*(-Wd-16),0);g.fillStyle="#9aa9a0";g.fillText("向正面",p[0],p[1]);
+      if(sp>0){const to=rad((di+180)%360),wx=Math.sin(to),wy=-Math.cos(to),qx=-wy,qy=wx;
+        const base=0.32+0.4*Math.min(sp/9,1),lw=2.4+Math.min(sp/6,1.8),alen=S*0.24,spacing=S*0.12,spd=0.13+sp*0.008,hL=8,hW=4.2;
+        for(let i=0;i<3;i++){const phase=((el*spd)+i/3)%1,lon=-W*0.44+phase*W*0.88;
+          const fade=Math.max(0,Math.min(1,phase/0.14,(1-phase)/0.14)),a=(base*fade).toFixed(3);
+          if(+a<=0.01)continue;
+          const off=spacing*(i-1),mx=cx+wx*lon+qx*off,my=cy+wy*lon+qy*off;
+          const sx=mx-wx*alen/2,sy=my-wy*alen/2,ex=mx+wx*alen/2,ey=my+wy*alen/2,bx=ex-wx*hL,by=ey-wy*hL;
+          g.strokeStyle=`rgba(92,122,153,${a})`;g.lineWidth=lw;g.lineCap="butt";
+          g.beginPath();g.moveTo(sx,sy);g.lineTo(bx,by);g.stroke();
+          g.fillStyle=`rgba(92,122,153,${a})`;g.beginPath();g.moveTo(ex,ey);g.lineTo(bx+qx*hW,by+qy*hW);g.lineTo(bx-qx*hW,by-qy*hW);g.closePath();g.fill();}}
+    }
+    const _red=matchMedia("(prefers-reduced-motion:reduce)").matches;
+    window._drawTrackOnce=function(){ const cv=document.getElementById('bb-track'); if(cv) draw(cv,performance.now()/1000); };
+    function loop(){ const cv=document.getElementById('bb-track'); if(cv && cv.offsetParent!==null) draw(cv,performance.now()/1000); if(!_red) requestAnimationFrame(loop); }
+    loop();
+  })();
   (function(){
     function boot(){
       window.loadBabaJson().then(function(){
