@@ -727,7 +727,7 @@ input[type=number], input[type=text], textarea, select {
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Old+Mincho:wght@600;700;900&family=Zen+Maru+Gothic:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
 <style id="muketsu-theme">
   :root{
     --mk-bg:#f7faf5; --mk-card:#ffffff; --mk-line:#e6ece0; --mk-line2:#edf1e8;
@@ -813,7 +813,7 @@ input[type=number], input[type=text], textarea, select {
   .sub-head{ display:flex; align-items:center; gap:10px; padding:12px 16px 8px !important;
     background:transparent !important; border:none !important; border-bottom:1px solid var(--mk-line) !important;
     border-left:none !important; margin:0 !important; }
-  .sub-head-ttl{ font-family:"Zen Old Mincho",serif; font-weight:700; font-size:14px;
+  .sub-head-ttl{ font-family:"Zen Kaku Gothic New",sans-serif; font-weight:700; font-size:14px;
     color:var(--mk-dark); letter-spacing:.06em; }
   .sub-head-btn{ margin-left:auto; font-family:"Zen Kaku Gothic New",sans-serif; font-size:10.5px; font-weight:700;
     color:#6f7d68; background:#eef3ea; border:1px solid var(--mk-line); border-radius:999px; padding:5px 12px; cursor:pointer; }
@@ -861,7 +861,7 @@ input[type=number], input[type=text], textarea, select {
   /* 大カードの見出し */
   .bc-head{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
     padding:13px 18px 6px; border-bottom:1px solid var(--mk-line); margin-bottom:2px; }
-  .bc-title{ font-family:"Zen Old Mincho","Shippori Mincho",serif; font-weight:700;
+  .bc-title{ font-family:"Zen Kaku Gothic New",sans-serif; font-weight:700;
     color:var(--mk-dark); font-size:16px; letter-spacing:.08em; }
   .bc-sub{ font-size:10px; color:#9aa892; letter-spacing:.05em; }
 
@@ -876,20 +876,44 @@ input[type=number], input[type=text], textarea, select {
     border:none !important; border-bottom:1px solid var(--mk-line) !important;
     border-left:none !important; }
   .stat-card .chart-area, .stat-card #graph-container{ background:transparent !important;
-    border:none !important; border-radius:0 !important; box-shadow:none !important; margin:0 !important; }
+    border:none !important; border-radius:0 !important; box-shadow:none !important; margin:0 !important;
+    padding:0 10px 10px !important; }
+  /* 勝率設定：項目見出し（各馬評価テーブルのヘッダと同じ体裁） */
+  .graph-head{ display:flex; align-items:center; gap:0; background:#e7eee0; border-bottom:2px solid #cdd8c4;
+    padding:8px 4px; margin:0 10px; font-family:"Zen Kaku Gothic New",sans-serif; font-size:10px; font-weight:700;
+    color:#3d4a39; letter-spacing:.02em; }
+  .graph-head .gh-mark{ width:28px; text-align:center; flex:0 0 auto; }
+  .graph-head .gh-num{ width:30px; text-align:center; flex:0 0 auto; }
+  .graph-head .gh-name{ flex:1 1 auto; text-align:left; padding-left:6px; }
+  .graph-head .gh-val{ width:75px; text-align:right; flex:0 0 auto; padding-right:6px; }
+  /* 勝率設定の行：白/淡緑のシマウマ＋余白（各馬評価と統一） */
+  .stat-card .horse-row{ margin:0 !important; padding:6px 4px !important; border-bottom:1px solid #eef0ea; }
+  .stat-card .horse-row:nth-child(odd){ background:#ffffff; }
+  .stat-card .horse-row:nth-child(even){ background:#f6f9f3; }
+  /* 印：背景なし・印文字だけ（各馬評価と同じ） */
+  .stat-card .graph-mark-btn{ width:26px !important; height:24px !important; background:transparent !important;
+    color:#1c2e1f !important; border-radius:0 !important; font-size:14px !important; font-weight:700 !important; box-shadow:none !important; }
+  /* 枠番ボックスは表と同じサイズ感 */
+  .stat-card .horse-row .waku-box{ width:22px !important; height:22px !important; border-radius:5px !important; font-size:12px !important; font-weight:800; }
+  /* 馬名：バー上の白抜き→濃色テキストで読みやすく（明朝廃止・ゴシック） */
+  .stat-card .horse-name{ color:#1c2e1f !important; font-family:"Zen Kaku Gothic New",sans-serif !important;
+    font-weight:700 !important; font-size:11px !important; text-shadow:0 1px 2px rgba(255,255,255,.85) !important; }
+  .stat-card .visual-bar{ height:14px !important; border-radius:7px !important; opacity:.9; }
+  .stat-card .val-col-inner{ background:#f5f8f1 !important; border:1px solid var(--mk-line) !important; border-radius:8px !important; }
+  .stat-card .val-col{ color:var(--mk-dark) !important; font-weight:800 !important; }
 
   /* メモ（②内） */
   .memo-card{ overflow:hidden; }
   .memo-card-head{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
     padding:12px 18px 8px; }
-  .memo-card-title{ font-family:"Zen Old Mincho","Shippori Mincho",serif; font-weight:700;
+  .memo-card-title{ font-family:"Zen Kaku Gothic New",sans-serif; font-weight:700;
     color:var(--mk-dark); font-size:15px; letter-spacing:.06em; }
   .memo-card-sub{ font-size:10px; color:#9aa892; letter-spacing:.06em; }
   .memo-card-textarea{ width:calc(100% - 36px); display:block; margin:0 18px 14px;
     min-height:100px; font-size:14px; line-height:1.9; padding:13px 15px;
     border:1px solid var(--mk-line) !important; border-radius:12px !important;
     background:#fcfdfb; color:#2b332a; resize:vertical; box-sizing:border-box;
-    font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif; transition:border-color .2s, box-shadow .2s; }
+    font-family:"Zen Kaku Gothic New",sans-serif; transition:border-color .2s, box-shadow .2s; }
   .memo-card-textarea:focus{ outline:none; border-color:var(--mk-accent) !important;
     box-shadow:0 0 0 3px rgba(92,138,70,.12) !important; background:#fff; }
   .memo-card-textarea::placeholder{ color:#b6c1ac; font-family:"Zen Kaku Gothic New",sans-serif; }
@@ -936,7 +960,7 @@ input[type=number], input[type=text], textarea, select {
     border-radius:12px; padding:14px; text-align:center; }
   .ai-lock-card{ max-width:300px; }
   .ai-lock-ico{ font-size:26px; margin-bottom:6px; }
-  .ai-lock-ttl{ font-family:"Zen Old Mincho",serif; font-weight:700; font-size:15px; color:var(--mk-dark); letter-spacing:.04em; }
+  .ai-lock-ttl{ font-family:"Zen Kaku Gothic New",sans-serif; font-weight:700; font-size:15px; color:var(--mk-dark); letter-spacing:.04em; }
   .ai-lock-desc{ font-size:11px; color:#6f7d68; line-height:1.6; margin:6px 0 12px; }
   .ai-lock-btn{ font-family:"Zen Kaku Gothic New",sans-serif; font-size:12.5px; font-weight:700;
     color:#eef3e8; background:var(--mk-dark); border:none; border-radius:999px; padding:9px 22px; cursor:pointer; }
@@ -950,7 +974,7 @@ input[type=number], input[type=text], textarea, select {
   /* 見出し帯：グレー→ダーク緑テキスト・白地 */
   .section-title{ background:var(--mk-tint) !important; color:var(--mk-dark) !important;
     border-top:none !important; border-bottom:1px solid var(--mk-line) !important;
-    font-family:"Zen Old Mincho",serif !important; font-weight:700 !important; }
+    font-family:"Zen Kaku Gothic New",sans-serif !important; font-weight:700 !important; }
   .sim-header{ background:var(--mk-tint) !important; color:var(--mk-accent) !important;
     border-bottom:1px solid var(--mk-line) !important; }
   .simulator-wrapper{ border-color:var(--mk-line) !important; }
@@ -975,7 +999,7 @@ input[type=number], input[type=text], textarea, select {
   .data-table td{ border:none !important; border-bottom:1px solid #eef0ea !important;
     padding:7px 4px !important; font-size:11px !important; vertical-align:middle; color:#2b332a !important; }
   /* 馬名：明朝で少し格を出す・左寄せ */
-  .data-table .td-name{ font-family:"Zen Old Mincho",serif !important; font-weight:700 !important;
+  .data-table .td-name{ font-family:"Zen Kaku Gothic New",sans-serif !important; font-weight:700 !important;
     font-size:12.5px !important; color:#1c2e1f !important; max-width:130px !important; letter-spacing:.01em; }
   /* 単勝：人気帯は赤、それ以外は落ち着いた色 */
   .data-table .td-odds{ font-weight:700 !important; font-variant-numeric:tabular-nums; }
@@ -1194,7 +1218,7 @@ input[type=number], input[type=text], textarea, select {
             <option value="custom">自由入力...</option>
           </select>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding:0 18px;"><span id="race-info-title" style="font-family:'Zen Old Mincho',serif;font-weight:700;color:#1c2e1f;font-size:21px;letter-spacing:.02em;">—</span><span id="race-info-haran" style="font-size:10px;color:#8a9285;background:#f0f2ec;border:1px solid #e2e6dc;border-radius:10px;padding:2px 9px;font-weight:700;letter-spacing:.04em;"></span></div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding:0 18px;"><span id="race-info-title" style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;color:#1c2e1f;font-size:21px;letter-spacing:.02em;">—</span><span id="race-info-haran" style="font-size:10px;color:#8a9285;background:#f0f2ec;border:1px solid #e2e6dc;border-radius:10px;padding:2px 9px;font-weight:700;letter-spacing:.04em;"></span></div>
 
         <div style="display:grid;grid-template-columns:1fr auto;gap:16px;margin-top:12px;padding:0 18px 4px;align-items:center;">
           <div style="display:flex;flex-direction:column;gap:17px;">
@@ -1449,6 +1473,13 @@ input[type=number], input[type=text], textarea, select {
         <span style="margin-left:auto;font-size:9px;cursor:pointer;color:#ff8a80;" onclick="resetGraphSpecialMode()">✖ 通常に戻す</span>
       </div>
       <div id="odds-analysis-panel" style="display:none;"></div>
+      <!-- 勝率設定の項目見出し（各馬評価と同じ体裁） -->
+      <div class="graph-head">
+        <span class="gh-mark">印</span>
+        <span class="gh-num">番</span>
+        <span class="gh-name">馬名 ／ 勝率</span>
+        <span class="gh-val">勝率%</span>
+      </div>
       <div class="chart-area" id="graph-container">
         <div id="chart-rows"></div>
       </div>
@@ -2386,11 +2417,11 @@ function getTodayStr(){const d=new Date();const jst=new Date(d.getTime()+9*60*60
 
     const HARAN_LEVELS = [{threshold:45,stars:'★★★★★',color:'#c0392b'},{threshold:57,stars:'★★★★☆',color:'#e67e22'},{threshold:67,stars:'★★★☆☆',color:'#f39c12'},{threshold:73,stars:'★★☆☆☆',color:'#27ae60'},{threshold:80,stars:'★☆☆☆☆',color:'#2980b9'}];
     const TIER_BAR_COLORS = [
-      'linear-gradient(90deg, #3f6d3a, #6f9463)', /* 1層目: 深い緑 */
-      'linear-gradient(90deg, #7ba05f, #a7c98f)', /* 2層目: 中間の緑 */
-      'linear-gradient(90deg, #cdd8c4, #e3ecdc)'  /* 3層目以降: 淡い緑 */
+      'linear-gradient(90deg, #4fa06b, #7ecb93)', /* 1層目: 澄んだ緑 */
+      'linear-gradient(90deg, #86c39a, #aeddba)', /* 2層目: 中間の緑 */
+      'linear-gradient(90deg, #c9e4cf, #e2f1e6)'  /* 3層目以降: 淡い緑 */
     ];
-    const TIER_BAR_DEFAULT = 'linear-gradient(90deg, #5c8a46, #8fb37a)';
+    const TIER_BAR_DEFAULT = 'linear-gradient(90deg, #58b57e, #93d5a8)';
 
     const COURSE_BIAS_MAP = {}; // ★中身を空っぽにして初期設定の暴走を止める
 
