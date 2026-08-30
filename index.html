@@ -64,6 +64,10 @@
     .waku-8 { background: #ff69a6; color: #fff; }
     .horse-board-icon { position: absolute; display: flex; flex-direction: column; align-items: center; cursor: grab; touch-action: none; transform: translate(-50%,-50%); }
     .horse-board-icon.dragging { transition: none !important; opacity: 0.6; z-index: 9999 !important; }
+    /* その場で足踏みする感じ（位置移動なし・微細な上下バウンス） */
+    @keyframes horse-trot { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-2px); } }
+    .horse-board-icon:not(.dragging) .waku-box { animation: horse-trot .5s ease-in-out infinite; }
+    @media (prefers-reduced-motion: reduce){ .horse-board-icon .waku-box { animation: none !important; } }
     .ai-pace-area { background: #f4f2ec; border-left: 4px solid #1a1a1a; padding: 6px 8px; }
     .ai-pace-header { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; flex-wrap: wrap; }
     .ai-pace-label { font-size: 11px; font-weight: bold; color: #1a1a1a; }
@@ -1414,7 +1418,7 @@ input[type=number], input[type=text], textarea, select {
         <div class="bc-head" style="align-items:flex-start;">
           <div style="flex:1;min-width:0;">
             <span class="mk-eyebrow">TALK WITH YOURSELF</span>
-            <span class="bc-title" style="display:block;margin-top:2px;">メモ・AI壁打ち</span>
+            <span class="bc-title" style="display:block;margin-top:2px;"><span class="mk-mark">壁打ち</span></span>
           </div>
         </div>
       <!-- ▼ メモ（localStorage永続化・リロードで消えない） ▼ -->
