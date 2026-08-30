@@ -810,12 +810,13 @@ input[type=number], input[type=text], textarea, select {
   .pill-accent{ background:#1a1a1a !important; color:#ccf23f !important; border-color:#1a1a1a !important; font-weight:800 !important; }
   .pill-accent:hover{ opacity:.92; background:#1a1a1a !important; color:#ccf23f !important; }
 
-  /* 小タイトル（各馬評価 / 勝率設定） */
-  .sub-head{ display:flex; align-items:center; gap:10px; padding:12px 16px 8px !important;
-    background:transparent !important; border:none !important; border-bottom:1px solid var(--mk-line) !important;
-    border-left:none !important; margin:0 !important; }
-  .sub-head-ttl{ font-family:"Zen Kaku Gothic New",sans-serif; font-weight:700; font-size:14px;
-    color:var(--mk-dark); letter-spacing:.06em; }
+  /* 中タイトル：線を引かず、頭に短い蛍光バー＋太字（おしゃれな見出し感） */
+  .sub-head{ display:flex; align-items:center; gap:9px; padding:18px 18px 8px !important;
+    background:transparent !important; border:none !important; margin:0 !important; }
+  .sub-head::before{ content:""; width:14px; height:3px; border-radius:2px; background:var(--mk-lime); flex:0 0 auto; }
+  .sub-head .mk-eyebrow{ display:none; } /* CONDITION等の重複英字ラベルは隠す */
+  .sub-head-ttl{ font-family:"Zen Kaku Gothic New",sans-serif; font-weight:900; font-size:15px;
+    color:var(--mk-dark); letter-spacing:.04em; }
   .sub-head-btn{ margin-left:auto; font-family:"Zen Kaku Gothic New",sans-serif; font-size:10.5px; font-weight:700;
     color:#9b9a92; background:#f4f2ec; border:1px solid var(--mk-line); border-radius:999px; padding:5px 12px; cursor:pointer; }
   .sub-head-btn:hover{ background:var(--mk-dark); color:#f4f2ec; }
@@ -3845,10 +3846,12 @@ function buildNavigation() {
       // レース情報ヘッダ（別枠）にも反映
       var _rit=document.getElementById('race-info-title');
       if(_rit){
-        const _head = (r.basho||'') + raceId.replace(/\D/g,'') + 'R' + (r.info?(' '+r.info):'');
         const _esc = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');
-        // レース名（未勝利など）を黄マーカーで強調
-        _rit.innerHTML = _esc(_head) + (r.raceName?(' <span class="mk-mark">'+_esc(r.raceName)+'</span>'):'');
+        // 1行目：会場＋R（例 新潟1R） / 2行目：距離＋レース名にマーカー（例 芝1600m 未勝利）
+        const _line1 = (r.basho||'') + raceId.replace(/\D/g,'') + 'R';
+        const _line2 = ((r.info||'') + (r.raceName?(' '+r.raceName):'')).trim();
+        _rit.innerHTML = '<span style="display:block;">'+_esc(_line1)+'</span>'
+          + (_line2 ? '<span class="mk-mark" style="display:inline-block;font-size:20px;font-weight:800;margin-top:4px;">'+_esc(_line2)+'</span>' : '');
       }
       if(typeof updateBabaBar==='function') updateBabaBar(r.basho);
 
