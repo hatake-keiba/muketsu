@@ -784,7 +784,7 @@ input[type=number], input[type=text], textarea, select {
   .tb-ti-cell{ display:inline-flex; align-items:baseline; gap:3px; font-size:12px; font-weight:700;
     color:#2b332a; font-variant-numeric:tabular-nums; white-space:nowrap; }
   .tb-ti-cell em{ font-style:normal; font-size:9px; font-weight:700; color:#9b9a92; letter-spacing:.03em; }
-  .tb-ev-good{ color:#2f7d2b; } .tb-ev-bad{ color:#b06a5e; }
+  .tb-ev-good{ color:#5a8a1e; } .tb-ev-bad{ color:#b06a5e; }
   .tb-del-btn{ background:transparent !important; border:none !important; cursor:pointer; font-size:13px;
     padding:2px !important; flex:0 0 auto; margin-left:auto; }
 
@@ -1248,7 +1248,7 @@ input[type=number], input[type=text], textarea, select {
               </div>
             </div>
             <div id="bb-cush-wrap">
-              <div style="display:flex;justify-content:space-between;font-size:10px;color:#9b9a92;margin-bottom:3px;"><span>クッション値</span><span id="bb-cush-v" style="color:#2f6d3a;font-weight:700;">—</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;color:#9b9a92;margin-bottom:3px;"><span>クッション値</span><span id="bb-cush-v" style="color:#1a1a1a;font-weight:700;">—</span></div>
               <div style="height:9px;background:#e8e6df;border-radius:5px;overflow:hidden;"><div id="bb-cush-bar" style="height:100%;width:0%;background:#1a1a1a;border-radius:4px;transition:width .4s;"></div></div>
               <div style="display:flex;justify-content:space-between;font-size:8px;color:#b9c4b2;margin-top:1px;"><span>柔 7</span><span>硬 12</span></div>
             </div>
@@ -1260,7 +1260,7 @@ input[type=number], input[type=text], textarea, select {
           </div>
 
           <div class="visual" style="text-align:center;width:172px;">
-            <a id="jra-baba-link" href="#" target="_blank" rel="noopener" style="display:inline-block;font-size:9px;color:#5c8a46;text-decoration:none;margin-bottom:4px;border-bottom:1px dotted #a9c19c;">JRA公式 馬場情報 ↗</a>
+            <a id="jra-baba-link" href="#" target="_blank" rel="noopener" style="display:inline-block;font-size:9px;color:#1a1a1a;text-decoration:none;margin-bottom:4px;border-bottom:1px dotted #dcdad3;">JRA公式 馬場情報 ↗</a>
             <canvas class="trk" id="bb-track" data-br="0" data-turn="0" data-sp="0" data-di="0" style="width:172px;max-width:172px;aspect-ratio:1;display:block;margin:0 auto;background:linear-gradient(#fbfdfc,#eef4f2);border:1px solid #dfe6ec;border-radius:8px;"></canvas>
             <div id="bb-wind-cap" style="font-size:10px;color:#7a828a;margin-top:5px;line-height:1.4;">—<span id="bb-wind-time" style="color:#b8bdc3;margin-left:4px;"></span></div>
           </div>
@@ -4123,7 +4123,7 @@ function applyGlobalFilter() {
 
         // ★スライダーの色を「10」基準で塗りつぶすように変更し、アースカラーに対応
         // スライダーは緑の濃淡で表現（内/前＝淡い緑, 外/後＝濃い緑, 中央＝無色）
-        const GREEN_LIGHT='#a7c98f', GREEN_LIGHT_TC='#6f9463', GREEN_DARK='#3f6d3a', GREEN_DARK_TC='#2f5a2c', TRACK_BASE='#e7ede2';
+        const GREEN_LIGHT='#c3ec3f', GREEN_LIGHT_TC='#1a1a1a', GREEN_DARK='#1a1a1a', GREEN_DARK_TC='#1a1a1a', TRACK_BASE='#e8e6df';
         if(biasEl) {
           const v = race.biasVal, p = ((v+10)/20)*100;
           let bg, tc;
@@ -4911,7 +4911,7 @@ window.drawOaChartModal = function() {
         let bgSvg = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;"><defs>${gX}${gY}</defs><rect width="100" height="100" fill="${baseColor}" /><rect x="0" y="15" width="100" height="70" fill="${trackColor}" />${race.tenkaiVal!==0?`<rect x="0" y="15" width="100" height="70" fill="url(#gX)" style="mix-blend-mode:multiply;" />`:''}${race.biasVal!==0?`<rect x="0" y="15" width="100" height="70" fill="url(#gY)" style="mix-blend-mode:multiply;" />`:''}<rect x="${startLineX-0.6}" y="15" width="1.2" height="70" fill="#9b9a92" opacity="0.55" /></svg>`;
         const textOverlay = `<div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;font-family:'Zen Kaku Gothic New',sans-serif;">
           <div style="position:absolute;top:5px;left:8px;color:#6b7a6b;font-size:9px;font-weight:700;letter-spacing:1px;background:rgba(255,255,255,.6);padding:1px 8px;border-radius:8px;">道中の位置取り（想定）</div>
-          <div style="position:absolute;top:5px;right:8px;color:#5c8a46;font-size:10px;font-weight:700;background:rgba(255,255,255,.6);padding:1px 8px;border-radius:8px;">進行方向 →</div>
+          <div style="position:absolute;top:5px;right:8px;color:#1a1a1a;font-size:10px;font-weight:700;background:rgba(255,255,255,.6);padding:1px 8px;border-radius:8px;">進行方向 →</div>
           <div style="position:absolute;top:19%;left:6px;color:#9b9a92;font-size:9px;font-weight:700;">内ラチ</div>
           <div style="position:absolute;bottom:5px;left:6px;color:#9b9a92;font-size:9px;font-weight:700;">外ラチ</div>
         </div>`;
@@ -4977,12 +4977,12 @@ window.drawOaChartModal = function() {
           // 有利馬は「金色リング＋有利タグ」で明確化（薄緑背景に埋もれないよう暖色に）
           const isFav = favScore > 0;
           const favGlow = isFav
-            ? 'box-shadow:0 0 0 2.5px #f6a417,0 0 0 4.5px rgba(246,164,23,.35),0 2px 5px rgba(0,0,0,0.3);'
+            ? 'box-shadow:0 0 0 2.5px #c3ec3f,0 0 0 4.5px rgba(195,236,63,.5),0 2px 5px rgba(0,0,0,0.3);'
             : 'box-shadow:0 2px 4px rgba(0,0,0,0.3);';
           const favTag = isFav
-            ? `<span style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:#f6a417;color:#3a2600;font-size:7.5px;font-weight:800;line-height:1;padding:2px 4px;border-radius:6px;letter-spacing:.02em;white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.25);z-index:5;">有利</span>`
+            ? `<span style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:#c3ec3f;color:#1a1a1a;font-size:7.5px;font-weight:800;line-height:1;padding:2px 4px;border-radius:6px;letter-spacing:.02em;white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.25);z-index:5;">有利</span>`
             : '';
-          let innerHTML = `<div style="position:relative;">${favTag}<div class="waku-box waku-${h.waku}" style="width:24px;height:24px;font-size:13px;${favGlow}border-radius:4px;">${h.num}</div></div><span style="display:${nameDisplay};font-family:'Zen Kaku Gothic New',sans-serif;font-size:9px;font-weight:700;color:${isFav?'#a56a00':'#1c2e1f'};text-shadow:0 1px 2px rgba(255,255,255,.9);margin-top:3px;letter-spacing:0;">${shortName}</span>`;
+          let innerHTML = `<div style="position:relative;">${favTag}<div class="waku-box waku-${h.waku}" style="width:24px;height:24px;font-size:13px;${favGlow}border-radius:4px;">${h.num}</div></div><span style="display:${nameDisplay};font-family:'Zen Kaku Gothic New',sans-serif;font-size:9px;font-weight:700;color:${isFav?'#1a1a1a':'#1a1a1a'};text-shadow:0 1px 2px rgba(255,255,255,.9);margin-top:3px;letter-spacing:0;">${shortName}</span>`;
           
           if(!wrapper) {
             wrapper = document.createElement('div');
@@ -8551,7 +8551,7 @@ window.parseTsv2Paste = function() {
 
     if(totalUpdated > 0) {
         logEl.innerHTML = `✅ ${totalUpdated}頭の陣営・コース適性データを取り込みました！`;
-        logEl.style.color = "#15803d";
+        logEl.style.color = "#5a8a1e";
         if (typeof renderMainTable === 'function') renderMainTable();
     } else {
         logEl.innerHTML = `⚠️ データが見つかりませんでした。<br>上の「出馬表データの新規取り込み」でメインデータが読み込まれているか確認してください。`;
@@ -8826,13 +8826,13 @@ window.closeDetailedData2Modal = function() {
       g.beginPath();g.roundRect(-Wd,-L,2*Wd,2*L,Wd);g.fill();g.stroke();
       g.strokeStyle="#dfe6ec";g.lineWidth=1;g.beginPath();g.roundRect(-Wd*.46,-L+Wd*.55,Wd*.92,2*L-Wd*1.1,Wd*.46);g.stroke();
       const chev=(x,y,dir,s,col,lw)=>{g.strokeStyle=col;g.lineWidth=lw;g.lineCap="round";g.lineJoin="round";g.beginPath();g.moveTo(x-s,y);g.lineTo(x,y+dir*s);g.lineTo(x+s,y);g.stroke();};
-      g.strokeStyle="#2f7d2b";g.lineWidth=2;g.beginPath();g.moveTo(Wd,L-Wd*.7);g.lineTo(Wd,-L+Wd*.7);g.stroke();
+      g.strokeStyle="#1a1a1a";g.lineWidth=2;g.beginPath();g.moveTo(Wd,L-Wd*.7);g.lineTo(Wd,-L+Wd*.7);g.stroke();
       g.beginPath();g.moveTo(Wd-6,-L+Wd*.7);g.lineTo(Wd+6,-L+Wd*.7);g.stroke();
-      [-L*.4,-L*.05,L*.3].forEach(y=>chev(Wd,y,-1,5.5,"#2f7d2b",3));
+      [-L*.4,-L*.05,L*.3].forEach(y=>chev(Wd,y,-1,5.5,"#1a1a1a",3));
       g.strokeStyle="#9b9a92";g.lineWidth=1.4;g.beginPath();g.moveTo(-Wd,-L+Wd*.7);g.lineTo(-Wd,L-Wd*.7);g.stroke();
       [-L*.3,L*.05,L*.4].forEach(y=>chev(-Wd,y,1,4.5,"#9b9a92",2.4));
       g.restore();
-      g.font="bold 10px sans-serif";let p=toS(tn*(Wd+14),0);g.fillStyle="#2f7d2b";g.fillText("直線",p[0],p[1]);
+      g.font="bold 10px sans-serif";let p=toS(tn*(Wd+14),0);g.fillStyle="#1a1a1a";g.fillText("直線",p[0],p[1]);
       p=toS(tn*(-Wd-16),0);g.fillStyle="#9b9a92";g.fillText("向正面",p[0],p[1]);
       if(sp>0){const to=rad((di+180)%360),wx=Math.sin(to),wy=-Math.cos(to),qx=-wy,qy=wx;
         const base=0.32+0.4*Math.min(sp/9,1),lw=2.4+Math.min(sp/6,1.8),alen=S*0.24,spacing=S*0.12,spd=0.13+sp*0.008,hL=8,hW=4.2;
