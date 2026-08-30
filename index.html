@@ -65,14 +65,14 @@
     .pace-horses { display: flex; flex-wrap: wrap; gap: 2px; flex-grow: 1; min-height: 28px; padding: 2px; }
     .waku-box { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 3px; font-weight: bold; font-size: 12px; box-shadow: inset 0 0 2px rgba(0,0,0,.3); transition: transform 0.1s; }
     .waku-box:hover { transform: scale(1.1); }
-    .waku-1 { background: #f7f7f4; color: #2a2a26; border: 1px solid #d8d8d0; box-sizing: border-box; }
-    .waku-2 { background: #3a3a38; color: #f2f2ee; }
-    .waku-3 { background: #c0655a; color: #fff; }
-    .waku-4 { background: #5b86a6; color: #fff; }
-    .waku-5 { background: #e2c766; color: #3a3320; }
-    .waku-6 { background: #6f9463; color: #fff; }
-    .waku-7 { background: #d09a5a; color: #3a2e18; }
-    .waku-8 { background: #b56b86; color: #fff; }
+    .waku-1 { background: #fbfbf9; color: #2a2a26; border: 1px solid #dcdcd4; box-sizing: border-box; }
+    .waku-2 { background: #4a4a47; color: #f4f4f0; }
+    .waku-3 { background: #cf7368; color: #fff; }
+    .waku-4 { background: #6a95b4; color: #fff; }
+    .waku-5 { background: #ecd479; color: #3a3320; }
+    .waku-6 { background: #7daa270; color: #fff; }
+    .waku-7 { background: #dca869; color: #3a2e18; }
+    .waku-8 { background: #c47a95; color: #fff; }
     .horse-board-icon { position: absolute; display: flex; flex-direction: column; align-items: center; cursor: grab; touch-action: none; transform: translate(-50%,-50%); }
     .horse-board-icon.dragging { transition: none !important; opacity: 0.6; z-index: 9999 !important; }
     .ai-pace-area { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 6px 8px; }
@@ -985,19 +985,16 @@ input[type=number], input[type=text], textarea, select {
       
 
        <div class="simulator-wrapper">
-        <div class="sim-header">展開シミュレーター
+        <div class="sim-header">レースシミュレーター
           <span style="color:#757575;font-weight:normal;font-size:10px;">(スライダーで勝率が変動)</span>
         </div>
 
                      <div class="sim-content">
-          <div class="sim-row">
-            <div class="sim-label">馬場状態</div>
-            <div class="baba-btns" id="baba-btns">
-              <button class="baba-btn" onclick="setBaba('良')">良</button>
-              <button class="baba-btn" onclick="setBaba('稍')">稍</button>
-              <button class="baba-btn" onclick="setBaba('重')">重</button>
-              <button class="baba-btn" onclick="setBaba('不')">不</button>
-            </div>
+          <div id="baba-btns" style="display:none;">
+            <button class="baba-btn" onclick="setBaba('良')">良</button>
+            <button class="baba-btn" onclick="setBaba('稍')">稍</button>
+            <button class="baba-btn" onclick="setBaba('重')">重</button>
+            <button class="baba-btn" onclick="setBaba('不')">不</button>
           </div>
           <div class="sim-row" style="flex-wrap: wrap; gap: 4px;">
             <div class="sim-label">コース</div>
@@ -8141,6 +8138,13 @@ window.closeDetailedData2Modal = function() {
     // 含水率：芝=緑/ダート=茶。値も芝(tmoist)/ダート(dmoist)で切替
     const mv = b ? (isDirt ? (b.dmoist!=null?b.dmoist:null) : (b.tmoist!=null?b.tmoist:null)) : null;
     if(g('bb-moist-label')) g('bb-moist-label').textContent = isDirt ? '含水率(ダート)' : '含水率(芝)';
+    // 展開図トラックの背景（芝=緑 / ダート=薄茶）シンプル
+    try{
+      var pc=document.getElementById('pace-canvas');
+      if(pc){ pc.style.background = isDirt ? '#efe6da' : '#e7efe1'; pc.style.border='1px solid '+(isDirt?'#dcc9b3':'#cfe0c4'); }
+      var pb=document.getElementById('pace-board');
+      if(pb){ pb.style.background = isDirt ? '#f7f2ea' : '#f4f8f0'; }
+    }catch(e){}
     if(g('bb-moist-v')) g('bb-moist-v').textContent = mv!=null?mv+'%':'—';
     if(g('bb-moist-bar')){
       const p=mv!=null?Math.max(0,Math.min(100,mv/25*100)):0;
