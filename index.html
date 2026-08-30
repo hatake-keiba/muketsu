@@ -8062,7 +8062,10 @@ window.closeDetailedData2Modal = function() {
     };
 
     function renderCourseFeature() {
-      if(!currentRaceId || !racesData[currentRaceId]) return;
+      // コース傾向リンクは非表示（JRA公式リンクはRACE INFOのトラック上に設置済み）
+      var _cl=document.getElementById('course-link');
+      if(_cl) _cl.style.display='none';
+      return;
       const race = racesData[currentRaceId];
       const linkEl = document.getElementById('course-link');
       if(!linkEl) return;
