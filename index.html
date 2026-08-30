@@ -2538,7 +2538,11 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
     function restoreAIComment() {
       if(!currentRaceId) return;
       const ta = document.getElementById('ai-pace-comment');
-      if(ta) ta.value = racesData[currentRaceId].comment || '';
+      if(!ta) return;
+      var c = racesData[currentRaceId].comment || '';
+      // AI自動生成文（【…】で始まる）は会員メモに出さない
+      if(/^\s*【/.test(c)) c='';
+      ta.value = c;
     }
     
     function cleanAndSummarizeAIComment() {
@@ -6119,6 +6123,7 @@ function autoGenerateTickets(mode = 'win') {
     }
 
      function generateAIPaceText() {
+      return; // メモは会員が書く欄。AI見解は自動入力しない
       if(!currentRaceId) return;
       const race = racesData[currentRaceId];
       const ta = document.getElementById('ai-pace-comment');
