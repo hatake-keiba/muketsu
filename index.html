@@ -9,25 +9,25 @@
   <style>
     * { box-sizing: border-box; }
     @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
-    body { font-family: "Zen Kaku Gothic New", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; margin: 0; padding: 5px 2px; background: #dbe3d4; color: #25352a; }
-    .app-container { --sage:#dbe3d4; --sage-soft:#e9eee3; --card:#f7f9f4; --ink:#25352a; --ink-soft:#6b7a6b; --dark:#1f3d2b; --accent:#5a7d5a; --line:#cdd8c6; }
+    body { font-family: "Zen Kaku Gothic New", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; margin: 0; padding: 5px 2px; background: #e8e6df; color: #25352a; }
+    .app-container { --sage:#e8e6df; --sage-soft:#e9eee3; --card:#f7f9f4; --ink:#25352a; --ink-soft:#6b7a6b; --dark:#1f3d2b; --accent:#5a7d5a; --line:#cdd8c6; }
     .app-container { max-width: 1100px; margin: auto; }
-    .master-panel { background: #e3f2fd; padding: 6px; border-radius: 6px; margin-bottom: 8px; border: 1px solid #90caf9; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px; }
+    .master-panel { background: #f4f2ec; padding: 6px; border-radius: 6px; margin-bottom: 8px; border: 1px solid #e8e6df; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px; }
     .api-input { padding: 2px; font-size: 11px; border: 1px solid #ccc; border-radius: 4px; flex-grow: 1; max-width: 300px; }
     .sync-btn { background: #e65100; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 2px; }
     .system-section { background: #fff; border-radius: 6px; margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
-    .system-summary { padding: 8px; font-size: 12px; font-weight: bold; color: #1565c0; background: #e3f2fd; cursor: pointer; }
-    .system-content { padding: 6px; border-top: 1px dashed #90caf9; }
+    .system-summary { padding: 8px; font-size: 12px; font-weight: bold; color: #1a1a1a; background: #f4f2ec; cursor: pointer; }
+    .system-content { padding: 6px; border-top: 1px dashed #e8e6df; }
     #data-input { width: 100%; height: 50px; font-size: 10px; padding: 4px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; resize: vertical; }
-    .btn-primary { background: #1a73e8; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
-    .btn-success { background: #4caf50; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
+    .btn-primary { background: #1a1a1a; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
+    .btn-success { background: #c3ec3f; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
     .btn-danger { background: #d32f2f; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
     .nav-area { background: #fff; padding: 6px; border-radius: 6px; margin-bottom: 8px; display: flex; flex-wrap: wrap; gap: 4px; }
     .race-btn { background: #f5f5f5; border: 1px solid #ccc; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; color: #555; transition: background 0.2s, color 0.2s; display: flex; flex-direction: column; align-items: center; line-height: 1.2; min-width: 52px; }
-    .race-btn.active { background: #1a73e8; color: #fff; border-color: #1557b0; }
+    .race-btn.active { background: #1a1a1a; color: #fff; border-color: #1557b0; }
     .race-btn.status-勝負 { background: #ffebee; border-color: #ef5350; color: #c62828; }
     .race-btn.status-勝負.active { background: #e53935; color: #fff; border-color: #b71c1c; }
-    .race-btn.status-絞る { background: #e8f5e9; border-color: #66bb6a; color: #2e7d32; }
+    .race-btn.status-絞る { background: #f4f2ec; border-color: #66bb6a; color: #1a1a1a; }
     .race-btn.status-絞る.active { background: #43a047; color: #fff; border-color: #1b5e20; }
     .race-btn.status-万馬券 { background: #f3e5f5; border-color: #ab47bc; color: #6a1b9a; }
     .race-btn.status-万馬券.active { background: #8e24aa; color: #fff; border-color: #4a148c; }
@@ -35,17 +35,17 @@
     .race-btn.status-波乱.active { background: #f57f17; color: #fff; border-color: #e65100; }
     .race-btn.status-穴狙い { background: #e0f2f1; border-color: #26c6da; color: #00695c; }
     .race-btn.status-穴狙い.active { background: #00897b; color: #fff; border-color: #004d40; }
-    .race-btn.status-見送り { background: #eeeeee; border-color: #bdbdbd; color: #757575; }
-    .race-btn.status-見送り.active { background: #757575; color: #fff; border-color: #616161; }
-    .race-btn.status-custom { background: #e3f2fd; border-color: #29b6f6; color: #0277bd; }
+    .race-btn.status-見送り { background: #eeeeee; border-color: #bdbdbd; color: #9b9a92; }
+    .race-btn.status-見送り.active { background: #9b9a92; color: #fff; border-color: #616161; }
+    .race-btn.status-custom { background: #f4f2ec; border-color: #29b6f6; color: #0277bd; }
     .race-btn.status-custom.active { background: #039be5; color: #fff; border-color: #01579b; }
     .race-btn.has-star { border-top: 2px solid #ff9800; }
    .tab-venue { font-size: 13px; font-weight: bold; }
     .tab-time { font-size: 10px; color: #94a3b8; margin-top: 1px; }
-    .race-btn.active .tab-time { color: #3b9487; }
+    .race-btn.active .tab-time { color: #1a1a1a; }
     .race-card { background: #fff; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,.2); overflow: hidden; margin-bottom: 10px; }
     .section-title { background: #f0f0f0; padding: 6px 8px; font-size: 12px; font-weight: bold; color: #555; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; display: flex; align-items: center; flex-wrap: wrap; }
-    .simulator-wrapper { background: #ffffff; border: 1px solid #e6ece0; border-radius:16px; margin:12px; box-shadow:0 1px 3px rgba(60,90,63,.06); overflow:hidden; }
+    .simulator-wrapper { background: #ffffff; border: 1px solid #e8e6df; border-radius:16px; margin:12px; box-shadow:0 1px 3px rgba(0,0,0,.06); overflow:hidden; }
     .sim-header { background: #fff8e1; color: #d84315; font-size: 11px; font-weight: bold; padding: 6px 8px; border-bottom: 1px solid #ffcc80; display: flex; align-items: center; gap: 6px; }
     .sim-content { padding: 6px; }
     .sim-row { display: flex; align-items: center; margin-bottom: 6px; gap: 6px; }
@@ -55,8 +55,8 @@
     .baba-btn.active { background: #e65100; color: #fff; border-color: #d84315; }
     .slider-container { display: flex; align-items: center; flex-grow: 1; background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 2px 6px; }
     .sim-side-label { font-size: 10px; font-weight: bold; white-space: nowrap; }
-    .text-red { color: #8a9a83; }
-    input[type=range].blue-slider { -webkit-appearance: none; appearance: none; flex-grow: 1; margin: 0 6px; height: 6px; background: var(--track-bg,#e0e0e0); border-radius: 3px; outline: none; transition: background 0.3s; }
+    .text-red { color: #9b9a92; }
+    input[type=range].blue-slider { -webkit-appearance: none; appearance: none; flex-grow: 1; margin: 0 6px; height: 6px; background: var(--track-bg,#e8e6df); border-radius: 3px; outline: none; transition: background 0.3s; }
     input[type=range].blue-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--thumb-color,#9e9e9e); cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.4); transition: background 0.3s; }
     @keyframes btn-pulse { 0% { box-shadow: 0 0 0 0 rgba(211,47,47,0.7); } 70% { box-shadow: 0 0 0 12px rgba(211,47,47,0); } 100% { box-shadow: 0 0 0 0 rgba(211,47,47,0); } }
     .pace-board { background: #fff; border-top: 1px solid #eee; padding: 6px; font-size: 11px; }
@@ -75,13 +75,13 @@
     .waku-8 { background: #dd6f96; color: #fff; }
     .horse-board-icon { position: absolute; display: flex; flex-direction: column; align-items: center; cursor: grab; touch-action: none; transform: translate(-50%,-50%); }
     .horse-board-icon.dragging { transition: none !important; opacity: 0.6; z-index: 9999 !important; }
-    .ai-pace-area { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 6px 8px; }
+    .ai-pace-area { background: #f4f2ec; border-left: 4px solid #c3ec3f; padding: 6px 8px; }
     .ai-pace-header { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; flex-wrap: wrap; }
-    .ai-pace-label { font-size: 11px; font-weight: bold; color: #2e7d32; }
-    .ai-mic-btn { background: #4caf50; color: #fff; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s; }
+    .ai-pace-label { font-size: 11px; font-weight: bold; color: #1a1a1a; }
+    .ai-mic-btn { background: #c3ec3f; color: #fff; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s; }
     .ai-mic-btn.recording { background: #d32f2f; animation: mic-pulse 0.8s infinite; }
     @keyframes mic-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
-    .ai-pace-textarea { width: 100%; min-height: 70px; font-size: 11px; padding: 6px; border: 1px solid #a5d6a7; border-radius: 4px; resize: vertical; box-sizing: border-box; background: #fff; line-height: 1.6; font-family: inherit; }
+    .ai-pace-textarea { width: 100%; min-height: 70px; font-size: 11px; padding: 6px; border: 1px solid #dcdad3; border-radius: 4px; resize: vertical; box-sizing: border-box; background: #fff; line-height: 1.6; font-family: inherit; }
     .data-table-container { width: 100%; overflow-x: auto; }
     .data-table { width: 100%; border-collapse: collapse; font-size: 10px; text-align: center; }
     .data-table th { background: #444; color: #fff; padding: 2px 1px; white-space: nowrap; cursor: pointer; user-select: none; font-size: 10px; }
@@ -147,7 +147,7 @@
       border-radius: 4px; 
       border: 1px solid #4a4a8a; 
       box-shadow: inset 0 0 4px rgba(0,0,0,0.5);
-      color: #e0e0e0;
+      color: #e8e6df;
     }
     .st-label {
       writing-mode: vertical-rl;
@@ -182,11 +182,11 @@
     .st-class-name { font-size: 9px; margin-right: 4px; white-space: nowrap; }
     .st-time-val { font-weight: bold; color: #fff; font-size: 11px; }
 
-    .main-table-area { border-top: 2px solid #1565c0; background: #fff; }
+    .main-table-area { border-top: 2px solid #1a1a1a; background: #fff; }
     .main-table-sort-bar { background: #2a2a4a; padding: 4px 8px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; border-bottom: 1px solid #3a3a6a; }
     .main-table-sort-btn { background: #3a3a6a; color: #bbb; border: 1px solid #5a5a8a; padding: 2px 10px; border-radius: 3px; font-size: 10px; font-weight: bold; cursor: pointer; transition: background 0.15s; }
     .main-table-sort-btn:hover { background: #4a4a7a; }
-    .main-table-sort-btn.active { background: #1565c0; color: #fff; border-color: #0d47a1; }
+    .main-table-sort-btn.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
     .main-table-sort-btn.asc::after { content: ' ▲'; font-size: 8px; }
     .main-table-sort-btn.desc::after { content: ' ▼'; font-size: 8px; }
     
@@ -201,11 +201,11 @@
     .import-bar { padding: 4px 6px; border-bottom: 1px solid #ddd; display: flex; gap: 4px; align-items: center; }
     .single-line-textarea { flex-grow: 1; height: 24px; padding: 3px; font-size: 10px; resize: none; box-sizing: border-box; overflow: hidden; white-space: pre; }
     
-    .graph-section-title { background: #e3f2fd; padding: 6px; color: #1565c0; border-top: 1px solid #90caf9; border-bottom: 1px solid #90caf9; border-left: 4px solid #1a73e8; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px; }
+    .graph-section-title { background: #f4f2ec; padding: 6px; color: #1a1a1a; border-top: 1px solid #e8e6df; border-bottom: 1px solid #e8e6df; border-left: 4px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px; }
     .graph-sort-bar { background: #1e1e1e; padding: 4px 6px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; border-bottom: 1px solid #333; }
     .graph-sort-btn { background: #333; color: #ccc; border: 1px solid #555; padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: bold; cursor: pointer; transition: background 0.15s; }
     .graph-sort-btn:hover { background: #444; }
-    .graph-sort-btn.active { background: #1a73e8; color: #fff; border-color: #1557b0; }
+    .graph-sort-btn.active { background: #1a1a1a; color: #fff; border-color: #1557b0; }
     .graph-sort-btn.asc::after { content: ' ▲'; font-size: 8px; }
     .graph-sort-btn.desc::after { content: ' ▼'; font-size: 8px; }
     
@@ -234,58 +234,58 @@
    .graph-title-sort-btn { color: #fff; padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: bold; cursor: pointer; border: 2px solid transparent; }
     .graph-title-sort-btn:hover { opacity: 0.85; }
     
-  .graph-mode-bar { background: #f8fafc; color: #475569; font-size: 10px; font-weight: bold; padding: 3px 8px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid #e2e8f0; }
+  .graph-mode-bar { background: #f4f2ec; color: #3d3d3a; font-size: 10px; font-weight: bold; padding: 3px 8px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid #e8e6df; }
    .graph-mode-badge { background: #94a3b8; border: 1px solid #718096; border-radius: 3px; padding: 1px 6px; font-size: 10px; color: #fff; }
-   .graph-mode-bar span[onclick] { color: #64748b !important; }
+   .graph-mode-bar span[onclick] { color: #9b9a92 !important; }
    
-   .core-panel { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 4px; padding: 6px 10px; margin: 4px; font-size: 10px; line-height: 1.8; color: #333; }
+   .core-panel { background: #ffffff; border: 1px solid #e8e6df; border-radius: 4px; padding: 6px 10px; margin: 4px; font-size: 10px; line-height: 1.8; color: #333; }
    .core-panel .core-title { color:#1a1a1a; font-weight: bold; font-size: 11px; margin-bottom: 4px; }
-   .core-badge-1 { color: #d39e55; font-weight: bold; }
+   .core-badge-1 { color: #b8a06a; font-weight: bold; }
    .core-badge-2 { color: #94a3b8; font-weight: bold; }
-   .core-badge-3 { color: #cbd5e1; font-weight: bold; }
+   .core-badge-3 { color: #dcdad3; font-weight: bold; }
    
-   .odds-analysis-horse-row { display: flex; align-items: center; gap: 6px; padding: 3px 6px; border-bottom: 1px solid #f1f5f9; }
+   .odds-analysis-horse-row { display: flex; align-items: center; gap: 6px; padding: 3px 6px; border-bottom: 1px solid #f4f2ec; }
    .odds-analysis-horse-row:last-child { border-bottom: none; }
    .oa-waku-box { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 3px; font-weight: bold; font-size: 11px; box-shadow: inset 0 0 2px rgba(0,0,0,.1); }
    .oa-win-rate { font-size: 12px; font-weight: bold; color:#1a1a1a; min-width: 50px; text-align: right; }
    .oa-core-badge { font-size: 10px; font-weight: bold; white-space: nowrap; padding: 1px 5px; border-radius: 3px; min-width: 44px; text-align: center; }
-   .oa-core-hoshi { background: #fffcf0; color: #d39e55; border: 1px solid #d39e55; }
-   .oa-core-spade { background: #f0fdf4; color: #3b9487; border: 1px solid #3b9487; }
-   .danso-line-label { color: #64748b !important; background: #ffffff !important; }
+   .oa-core-hoshi { background: #fffcf0; color: #b8a06a; border: 1px solid #b8a06a; }
+   .oa-core-spade { background: #f4f2ec; color: #1a1a1a; border: 1px solid #1a1a1a; }
+   .danso-line-label { color: #9b9a92 !important; background: #ffffff !important; }
     
     .confirm-info-box { display: flex; flex-direction: column; gap: 2px; margin-left: 4px; min-width: 185px; }
-    .confirm-ev-row { display: flex; align-items: center; gap: 4px; background: #fff; border: 1px solid #e0e0e0; border-radius: 3px; padding: 2px 5px; }
+    .confirm-ev-row { display: flex; align-items: center; gap: 4px; background: #fff; border: 1px solid #e8e6df; border-radius: 3px; padding: 2px 5px; }
     .confirm-horse-waku { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 3px; font-weight: bold; font-size: 12px; box-shadow: inset 0 0 2px rgba(0,0,0,.3); flex-shrink: 0; margin-right: 2px; }
     .confirm-ev-label { font-size: 9px; color: #555; white-space: nowrap; }
     .confirm-ev-value { font-size: 13px; font-weight: bold; color: #d32f2f; min-width: 36px; text-align: right; }
     .confirm-rates-row { font-size: 9px; color: #333; white-space: nowrap; background: #f8f8f8; border-radius: 3px; padding: 1px 5px; }
     
-    .ticket-builder { background: #e8f5e9; border-top: 2px solid #4caf50; padding: 0; }
+    .ticket-builder { background: #f4f2ec; border-top: 2px solid #c3ec3f; padding: 0; }
     .ticket-builder-header { background: #c8e6c9; padding: 6px 10px; font-size: 12px; font-weight: bold; color: #1b5e20; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .tb-type-select { padding: 4px 6px; font-weight: bold; border: 1px solid #4caf50; font-size: 12px; border-radius: 4px; background: #fff; }
-    .tb-points-badge { background: #fff; border: 1px solid #4caf50; border-radius: 12px; padding: 2px 10px; font-size: 12px; font-weight: bold; color: #2e7d32; }
-    .tb-ai-btn { background: #1a73e8; color: #fff; border: none; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; margin-left: auto; }
+    .tb-type-select { padding: 4px 6px; font-weight: bold; border: 1px solid #c3ec3f; font-size: 12px; border-radius: 4px; background: #fff; }
+    .tb-points-badge { background: #fff; border: 1px solid #c3ec3f; border-radius: 12px; padding: 2px 10px; font-size: 12px; font-weight: bold; color: #1a1a1a; }
+    .tb-ai-btn { background: #1a1a1a; color: #fff; border: none; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; margin-left: auto; }
     
     .tb-mark-section { padding: 6px 8px; border-bottom: 1px solid #c8e6c9; }
     .tb-mark-row { display: flex; align-items: center; margin-bottom: 5px; }
-    .tb-mark-label { width: 38px; font-size: 11px; font-weight: bold; color: #2e7d32; flex-shrink: 0; }
+    .tb-mark-label { width: 38px; font-size: 11px; font-weight: bold; color: #1a1a1a; flex-shrink: 0; }
     .tb-mark-row { display: flex; align-items: flex-start; margin-bottom: 8px; } /* 縦ズレを調整 */
-    .tb-mark-label { width: 38px; font-size: 11px; font-weight: bold; color: #2e7d32; flex-shrink: 0; padding-top: 6px; }
+    .tb-mark-label { width: 38px; font-size: 11px; font-weight: bold; color: #1a1a1a; flex-shrink: 0; padding-top: 6px; }
     .tb-num-btns { display: grid; grid-template-columns: repeat(auto-fill, minmax(30px, 1fr)); gap: 4px; flex-grow: 1; }
     .tb-num-btn { width: 100%; height: 30px; border-radius: 4px; border: 1px solid #ccc; background: #fff; cursor: pointer; font-weight: bold; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: background 0.15s; padding: 0; }
 
     .tb-num-btn.sel-1 { background: #ffcdd2; color: #c62828; border-color: #ef5350; }
-    .tb-num-btn.sel-2 { background: #bbdefb; color: #1565c0; border-color: #2196f3; }
+    .tb-num-btn.sel-2 { background: #bbdefb; color: #1a1a1a; border-color: #2196f3; }
     .tb-num-btn.sel-3 { background: #fff9c4; color: #e65100; border-color: #ff9800; }
     
-    .tb-stats-panel { background: #0d47a1; color: #fff; padding: 8px 10px; display: flex; align-items: stretch; gap: 0; border-bottom: 1px solid #1565c0; }
+    .tb-stats-panel { background: #1a1a1a; color: #fff; padding: 8px 10px; display: flex; align-items: stretch; gap: 0; border-bottom: 1px solid #1a1a1a; }
     .tb-stat-block { flex: 1; text-align: center; padding: 4px 6px; border-right: 1px solid rgba(255,255,255,0.2); }
     .tb-stat-block:last-child { border-right: none; }
     .tb-stat-label { font-size: 9px; color: rgba(255,255,255,0.7); margin-bottom: 2px; }
     .tb-stat-value { font-size: 16px; font-weight: bold; color: #64ffda; }
     .tb-stat-value.warn { color: #ff8a65; }
     .tb-stat-sub { font-size: 9px; color: rgba(255,255,255,0.6); }
-    .tb-total-block { background: #1565c0; padding: 4px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 80px; }
+    .tb-total-block { background: #1a1a1a; padding: 4px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 80px; }
     .tb-total-label { font-size: 9px; color: rgba(255,255,255,0.7); }
     .tb-total-value { font-size: 14px; font-weight: bold; color: #fff; }
     
@@ -296,10 +296,10 @@
     .tb-ticket-name { font-size: 12px; font-weight: bold; color: #222; min-width: 60px; }
     .tb-ticket-rate { font-size: 10px; color: #666; flex-shrink: 0; }
     .tb-ev-badge { font-size: 10px; font-weight: bold; padding: 1px 5px; border-radius: 3px; flex-shrink: 0; }
-    .tb-ev-badge.good { background: #e8f5e9; color: #2e7d32; }
+    .tb-ev-badge.good { background: #f4f2ec; color: #1a1a1a; }
     .tb-ev-badge.bad { background: #ffebee; color: #c62828; }
     .tb-ticket-odds { font-size: 12px; font-weight: bold; color: #d32f2f; min-width: 46px; text-align: right; }
-    .tb-ticket-money { background: #e3f2fd; color: #1565c0; font-size: 11px; font-weight: bold; padding: 2px 6px; border-radius: 3px; min-width: 46px; text-align: center; }
+    .tb-ticket-money { background: #f4f2ec; color: #1a1a1a; font-size: 11px; font-weight: bold; padding: 2px 6px; border-radius: 3px; min-width: 46px; text-align: center; }
     .tb-ticket-payout { background: #fff8e1; color: #e65100; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 3px; min-width: 72px; text-align: center; border: 1px solid #ffcc80; }
     .tb-del-btn { background: #ffcdd2; color: #c62828; border: none; border-radius: 3px; width: 20px; height: 20px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left: auto; flex-shrink: 0; }
     
@@ -308,15 +308,15 @@
     .tb-odds-sub-section + .tb-odds-sub-section { border-top: 1px dashed #ffcc80; background: #fafff8; }
     .tb-odds-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 4px; }
     .tb-odds-label-tan { color: #e65100; font-size: 11px; font-weight: bold; }
-    .tb-odds-label-multi { color: #1565c0; font-size: 11px; font-weight: bold; }
+    .tb-odds-label-multi { color: #1a1a1a; font-size: 11px; font-weight: bold; }
     
     .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 200; align-items: center; justify-content: center; }
     .modal.open { display: flex; }
     .modal-box { background: #fff; border-radius: 12px; padding: 20px; width: 680px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
-    .modal-box h2 { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: #1565c0; border-bottom: 2px solid #e8a020; padding-bottom: 6px; }
+    .modal-box h2 { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: #1a1a1a; border-bottom: 2px solid #e8a020; padding-bottom: 6px; }
     
     .admin-section { margin-bottom: 14px; }
-    .admin-section h3 { font-size: 12px; font-weight: 700; color: #1565c0; margin-bottom: 6px; padding: 3px 8px; background: #e3f2fd; border-radius: 4px; }
+    .admin-section h3 { font-size: 12px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; padding: 3px 8px; background: #f4f2ec; border-radius: 4px; }
     #bulk-input-area { width: 100%; height: 180px; font-size: 11px; border: 1px solid #ccc; border-radius: 4px; padding: 6px; resize: vertical; font-family: monospace; line-height: 1.6; box-sizing: border-box; }
     .format-hint { font-size: 10px; color: #666; line-height: 1.8; background: #f9f9f9; border: 1px solid #ddd; border-radius: 4px; padding: 6px; margin-bottom: 6px; }
     .format-hint code { background: #e8e8e8; padding: 1px 3px; border-radius: 2px; font-family: monospace; }
@@ -332,39 +332,39 @@
     .gas-step { background: #fff8e1; border: 1px solid #ffe082; border-radius: 6px; padding: 10px 14px; margin-bottom: 10px; }
     .gas-step-num { background: #e65100; color: #fff; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; margin-right: 8px; flex-shrink: 0; }
     .gas-step-title { font-size: 12px; font-weight: bold; color: #e65100; }
-    .gas-url-input { width: 100%; padding: 8px; font-size: 12px; border: 2px solid #1a73e8; border-radius: 6px; box-sizing: border-box; margin-top: 6px; }
+    .gas-url-input { width: 100%; padding: 8px; font-size: 12px; border: 2px solid #1a1a1a; border-radius: 6px; box-sizing: border-box; margin-top: 6px; }
     .gas-code-area { width: 100%; height: 220px; font-size: 10px; font-family: monospace; border: 1px solid #ccc; border-radius: 4px; padding: 6px; background: #1e1e1e; color: #d4d4d4; resize: vertical; box-sizing: border-box; }
     
     .summary-badge { display: inline-block; background: #7b1fa2; color: #fff; font-size: 9px; font-weight: bold; padding: 1px 4px; border-radius: 3px; vertical-align: middle; margin-left: 2px; }
     .memo-full { color: #333; }
     .memo-summary { color: #6a1b9a; font-style: italic; }
     
-    .tsv-paste-area { width: 100%; height: 200px; font-size: 11px; border: 2px solid #1a73e8; border-radius: 6px; padding: 8px; resize: vertical; font-family: monospace; line-height: 1.6; box-sizing: border-box; background: #f8faff; }
-    .tsv-format-hint { background: #e8f5e9; border: 1px solid #a5d6a7; border-radius: 4px; padding: 8px; font-size: 11px; margin-bottom: 8px; line-height: 1.8; }
+    .tsv-paste-area { width: 100%; height: 200px; font-size: 11px; border: 2px solid #1a1a1a; border-radius: 6px; padding: 8px; resize: vertical; font-family: monospace; line-height: 1.6; box-sizing: border-box; background: #f8faff; }
+    .tsv-format-hint { background: #f4f2ec; border: 1px solid #dcdad3; border-radius: 4px; padding: 8px; font-size: 11px; margin-bottom: 8px; line-height: 1.8; }
     .tsv-format-hint code { background: #c8e6c9; padding: 1px 4px; border-radius: 2px; font-family: monospace; font-size: 11px; }
     
     #pace-draw-layer { position: absolute; inset: 0; z-index: 10; pointer-events: none; width: 100%; height: 100%; touch-action: none; }
     #pace-horse-layer { position: absolute; inset: 0; z-index: 15; pointer-events: none; }
     
     .oa-textarea-memo { width: 100%; height: 45px; font-size: 11px; padding: 6px; border: 1px solid #4a4a8a; border-radius: 4px; background: #0d0d1e; color: #fff; resize: vertical; font-family: inherit; }
-    .bar-ev-high { background: linear-gradient(90deg, #d32f2f, #ff5252) !important; box-shadow: 0 0 5px rgba(211,47,47,0.8); }
+    .bar-ev-high { background: linear-gradient(90deg, #c3ec3f, #d4f34a) !important; box-shadow: 0 0 0 2px rgba(195,236,63,.4); }
     .koso-match { background-color: #fff9c4 !important; border: 1px solid #fbc02d !important; border-radius: 3px; }
     .koso-starred { background-color: #ffcc80 !important; box-shadow: inset 0 0 0 2px #ff9800 !important; }
     
     .nav-race-btn.dimmed { opacity: 0.35; filter: grayscale(35%); transition: opacity .35s ease, filter .35s ease; }
     @keyframes muketsuGlow {
-      0%,100% { box-shadow: 0 0 0 1px rgba(59,148,135,.45), 0 0 10px rgba(59,148,135,.28), 0 0 20px rgba(59,148,135,.14); }
-      50%     { box-shadow: 0 0 0 1px rgba(59,148,135,.65), 0 0 16px rgba(59,148,135,.45), 0 0 30px rgba(59,148,135,.22); }
+      0%,100% { box-shadow: 0 0 0 1px rgba(195,236,63,.45), 0 0 10px rgba(195,236,63,.28), 0 0 20px rgba(195,236,63,.14); }
+      50%     { box-shadow: 0 0 0 1px rgba(195,236,63,.65), 0 0 16px rgba(195,236,63,.45), 0 0 30px rgba(195,236,63,.22); }
     }
     .nav-race-btn.highlight {
       background:#ffffff !important;
-      border-color: rgba(59,148,135,.55) !important;
+      border-color: rgba(195,236,63,.55) !important;
       color:#0f5c53 !important;
       z-index: 5;
       animation: muketsuGlow 2.4s ease-in-out infinite;
       transition: all .3s ease;
     }
-    @media (prefers-reduced-motion: reduce){ .nav-race-btn.highlight{ animation:none; box-shadow:0 0 0 1px rgba(59,148,135,.5),0 0 14px rgba(59,148,135,.3);} }
+    @media (prefers-reduced-motion: reduce){ .nav-race-btn.highlight{ animation:none; box-shadow:0 0 0 1px rgba(195,236,63,.5),0 0 14px rgba(195,236,63,.3);} }
   /* ▼▼ 追加：ナビゲーションボタンが光るエフェクト ▼▼ */
   .nav-race-btn { transition: all 0.2s ease; }
   .nav-race-btn.active.is-turf,
@@ -403,14 +403,14 @@
 
 /* 1. ベースの背景と文字色 */
 body {
-  background: #dbe3d4;
+  background: #e8e6df;
   color: #25352a;
 }
 
 /* 2. パネルやカードをフラットに（パディングは極端に広げず維持） */
 .master-panel, .system-section, .filter-panel, .nav-area, .race-card, .ticket-builder {
   background: #ffffff;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e8e6df;
   border-radius: 8px;
   box-shadow: none;
 }
@@ -419,7 +419,7 @@ body {
 .section-title, .sim-header, .graph-section-title, .ticket-builder-header, .ai-pace-header {
   background: transparent;
   border: none;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e8e6df;
   color:#1a1a1a;
   font-size: 13px;
   font-weight: bold;
@@ -428,41 +428,41 @@ body {
 /* 4. タブ（レース選択ボタン）のクリーン化 */
 .race-btn {
   background: #ffffff;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e8e6df;
   border-radius: 6px;
-  color: #64748b;
+  color: #9b9a92;
   box-shadow: none;
 }
 .race-btn.active {
-  background: #f0fdf4 !important;
-  border: 1px solid #3b9487 !important;
+  background: #f4f2ec !important;
+  border: 1px solid #1a1a1a !important;
   color:#1a1a1a !important;
 }
 
 /* 5. データテーブルのヘッダーをクリーンに */
 .data-table th {
-  background: #f8fafc;
-  color: #475569;
+  background: #f4f2ec;
+  color: #3d3d3a;
   border: none;
-  border-bottom: 2px solid #3b9487;
+  border-bottom: 2px solid #1a1a1a;
 }
 .data-table td {
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f4f2ec;
   color: #333;
 }
 
 /* 6. スライダーのアースカラー化 */
 input[type=range].blue-slider {
   height: 6px;
-  background: #e2e8f0;
+  background: #e8e6df;
   border: none;
 }
 input[type=range].blue-slider::-webkit-slider-thumb {
-  border: 2px solid #3b9487;
+  border: 2px solid #1a1a1a;
   box-shadow: none;
 }
 .sim-side-label.text-red {
-  color: #64748b !important;
+  color: #9b9a92 !important;
 }
 
 /* 7. ボタン類のアースカラー化（JSの動きを殺さないよう!importantを外す） */
@@ -472,17 +472,17 @@ button { box-shadow: none !important; }
 /* ① メインアクション（青緑）: 通常操作、開閉ボタンなど */
 .btn-primary, .sync-btn, .tb-ai-btn, 
 #toggle-track-btn, #toggle-detail-btn, #toggle-arrange-btn {
-  background: #3b9487 !important;
+  background: #1a1a1a !important;
   color: #fff !important;
-  border: 1px solid #2c7a6f !important;
+  border: 1px solid #1a1a1a !important;
 }
 
 /* ② アクセント（キャメル）: 確定、反映、AI推奨、選択中の馬場状態など */
 .btn-success, .btn-odds-analyze, .baba-btn.active,
 #btn-draw-mode[style*="d32f2f"] {
-  background: #d39e55 !important;
+  background: #b8a06a !important;
   color: #fff !important;
-  border: 1px solid #b88645 !important;
+  border: 1px solid #a08850 !important;
 }
 
 /* ③ サブ・リセット（スレートグレー）: 削除、クリア、アレンジの隠しボタンなど */
@@ -491,44 +491,44 @@ button { box-shadow: none !important; }
   color: #fff !important;
   border: 1px solid #718096 !important;
 }
-.ai-mic-btn.recording { background: #d39e55 !important; } /* 録音中 */
+.ai-mic-btn.recording { background: #b8a06a !important; } /* 録音中 */
 
 /* ▼ 買い目ビルダーの馬番選択ボタンも3色に統一 ▼ */
-.tb-num-btn.sel-1 { background: #d39e55 !important; color: #fff !important; border: 1px solid #b88645 !important; } /* 軸/1着: キャメル */
-.tb-num-btn.sel-2 { background: #3b9487 !important; color: #fff !important; border: 1px solid #2c7a6f !important; } /* 相手/2着: 青緑 */
+.tb-num-btn.sel-1 { background: #b8a06a !important; color: #fff !important; border: 1px solid #a08850 !important; } /* 軸/1着: キャメル */
+.tb-num-btn.sel-2 { background: #1a1a1a !important; color: #fff !important; border: 1px solid #1a1a1a !important; } /* 相手/2着: 青緑 */
 .tb-num-btn.sel-3 { background: #94a3b8 !important; color: #fff !important; border: 1px solid #718096 !important; } /* 3着: グレー */
 
 /* 8. 入力フォームの枠線を柔らかく */
 input[type=number], input[type=text], textarea, select {
-  border: 1px solid #cbd5e1;
+  border: 1px solid #dcdad3;
   border-radius: 4px;
 }
 
 /* 9. グラフエリアの白化と、黒い残骸の修正 */
 .chart-area {
   background: #ffffff;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e8e6df;
 }
 .horse-name {
   color: #333 !important;
   text-shadow: none !important;
 }
 .danso-line {
-  border-top: 2px dashed #cbd5e1 !important;
+  border-top: 2px dashed #dcdad3 !important;
 }
 .danso-line-label {
   background: #ffffff !important;
   color: #e06c6c !important;
 }
 .val-col-inner {
-  background: #f8fafc !important; /* 入力欄の背景を白グレーに */
+  background: #f4f2ec !important; /* 入力欄の背景を白グレーに */
 }
 .val-col {
-  color: #3b9487 !important; /* 入力欄の文字を青緑に */
+  color: #1a1a1a !important; /* 入力欄の文字を青緑に */
 }
 #standard-time-container {
-  background: #f8fafc !important;
-  border: 1px solid #e2e8f0 !important;
+  background: #f4f2ec !important;
+  border: 1px solid #e8e6df !important;
   color: #333 !important;
   box-shadow: none !important;
 }
@@ -536,27 +536,27 @@ input[type=number], input[type=text], textarea, select {
 
 /* 10. フッターのAIエリア等の装飾リセット */
 .ai-pace-area, .tb-stats-panel {
-  background: #f8fafc !important;
-  border: 1px solid #e2e8f0 !important;
+  background: #f4f2ec !important;
+  border: 1px solid #e8e6df !important;
 }
-.tb-stat-block { border-color: #e2e8f0 !important; }
-.tb-total-block { background: #e2e8f0 !important; }
-.tb-stat-label, .tb-stat-sub, .tb-total-label { color: #64748b !important; }
+.tb-stat-block { border-color: #e8e6df !important; }
+.tb-total-block { background: #e8e6df !important; }
+.tb-stat-label, .tb-stat-sub, .tb-total-label { color: #9b9a92 !important; }
 .tb-stat-value, .tb-total-value { color:#1a1a1a !important; }
 
 /* 11. シミュレーター微調整ボタンと数値表示 */
 .sim-adj-btn {
-  background: #e2e8f0;
-  border: 1px solid #cbd5e1;
+  background: #e8e6df;
+  border: 1px solid #dcdad3;
   border-radius: 4px;
-  color: #475569;
+  color: #3d3d3a;
   font-size: 10px;
   padding: 2px 8px;
   cursor: pointer;
   box-shadow: none;
   user-select: none;
 }
-.sim-adj-btn:hover { background: #cbd5e1; }
+.sim-adj-btn:hover { background: #dcdad3; }
 .sim-val-disp {
   font-size: 11px;
   font-weight: bold;
@@ -580,9 +580,9 @@ input[type=number], input[type=text], textarea, select {
   }
   /* 勝率モードのアクティブ色（緑系） */
   .tb-ai-mode-btn.active-win {
-    background: #3b9487 !important;
+    background: #1a1a1a !important;
     color: #ffffff !important;
-    border: 1px solid #2c7a6f !important;
+    border: 1px solid #1a1a1a !important;
   }
   /* 期待値モードのアクティブ色（青系） */
   .tb-ai-mode-btn.active-ev {
@@ -598,49 +598,49 @@ input[type=number], input[type=text], textarea, select {
   display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
   background: rgba(0,0,0,0.7); z-index: 9999; overflow-y: auto; padding: 30px 10px;
 }
-.report-page { background: #ffffff; width: 960px; max-width: 100%; margin: 0 auto; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; }
+.report-page { background: #ffffff; width: 960px; max-width: 100%; margin: 0 auto; border: 1px solid #e8e6df; box-shadow: 0 4px 20px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; }
 
 /* ヘッダーの色を緑基調に */
-.rep-header-A { background: #3b9487; }
-.rep-header-B { background: #1a5c53; }
-.rep-header { color: #fff; padding: 16px 20px; font-size: 18px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid #2c7a6f; }
+.rep-header-A { background: #1a1a1a; }
+.rep-header-B { background: #1a1a1a; }
+.rep-header { color: #fff; padding: 16px 20px; font-size: 18px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid #1a1a1a; }
 
 /* ボタンのスタイル変更（絵文字なし、シンプルに） */
-.rep-header-btn { background: #ffffff; color:#1a1a1a; border: 1px solid #cbd5e1; padding: 6px 12px; font-size: 13px; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: background 0.2s; box-shadow: none; }
-.rep-header-btn:hover { background: #f8fafc; }
+.rep-header-btn { background: #ffffff; color:#1a1a1a; border: 1px solid #dcdad3; padding: 6px 12px; font-size: 13px; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: background 0.2s; box-shadow: none; }
+.rep-header-btn:hover { background: #f4f2ec; }
 .rep-header-btn:active { transform: scale(0.98); }
 
 /* コンテンツエリア */
 .rep-content { display: flex; padding: 20px; gap: 20px; background: #e9eee3; flex-wrap: wrap; }
-.rep-left { flex: 1 1 500px; background: #ffffff; border-radius: 8px; padding: 20px; border: 1px solid #e2e8f0; box-shadow: none; }
-.rep-right { flex: 1 1 300px; background: #ffffff; border-radius: 8px; padding: 20px; border: 1px solid #e2e8f0; box-shadow: none; }
+.rep-left { flex: 1 1 500px; background: #ffffff; border-radius: 8px; padding: 20px; border: 1px solid #e8e6df; box-shadow: none; }
+.rep-right { flex: 1 1 300px; background: #ffffff; border-radius: 8px; padding: 20px; border: 1px solid #e8e6df; box-shadow: none; }
 
 /* テーブルのスタイルを緑/グレー基調に */
 .rep-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; text-align: center; font-size: 13px; }
-.rep-table th { background: #f8fafc; color:#1a1a1a; padding: 8px 10px; border: 1px solid #e2e8f0; border-bottom: 2px solid #3b9487; font-weight: bold; }
-.rep-table td { padding: 8px 10px; border: 1px solid #e2e8f0; background: #ffffff; color: #333333; }
+.rep-table th { background: #f4f2ec; color:#1a1a1a; padding: 8px 10px; border: 1px solid #e8e6df; border-bottom: 2px solid #1a1a1a; font-weight: bold; }
+.rep-table td { padding: 8px 10px; border: 1px solid #e8e6df; background: #ffffff; color: #333333; }
 
 /* ボックススタイル */
-.rep-box { background: #f8fafc; border-radius: 6px; padding: 16px; margin-bottom: 20px; font-size: 13px; line-height: 1.6; border: 1px solid #e2e8f0; color: #333333; }
+.rep-box { background: #f4f2ec; border-radius: 6px; padding: 16px; margin-bottom: 20px; font-size: 13px; line-height: 1.6; border: 1px solid #e8e6df; color: #333333; }
 
 /* 資金配分用テーブル（グレー基調に統合） */
-.rep-table-orange th { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; border-bottom: 2px solid #94a3b8; }
-.rep-table-orange td { background: #ffffff; border: 1px solid #e2e8f0; font-weight: bold; }
+.rep-table-orange th { background: #f4f2ec; color: #3d3d3a; border: 1px solid #e8e6df; border-bottom: 2px solid #94a3b8; }
+.rep-table-orange td { background: #ffffff; border: 1px solid #e8e6df; font-weight: bold; }
 
 /* グラフ関連 */
 .rep-g-row { display: flex; align-items: center; margin-bottom: 8px; font-size: 13px; color: #333333; }
 .rep-g-name { width: 170px; text-align: left; padding-right: 10px; font-family: inherit; display: flex; align-items: center; gap: 8px; font-weight: 500; }
 .rep-g-bars { flex-grow: 1; position: relative; height: 26px; }
 .rg-bar { position: absolute; left: 0; height: 8px; border-radius: 4px; }
-.rg-b1 { top: 0px; background: #1a5c53; z-index: 3; } /* 勝率：濃い青緑 */
-.rg-b2 { top: 9px; background: #3b9487; z-index: 2; } /* 連対率：標準のティール */
+.rg-b1 { top: 0px; background: #1a1a1a; z-index: 3; } /* 勝率：濃い青緑 */
+.rg-b2 { top: 9px; background: #1a1a1a; z-index: 2; } /* 連対率：標準のティール */
 .rg-b3 { top: 18px; background: #94a3b8; z-index: 1; } /* 複勝率：スレートグレーに変更 */
 
 .rg-val { position: absolute; font-size: 10px; font-weight: bold; line-height: 8px; }
 
 /* ドーナツチャート */
 .chart-container { display: flex; justify-content: center; align-items: center; margin-top: 20px; }
-.donut-chart { width: 220px; height: 220px; border-radius: 50%; border: 1px solid #e2e8f0; position: relative; display: flex; justify-content: center; align-items: center; box-shadow: none; }
+.donut-chart { width: 220px; height: 220px; border-radius: 50%; border: 1px solid #e8e6df; position: relative; display: flex; justify-content: center; align-items: center; box-shadow: none; }
 .donut-inner { width: 110px; height: 110px; background: #ffffff; border-radius: 50%; position: absolute; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 2; box-shadow: inset 0 1px 4px rgba(0,0,0,0.05); }
 
 @media print {
@@ -657,9 +657,9 @@ input[type=number], input[type=text], textarea, select {
 /* ▼▼▼ ここに貼り付けます ▼▼▼ */
 /* 詳細データ2 (陣営・コース適性) 用CSS */
 .dd2-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: center; }
-.dd2-table th { background-color: #f0fdf4; color:#1a1a1a; padding: 3px 2px; border-bottom: 2px solid #3b9487; font-weight: bold; white-space: nowrap; }
-.dd2-table td { padding: 3px 2px; border-bottom: 1px solid #e2e8f0; color: #333; white-space: nowrap; }
-.dd2-border-left { border-left: 2px solid #cbd5e1; }
+.dd2-table th { background-color: #f4f2ec; color:#1a1a1a; padding: 3px 2px; border-bottom: 2px solid #1a1a1a; font-weight: bold; white-space: nowrap; }
+.dd2-table td { padding: 3px 2px; border-bottom: 1px solid #e8e6df; color: #333; white-space: nowrap; }
+.dd2-border-left { border-left: 2px solid #dcdad3; }
 .dd2-highlight { color: #ef4444; font-weight: bold; background-color: #fef2f2; border-radius: 4px; padding: 2px 4px; }
 .dd2-highlight-mild { color: #d97706; font-weight: bold; }
 .dd2-badge-red { border: 1px solid #ef4444; color: #ef4444; font-size: 10px; font-weight: bold; padding: 1px 4px; border-radius: 3px; margin-right: 4px; }
@@ -669,36 +669,36 @@ input[type=number], input[type=text], textarea, select {
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    ▼▼▼ スタイリッシュ緑調UI（買い目ビルダー用） ▼▼▼
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.ticket-builder { background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-radius: 8px; box-shadow: none !important; }
-.ticket-builder-header { background: #ffffff !important; color:#1a1a1a !important; border-bottom: 1px solid #e2e8f0 !important; border-radius: 8px 8px 0 0; }
-.tb-points-badge { background: #f0fdf4 !important; color: #3b9487 !important; border: 1px solid #3b9487 !important; }
-.ticket-builder-header .btn-success { background: #d39e55 !important; border: 1px solid #b88645 !important; color: #ffffff !important; box-shadow: none !important; }
-.tb-mark-label { color: #d39e55 !important; }
-.tb-mark-label.aite { color: #3b9487 !important; }
-.tb-num-btn { border: 1px solid #cbd5e1 !important; color: #475569 !important; background: #ffffff !important; }
-.tb-num-btn.sel-1 { background: #d39e55 !important; border-color: #b88645 !important; color: #ffffff !important; }
-.tb-num-btn.sel-2 { background: #3b9487 !important; border-color: #2c7a6f !important; color: #ffffff !important; }
+.ticket-builder { background: #ffffff !important; border: 1px solid #e8e6df !important; border-radius: 8px; box-shadow: none !important; }
+.ticket-builder-header { background: #ffffff !important; color:#1a1a1a !important; border-bottom: 1px solid #e8e6df !important; border-radius: 8px 8px 0 0; }
+.tb-points-badge { background: #f4f2ec !important; color: #1a1a1a !important; border: 1px solid #1a1a1a !important; }
+.ticket-builder-header .btn-success { background: #b8a06a !important; border: 1px solid #a08850 !important; color: #ffffff !important; box-shadow: none !important; }
+.tb-mark-label { color: #b8a06a !important; }
+.tb-mark-label.aite { color: #1a1a1a !important; }
+.tb-num-btn { border: 1px solid #dcdad3 !important; color: #3d3d3a !important; background: #ffffff !important; }
+.tb-num-btn.sel-1 { background: #b8a06a !important; border-color: #a08850 !important; color: #ffffff !important; }
+.tb-num-btn.sel-2 { background: #1a1a1a !important; border-color: #1a1a1a !important; color: #ffffff !important; }
 .tb-num-btn.sel-3 { background: #94a3b8 !important; border-color: #718096 !important; color: #ffffff !important; }
-.tb-stats-panel { background: #ffffff !important; border-bottom: 1px solid #e2e8f0 !important; }
-.tb-stat-block { border-right: 1px solid #e2e8f0 !important; }
+.tb-stats-panel { background: #ffffff !important; border-bottom: 1px solid #e8e6df !important; }
+.tb-stat-block { border-right: 1px solid #e8e6df !important; }
 .tb-stat-label, .tb-stat-sub, .tb-total-label { color: #94a3b8 !important; }
 .tb-stat-value { color:#1a1a1a !important; }
-.tb-stat-value.warn { color: #d39e55 !important; }
-.tb-total-block { background: #f1f5f9 !important; }
-.tb-total-value { color: #334155 !important; }
-.tb-budget-row { background: #f8fafc !important; border-bottom: 1px solid #e2e8f0 !important; }
-.tb-budget-row .btn-primary { background: #3b9487 !important; border-color: #2c7a6f !important; }
+.tb-stat-value.warn { color: #b8a06a !important; }
+.tb-total-block { background: #f4f2ec !important; }
+.tb-total-value { color: #1a1a1a !important; }
+.tb-budget-row { background: #f4f2ec !important; border-bottom: 1px solid #e8e6df !important; }
+.tb-budget-row .btn-primary { background: #1a1a1a !important; border-color: #1a1a1a !important; }
 .tb-budget-row .btn-danger { background: #94a3b8 !important; border-color: #718096 !important; }
-.tb-ticket-item { border-bottom: 1px solid #f1f5f9 !important; }
-.tb-ev-badge.good { background: #f0fdf4 !important; color: #3b9487 !important; }
+.tb-ticket-item { border-bottom: 1px solid #f4f2ec !important; }
+.tb-ev-badge.good { background: #f4f2ec !important; color: #1a1a1a !important; }
 .tb-ev-badge.bad { background: #fff5f5 !important; color: #ef4444 !important; }
-.tb-ticket-money { background: #e2e8f0 !important; color: #334155 !important; }
+.tb-ticket-money { background: #e8e6df !important; color: #1a1a1a !important; }
 .tb-del-btn { background: #fee2e2 !important; color: #ef4444 !important; }
 .tb-odds-section { background: #fffdf5 !important; border-top: 1px solid #fbd38d !important; border-radius: 0 0 8px 8px; }
 .tb-odds-section > div > div { border-color: #fbd38d !important; }
 /* ▼▼ オッズ解析パネル専用CSS ▼▼ */
-.oa-container { font-family: sans-serif; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #90caf9; }
-.oa-ai-recommend { background: #e8f5e9; border-left: 5px solid #4caf50; padding: 12px; margin-bottom: 15px; border-radius: 4px; font-size: 13px; font-weight: bold; color: #2e7d32; display: flex; align-items: center; gap: 10px; }
+.oa-container { font-family: sans-serif; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e8e6df; }
+.oa-ai-recommend { background: #f4f2ec; border-left: 5px solid #c3ec3f; padding: 12px; margin-bottom: 15px; border-radius: 4px; font-size: 13px; font-weight: bold; color: #1a1a1a; display: flex; align-items: center; gap: 10px; }
 .oa-chart-wrapper { width: 100%; max-width: 500px; margin: 0 auto 20px; position: relative; }
 .oa-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: center; }
 .oa-table th { background-color: #f8f9fa; font-weight: bold; padding: 6px; border: 1px solid #ddd; }
@@ -707,8 +707,8 @@ input[type=number], input[type=text], textarea, select {
 .oa-core-badge { font-size: 9px; font-weight: bold; padding: 1px 4px; border-radius: 3px; margin-left: 4px; white-space: nowrap; }
 .oa-core-hoshi { background: #fff9c4; color: #f57f17; border: 1px solid #fbc02d; }
 .oa-core-spade { background: #e0f2f1; color: #00695c; border: 1px solid #4db6ac; }
-.oa-fuku-ure { background-color: #e3f2fd !important; }
-.oa-fuku-ure-mark { font-size: 9px; color: #1565c0; font-weight: bold; margin-left: 4px; display: inline-block; animation: pulse-fuku 2s infinite; }
+.oa-fuku-ure { background-color: #f4f2ec !important; }
+.oa-fuku-ure-mark { font-size: 9px; color: #1a1a1a; font-weight: bold; margin-left: 4px; display: inline-block; animation: pulse-fuku 2s infinite; }
 @keyframes pulse-fuku { 0% { opacity: 0.7; } 50% { opacity: 1; transform: scale(1.1); } 100% { opacity: 0.7; } }
 .oa-data-good { color: #e74c3c; font-weight: bold; }
 .oa-data-bad { color: #3498db; }
@@ -756,7 +756,7 @@ input[type=number], input[type=text], textarea, select {
 
   /* 大カードの丸番号 */
   .bc-num{ display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px;
-    border-radius:50%; background:var(--mk-dark); color:#eef3e8; font-size:11px; font-weight:800;
+    border-radius:50%; background:var(--mk-dark); color:#f4f2ec; font-size:11px; font-weight:800;
     flex:0 0 auto; }
 
   /* #main-tool は透明コンテナ（大カードを束ねるだけ・自身はカードにしない） */
@@ -765,13 +765,13 @@ input[type=number], input[type=text], textarea, select {
 
   /* ===== 買い目ビルダー：操作バー・結果を見やすく整備 ===== */
   .tb-toolbar{ display:flex; flex-direction:column; gap:8px; padding:12px 14px;
-    background:#f5f8f1; border-bottom:1px solid var(--mk-line); }
+    background:#f4f2ec; border-bottom:1px solid var(--mk-line); }
   .tb-toolbar-row{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
   .tb-toolbar-lbl{ font-size:10.5px; font-weight:700; color:#7a8573; min-width:44px; letter-spacing:.04em; }
   .tb-type-select{ font-family:"Zen Kaku Gothic New",sans-serif !important; font-size:12px !important;
     font-weight:700; color:var(--mk-dark) !important; background:#fff !important;
     border:1px solid var(--mk-line) !important; border-radius:999px !important; padding:6px 14px !important; cursor:pointer; }
-  .tb-points-badge{ font-size:11px; font-weight:700; color:#6f7d68; background:#eef3ea;
+  .tb-points-badge{ font-size:11px; font-weight:700; color:#9b9a92; background:#f4f2ec;
     border:1px solid var(--mk-line); border-radius:999px; padding:5px 12px; }
   /* 買い目1件＝コンパクトな横1行（薄く・すっと） */
   .tb-ticket-item{ display:flex !important; align-items:center; gap:10px; background:#fff !important;
@@ -783,33 +783,33 @@ input[type=number], input[type=text], textarea, select {
   .tb-ti-metrics{ display:flex; align-items:center; gap:12px; flex:1 1 auto; }
   .tb-ti-cell{ display:inline-flex; align-items:baseline; gap:3px; font-size:12px; font-weight:700;
     color:#2b332a; font-variant-numeric:tabular-nums; white-space:nowrap; }
-  .tb-ti-cell em{ font-style:normal; font-size:9px; font-weight:700; color:#9aa892; letter-spacing:.03em; }
+  .tb-ti-cell em{ font-style:normal; font-size:9px; font-weight:700; color:#9b9a92; letter-spacing:.03em; }
   .tb-ev-good{ color:#2f7d2b; } .tb-ev-bad{ color:#b06a5e; }
   .tb-del-btn{ background:transparent !important; border:none !important; cursor:pointer; font-size:13px;
     padding:2px !important; flex:0 0 auto; margin-left:auto; }
 
   /* 買い目ビルダー：オレンジの旧デザインを緑基調に統一 */
-  .tb-odds-section{ background:#f5f8f1 !important; border-top:1px solid var(--mk-line) !important; padding:14px !important; }
+  .tb-odds-section{ background:#f4f2ec !important; border-top:1px solid var(--mk-line) !important; padding:14px !important; }
   .odds-update-bar{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
     background:#fff; border:1px solid var(--mk-line); border-radius:12px; padding:12px 14px; }
   .odds-update-info{ display:flex; flex-direction:column; gap:2px; }
   .odds-update-title{ font-size:12px; font-weight:700; color:var(--mk-dark); letter-spacing:.03em; }
-  .odds-update-note{ font-size:10px; color:#9aa892; }
+  .odds-update-note{ font-size:10px; color:#9b9a92; }
   .odds-update-btn{ font-family:"Zen Kaku Gothic New",sans-serif; font-size:12.5px; font-weight:700;
-    color:#eef3e8; background:var(--mk-dark); border:none; border-radius:999px; padding:9px 20px;
+    color:#f4f2ec; background:var(--mk-dark); border:none; border-radius:999px; padding:9px 20px;
     cursor:pointer; box-shadow:none; transition:opacity .2s; white-space:nowrap; }
   .odds-update-btn:hover{ opacity:.88; }
 
   /* 統一ピルボタン（緑・角丸・落ち着いた） */
   .pill-btn{ font-family:"Zen Kaku Gothic New",sans-serif; font-size:11px; font-weight:700;
-    color:var(--mk-dark); background:#eef3ea; border:1px solid var(--mk-line) !important;
+    color:var(--mk-dark); background:#f4f2ec; border:1px solid var(--mk-line) !important;
     border-radius:999px !important; padding:6px 14px !important; cursor:pointer;
     box-shadow:none !important; transition:background .2s,border-color .2s,color .2s; }
-  .pill-btn:hover{ background:var(--mk-dark); color:#eef3e8; border-color:var(--mk-dark) !important; }
+  .pill-btn:hover{ background:var(--mk-dark); color:#f4f2ec; border-color:var(--mk-dark) !important; }
   /* 小ピル・バリエーション（買い目/勝率設定の操作用） */
   .pill-sm{ font-size:10.5px !important; padding:5px 12px !important; }
   .pill-ghost{ background:#fff !important; color:#8a9483 !important; }
-  .pill-ghost:hover{ background:#f0f2ec !important; color:var(--mk-dark) !important; }
+  .pill-ghost:hover{ background:#f4f2ec !important; color:var(--mk-dark) !important; }
   .pill-accent{ background:var(--mk-accent) !important; color:#1a1a1a !important; border-color:var(--mk-accent) !important; }
   .pill-accent:hover{ opacity:.9; background:var(--mk-accent) !important; color:#1a1a1a !important; }
 
@@ -820,8 +820,8 @@ input[type=number], input[type=text], textarea, select {
   .sub-head-ttl{ font-family:"Zen Kaku Gothic New",sans-serif; font-weight:700; font-size:14px;
     color:var(--mk-dark); letter-spacing:.06em; }
   .sub-head-btn{ margin-left:auto; font-family:"Zen Kaku Gothic New",sans-serif; font-size:10.5px; font-weight:700;
-    color:#6f7d68; background:#eef3ea; border:1px solid var(--mk-line); border-radius:999px; padding:5px 12px; cursor:pointer; }
-  .sub-head-btn:hover{ background:var(--mk-dark); color:#eef3e8; }
+    color:#9b9a92; background:#f4f2ec; border:1px solid var(--mk-line); border-radius:999px; padding:5px 12px; cursor:pointer; }
+  .sub-head-btn:hover{ background:var(--mk-dark); color:#f4f2ec; }
 
   /* レース情報のデータリンク行（シミュレーター下） */
   .race-data-links{ display:flex; gap:8px; flex-wrap:wrap; padding:2px 14px 14px; }
@@ -831,23 +831,23 @@ input[type=number], input[type=text], textarea, select {
     padding:8px 14px; background:transparent; flex-wrap:wrap; }
 
   /* 基準タイム：ダーク→ライトに統一 */
-  .std-time-details{ background:#f5f8f1 !important; border-bottom:1px solid var(--mk-line) !important; }
+  .std-time-details{ background:#f4f2ec !important; border-bottom:1px solid var(--mk-line) !important; }
   .std-time-summary{ padding:8px 14px; font-size:11px; font-weight:700; color:var(--mk-dark);
     cursor:pointer; user-select:none; outline:none; letter-spacing:.03em; }
-  .std-time-details .main-table-sort-bar{ background:#f5f8f1 !important; }
+  .std-time-details .main-table-sort-bar{ background:#f4f2ec !important; }
 
   /* レース質を選択（タブ風ピル・セレクト） */
   .race-quality-tab{ margin-left:auto; -webkit-appearance:none; appearance:none;
     font-family:"Zen Kaku Gothic New",sans-serif !important; font-size:11px; font-weight:700;
     color:#5b6b58; letter-spacing:.02em; cursor:pointer; outline:none;
-    background:#eef3ea; border:1px solid var(--mk-line);
+    background:#f4f2ec; border:1px solid var(--mk-line);
     border-radius:999px; padding:6px 30px 6px 14px;
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'><path d='M1 1l4 4 4-4' fill='none' stroke='%235c8a46' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
     background-repeat:no-repeat; background-position:right 12px center;
     transition:background .2s, border-color .2s, color .2s; }
   .race-quality-tab:hover{ border-color:var(--mk-accent2); background-color:#e6efe0; }
   /* 何か選択された状態＝アクセントで“タブが立っている”見た目に */
-  .race-quality-tab.is-active{ background-color:var(--mk-dark); color:#eef3e8; border-color:var(--mk-dark);
+  .race-quality-tab.is-active{ background-color:var(--mk-dark); color:#f4f2ec; border-color:var(--mk-dark);
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'><path d='M1 1l4 4 4-4' fill='none' stroke='%23cfe0c3' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>"); }
 
   /* 大カードの中の“旧カード”は装飾を解除して素の帯にする（＝二重カード禁止） */
@@ -867,7 +867,7 @@ input[type=number], input[type=text], textarea, select {
     padding:13px 18px 6px; border-bottom:1px solid var(--mk-line); margin-bottom:2px; }
   .bc-title{ font-family:"Zen Kaku Gothic New",sans-serif; font-weight:700;
     color:var(--mk-dark); font-size:16px; letter-spacing:.08em; }
-  .bc-sub{ font-size:10px; color:#9aa892; letter-spacing:.05em; }
+  .bc-sub{ font-size:10px; color:#9b9a92; letter-spacing:.05em; }
 
   /* カードの中の“中の箱”は素の帯 */
   .pace-board{ background:transparent !important; border:none !important;
@@ -883,7 +883,7 @@ input[type=number], input[type=text], textarea, select {
     border:none !important; border-radius:0 !important; box-shadow:none !important; margin:0 !important;
     padding:0 10px 10px !important; }
   /* 勝率設定：項目見出し（各馬評価テーブルのヘッダと同じ体裁） */
-  .graph-head{ display:flex; align-items:center; gap:0; background:#e7eee0; border-bottom:2px solid #cdd8c4;
+  .graph-head{ display:flex; align-items:center; gap:0; background:#e7eee0; border-bottom:2px solid #dcdad3;
     padding:8px 4px; margin:0 10px; font-family:"Zen Kaku Gothic New",sans-serif; font-size:10px; font-weight:700;
     color:#3d4a39; letter-spacing:.02em; }
   .graph-head .gh-mark{ width:28px; text-align:center; flex:0 0 auto; }
@@ -900,11 +900,18 @@ input[type=number], input[type=text], textarea, select {
   /* 枠番ボックスは表と同じサイズ感 */
   .stat-card .horse-row .waku-box{ width:22px !important; height:22px !important; border-radius:5px !important; font-size:12px !important; font-weight:800; }
   /* 馬名：バー上の白抜き→濃色テキストで読みやすく（明朝廃止・ゴシック） */
+  /* 馬名：どのバー色でも読めるよう淡いチップ地＋黒文字 */
   .stat-card .horse-name{ color:#1a1a1a !important; font-family:"Zen Kaku Gothic New",sans-serif !important;
-    font-weight:700 !important; font-size:11px !important; text-shadow:0 1px 2px rgba(255,255,255,.85) !important; }
-  .stat-card .visual-bar{ height:14px !important; border-radius:7px !important; opacity:.9; }
-  .stat-card .val-col-inner{ background:#f5f8f1 !important; border:1px solid var(--mk-line) !important; border-radius:8px !important; }
-  .stat-card .val-col{ color:var(--mk-dark) !important; font-weight:800 !important; }
+    font-weight:800 !important; font-size:11px !important; text-shadow:none !important;
+    background:rgba(255,255,255,.85) !important; padding:1px 8px !important; border-radius:999px !important;
+    box-shadow:0 1px 2px rgba(0,0,0,.06) !important; }
+  /* バー：太めトラック・角丸（黒/ライム/グレー） */
+  .stat-card .bar-col{ height:24px !important; }
+  .stat-card .visual-bar{ height:24px !important; top:0 !important; border-radius:9px !important; opacity:1 !important; }
+  /* 勝率数値：黒地にライム文字で強調 */
+  .stat-card .val-col-inner{ background:#1a1a1a !important; border:none !important; border-radius:9px !important; padding:3px 8px !important; }
+  .stat-card .val-col{ color:#c3ec3f !important; font-weight:800 !important; }
+  .stat-card .val-col-inner span, .stat-card .val-col-inner button{ color:#8f8e86 !important; }
 
   /* メモ（②内） */
   .memo-card{ overflow:hidden; }
@@ -912,46 +919,46 @@ input[type=number], input[type=text], textarea, select {
     padding:12px 18px 8px; }
   .memo-card-title{ font-family:"Zen Kaku Gothic New",sans-serif; font-weight:700;
     color:var(--mk-dark); font-size:15px; letter-spacing:.06em; }
-  .memo-card-sub{ font-size:10px; color:#9aa892; letter-spacing:.06em; }
+  .memo-card-sub{ font-size:10px; color:#9b9a92; letter-spacing:.06em; }
   .memo-card-textarea{ width:calc(100% - 36px); display:block; margin:0 18px 14px;
     min-height:100px; font-size:14px; line-height:1.9; padding:13px 15px;
     border:1px solid var(--mk-line) !important; border-radius:12px !important;
     background:#fcfdfb; color:#2b332a; resize:vertical; box-sizing:border-box;
     font-family:"Zen Kaku Gothic New",sans-serif; transition:border-color .2s, box-shadow .2s; }
   .memo-card-textarea:focus{ outline:none; border-color:var(--mk-accent) !important;
-    box-shadow:0 0 0 3px rgba(92,138,70,.12) !important; background:#fff; }
+    box-shadow:0 0 0 3px rgba(195,236,63,.35) !important; background:#fff; }
   .memo-card-textarea::placeholder{ color:#b6c1ac; font-family:"Zen Kaku Gothic New",sans-serif; }
 
   /* AI相談スロット（②内） */
-  .ai-talk-slot{ margin:2px 18px 14px; border:1px dashed #cdd8c4; border-radius:12px;
+  .ai-talk-slot{ margin:2px 18px 14px; border:1px dashed #dcdad3; border-radius:12px;
     background:#f6f9f3; }
   .ai-talk-head{ gap:8px; }
   .ai-talk-dot{ width:8px; height:8px; border-radius:50%; background:var(--mk-accent);
-    box-shadow:0 0 0 3px rgba(92,138,70,.18); flex:0 0 auto; }
+    box-shadow:0 0 0 3px rgba(195,236,63,.45); flex:0 0 auto; }
   .ai-talk-body{ padding:0 14px 12px; }
-  .ai-talk-lead{ font-size:11.5px; color:#6f7d68; line-height:1.6; margin:0 0 9px; }
-  .ai-talk-btn{ background:var(--mk-dark) !important; color:#eef3e8 !important; border:none !important;
+  .ai-talk-lead{ font-size:11.5px; color:#9b9a92; line-height:1.6; margin:0 0 9px; }
+  .ai-talk-btn{ background:var(--mk-dark) !important; color:#f4f2ec !important; border:none !important;
     border-radius:20px !important; padding:8px 18px !important; font-size:12px; font-weight:700;
     cursor:pointer; box-shadow:none !important; }
   .ai-talk-note{ font-size:9.5px; color:#a9b3a0; margin:8px 0 0; }
-  .ai-key-toggle{ margin-left:auto; font-size:10px; font-weight:700; color:#6f7d68;
+  .ai-key-toggle{ margin-left:auto; font-size:10px; font-weight:700; color:#9b9a92;
     background:#fff; border:1px solid var(--mk-line); border-radius:999px; padding:3px 10px; cursor:pointer; }
   .ai-key-panel{ background:#fff; border:1px solid var(--mk-line); border-radius:10px; padding:10px 12px; margin-bottom:10px; }
   .ai-key-label{ display:block; font-size:11px; font-weight:700; color:var(--mk-dark); margin-bottom:5px; }
   .ai-key-input{ flex:1; min-width:200px; font-size:12px; padding:7px 10px; border:1px solid var(--mk-line) !important; border-radius:8px !important; }
-  .ai-key-help{ font-size:10px; color:#9aa892; margin:7px 0 0; line-height:1.5; }
+  .ai-key-help{ font-size:10px; color:#9b9a92; margin:7px 0 0; line-height:1.5; }
   .ai-chat-log{ background:#fff; border:1px solid var(--mk-line); border-radius:10px; padding:10px;
     min-height:70px; max-height:320px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; }
   .ai-chat-empty{ font-size:11px; color:#a9b3a0; line-height:1.6; text-align:center; padding:12px 6px; }
   .ai-msg{ font-size:12.5px; line-height:1.7; padding:8px 11px; border-radius:12px; max-width:88%; white-space:pre-wrap; word-break:break-word; }
-  .ai-msg.user{ align-self:flex-end; background:var(--mk-dark); color:#eef3e8; border-bottom-right-radius:4px; }
-  .ai-msg.bot{ align-self:flex-start; background:#eef3ea; color:#243021; border-bottom-left-radius:4px;
+  .ai-msg.user{ align-self:flex-end; background:var(--mk-dark); color:#f4f2ec; border-bottom-right-radius:4px; }
+  .ai-msg.bot{ align-self:flex-start; background:#f4f2ec; color:#243021; border-bottom-left-radius:4px;
     font-family:"Zen Kaku Gothic New",sans-serif; }
-  .ai-msg.bot.loading{ color:#8a9a83; font-style:italic; }
+  .ai-msg.bot.loading{ color:#9b9a92; font-style:italic; }
   .ai-chat-inputbar{ display:flex; gap:7px; align-items:flex-end; margin-top:9px; }
   .ai-chat-input{ flex:1; font-size:13px; line-height:1.6; padding:9px 11px; border:1px solid var(--mk-line) !important;
     border-radius:10px !important; resize:vertical; font-family:"Zen Kaku Gothic New",sans-serif; background:#fcfdfb; }
-  .ai-chat-input:focus{ outline:none; border-color:var(--mk-accent) !important; box-shadow:0 0 0 3px rgba(92,138,70,.12) !important; }
+  .ai-chat-input:focus{ outline:none; border-color:var(--mk-accent) !important; box-shadow:0 0 0 3px rgba(195,236,63,.35) !important; }
   #ai-chat-send{ padding:9px 16px !important; border-radius:10px !important; white-space:nowrap; align-self:stretch; }
 
   /* AI課金ロック：未課金はグレーアウト＋オーバーレイ、課金者はアクティベート */
@@ -964,9 +971,9 @@ input[type=number], input[type=text], textarea, select {
   .ai-lock-card{ max-width:300px; }
   .ai-lock-ico{ font-size:26px; margin-bottom:6px; }
   .ai-lock-ttl{ font-family:"Zen Kaku Gothic New",sans-serif; font-weight:700; font-size:15px; color:var(--mk-dark); letter-spacing:.04em; }
-  .ai-lock-desc{ font-size:11px; color:#6f7d68; line-height:1.6; margin:6px 0 12px; }
+  .ai-lock-desc{ font-size:11px; color:#9b9a92; line-height:1.6; margin:6px 0 12px; }
   .ai-lock-btn{ font-family:"Zen Kaku Gothic New",sans-serif; font-size:12.5px; font-weight:700;
-    color:#eef3e8; background:var(--mk-dark); border:none; border-radius:999px; padding:9px 22px; cursor:pointer; }
+    color:#f4f2ec; background:var(--mk-dark); border:none; border-radius:999px; padding:9px 22px; cursor:pointer; }
   .ai-lock-btn:hover{ opacity:.9; }
   /* ロック中は中身を触れなくする＋褪せさせる */
   .ai-talk-slot.locked .ai-talk-inner{ filter:grayscale(1) opacity(.5); pointer-events:none; user-select:none; }
@@ -990,7 +997,7 @@ input[type=number], input[type=text], textarea, select {
   .data-table thead th{ background:#e7eee0 !important; color:#3d4a39 !important;
     font-family:"Zen Kaku Gothic New",sans-serif !important; font-weight:700 !important;
     font-size:10px !important; letter-spacing:.02em; padding:9px 4px !important; white-space:nowrap;
-    border:none !important; border-bottom:2px solid #cdd8c4 !important; position:sticky; top:0; }
+    border:none !important; border-bottom:2px solid #dcdad3 !important; position:sticky; top:0; }
   .data-table thead th:first-child{ border-top-left-radius:10px; }
   .data-table thead th:last-child{ border-top-right-radius:10px; }
   .data-table thead th.editable-header:hover{ background:#2a4227 !important; }
@@ -1014,13 +1021,13 @@ input[type=number], input[type=text], textarea, select {
   .data-table .waku-box{ width:22px !important; height:22px !important; border-radius:5px !important;
     font-size:12px !important; font-weight:800; }
   /* セル内の入力/セレクトを枠なしフラットに（テーブルに馴染ませる） */
-  .data-table input[type=number], .data-table select{ border:1px solid #dfe6d8 !important;
+  .data-table input[type=number], .data-table select{ border:1px solid #e8e6df !important;
     border-radius:7px !important; background:#fff !important; font-size:11px !important; padding:4px 5px !important;
     color:#2b332a !important; }
   .data-table input[type=number]:focus, .data-table select:focus{ outline:none;
-    border-color:var(--mk-accent) !important; box-shadow:0 0 0 2px rgba(92,138,70,.14) !important; }
+    border-color:var(--mk-accent) !important; box-shadow:0 0 0 2px rgba(195,236,63,.4) !important; }
   .memo-input{ width:130px !important; }
-  .memo-input:focus{ background:#fbfdf9 !important; box-shadow:0 0 0 2px rgba(92,138,70,.16) !important; }
+  .memo-input:focus{ background:#fbfdf9 !important; box-shadow:0 0 0 2px rgba(195,236,63,.4) !important; }
   /* 詳細表示時：列が増えるので全体をコンパクトにして横スクロールを抑える */
   .data-table.detail-open td, .data-table.detail-open thead th{ padding:5px 2px !important; font-size:9.5px !important; }
   .data-table.detail-open .td-name{ font-size:11px !important; max-width:88px !important; }
@@ -1034,7 +1041,7 @@ input[type=number], input[type=text], textarea, select {
   .data-table tbody tr td.rank-2, .rank-2{ background:#f0f6ea !important; }
 
   /* ボタン群をダーク緑ピル/セージに（機能色は個別維持されるものは後段で調整可） */
-  .btn-primary{ background:var(--mk-dark) !important; color:#eef3e8 !important; border:none !important; border-radius:20px !important; }
+  .btn-primary{ background:var(--mk-dark) !important; color:#f4f2ec !important; border:none !important; border-radius:20px !important; }
   .btn-success{ background:var(--mk-accent) !important; color:#1a1a1a !important; border:none !important; border-radius:20px !important; font-weight:700 !important; }
   .btn-danger{ background:#b06a5e !important; color:#fff !important; border:none !important; border-radius:20px !important; }
   .sync-btn{ background:var(--mk-dark) !important; border-radius:16px !important; }
@@ -1044,7 +1051,7 @@ input[type=number], input[type=text], textarea, select {
   /* レース選択ボタン：白＋淡緑、選択は淡緑 */
   .nav-race-btn{ background:#f3f8ee !important; border:1px solid var(--mk-line) !important; color:#3f4a3d !important; border-radius:10px !important;
     min-height:42px !important; box-sizing:border-box !important; display:flex !important; flex-direction:column !important; align-items:center !important; justify-content:center !important; border-bottom-width:1px !important; }
-  .nav-race-btn.active{ background:var(--mk-dark) !important; color:#eef3e8 !important; border-color:var(--mk-dark) !important; }
+  .nav-race-btn.active{ background:var(--mk-dark) !important; color:#f4f2ec !important; border-color:var(--mk-dark) !important; }
 
   /* AIツールバー（レース分析上部）を緑基調に */
   #race-toolbar{ background:#fff !important; border:1px solid var(--mk-line) !important; border-radius:16px !important; }
@@ -1067,23 +1074,23 @@ input[type=number], input[type=text], textarea, select {
     #ai-console-panel, #master-panel, #system-details { display:none !important; }
   </style>
   <!-- ▼▼ ここから変更：オリジナルAIコンソール ＋ オッズ解析ボタン ▼▼ -->
-    <div id="ai-console-panel" style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 4px; padding: 10px; margin-bottom: 10px; text-align: center;">
+    <div id="ai-console-panel" style="background: #ffffff; border: 1px solid #dcdad3; border-radius: 4px; padding: 10px; margin-bottom: 10px; text-align: center;">
       <!-- AI未設定時 -->
       <div id="ai-uninitialized">
-        <div style="font-size: 13px; font-weight: bold; color: #334155; margin-bottom: 8px;">カスタムAIプロファイルの設定</div>
+        <div style="font-size: 13px; font-weight: bold; color: #1a1a1a; margin-bottom: 8px;">カスタムAIプロファイルの設定</div>
         <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-          <button class="btn-success" style="background: #3b9487; border-color: #2c7a6f; font-size: 12px; padding: 6px 16px; border-radius: 4px; box-shadow: none; cursor: pointer;" onclick="window.openAiSetupModal()">🤖 AIを作成 / 選択</button>
-          <button class="btn-primary" style="background:#1565c0 !important; border:1px solid #0d47a1 !important; color:#ffffff !important; font-size:12px; padding:6px 16px; border-radius:4px; box-shadow:none; cursor:pointer;" onclick="showOddsAnalysisModal()">📊 10分前オッズ解析</button>
+          <button class="btn-success" style="background: #1a1a1a; border-color: #1a1a1a; font-size: 12px; padding: 6px 16px; border-radius: 4px; box-shadow: none; cursor: pointer;" onclick="window.openAiSetupModal()">🤖 AIを作成 / 選択</button>
+          <button class="btn-primary" style="background:#1a1a1a !important; border:1px solid #1a1a1a !important; color:#ffffff !important; font-size:12px; padding:6px 16px; border-radius:4px; box-shadow:none; cursor:pointer;" onclick="showOddsAnalysisModal()">📊 10分前オッズ解析</button>
         </div>
       </div>
                 <!-- AI設定後 -->
       <div id="ai-initialized" style="display: none;">
         <div style="display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap;">
-          <div style="font-size: 12px; color: #475569; background: #f8fafc; padding: 4px 10px; border: 1px solid #cbd5e1; border-radius: 4px; cursor: pointer; display:flex; align-items:center; gap:4px;" onclick="window.openAiSetupModal()" title="クリックでAIを変更">
+          <div style="font-size: 12px; color: #3d3d3a; background: #f4f2ec; padding: 4px 10px; border: 1px solid #dcdad3; border-radius: 4px; cursor: pointer; display:flex; align-items:center; gap:4px;" onclick="window.openAiSetupModal()" title="クリックでAIを変更">
             🤖 AI: <span id="ai-partner-name" style="font-size: 13px; font-weight: bold; color:#1a1a1a;"></span>
             <span style="font-size: 9px; color:#94a3b8;">(変更)</span>
           </div>
-          <button class="btn-primary" style="background:#1565c0 !important; border:1px solid #0d47a1 !important; color:#ffffff !important; font-size:11px; padding:5px 12px; border-radius:4px; box-shadow:none; cursor:pointer;" onclick="showOddsAnalysisModal()">📊 10分前オッズ解析</button>
+          <button class="btn-primary" style="background:#1a1a1a !important; border:1px solid #1a1a1a !important; color:#ffffff !important; font-size:11px; padding:5px 12px; border-radius:4px; box-shadow:none; cursor:pointer;" onclick="showOddsAnalysisModal()">📊 10分前オッズ解析</button>
         </div>
       </div>
 
@@ -1094,8 +1101,8 @@ input[type=number], input[type=text], textarea, select {
     <div id="odds-analysis-modal" class="modal" style="align-items: flex-start; overflow-x: auto; padding-top: 10px;">
       <!-- ▼ 1100px を 850px に変更、padding を 10px に変更 ▼ -->
       <div class="modal-box" style="width: 850px; max-width: none; border-radius: 8px; padding: 10px; margin: 0 auto;">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #1565c0; padding-bottom: 8px; margin-bottom: 10px;">
-          <h2 style="color:#1565c0; font-size:18px; margin:0; border:none; padding:0;">📊 10分前オッズ解析</h2>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #1a1a1a; padding-bottom: 8px; margin-bottom: 10px;">
+          <h2 style="color:#1a1a1a; font-size:18px; margin:0; border:none; padding:0;">📊 10分前オッズ解析</h2>
           <button class="btn-danger" style="background:#e74c3c; border:none; padding:6px 12px; font-size:13px; font-weight:bold; border-radius:4px; box-shadow:none;" onclick="closeOddsAnalysisModal()">✖ 閉じる</button>
         </div>
         <div id="oa-modal-content" style="max-height: 80vh; overflow-y: auto;"></div>
@@ -1106,19 +1113,19 @@ input[type=number], input[type=text], textarea, select {
     <!-- ▼▼ 変更箇所：設定メニューをアコーディオンに隠す ▼▼ -->
 
     <div id="master-panel" style="display:none; margin-bottom:8px;">
-      <details style="background:#fff; border-radius:6px; box-shadow:0 1px 3px rgba(0,0,0,.1); border:1px solid #e2e8f0; outline:none; width:100%;">
-        <summary style="padding:8px; font-size:12px; font-weight:bold; color:#475569; cursor:pointer; user-select:none; background:#f8fafc; border-radius:6px;">
+      <details style="background:#fff; border-radius:6px; box-shadow:0 1px 3px rgba(0,0,0,.1); border:1px solid #e8e6df; outline:none; width:100%;">
+        <summary style="padding:8px; font-size:12px; font-weight:bold; color:#3d3d3a; cursor:pointer; user-select:none; background:#f4f2ec; border-radius:6px;">
           ▼ ⚙️ 設定（オッズ自動取得 / 管理者メニュー）
         </summary>
-        <div style="padding:6px; background:#e3f2fd; border-top:1px dashed #cbd5e1; border-radius:0 0 6px 6px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px;">
+        <div style="padding:6px; background:#f4f2ec; border-top:1px dashed #dcdad3; border-radius:0 0 6px 6px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px;">
           <div style="display:flex;align-items:center;gap:6px;flex-grow:1;">
-            <span style="font-size:11px;font-weight:bold;color:#1565c0;cursor:pointer;" onclick="unlockSystem()">GAS連動:</span>
+            <span style="font-size:11px;font-weight:bold;color:#1a1a1a;cursor:pointer;" onclick="unlockSystem()">GAS連動:</span>
             <input type="text" id="api-url-input" class="api-input" placeholder="https://script.google.com/macros/s/XXXXX/exec" onchange="saveApiUrl(this.value)">
           </div>
           <div style="display:flex;align-items:center;gap:6px;">
             <span id="sync-status" style="font-size:11px;font-weight:bold;color:#666;">待機中</span>
             <button class="sync-btn" onclick="syncOddsFromGAS()">オッズ取得</button>
-            <button class="sync-btn" style="background:#1565c0;" onclick="openGasModal()">GAS設定</button>
+            <button class="sync-btn" style="background:#1a1a1a;" onclick="openGasModal()">GAS設定</button>
             <button class="sync-btn" style="background:#8e24aa;" onclick="openAdmin()">管理者</button>
           </div>
         </div>
@@ -1145,14 +1152,14 @@ input[type=number], input[type=text], textarea, select {
 
   <!-- ▼▼▼ ここから下をコピーして貼り付けてください（説明文は含めないでください） ▼▼▼ -->
   <div class="admin-section" style="margin-top: 20px;">
-    <h3 style="color:#1a1a1a; border-bottom: 2px solid #3b9487;">📊 コース・陣営データ 一括入力 (TSV2)</h3>
+    <h3 style="color:#1a1a1a; border-bottom: 2px solid #1a1a1a;">📊 コース・陣営データ 一括入力 (TSV2)</h3>
     <div class="tsv-format-hint">
       さっきツールで作成した「全36レース抽出_AI解析用.csv」のデータをコピーして、ここに全レース分一括で貼り付けます。
     </div>
     <textarea id="tsv2-paste-area" class="tsv-paste-area" placeholder="ここに陣営・コース適性のExcel/CSVデータを貼り付け..."></textarea>
     
     <div style="display:flex;gap:8px;margin-top:8px;align-items:center;">
-      <button class="btn-primary" style="background:#3b9487; border-color:#2c7a6f;" onclick="parseTsv2Paste()">陣営データを一括反映</button>
+      <button class="btn-primary" style="background:#1a1a1a; border-color:#1a1a1a;" onclick="parseTsv2Paste()">陣営データを一括反映</button>
       <button class="btn-danger" style="padding:4px 8px;font-size:11px;" onclick="document.getElementById('tsv2-paste-area').value=''">クリア</button>
     </div>
     <div id="tsv2-result-log" class="bulk-result-log"></div>
@@ -1225,28 +1232,28 @@ input[type=number], input[type=text], textarea, select {
             <option value="custom">自由入力...</option>
           </select>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding:0 18px 12px;"><span id="race-info-title" style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;color:#1a1a1a;font-size:21px;letter-spacing:.02em;">—</span><span id="race-info-haran" style="font-size:10px;color:#8a9285;background:#f0f2ec;border:1px solid #e2e6dc;border-radius:10px;padding:2px 9px;font-weight:700;letter-spacing:.04em;"></span></div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding:0 18px 12px;"><span id="race-info-title" style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;color:#1a1a1a;font-size:21px;letter-spacing:.02em;">—</span><span id="race-info-haran" style="font-size:10px;color:#9b9a92;background:#f4f2ec;border:1px solid #e8e6df;border-radius:10px;padding:2px 9px;font-weight:700;letter-spacing:.04em;"></span></div>
 
         <!-- 中項目：馬場・コンディション -->
         <div class="sub-head"><span class="sub-head-ttl">馬場・コンディション</span></div>
         <div style="display:grid;grid-template-columns:1fr auto;gap:16px;margin-top:12px;padding:0 18px 4px;align-items:center;">
           <div style="display:flex;flex-direction:column;gap:17px;">
             <div>
-              <div style="font-size:9px;color:#8a9a83;letter-spacing:.1em;margin-bottom:4px;">馬場状態</div>
-              <div id="bb-going-seg" style="display:grid;grid-template-columns:repeat(4,1fr);border:1px solid #dbe3d4;border-radius:20px;overflow:hidden;">
-                <span data-g="良" style="font-size:12px;font-weight:700;padding:8px 4px;color:#8a9a83;text-align:center;white-space:nowrap;">良</span>
-                <span data-g="稍重" style="font-size:12px;font-weight:700;padding:8px 4px;color:#8a9a83;border-left:1px solid #eef3ea;text-align:center;white-space:nowrap;">稍重</span>
-                <span data-g="重" style="font-size:12px;font-weight:700;padding:8px 4px;color:#8a9a83;border-left:1px solid #eef3ea;text-align:center;white-space:nowrap;">重</span>
-                <span data-g="不良" style="font-size:12px;font-weight:700;padding:8px 4px;color:#8a9a83;border-left:1px solid #eef3ea;text-align:center;white-space:nowrap;">不良</span>
+              <div style="font-size:9px;color:#9b9a92;letter-spacing:.1em;margin-bottom:4px;">馬場状態</div>
+              <div id="bb-going-seg" style="display:grid;grid-template-columns:repeat(4,1fr);border:1px solid #e8e6df;border-radius:20px;overflow:hidden;">
+                <span data-g="良" style="font-size:12px;font-weight:700;padding:8px 4px;color:#9b9a92;text-align:center;white-space:nowrap;">良</span>
+                <span data-g="稍重" style="font-size:12px;font-weight:700;padding:8px 4px;color:#9b9a92;border-left:1px solid #f4f2ec;text-align:center;white-space:nowrap;">稍重</span>
+                <span data-g="重" style="font-size:12px;font-weight:700;padding:8px 4px;color:#9b9a92;border-left:1px solid #f4f2ec;text-align:center;white-space:nowrap;">重</span>
+                <span data-g="不良" style="font-size:12px;font-weight:700;padding:8px 4px;color:#9b9a92;border-left:1px solid #f4f2ec;text-align:center;white-space:nowrap;">不良</span>
               </div>
             </div>
             <div id="bb-cush-wrap">
-              <div style="display:flex;justify-content:space-between;font-size:10px;color:#8a9a83;margin-bottom:3px;"><span>クッション値</span><span id="bb-cush-v" style="color:#2f6d3a;font-weight:700;">—</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;color:#9b9a92;margin-bottom:3px;"><span>クッション値</span><span id="bb-cush-v" style="color:#2f6d3a;font-weight:700;">—</span></div>
               <div style="height:9px;background:#e8e6df;border-radius:5px;overflow:hidden;"><div id="bb-cush-bar" style="height:100%;width:0%;background:#1a1a1a;border-radius:4px;transition:width .4s;"></div></div>
               <div style="display:flex;justify-content:space-between;font-size:8px;color:#b9c4b2;margin-top:1px;"><span>柔 7</span><span>硬 12</span></div>
             </div>
             <div>
-              <div style="display:flex;justify-content:space-between;font-size:10px;color:#8a9a83;margin-bottom:3px;"><span id="bb-moist-label">含水率(芝)</span><span id="bb-moist-v" style="color:#1a1a1a;font-weight:700;">—</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;color:#9b9a92;margin-bottom:3px;"><span id="bb-moist-label">含水率(芝)</span><span id="bb-moist-v" style="color:#1a1a1a;font-weight:700;">—</span></div>
               <div style="height:9px;background:#e8e6df;border-radius:5px;overflow:hidden;"><div id="bb-moist-bar" style="height:100%;width:0%;background:#1a1a1a;border-radius:4px;transition:width .4s,background .3s;"></div></div>
               <div style="display:flex;justify-content:space-between;font-size:8px;color:#b9c4b2;margin-top:1px;"><span>乾 0%</span><span>湿 25%</span></div>
             </div>
@@ -1273,7 +1280,7 @@ input[type=number], input[type=text], textarea, select {
        <div class="simulator-wrapper">
         <div class="sub-head">
           <span class="sub-head-ttl">レースシミュレーター</span>
-          <span style="font-size:10px;color:#9aa892;font-weight:400;">スライダーで勝率が変動</span>
+          <span style="font-size:10px;color:#9b9a92;font-weight:400;">スライダーで勝率が変動</span>
         </div>
 
                      <div class="sim-content">
@@ -1345,7 +1352,7 @@ input[type=number], input[type=text], textarea, select {
                 <button style="display:none;" onclick="clearCanvas()">クリア</button>
                 <button style="display:none;" onclick="resetRaceStart()">リセット</button>
               </div>
-              <div id="pace-canvas" style="flex-grow: 1; position: relative; border-radius: 14px; overflow: hidden; min-height: 340px; margin: 4px 12px 12px; border: 1px solid #e6ece0; box-shadow: inset 0 0 0 1px rgba(255,255,255,.4);">
+              <div id="pace-canvas" style="flex-grow: 1; position: relative; border-radius: 14px; overflow: hidden; min-height: 340px; margin: 4px 12px 12px; border: 1px solid #e8e6df; box-shadow: inset 0 0 0 1px rgba(255,255,255,.4);">
                  <div id="pace-bg-layer" style="position:absolute; inset:0; z-index:1; pointer-events:none;"></div>
                  <canvas id="pace-draw-layer"></canvas>
                  <div id="pace-horse-layer"></div>
@@ -1372,7 +1379,7 @@ input[type=number], input[type=text], textarea, select {
       <div class="memo-card">
         <div class="sub-head">
           <span class="sub-head-ttl">メモ</span>
-          <span style="font-size:10px;color:#9aa892;font-weight:400;">自分の予想を書き残す・自動保存</span>
+          <span style="font-size:10px;color:#9b9a92;font-weight:400;">自分の予想を書き残す・自動保存</span>
           <button id="ai-mic-btn" style="display:none;" onclick="toggleAIMic()"></button>
         </div>
         <textarea id="ai-pace-comment" class="memo-card-textarea"
@@ -1428,7 +1435,7 @@ input[type=number], input[type=text], textarea, select {
         <label id="marker-toggle-label" style="display:none;"><input type="checkbox" id="marker-toggle-cb" onchange="toggleMarkers(this.checked)"></label>
 
         <!-- ▼ コース傾向用の枠（陣営モード時のみ表示） ▼ -->
-        <div id="camp-course-feature" style="display:none; background:#f8fafc; border-left:4px solid #d39e55; padding:6px 10px; font-size:11px; font-weight:bold; color:#333; margin:4px 8px; border-radius:3px;"></div>
+        <div id="camp-course-feature" style="display:none; background:#f4f2ec; border-left:4px solid #b8a06a; padding:6px 10px; font-size:11px; font-weight:bold; color:#333; margin:4px 8px; border-radius:3px;"></div>
         <!-- ▲ ボタンを追加 ▲ -->
 
         <div class="data-table-container">
@@ -1466,7 +1473,7 @@ input[type=number], input[type=text], textarea, select {
         <span class="sub-head-ttl">勝率設定</span>
         <span id="haran-badge-2" style="display:none;"></span>
         <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto;">
-          <span style="font-size:11px;font-weight:700;color:#6f7d68;">合計 <span id="total-val" style="color:var(--mk-dark);font-weight:800;">0.0</span>%</span>
+          <span style="font-size:11px;font-weight:700;color:#9b9a92;">合計 <span id="total-val" style="color:var(--mk-dark);font-weight:800;">0.0</span>%</span>
           <button class="pill-btn pill-sm" onclick="normalizeTo100(true)">100%</button>
           <button class="pill-btn pill-sm pill-ghost" onclick="resetGraph()">リセット</button>
           <button class="pill-btn pill-sm pill-accent" onclick="calculateHarville()">確定</button>
@@ -1560,7 +1567,7 @@ input[type=number], input[type=text], textarea, select {
           <button class="pill-btn pill-sm" onclick="copyTickets()">コピー</button>
         </div>
         <div class="tb-ticket-list" id="ticket-list-area">
-          <div style="padding:16px;text-align:center;color:#9aa892;font-size:11px;">馬番を選んで「買い目を作る」を押してください</div>
+          <div style="padding:16px;text-align:center;color:#9b9a92;font-size:11px;">馬番を選んで「買い目を作る」を押してください</div>
         </div>
         <div class="tb-odds-section">
           <textarea id="tanfuku-odds-input" style="display:none;"></textarea>
@@ -1575,7 +1582,7 @@ input[type=number], input[type=text], textarea, select {
 
        <!-- ▼▼ 追加：レポート出力ボタン ▼▼ -->
           <div style="text-align: center; margin-top: 15px; margin-bottom: 10px;">
-              <button style="background:#3b9487; color:#fff; font-weight:bold; width: 100%; max-width: 400px; font-size: 14px; padding: 10px; border-radius: 6px; border:1px solid #2c7a6f; box-shadow: none; cursor:pointer;" onclick="openFinalReport()">最終見解レポートを出力</button>
+              <button style="background:#1a1a1a; color:#fff; font-weight:bold; width: 100%; max-width: 400px; font-size: 14px; padding: 10px; border-radius: 6px; border:1px solid #1a1a1a; box-shadow: none; cursor:pointer;" onclick="openFinalReport()">最終見解レポートを出力</button>
           </div>
           <!-- ▲▲ ここまで ▲▲ -->
 
@@ -1605,11 +1612,11 @@ input[type=number], input[type=text], textarea, select {
     <!-- ▼▼▼ ここから貼り付け（表の枠組み） ▼▼▼ -->
     <div id="detailed-data2-modal" class="modal" style="align-items:flex-start; overflow-x:auto; padding-top:10px; z-index: 10000;">
       <div class="modal-box" style="width:1150px; max-width:none; border-radius:8px; padding:15px; margin:0 auto; background:#fff;">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #3b9487; padding-bottom:8px; margin-bottom:15px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #1a1a1a; padding-bottom:8px; margin-bottom:15px;">
           <h2 style="color:#1a1a1a; font-size:18px; margin:0;">📊 コース・陣営適性データ</h2>
           <button class="btn-danger" style="padding:6px 12px; font-size:13px;" onclick="closeDetailedData2Modal()">✖ 閉じる</button>
         </div>
-        <div id="dd2-course-feature" style="background:#f8fafc; border-left:4px solid #d39e55; padding:8px 12px; font-size:13px; font-weight:bold; color:#333; margin-bottom:15px;"></div>
+        <div id="dd2-course-feature" style="background:#f4f2ec; border-left:4px solid #b8a06a; padding:8px 12px; font-size:13px; font-weight:bold; color:#333; margin-bottom:15px;"></div>
         <div id="detailed-data2-content" style="max-height:80vh; overflow-y:auto;"></div>
       </div>
     </div>
@@ -1715,7 +1722,7 @@ input[type=number], input[type=text], textarea, select {
             <span class="gas-step-num">1</span>
             <span class="gas-step-title">Google Apps Scriptを開く</span>
           </div>
-          <a href="https://script.google.com" target="_blank" style="color:#1a73e8;font-size:12px;">https://script.google.com</a>
+          <a href="https://script.google.com" target="_blank" style="color:#1a1a1a;font-size:12px;">https://script.google.com</a>
         </div>
         <div class="gas-step">
           <div style="display:flex;align-items:center;margin-bottom:6px;">
@@ -1727,10 +1734,10 @@ input[type=number], input[type=text], textarea, select {
           </div>
           <textarea id="gas-code-display" class="gas-code-area" readonly></textarea>
         </div>
-        <div class="gas-step" style="background:#e3f2fd;border-color:#90caf9;">
+        <div class="gas-step" style="background:#f4f2ec;border-color:#e8e6df;">
           <div style="display:flex;align-items:center;margin-bottom:6px;">
-            <span class="gas-step-num" style="background:#1565c0;">3</span>
-            <span class="gas-step-title" style="color:#1565c0;">URLをここに貼り付けて保存</span>
+            <span class="gas-step-num" style="background:#1a1a1a;">3</span>
+            <span class="gas-step-title" style="color:#1a1a1a;">URLをここに貼り付けて保存</span>
           </div>
           <input type="text" id="gas-url-input-modal" class="gas-url-input" placeholder="https://script.google.com/macros/s/XXXXX/exec">
           <div style="display:flex;gap:8px;margin-top:8px;">
@@ -1749,7 +1756,7 @@ input[type=number], input[type=text], textarea, select {
             <span class="gas-step-num">1</span>
             <span class="gas-step-title">Google Apps Scriptを開く</span>
           </div>
-          <a href="https://script.google.com" target="_blank" style="color:#1a73e8;font-size:12px;">https://script.google.com</a>
+          <a href="https://script.google.com" target="_blank" style="color:#1a1a1a;font-size:12px;">https://script.google.com</a>
         </div>
         <div class="gas-step">
           <div style="display:flex;align-items:center;margin-bottom:6px;">
@@ -1761,10 +1768,10 @@ input[type=number], input[type=text], textarea, select {
           </div>
           <textarea id="gas-code-display" class="gas-code-area" readonly></textarea>
         </div>
-        <div class="gas-step" style="background:#e3f2fd;border-color:#90caf9;">
+        <div class="gas-step" style="background:#f4f2ec;border-color:#e8e6df;">
           <div style="display:flex;align-items:center;margin-bottom:6px;">
-            <span class="gas-step-num" style="background:#1565c0;">3</span>
-            <span class="gas-step-title" style="color:#1565c0;">URLをここに貼り付けて保存</span>
+            <span class="gas-step-num" style="background:#1a1a1a;">3</span>
+            <span class="gas-step-title" style="color:#1a1a1a;">URLをここに貼り付けて保存</span>
           </div>
           <input type="text" id="gas-url-input-modal" class="gas-url-input" placeholder="https://script.google.com/macros/s/XXXXX/exec">
           <div style="display:flex;gap:8px;margin-top:8px;">
@@ -1792,19 +1799,19 @@ input[type=number], input[type=text], textarea, select {
 <!-- ▼▼ ここから追加：AI設定モーダル ▼▼ -->
     <div id="ai-setup-modal" class="modal">
       <div class="modal-box" style="width: 650px; max-width: 95vw; border-radius: 4px; padding: 15px 20px;">
-        <h2 style="color:#1a1a1a; border-bottom: 2px solid #3b9487; font-size: 16px; padding-bottom: 8px;">AIプロファイル設定</h2>
+        <h2 style="color:#1a1a1a; border-bottom: 2px solid #1a1a1a; font-size: 16px; padding-bottom: 8px;">AIプロファイル設定</h2>
         
         <!-- モード選択画面 (二択) -->
         <div id="ai-mode-selection">
-          <p style="font-size: 12px; color: #64748b; margin-bottom: 15px;">アルゴリズムの構築方法を選択してください。</p>
+          <p style="font-size: 12px; color: #9b9a92; margin-bottom: 15px;">アルゴリズムの構築方法を選択してください。</p>
           <div style="display: flex; gap: 15px;">
-            <div style="flex: 1; border: 1px solid #cbd5e1; border-radius: 4px; padding: 20px 15px; text-align: center; cursor: pointer; background: #f8fafc; transition: 0.2s;" onclick="showPresetAI()" onmouseover="this.style.borderColor='#3b9487'" onmouseout="this.style.borderColor='#cbd5e1'">
+            <div style="flex: 1; border: 1px solid #dcdad3; border-radius: 4px; padding: 20px 15px; text-align: center; cursor: pointer; background: #f4f2ec; transition: 0.2s;" onclick="showPresetAI()" onmouseover="this.style.borderColor='#1a1a1a'" onmouseout="this.style.borderColor='#dcdad3'">
               <div style="font-weight: bold; color:#1a1a1a; font-size: 14px;">① 定義済みモデルから選択</div>
-              <div style="font-size: 10px; color: #64748b; margin-top: 8px; line-height: 1.5;">10種のプリセットから、好みの予想スタイルを選択します。</div>
+              <div style="font-size: 10px; color: #9b9a92; margin-top: 8px; line-height: 1.5;">10種のプリセットから、好みの予想スタイルを選択します。</div>
             </div>
-            <div style="flex: 1; border: 1px solid #cbd5e1; border-radius: 4px; padding: 20px 15px; text-align: center; cursor: pointer; background: #f8fafc; transition: 0.2s;" onclick="startAIDiagnosis()" onmouseover="this.style.borderColor='#d39e55'" onmouseout="this.style.borderColor='#cbd5e1'">
-              <div style="font-weight: bold; color: #d39e55; font-size: 14px;">② カスタムモデルの作成</div>
-              <div style="font-size: 10px; color: #64748b; margin-top: 8px; line-height: 1.5;">質問に答えて独自のアルゴリズムを構築・微調整します。</div>
+            <div style="flex: 1; border: 1px solid #dcdad3; border-radius: 4px; padding: 20px 15px; text-align: center; cursor: pointer; background: #f4f2ec; transition: 0.2s;" onclick="startAIDiagnosis()" onmouseover="this.style.borderColor='#b8a06a'" onmouseout="this.style.borderColor='#dcdad3'">
+              <div style="font-weight: bold; color: #b8a06a; font-size: 14px;">② カスタムモデルの作成</div>
+              <div style="font-size: 10px; color: #9b9a92; margin-top: 8px; line-height: 1.5;">質問に答えて独自のアルゴリズムを構築・微調整します。</div>
             </div>
           </div>
         </div>
@@ -1821,13 +1828,13 @@ input[type=number], input[type=text], textarea, select {
         <!-- チャット診断画面 -->
         <div id="ai-chat-area" style="display: none;">
           <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 10px;">
-            <div style="font-size: 12px; color: #d39e55; font-weight: bold;">■ カスタムプロファイル構築 (対話モード)</div>
-            <button style="background:transparent; border:1px solid #cbd5e1; color:#64748b; font-size:10px; padding:4px 8px; border-radius:4px; cursor:pointer;" onclick="skipDiagnosis()">質問をスキップして手動設定へ ▶</button>
+            <div style="font-size: 12px; color: #b8a06a; font-weight: bold;">■ カスタムプロファイル構築 (対話モード)</div>
+            <button style="background:transparent; border:1px solid #dcdad3; color:#9b9a92; font-size:10px; padding:4px 8px; border-radius:4px; cursor:pointer;" onclick="skipDiagnosis()">質問をスキップして手動設定へ ▶</button>
           </div>
-          <div id="chat-messages" style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 4px; padding: 10px; height: 320px; overflow-y: auto; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px;"></div>
+          <div id="chat-messages" style="background: #f4f2ec; border: 1px solid #dcdad3; border-radius: 4px; padding: 10px; height: 320px; overflow-y: auto; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px;"></div>
           <div style="display: flex; gap: 5px;">
-            <input type="text" id="chat-input" placeholder="テキストを入力..." style="flex-grow: 1; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px;" onkeypress="if(event.key==='Enter') sendChatMessage()">
-            <button class="btn-primary" style="padding: 8px 16px; border-radius: 4px; box-shadow:none; background:#3b9487; border-color:#2c7a6f;" onclick="sendChatMessage()">送信</button>
+            <input type="text" id="chat-input" placeholder="テキストを入力..." style="flex-grow: 1; padding: 8px; border: 1px solid #dcdad3; border-radius: 4px; font-size: 12px;" onkeypress="if(event.key==='Enter') sendChatMessage()">
+            <button class="btn-primary" style="padding: 8px 16px; border-radius: 4px; box-shadow:none; background:#1a1a1a; border-color:#1a1a1a;" onclick="sendChatMessage()">送信</button>
           </div>
           <div style="text-align: left; margin-top:8px;"><button class="btn-danger" style="background:#94a3b8; border:none; box-shadow:none;" onclick="backToModeSelection()">◀ 中止して戻る</button></div>
         </div>
@@ -1836,61 +1843,61 @@ input[type=number], input[type=text], textarea, select {
         <div id="ai-tuning-area" style="display: none;">
           <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 10px;">
             <div style="font-size: 12px; color:#1a1a1a; font-weight: bold;">■ アルゴリズム パラメータ調整</div>
-            <div style="font-size: 11px; font-weight: bold; color: #475569; background: #e2e8f0; padding: 4px 10px; border-radius: 12px;">残り割り振りポイント: <span id="remain-points" style="color:#d32f2f; font-size:14px;">0</span> pt</div>
+            <div style="font-size: 11px; font-weight: bold; color: #3d3d3a; background: #e8e6df; padding: 4px 10px; border-radius: 12px;">残り割り振りポイント: <span id="remain-points" style="color:#d32f2f; font-size:14px;">0</span> pt</div>
           </div>
           
           <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;">
             <!-- レーダーチャート領域 -->
             <div style="width: 200px; height: 200px; margin: 0 auto; position: relative;">
               <svg id="radar-chart" width="100%" height="100%" viewBox="0 0 100 100">
-                <polygon points="50,10 88,38 74,82 26,82 12,38" fill="none" stroke="#e2e8f0" stroke-width="1" />
-                <polygon points="50,30 69,44 62,66 38,66 31,44" fill="none" stroke="#e2e8f0" stroke-width="1" />
-                <line x1="50" y1="50" x2="50" y2="10" stroke="#e2e8f0" stroke-width="1" />
-                <line x1="50" y1="50" x2="88" y2="38" stroke="#e2e8f0" stroke-width="1" />
-                <line x1="50" y1="50" x2="74" y2="82" stroke="#e2e8f0" stroke-width="1" />
-                <line x1="50" y1="50" x2="26" y2="82" stroke="#e2e8f0" stroke-width="1" />
-                <line x1="50" y1="50" x2="12" y2="38" stroke="#e2e8f0" stroke-width="1" />
-                <polygon id="radar-polygon" points="50,50 50,50 50,50 50,50 50,50" fill="rgba(59, 148, 135, 0.4)" stroke="#1a5c53" stroke-width="2" />
+                <polygon points="50,10 88,38 74,82 26,82 12,38" fill="none" stroke="#e8e6df" stroke-width="1" />
+                <polygon points="50,30 69,44 62,66 38,66 31,44" fill="none" stroke="#e8e6df" stroke-width="1" />
+                <line x1="50" y1="50" x2="50" y2="10" stroke="#e8e6df" stroke-width="1" />
+                <line x1="50" y1="50" x2="88" y2="38" stroke="#e8e6df" stroke-width="1" />
+                <line x1="50" y1="50" x2="74" y2="82" stroke="#e8e6df" stroke-width="1" />
+                <line x1="50" y1="50" x2="26" y2="82" stroke="#e8e6df" stroke-width="1" />
+                <line x1="50" y1="50" x2="12" y2="38" stroke="#e8e6df" stroke-width="1" />
+                <polygon id="radar-polygon" points="50,50 50,50 50,50 50,50 50,50" fill="rgba(195,236,63, 0.4)" stroke="#1a1a1a" stroke-width="2" />
               </svg>
-              <div style="position: absolute; top: -5px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: bold; color: #334155;">能力</div>
-              <div style="position: absolute; top: 35%; right: -15px; font-size: 10px; font-weight: bold; color: #334155;">状態</div>
-              <div style="position: absolute; bottom: 5px; right: 10px; font-size: 10px; font-weight: bold; color: #334155;">展開</div>
+              <div style="position: absolute; top: -5px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: bold; color: #1a1a1a;">能力</div>
+              <div style="position: absolute; top: 35%; right: -15px; font-size: 10px; font-weight: bold; color: #1a1a1a;">状態</div>
+              <div style="position: absolute; bottom: 5px; right: 10px; font-size: 10px; font-weight: bold; color: #1a1a1a;">展開</div>
               <!-- ▼ 変更：騎手→適性 -->
-              <div style="position: absolute; bottom: 5px; left: 10px; font-size: 10px; font-weight: bold; color: #334155;">適性</div>
-              <div style="position: absolute; top: 35%; left: -15px; font-size: 10px; font-weight: bold; color: #334155;">妙味</div>
+              <div style="position: absolute; bottom: 5px; left: 10px; font-size: 10px; font-weight: bold; color: #1a1a1a;">適性</div>
+              <div style="position: absolute; top: 35%; left: -15px; font-size: 10px; font-weight: bold; color: #1a1a1a;">妙味</div>
             </div>
 
             <!-- スライダー領域 -->
             <div style="flex: 1; min-width: 250px;">
               <div style="margin-bottom: 12px;">
-                <input type="text" id="tuning-name" placeholder="プロファイル名" style="width: 100%; padding: 6px; font-weight: bold; color:#1a1a1a; border: 1px solid #cbd5e1; border-radius: 4px;">
+                <input type="text" id="tuning-name" placeholder="プロファイル名" style="width: 100%; padding: 6px; font-weight: bold; color:#1a1a1a; border: 1px solid #dcdad3; border-radius: 4px;">
               </div>
               
               <div class="slider-row" style="margin-bottom: 8px;">
-                <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: bold; color: #475569;"><span>能力 (指数/時計)</span><span id="val-cap">5</span></div>
+                <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: bold; color: #3d3d3a;"><span>能力 (指数/時計)</span><span id="val-cap">5</span></div>
                 <input type="range" id="sl-cap" min="1" max="10" value="5" class="blue-slider" style="width:100%; margin:4px 0;" oninput="updateRadarChart('cap')">
               </div>
               <div class="slider-row" style="margin-bottom: 8px;">
-                <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: bold; color: #475569;"><span>状態 (デキ/調教)</span><span id="val-cond">5</span></div>
+                <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: bold; color: #3d3d3a;"><span>状態 (デキ/調教)</span><span id="val-cond">5</span></div>
                 <input type="range" id="sl-cond" min="1" max="10" value="5" class="blue-slider" style="width:100%; margin:4px 0;" oninput="updateRadarChart('cond')">
               </div>
               <div class="slider-row" style="margin-bottom: 8px;">
-                <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: bold; color: #475569;"><span>展開 (馬場/枠順)</span><span id="val-pace">5</span></div>
+                <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: bold; color: #3d3d3a;"><span>展開 (馬場/枠順)</span><span id="val-pace">5</span></div>
                 <input type="range" id="sl-pace" min="1" max="10" value="5" class="blue-slider" style="width:100%; margin:4px 0;" oninput="updateRadarChart('pace')">
               </div>
               <div class="slider-row" style="margin-bottom: 8px;">
                 <!-- ▼ 変更：騎手→適性 -->
-                <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: bold; color: #475569;"><span>適性 (コース・陣営)</span><span id="val-jock">5</span></div>
+                <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: bold; color: #3d3d3a;"><span>適性 (コース・陣営)</span><span id="val-jock">5</span></div>
                 <input type="range" id="sl-jock" min="1" max="10" value="5" class="blue-slider" style="width:100%; margin:4px 0;" oninput="updateRadarChart('jock')">
               </div>
               <div class="slider-row" style="margin-bottom: 8px;">
-                <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: bold; color: #475569;"><span>妙味 (穴狙い)</span><span id="val-ana">5</span></div>
+                <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: bold; color: #3d3d3a;"><span>妙味 (穴狙い)</span><span id="val-ana">5</span></div>
                 <input type="range" id="sl-ana" min="1" max="10" value="5" class="blue-slider" style="width:100%; margin:4px 0;" oninput="updateRadarChart('ana')">
               </div>
               
               <div style="display: flex; gap: 6px; margin-top: 10px;">
                 <!-- ▼ 変更：特定騎手補正を削除し、selectを広げる -->
-                <select id="tuning-type" style="padding: 4px; font-size: 12px; font-weight: bold; border: 1px solid #cbd5e1; border-radius: 4px; flex: 1;">
+                <select id="tuning-type" style="padding: 4px; font-size: 12px; font-weight: bold; border: 1px solid #dcdad3; border-radius: 4px; flex: 1;">
                   <option value="単勝">単勝</option><option value="複勝">複勝</option><option value="馬連" selected>馬連</option><option value="ワイド">ワイド</option>
                   <option value="馬単">馬単</option><option value="3連複">3連複</option><option value="3連単">3連単</option>
                 </select>
@@ -1898,13 +1905,13 @@ input[type=number], input[type=text], textarea, select {
             </div>
           </div>
           
-          <div style="display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+          <div style="display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid #e8e6df; padding-top: 10px;">
             <button class="btn-danger" style="background:#94a3b8; border:none; box-shadow:none;" onclick="backToModeSelection()">◀ 戻る</button>
-            <button class="btn-success" style="background:#1a5c53; border-color:#134e4a; font-size:13px; padding:6px 20px; box-shadow:none;" onclick="saveTuningAI()">✅ この設定で確定</button>
+            <button class="btn-success" style="background:#1a1a1a; border-color:#134e4a; font-size:13px; padding:6px 20px; box-shadow:none;" onclick="saveTuningAI()">✅ この設定で確定</button>
           </div>
         </div>
 
-        <div id="ai-modal-close-btn" style="margin-top: 15px; text-align: right; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+        <div id="ai-modal-close-btn" style="margin-top: 15px; text-align: right; border-top: 1px solid #e8e6df; padding-top: 10px;">
           <button class="btn-danger" style="background:#94a3b8; border-color:#718096; border-radius:4px; box-shadow:none;" onclick="document.getElementById('ai-setup-modal').classList.remove('open')">閉じる</button>
         </div>
       </div>
@@ -2337,7 +2344,7 @@ function getHistoryData(surface, rank, odds) {
       html += `<span class="st-course-info">[${match.name}]</span>`;
 
       const classNames = ["新", "未", "1勝", "2勝", "3勝", "OP"];
-      const colors = ["#b0bec5", "#a5d6a7", "#81d4fa", "#ffcc80", "#ce93d8", "#ef9a9a"];
+      const colors = ["#b0bec5", "#dcdad3", "#81d4fa", "#ffcc80", "#ce93d8", "#ef9a9a"];
       
       // バッジを単一の要素とプルダウンに変更
       let selectHtml = `<div style="display:flex; align-items:center; background:#111; border:1px solid #444; border-radius:4px; padding:2px 4px;">`;
@@ -3389,7 +3396,7 @@ function buildNavigation() {
   
   Object.keys(groups).forEach(basho => {
     const groupContainer = document.createElement('div');
-    groupContainer.style.cssText = 'display:flex; flex-direction:column; background:#f8fafc; border-left:3px solid #3b9487; border-radius:0 4px 4px 0; width:100%; margin-bottom:6px; overflow:hidden;';
+    groupContainer.style.cssText = 'display:flex; flex-direction:column; background:#f4f2ec; border-left:3px solid #1a1a1a; border-radius:0 4px 4px 0; width:100%; margin-bottom:6px; overflow:hidden;';
     
     let wStr = '', sStr = '良', dStr = '良';
     let sBias = 0, sTenkai = 0, dBias = 0, dTenkai = 0;
@@ -3420,7 +3427,7 @@ function buildNavigation() {
     let dType = getBiasType(dBias, dTenkai);
     
     const headerDiv = document.createElement('div');
-    headerDiv.style.cssText = 'display:flex; align-items:center; justify-content:space-between; padding:4px 8px; border-bottom:1px solid #e2e8f0; flex-wrap:wrap; gap:4px;';
+    headerDiv.style.cssText = 'display:flex; align-items:center; justify-content:space-between; padding:4px 8px; border-bottom:1px solid #e8e6df; flex-wrap:wrap; gap:4px;';
     const firstRaceId = groups[basho][0];
     const venueMemoStr = racesData[firstRaceId].venueMemo || '';
 
@@ -3429,7 +3436,7 @@ function buildNavigation() {
         <span style="font-weight:bold; color:#1a1a1a; font-size:14px; white-space:nowrap;">${basho}</span>
       </div>
       <div style="display:none;">
-        <select style="font-size:10px; padding:0 2px; border:1px solid #cbd5e1; border-radius:3px; background:#fff; color:#64748b; outline:none; cursor:pointer;" onchange="updateVenueWeather('${basho}', this.value)">
+        <select style="font-size:10px; padding:0 2px; border:1px solid #dcdad3; border-radius:3px; background:#fff; color:#9b9a92; outline:none; cursor:pointer;" onchange="updateVenueWeather('${basho}', this.value)">
           <option value="" ${!wStr?'selected':''}>天気</option>
           <option value="晴" ${wStr.includes('晴')?'selected':''}>☀️晴</option>
           <option value="曇" ${wStr.includes('曇')?'selected':''}>☁️曇</option>
@@ -3438,32 +3445,32 @@ function buildNavigation() {
           <option value="雪" ${wStr.includes('雪')?'selected':''}>⛄雪</option>
         </select>
         
-        <input type="text" value="${venueMemoStr}" placeholder="馬場メモ..." style="flex-grow:1; max-width:500px; padding:0 4px; font-size:10px; border:1px solid #cbd5e1; border-radius:3px; outline:none; color:#475569; background:#fff;" onchange="updateVenueMemoManual('${basho}', this.value)">
+        <input type="text" value="${venueMemoStr}" placeholder="馬場メモ..." style="flex-grow:1; max-width:500px; padding:0 4px; font-size:10px; border:1px solid #dcdad3; border-radius:3px; outline:none; color:#3d3d3a; background:#fff;" onchange="updateVenueMemoManual('${basho}', this.value)">
       </div>
 
       <div style="display:none;">
         <div style="color:#1a1a1a; text-align:right;">芝</div>
-        <select style="font-size:10px; padding:0 2px; border:1px solid #cbd5e1; border-radius:3px; background:#fff; color:#1a1a1a; outline:none;" onchange="updateVenueBaba('${basho}', '芝', this.value)">
+        <select style="font-size:10px; padding:0 2px; border:1px solid #dcdad3; border-radius:3px; background:#fff; color:#1a1a1a; outline:none;" onchange="updateVenueBaba('${basho}', '芝', this.value)">
           <option value="良" ${sStr==='良'?'selected':''}>良</option>
           <option value="稍" ${sStr==='稍'?'selected':''}>稍</option>
           <option value="重" ${sStr==='重'?'selected':''}>重</option>
           <option value="不" ${sStr==='不'?'selected':''}>不</option>
         </select>
-        <select style="font-size:10px; padding:0 2px; border:1px solid #cbd5e1; border-radius:3px; background:${sType==='custom'?'#e6f4f1':'#fff'}; color:#1a1a1a; outline:none; font-weight:bold;" onchange="handleVenueBiasSelect('${basho}', '芝', this.value)">
+        <select style="font-size:10px; padding:0 2px; border:1px solid #dcdad3; border-radius:3px; background:${sType==='custom'?'#e6f4f1':'#fff'}; color:#1a1a1a; outline:none; font-weight:bold;" onchange="handleVenueBiasSelect('${basho}', '芝', this.value)">
           <option value="フラット" ${sType==='フラット'?'selected':''}>フラット</option>
           <option value="内前" ${sType==='内前'?'selected':''}>内前</option>
           <option value="外差し" ${sType==='外差し'?'selected':''}>外差し</option>
           <option value="custom" ${sType==='custom'?'selected':''}>${sType==='custom' ? fmtCustom(sBias, sTenkai) : '細かく設定...'}</option>
         </select>
         
-        <div style="color:#a57335; text-align:right;">ダ</div>
-        <select style="font-size:10px; padding:0 2px; border:1px solid #cbd5e1; border-radius:3px; background:#fff; color:#a57335; outline:none;" onchange="updateVenueBaba('${basho}', 'ダ', this.value)">
+        <div style="color:#8a7340; text-align:right;">ダ</div>
+        <select style="font-size:10px; padding:0 2px; border:1px solid #dcdad3; border-radius:3px; background:#fff; color:#8a7340; outline:none;" onchange="updateVenueBaba('${basho}', 'ダ', this.value)">
           <option value="良" ${dStr==='良'?'selected':''}>良</option>
           <option value="稍" ${dStr==='稍'?'selected':''}>稍</option>
           <option value="重" ${dStr==='重'?'selected':''}>重</option>
           <option value="不" ${dStr==='不'?'selected':''}>不</option>
         </select>
-        <select style="font-size:10px; padding:0 2px; border:1px solid #cbd5e1; border-radius:3px; background:${dType==='custom'?'#fdf8ed':'#fff'}; color:#a57335; outline:none; font-weight:bold;" onchange="handleVenueBiasSelect('${basho}', 'ダ', this.value)">
+        <select style="font-size:10px; padding:0 2px; border:1px solid #dcdad3; border-radius:3px; background:${dType==='custom'?'#fdf8ed':'#fff'}; color:#8a7340; outline:none; font-weight:bold;" onchange="handleVenueBiasSelect('${basho}', 'ダ', this.value)">
           <option value="フラット" ${dType==='フラット'?'selected':''}>フラット</option>
           <option value="内前" ${dType==='内前'?'selected':''}>内前</option>
           <option value="外差し" ${dType==='外差し'?'selected':''}>外差し</option>
@@ -3486,7 +3493,7 @@ function buildNavigation() {
           // データ無し：グレーアウトの空ボタン（クリック不可）
           const empty = document.createElement('div');
           empty.className = 'nav-race-btn nav-race-empty';
-          empty.style.cssText = 'padding:4px; height:46px; box-sizing:border-box; overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; border:1px solid #edf1e8; border-radius:10px; background:#f3f5f0; color:#b9c4b2; opacity:.6; cursor:default;';
+          empty.style.cssText = 'padding:4px; height:46px; box-sizing:border-box; overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; border:1px solid #f0eee8; border-radius:10px; background:#f3f5f0; color:#b9c4b2; opacity:.6; cursor:default;';
           empty.innerHTML = `<div class="r-num" style="font-size:12px; font-weight:bold; color:#b9c4b2;">${rn}R</div><div style="font-size:9px; color:#c3ccbc; margin-top:2px;">—</div>`;
           buttonsDiv.appendChild(empty);
           continue;
@@ -3494,14 +3501,14 @@ function buildNavigation() {
 
         const timeStr = r.departureTime || '';
         const isDirt = (r.info && r.info.includes('ダ')) || (r.surface && r.surface.includes('ダ'));
-        const timeColor = isDirt ? '#a57335' : '#1a5c53';
-        const bottomBorder = isDirt ? 'border-bottom: 2px solid #eaddd5;' : 'border-bottom: 2px solid #cbd5e1;';
+        const timeColor = isDirt ? '#8a7340' : '#1a1a1a';
+        const bottomBorder = isDirt ? 'border-bottom: 2px solid #eaddd5;' : 'border-bottom: 2px solid #dcdad3;';
 
         const btn = document.createElement('div');
         btn.id = 'btn-' + rId;
         const isSelected = rId === currentRaceId;
         btn.className = 'nav-race-btn ' + (isDirt ? 'is-dirt' : 'is-turf') + (isSelected ? ' active' : '');
-        btn.style.cssText = `padding: 4px; height:46px; box-sizing:border-box; overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align: center; border: 1px solid #e2e8f0; border-radius: 10px; cursor: pointer; background: #fff;`;
+        btn.style.cssText = `padding: 4px; height:46px; box-sizing:border-box; overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align: center; border: 1px solid #e8e6df; border-radius: 10px; cursor: pointer; background: #fff;`;
         btn.onclick = () => { selectRace(rId); };
         // 発走時刻の行は常に確保（空でも高さを揃える）＝目次のカタつき防止
         btn.innerHTML = `<div class="r-num" style="font-size:12px; font-weight:bold; color: #666;">${rn}R</div><div class="r-time" style="font-size:9px; font-weight:bold; color: ${timeColor}; margin-top:2px; min-height:12px;">${timeStr || '—'}</div>`;
@@ -3840,7 +3847,7 @@ function buildNavigation() {
       if (simHeader && simWrapper) {
         if (isDirtRace) {
           // ダートの場合（オレンジ・茶色系）
-          simHeader.innerHTML = 'レースシミュレーター <span style="color:#757575;font-weight:normal;font-size:10px;">(スライダーで勝率が変動)</span>';
+          simHeader.innerHTML = 'レースシミュレーター <span style="color:#9b9a92;font-weight:normal;font-size:10px;">(スライダーで勝率が変動)</span>';
           simHeader.style.background = '#fff8e1';
           simHeader.style.color = '#d84315';
           simHeader.style.borderBottom = '1px solid #ffcc80';
@@ -3849,13 +3856,13 @@ function buildNavigation() {
           simLabels.forEach(el => el.style.color = '#d84315');
         } else {
           // 芝の場合（クリーンな緑系）
-          simHeader.innerHTML = 'レースシミュレーター <span style="color:#757575;font-weight:normal;font-size:10px;">(スライダーで勝率が変動)</span>';
-          simHeader.style.background = '#f0fdf4'; 
-          simHeader.style.color = '#1a5c53'; 
-          simHeader.style.borderBottom = '1px solid #a5d6a7';
+          simHeader.innerHTML = 'レースシミュレーター <span style="color:#9b9a92;font-weight:normal;font-size:10px;">(スライダーで勝率が変動)</span>';
+          simHeader.style.background = '#f4f2ec'; 
+          simHeader.style.color = '#1a1a1a'; 
+          simHeader.style.borderBottom = '1px solid #dcdad3';
           simWrapper.style.background = '#fafffa';
-          simWrapper.style.borderColor = '#a5d6a7';
-          simLabels.forEach(el => el.style.color = '#1a5c53');
+          simWrapper.style.borderColor = '#dcdad3';
+          simLabels.forEach(el => el.style.color = '#1a1a1a');
         }
       }
          // ▲▲ ここまで追加 ▲▲
@@ -4263,17 +4270,17 @@ window.showOddsAnalysisModal = function() {
 
      let html = '';
     // ▼ スタイリッシュな緑調のAI見解
-    html += '<div style="background:#f0fdf4; border:1px solid #bbf7d0; border-left:5px solid #3b9487; padding:12px 16px; margin-bottom:15px; border-radius:6px; font-size:15px; font-weight:bold; color:#1a1a1a; display:flex; align-items:center; gap:10px;"><span>🤖</span><span>【AI見解】 ' + recText + '</span></div>';
+    html += '<div style="background:#f4f2ec; border:1px solid #bbf7d0; border-left:5px solid #1a1a1a; padding:12px 16px; margin-bottom:15px; border-radius:6px; font-size:15px; font-weight:bold; color:#1a1a1a; display:flex; align-items:center; gap:10px;"><span>🤖</span><span>【AI見解】 ' + recText + '</span></div>';
     
     html += '<div style="width:100%; max-width:650px; margin:0 auto 20px; position:relative; min-height:300px;">' +
-                '<button onclick="toggleOaChartModeModal()" style="position:absolute; top:-10px; right:0; background:#3b9487; color:#fff; border:1px solid #2c7a6f; padding:8px 16px; border-radius:20px; font-size:13px; font-weight:bold; cursor:pointer; z-index:20; box-shadow:0 2px 4px rgba(0,0,0,0.1);" id="oaChartToggleBtn">📊 横棒グラフで見る</button>' +
+                '<button onclick="toggleOaChartModeModal()" style="position:absolute; top:-10px; right:0; background:#1a1a1a; color:#fff; border:1px solid #1a1a1a; padding:8px 16px; border-radius:20px; font-size:13px; font-weight:bold; cursor:pointer; z-index:20; box-shadow:0 2px 4px rgba(0,0,0,0.1);" id="oaChartToggleBtn">📊 横棒グラフで見る</button>' +
                 '<canvas id="oaPieChartModal"></canvas>' +
                 '<div id="oaBarChartAreaModal" style="display:none; width:100%; padding-top:30px;"></div>' +
              '</div>';
 
     // ▼ テーブルヘッダー（緑調・文字サイズアップ）
     html += '<table style="width:100%; border-collapse:collapse; font-size:14px; text-align:center;">' +
-            '<tr style="background-color:#f8fafc; color:#475569;"><th style="padding:10px 6px; border-bottom:2px solid #3b9487; width:8%;">人気</th><th style="padding:10px 6px; border-bottom:2px solid #3b9487; width:34%; text-align:left;">枠・馬名</th><th style="padding:10px 6px; border-bottom:2px solid #3b9487; width:10%;">単勝</th><th style="padding:10px 6px; border-bottom:2px solid #3b9487; width:14%;">複勝</th><th style="padding:10px 6px; border-bottom:2px solid #3b9487; width:18%;">過去 勝/複率</th><th style="padding:10px 6px; border-bottom:2px solid #3b9487; width:16%;">単/複 回収</th></tr>';
+            '<tr style="background-color:#f4f2ec; color:#3d3d3a;"><th style="padding:10px 6px; border-bottom:2px solid #1a1a1a; width:8%;">人気</th><th style="padding:10px 6px; border-bottom:2px solid #1a1a1a; width:34%; text-align:left;">枠・馬名</th><th style="padding:10px 6px; border-bottom:2px solid #1a1a1a; width:10%;">単勝</th><th style="padding:10px 6px; border-bottom:2px solid #1a1a1a; width:14%;">複勝</th><th style="padding:10px 6px; border-bottom:2px solid #1a1a1a; width:18%;">過去 勝/複率</th><th style="padding:10px 6px; border-bottom:2px solid #1a1a1a; width:16%;">単/複 回収</th></tr>';
     
     let prevOdds = 0;
     let dansoCount = 1;
@@ -4292,7 +4299,7 @@ window.showOddsAnalysisModal = function() {
         // ▼ コアバッジも緑＆キャメルのテーマに合わせる
         let coreHtml = '';
         if(h.coreLabel) {
-            let badgeClass = h.coreLabel.includes('🎯') ? 'background:#fffcf0; color:#d39e55; border:1px solid #d39e55;' : 'background:#f0fdf4; color:#3b9487; border:1px solid #3b9487;';
+            let badgeClass = h.coreLabel.includes('🎯') ? 'background:#fffcf0; color:#b8a06a; border:1px solid #b8a06a;' : 'background:#f4f2ec; color:#1a1a1a; border:1px solid #1a1a1a;';
             coreHtml = '<span style="font-size:11px; font-weight:bold; padding:2px 6px; border-radius:4px; white-space:nowrap; ' + badgeClass + '">' + h.coreLabel + '</span>';
         }
 
@@ -4312,23 +4319,23 @@ window.showOddsAnalysisModal = function() {
         let pReturns = '<span style="color:#94a3b8; font-size:12px;">-</span>';
 
         if(h.hist) {
-            pRates = '<span style="font-size:14px;">' + h.hist.win + '</span> <span style="color:#cbd5e1;">/</span> <span style="font-size:14px;">' + h.hist.fukuRate + '</span>';
+            pRates = '<span style="font-size:14px;">' + h.hist.win + '</span> <span style="color:#dcdad3;">/</span> <span style="font-size:14px;">' + h.hist.fukuRate + '</span>';
             let tanCls = h.hist.tan >= 100 ? 'color:#ef4444; font-weight:bold;' : (h.hist.tan < 70 ? 'color:#0284c7;' : 'color:#333;');
             let fukCls = h.hist.fuku >= 100 ? 'color:#ef4444; font-weight:bold;' : (h.hist.fuku < 70 ? 'color:#0284c7;' : 'color:#333;');
-            pReturns = '<span style="font-size:14px; ' + tanCls + '">' + h.hist.tan + '円</span> <span style="color:#cbd5e1;">/</span> <span style="font-size:14px; ' + fukCls + '">' + h.hist.fuku + '円</span>';
+            pReturns = '<span style="font-size:14px; ' + tanCls + '">' + h.hist.tan + '円</span> <span style="color:#dcdad3;">/</span> <span style="font-size:14px; ' + fukCls + '">' + h.hist.fuku + '円</span>';
         }
 
-        let rowClass = (h.rank > 11) ? 'style="background:#f8fafc; color:#94a3b8;"' : '';
+        let rowClass = (h.rank > 11) ? 'style="background:#f4f2ec; color:#94a3b8;"' : '';
         let fStr = (h.fukuOdds && h.fukuOdds !== '-') ? h.fukuOdds : '-';
 
         // ▼ 全体的にフォントサイズとパディングを拡大して見やすく
         html += '<tr ' + rowClass + '>' +
-            '<td style="padding:10px 6px; border-bottom:1px solid #e2e8f0; font-size:15px;">' + h.rank + '</td>' +
-            '<td style="padding:10px 6px; border-bottom:1px solid #e2e8f0; text-align:left;">' + nameCellHtml + '</td>' +
-            '<td style="padding:10px 6px; border-bottom:1px solid #e2e8f0; font-size:15px;"><b>' + h.actualOdds.toFixed(1) + '</b></td>' +
-            '<td style="padding:10px 6px; border-bottom:1px solid #e2e8f0; ' + fukuCellClass + '"><span style="font-size:14px; color:' + (h.isFukuUre ? '#0284c7' : '#333') + '; font-weight:' + (h.isFukuUre ? 'bold' : 'normal') + ';">' + fStr + '</span>' + fukuMark + '</td>' +
-            '<td style="padding:10px 6px; border-bottom:1px solid #e2e8f0;">' + pRates + '</td>' +
-            '<td style="padding:10px 6px; border-bottom:1px solid #e2e8f0;">' + pReturns + '</td>' +
+            '<td style="padding:10px 6px; border-bottom:1px solid #e8e6df; font-size:15px;">' + h.rank + '</td>' +
+            '<td style="padding:10px 6px; border-bottom:1px solid #e8e6df; text-align:left;">' + nameCellHtml + '</td>' +
+            '<td style="padding:10px 6px; border-bottom:1px solid #e8e6df; font-size:15px;"><b>' + h.actualOdds.toFixed(1) + '</b></td>' +
+            '<td style="padding:10px 6px; border-bottom:1px solid #e8e6df; ' + fukuCellClass + '"><span style="font-size:14px; color:' + (h.isFukuUre ? '#0284c7' : '#333') + '; font-weight:' + (h.isFukuUre ? 'bold' : 'normal') + ';">' + fStr + '</span>' + fukuMark + '</td>' +
+            '<td style="padding:10px 6px; border-bottom:1px solid #e8e6df;">' + pRates + '</td>' +
+            '<td style="padding:10px 6px; border-bottom:1px solid #e8e6df;">' + pReturns + '</td>' +
         '</tr>';
     });
     
@@ -4463,7 +4470,7 @@ window.drawOaChartModal = function() {
 
             let coreHtml = '';
             if(h.coreLabel) {
-                let badgeClass = h.coreLabel.includes('🎯') ? 'background:#fffcf0; color:#d39e55; border:1px solid #d39e55;' : 'background:#f0fdf4; color:#3b9487; border:1px solid #3b9487;';
+                let badgeClass = h.coreLabel.includes('🎯') ? 'background:#fffcf0; color:#b8a06a; border:1px solid #b8a06a;' : 'background:#f4f2ec; color:#1a1a1a; border:1px solid #1a1a1a;';
                 coreHtml = '<span style="font-size:11px; font-weight:bold; padding:2px 6px; border-radius:4px; margin-right:12px; min-width:48px; text-align:center; box-sizing:border-box; ' + badgeClass + '">' + h.coreLabel + '</span>';
             } else {
                 coreHtml = '<span style="display:inline-block; margin-right:12px; min-width:48px; box-sizing:border-box;"></span>';
@@ -4478,11 +4485,11 @@ window.drawOaChartModal = function() {
                     '</div>' +
                     '<div style="position: absolute; left: 170px; top: 0; height: 100%; width: calc(100% - 330px); z-index: 5; display: flex; align-items: center;">' +
                     // ▼ 棒グラフの色をスタイリッシュな青緑グラデーションに
-                    '<div style="height: 18px; background: linear-gradient(90deg, #3b9487, #99f6e4); border-radius: 0 4px 4px 0; opacity: 0.8; width: ' + barWidth + '%;"></div>' +
+                    '<div style="height: 18px; background: linear-gradient(90deg, #1a1a1a, #99f6e4); border-radius: 0 4px 4px 0; opacity: 0.8; width: ' + barWidth + '%;"></div>' +
                     '</div>' +
                     '<div style="margin-left: auto; display: flex; align-items: center; z-index: 20; width: 160px; justify-content: flex-end; flex-shrink: 0;">' +
                     coreHtml +
-                    '<span style="font-size: 15px; color: #d39e55; font-weight: bold; text-shadow: 1px 1px 2px #fff; width: 80px; text-align: right; box-sizing:border-box;">単 ' + h.actualOdds.toFixed(1) + '倍</span>' +
+                    '<span style="font-size: 15px; color: #b8a06a; font-weight: bold; text-shadow: 1px 1px 2px #fff; width: 80px; text-align: right; box-sizing:border-box;">単 ' + h.actualOdds.toFixed(1) + '倍</span>' +
                     '</div>' +
                     '</div>';
         });
@@ -4652,7 +4659,7 @@ window.drawOaChartModal = function() {
       } else {
         canvas.style.pointerEvents = 'none';
         canvas.style.zIndex = '10';
-        btn.style.background = '#1a73e8';
+        btn.style.background = '#1a1a1a';
         btn.textContent = '✍️ ペン';
       }
     }
@@ -4901,12 +4908,12 @@ window.drawOaChartModal = function() {
         const arrowSvg = arrowRightSvg; // 進行方向は右で固定
         let textTop = isStraight ? "内 ラチ" : "大 外 ↑", textBottom = isStraight ? "外 ラチ ↓" : "内 ラチ";
         
-        let bgSvg = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;"><defs>${gX}${gY}</defs><rect width="100" height="100" fill="${baseColor}" /><rect x="0" y="15" width="100" height="70" fill="${trackColor}" />${race.tenkaiVal!==0?`<rect x="0" y="15" width="100" height="70" fill="url(#gX)" style="mix-blend-mode:multiply;" />`:''}${race.biasVal!==0?`<rect x="0" y="15" width="100" height="70" fill="url(#gY)" style="mix-blend-mode:multiply;" />`:''}<rect x="${startLineX-0.6}" y="15" width="1.2" height="70" fill="#9aa9a0" opacity="0.55" /></svg>`;
+        let bgSvg = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;"><defs>${gX}${gY}</defs><rect width="100" height="100" fill="${baseColor}" /><rect x="0" y="15" width="100" height="70" fill="${trackColor}" />${race.tenkaiVal!==0?`<rect x="0" y="15" width="100" height="70" fill="url(#gX)" style="mix-blend-mode:multiply;" />`:''}${race.biasVal!==0?`<rect x="0" y="15" width="100" height="70" fill="url(#gY)" style="mix-blend-mode:multiply;" />`:''}<rect x="${startLineX-0.6}" y="15" width="1.2" height="70" fill="#9b9a92" opacity="0.55" /></svg>`;
         const textOverlay = `<div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;font-family:'Zen Kaku Gothic New',sans-serif;">
           <div style="position:absolute;top:5px;left:8px;color:#6b7a6b;font-size:9px;font-weight:700;letter-spacing:1px;background:rgba(255,255,255,.6);padding:1px 8px;border-radius:8px;">道中の位置取り（想定）</div>
           <div style="position:absolute;top:5px;right:8px;color:#5c8a46;font-size:10px;font-weight:700;background:rgba(255,255,255,.6);padding:1px 8px;border-radius:8px;">進行方向 →</div>
-          <div style="position:absolute;top:19%;left:6px;color:#8a9a83;font-size:9px;font-weight:700;">内ラチ</div>
-          <div style="position:absolute;bottom:5px;left:6px;color:#8a9a83;font-size:9px;font-weight:700;">外ラチ</div>
+          <div style="position:absolute;top:19%;left:6px;color:#9b9a92;font-size:9px;font-weight:700;">内ラチ</div>
+          <div style="position:absolute;bottom:5px;left:6px;color:#9b9a92;font-size:9px;font-weight:700;">外ラチ</div>
         </div>`;
         bgLayer.innerHTML = bgSvg + textOverlay;
       }
@@ -5160,8 +5167,8 @@ window.drawOaChartModal = function() {
         if(isHarvilleCalculated) {
           barWidthPct = Math.min((h.winRate / 60) * 100, 100);
           let ev = (!isNaN(tOdds) && h.winRate > 0) ? (tOdds * h.winRate / 100) : 0;
-          if(ev >= 1.0) { barStyle = 'linear-gradient(90deg, #d32f2f, #ff5252)'; }
-          else { barStyle = 'linear-gradient(90deg, #ffaa00, #ffd54f)'; }
+          if(ev >= 1.0) { barStyle = 'linear-gradient(90deg, #c3ec3f, #d4f34a)'; } /* 妙味＝ライム */
+          else { barStyle = 'linear-gradient(90deg, #2b2b28, #55554e)'; } /* それ以外＝ダーク */
         } else {
           if(graphSortKey === 'odds') {
             barWidthPct = (!isNaN(tOdds) && tOdds > 0) ? Math.min(80 / tOdds, 100) : 0;
@@ -5179,7 +5186,7 @@ window.drawOaChartModal = function() {
         if(graphSortKey === 'odds') {
           const tOdds = parseFloat(h.odds);
           if(!isNaN(tOdds) && tOdds > 0) {
-            supportHtml = `<span style="font-size:9px;color:#d39e55;margin-left:4px;font-weight:bold;">単${Number.isInteger(tOdds) ? tOdds : tOdds.toFixed(1)}倍</span><span style="font-size:8px;color:#94a3b8;margin-left:3px;">(支${(80/tOdds).toFixed(1)}%)</span>`;
+            supportHtml = `<span style="font-size:9px;color:#b8a06a;margin-left:4px;font-weight:bold;">単${Number.isInteger(tOdds) ? tOdds : tOdds.toFixed(1)}倍</span><span style="font-size:8px;color:#94a3b8;margin-left:3px;">(支${(80/tOdds).toFixed(1)}%)</span>`;
           }
         }
         
@@ -5191,13 +5198,13 @@ window.drawOaChartModal = function() {
           const renritsu = h.top2Prob !== undefined ? h.top2Prob.toFixed(0) : '-';
           const fukuR = h.top3Prob !== undefined ? h.top3Prob.toFixed(0) : '-';
           const oL = !isNaN(parseFloat(h.odds)) ? parseFloat(h.odds).toFixed(1) : '--';
-          let evColor = isHighEv ? '#d32f2f' : '#1a5c53';
+          let evColor = isHighEv ? '#d32f2f' : '#1a1a1a';
           
           // ★変更点1: バーの右側に配置するため、flex-shrink:0 を付けて潰れないようにし、テキストを少しコンパクト化
-                  confirmHtml = `<div style="display:flex; align-items:center; gap:5px; margin-left:8px; font-size:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:4px; padding:2px 6px; white-space:nowrap; flex-shrink:0;">
-            <span style="color:#475569;">単${oL}</span>
+                  confirmHtml = `<div style="display:flex; align-items:center; gap:5px; margin-left:8px; font-size:10px; background:#f4f2ec; border:1px solid #e8e6df; border-radius:4px; padding:2px 6px; white-space:nowrap; flex-shrink:0;">
+            <span style="color:#3d3d3a;">単${oL}</span>
             <span style="color:${evColor}; font-weight:bold;">期${evValue||'-'}</span>
-            <span style="color:#94a3b8; font-size:9px; border-left:1px solid #cbd5e1; padding-left:4px;">勝${winR.toFixed(0)} 連${renritsu} 複${fukuR}</span>
+            <span style="color:#94a3b8; font-size:9px; border-left:1px solid #dcdad3; padding-left:4px;">勝${winR.toFixed(0)} 連${renritsu} 複${fukuR}</span>
           </div>`;
         }
 
@@ -5515,7 +5522,7 @@ renderCourseFeature(); // ←★★ここに1行追加するだけです！★�
         // 数字の最後に「全」ボタンを並べる
               // 数字の最後に「全」ボタンを並べる
         const isAll = marksArr.length > 0 && marksArr.length === sortedH.length;
-        r += `<button class="tb-num-btn ${isAll?'sel-'+level:''}" style="background:${isAll?'':'#e0e0e0'}; border-color:#999; font-size:10px;" onclick="toggleAllTicketMark(${level})">全</button>`;
+        r += `<button class="tb-num-btn ${isAll?'sel-'+level:''}" style="background:${isAll?'':'#e8e6df'}; border-color:#999; font-size:10px;" onclick="toggleAllTicketMark(${level})">全</button>`;
 
         
         r += `</div></div>`;
@@ -5528,7 +5535,7 @@ renderCourseFeature(); // ←★★ここに1行追加するだけです！★�
         markArea.innerHTML += buildRow('馬番', b.marks1, 1, '#c62828');
       } else {
         markArea.innerHTML += buildRow(isTan ? '1着' : '軸', b.marks1, 1, '#c62828');
-        markArea.innerHTML += buildRow(isTan ? '2着' : '相手', b.marks2, 2, '#1565c0');
+        markArea.innerHTML += buildRow(isTan ? '2着' : '相手', b.marks2, 2, '#1a1a1a');
         if(is3ren) markArea.innerHTML += buildRow(isTan ? '3着' : '相手', b.marks3, 3, '#e65100');
       }
       
@@ -5536,8 +5543,8 @@ renderCourseFeature(); // ←★★ここに1行追加するだけです！★�
       if(pb) {
         pb.textContent = `${b.tickets.length} 点`;
         pb.style.background = '#fff';
-        pb.style.borderColor = '#4caf50';
-        pb.style.color = '#2e7d32';
+        pb.style.borderColor = '#c3ec3f';
+        pb.style.color = '#1a1a1a';
       }
       
       const listArea = document.getElementById('ticket-list-area');
@@ -5545,7 +5552,7 @@ renderCourseFeature(); // ←★★ここに1行追加するだけです！★�
       listArea.innerHTML = '';
       
       if(b.tickets.length === 0) {
-        listArea.innerHTML = '<div style="padding:16px;text-align:center;color:#9aa892;font-size:11px;">馬番を選んで「買い目を作る」を押してください</div>';
+        listArea.innerHTML = '<div style="padding:16px;text-align:center;color:#9b9a92;font-size:11px;">馬番を選んで「買い目を作る」を押してください</div>';
         _updateStatsPanel(0, 0, 0, 0);
         return;
       }
@@ -5897,7 +5904,7 @@ function autoGenerateTickets(mode = 'win') {
       b.marks1 = []; b.marks2 = []; b.marks3 = []; b.tickets = [];
       const oI = document.getElementById('odds-input'); if(oI) oI.value = '';
       const bg = document.getElementById('tb-points-badge');
-      if(bg) { bg.textContent = '0 点'; bg.style.background = '#fff'; bg.style.borderColor = '#4caf50'; bg.style.color = '#2e7d32'; }
+      if(bg) { bg.textContent = '0 点'; bg.style.background = '#fff'; bg.style.borderColor = '#c3ec3f'; bg.style.color = '#1a1a1a'; }
       
       setAiBtnActive('none'); // リセットしたらAIモードの色を解除
       renderTicketBuilder();
@@ -5915,7 +5922,7 @@ function autoGenerateTickets(mode = 'win') {
       b.marks1 = []; b.marks2 = []; b.marks3 = []; b.tickets = [];
       const oI = document.getElementById('odds-input'); if(oI) oI.value = '';
       const bg = document.getElementById('tb-points-badge');
-      if(bg) { bg.textContent = '0 点'; bg.style.background = '#fff'; bg.style.borderColor = '#4caf50'; bg.style.color = '#2e7d32'; }
+      if(bg) { bg.textContent = '0 点'; bg.style.background = '#fff'; bg.style.borderColor = '#c3ec3f'; bg.style.color = '#1a1a1a'; }
       renderTicketBuilder();
     }
     
@@ -6003,7 +6010,7 @@ function autoGenerateTickets(mode = 'win') {
           }
         }
         
-        if(statusEl) { statusEl.textContent = `✅ ${currentRaceId} 取得完了`; statusEl.style.color = '#2e7d32'; }
+        if(statusEl) { statusEl.textContent = `✅ ${currentRaceId} 取得完了`; statusEl.style.color = '#1a1a1a'; }
         renderAll();
         parseAndCalculate();
       } catch(err) {
@@ -6871,7 +6878,7 @@ function applyGlobalFilter() {
         const h = item.horse;
         top5List.innerHTML += `<div class="top5-item" onclick="selectRace('${item.raceId}')" style="cursor:pointer;" title="クリックでこのレースを開く">
           <span style="font-weight:bold; color:#d32f2f; min-width:24px;">${index + 1}位</span>
-          <span style="font-weight:bold; color:#1565c0; min-width:40px;">${item.raceId}</span>
+          <span style="font-weight:bold; color:#1a1a1a; min-width:40px;">${item.raceId}</span>
           <span class="waku-box waku-${h.waku}" style="width:16px; height:16px; font-size:10px;">${h.num}</span>
           <span style="font-weight:bold; min-width:80px;">${h.name}</span>
           <span class="top5-reasons">${item.comment}</span>
@@ -6906,7 +6913,7 @@ function applyGlobalFilter() {
         const h = item.horse;
         // マイチェック馬用の黄色っぽいデザインで目次を作成
         top5List.innerHTML += `<div class="top5-item" onclick="selectRace('${item.raceId}')" style="cursor:pointer; border-left-color:#ffd54f; background:#fffde7;" title="クリックでこのレースを開く">
-          <span style="font-weight:bold; color:#1565c0; min-width:40px;">${item.raceId}</span>
+          <span style="font-weight:bold; color:#1a1a1a; min-width:40px;">${item.raceId}</span>
           <span class="waku-box waku-${h.waku}" style="width:16px; height:16px; font-size:10px;">${h.num}</span>
           <span style="font-weight:bold; min-width:80px;">${h.name}</span>
           <span class="top5-reasons" style="border-color:#ffd54f; color:#b8860b;">長押しでチェック済</span>
@@ -7577,7 +7584,7 @@ let vbCurrentBasho = '', vbCurrentType = '';
 window.openVenueBiasModal = function(basho, type) {
   vbCurrentBasho = basho; vbCurrentType = type;
   const titleEl = document.getElementById('vb-modal-title');
-  if(titleEl) { titleEl.textContent = `${basho} ${type} - 一括設定`; titleEl.style.color = type === '芝' ? '#1a5c53' : '#a57335'; }
+  if(titleEl) { titleEl.textContent = `${basho} ${type} - 一括設定`; titleEl.style.color = type === '芝' ? '#1a1a1a' : '#8a7340'; }
   let startB = 0, startT = 0, found = false;
   Object.keys(racesData).forEach(rId => {
     if(found) return; const r = racesData[rId];
@@ -7683,9 +7690,9 @@ function openFinalReport() {
         const isLowEv = ev > 0 && ev < 1.0; // 期待値1.0未満を判定
         
         // 期待値が低い行は背景を少し暗くし、左端にグレーのラインとインナーシャドウをつける
-        const rowStyle = isLowEv ? 'background-color: #f8fafc; box-shadow: inset 4px 0 0 #94a3b8, inset 0 2px 5px rgba(0,0,0,0.03);' : '';
-        const evColor = isLowEv ? '#94a3b8' : '#3b9487'; // 低い場合はグレーに
-        const combColor = isLowEv ? '#475569' : '';
+        const rowStyle = isLowEv ? 'background-color: #f4f2ec; box-shadow: inset 4px 0 0 #94a3b8, inset 0 2px 5px rgba(0,0,0,0.03);' : '';
+        const evColor = isLowEv ? '#94a3b8' : '#1a1a1a'; // 低い場合はグレーに
+        const combColor = isLowEv ? '#3d3d3a' : '';
         const opc = isLowEv ? 'opacity: 0.7;' : '';
 
         // ★期待値に応じた印を設定
@@ -7697,11 +7704,11 @@ function openFinalReport() {
         } else if (ev >= 1.0) {
             markHtml = '<span style="color:#43a047; font-size:18px;">△</span>'; // 緑
         } else if (isLowEv) {
-            markHtml = '<span style="color:#cbd5e1; font-size:16px;">-</span>'; // グレー
+            markHtml = '<span style="color:#dcdad3; font-size:16px;">-</span>'; // グレー
         }
 
         rankHtml += `<tr style="${rowStyle}">
-            <td style="font-weight:bold; color:#64748b;">[${i+1}]</td>
+            <td style="font-weight:bold; color:#9b9a92;">[${i+1}]</td>
             <td style="font-weight:bold; font-size:15px; ${combColor ? `color:${combColor};` : ''}">${t.comb}</td>
             <td style="${opc}">${((t.prob||0)*100).toFixed(1)}%</td>
             <td style="font-weight:bold; color:#1a1a1a; ${opc}">${t.odds>0?t.odds.toFixed(1):'-'}</td>
@@ -7785,7 +7792,7 @@ function openFinalReport() {
     if (otherWinRate > 0) {
         let endAcc = currentAcc + otherWinRate;
         // 既存の枠色と被らない薄いグレーを使用
-        conicGradients.push(`#e2e8f0 ${currentAcc}% ${endAcc}%`);
+        conicGradients.push(`#e8e6df ${currentAcc}% ${endAcc}%`);
         
         // その他の合算がある程度大きければ「他」というラベルを置く
         if (otherWinRate >= 3.0) {
@@ -7794,14 +7801,14 @@ function openFinalReport() {
             let rad = angle * (Math.PI / 180);
             let x = chartRadius + Math.cos(rad) * labelRadius;
             let y = chartRadius + Math.sin(rad) * labelRadius;
-            labelsHtml += `<div style="position:absolute; left:${x}px; top:${y}px; transform:translate(-50%, -50%); font-size:12px; font-weight:bold; color:#64748b; z-index:5;">他</div>`;
+            labelsHtml += `<div style="position:absolute; left:${x}px; top:${y}px; transform:translate(-50%, -50%); font-size:12px; font-weight:bold; color:#9b9a92; z-index:5;">他</div>`;
         }
     }
 
     const timeDisp = race.departureTime ? ` [${race.departureTime}]` : '';
     let raceInfoText = `${currentRaceId} ${race.basho}${timeDisp} ${race.info || ''} ${race.raceName || ''}`;
     
-    let raceInfoHtml = raceInfoText ? `<div style="font-size:16px; font-weight:bold; color:#1a1a1a; margin-bottom:15px; border-bottom:1px solid #cbd5e1; padding-bottom:10px;">${raceInfoText}</div>` : '';
+    let raceInfoHtml = raceInfoText ? `<div style="font-size:16px; font-weight:bold; color:#1a1a1a; margin-bottom:15px; border-bottom:1px solid #dcdad3; padding-bottom:10px;">${raceInfoText}</div>` : '';
 
     content.innerHTML = `
         <div class="rep-left">
@@ -7841,7 +7848,7 @@ function openFinalReport() {
                     ${labelsHtml}
                     <div class="donut-inner">
                         <div style="font-size:14px; font-weight:bold; color:#1a1a1a;">勝率分布</div>
-                        <div style="font-size:11px; color:#64748b;">(正規枠色)</div>
+                        <div style="font-size:11px; color:#9b9a92;">(正規枠色)</div>
                     </div>
                 </div>
             </div>
@@ -7976,14 +7983,14 @@ window.showPresetAI = function() {
     const radarSvg = `
       <div style="width:65px; height:65px; position:relative; flex-shrink:0;">
         <svg width="100%" height="100%" viewBox="0 0 100 100">
-          <polygon points="50,10 88,38 74,82 26,82 12,38" fill="none" stroke="#e2e8f0" stroke-width="1" />
-          <polygon points="50,30 69,44 62,66 38,66 31,44" fill="none" stroke="#e2e8f0" stroke-width="1" />
-          <line x1="50" y1="50" x2="50" y2="10" stroke="#e2e8f0" stroke-width="1" />
-          <line x1="50" y1="50" x2="88" y2="38" stroke="#e2e8f0" stroke-width="1" />
-          <line x1="50" y1="50" x2="74" y2="82" stroke="#e2e8f0" stroke-width="1" />
-          <line x1="50" y1="50" x2="26" y2="82" stroke="#e2e8f0" stroke-width="1" />
-          <line x1="50" y1="50" x2="12" y2="38" stroke="#e2e8f0" stroke-width="1" />
-          <polygon points="${pointsStr.trim()}" fill="rgba(59, 148, 135, 0.4)" stroke="#1a5c53" stroke-width="1.5" />
+          <polygon points="50,10 88,38 74,82 26,82 12,38" fill="none" stroke="#e8e6df" stroke-width="1" />
+          <polygon points="50,30 69,44 62,66 38,66 31,44" fill="none" stroke="#e8e6df" stroke-width="1" />
+          <line x1="50" y1="50" x2="50" y2="10" stroke="#e8e6df" stroke-width="1" />
+          <line x1="50" y1="50" x2="88" y2="38" stroke="#e8e6df" stroke-width="1" />
+          <line x1="50" y1="50" x2="74" y2="82" stroke="#e8e6df" stroke-width="1" />
+          <line x1="50" y1="50" x2="26" y2="82" stroke="#e8e6df" stroke-width="1" />
+          <line x1="50" y1="50" x2="12" y2="38" stroke="#e8e6df" stroke-width="1" />
+          <polygon points="${pointsStr.trim()}" fill="rgba(195,236,63, 0.4)" stroke="#1a1a1a" stroke-width="1.5" />
         </svg>
         <div style="position:absolute; top:-4px; left:50%; transform:translateX(-50%); font-size:7px; color:#94a3b8; font-weight:bold;">能</div>
         <div style="position:absolute; top:35%; right:-3px; font-size:7px; color:#94a3b8; font-weight:bold;">状</div>
@@ -7994,13 +8001,13 @@ window.showPresetAI = function() {
     `;
 
     list.innerHTML += `
-      <div style="border: 1px solid #e2e8f0; border-radius: 4px; padding: 10px; cursor: pointer; background: #fff; transition: border-color 0.2s; display:flex; align-items:center; justify-content:space-between; gap:10px;" onclick="window.openAITuning(${p.id}, false)" onmouseover="this.style.borderColor='#3b9487'" onmouseout="this.style.borderColor='#e2e8f0'">
+      <div style="border: 1px solid #e8e6df; border-radius: 4px; padding: 10px; cursor: pointer; background: #fff; transition: border-color 0.2s; display:flex; align-items:center; justify-content:space-between; gap:10px;" onclick="window.openAITuning(${p.id}, false)" onmouseover="this.style.borderColor='#1a1a1a'" onmouseout="this.style.borderColor='#e8e6df'">
         <div style="flex:1;">
-          <div style="font-size: 13px; font-weight: bold; color: #334155; display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+          <div style="font-size: 13px; font-weight: bold; color: #1a1a1a; display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
             ${p.name}
-            <span style="font-size: 9px; background: #e2e8f0; color: #475569; padding: 2px 6px; border-radius: 3px;">${p.label}</span>
+            <span style="font-size: 9px; background: #e8e6df; color: #3d3d3a; padding: 2px 6px; border-radius: 3px;">${p.label}</span>
           </div>
-          <div style="font-size: 10px; color: #64748b; line-height: 1.4;">${p.desc}</div>
+          <div style="font-size: 10px; color: #9b9a92; line-height: 1.4;">${p.desc}</div>
         </div>
         ${radarSvg}
       </div>
@@ -8033,11 +8040,11 @@ window.appendChatMessage = function(sender, text) {
   const msgArea = document.getElementById('chat-messages');
   const div = document.createElement('div');
   if(sender === 'system') {
-    div.style.cssText = "align-self: flex-start; background: #ffffff; border: 1px solid #cbd5e1; padding: 8px 12px; border-radius: 0 8px 8px 8px; max-width: 85%; font-size: 11px; color: #334155; line-height: 1.5;";
+    div.style.cssText = "align-self: flex-start; background: #ffffff; border: 1px solid #dcdad3; padding: 8px 12px; border-radius: 0 8px 8px 8px; max-width: 85%; font-size: 11px; color: #1a1a1a; line-height: 1.5;";
     div.innerHTML = `<span style="font-weight:bold; color:#1a1a1a; font-size:10px; margin-bottom:4px; display:block;">System</span>${text}`;
   } else {
     div.style.cssText = "align-self: flex-end; background: #e6f4f1; border: 1px solid #a7d0c8; padding: 8px 12px; border-radius: 8px 0 8px 8px; max-width: 85%; font-size: 11px; color:#1a1a1a; line-height: 1.5;";
-    div.innerHTML = `<span style="font-weight:bold; color:#3b9487; font-size:10px; margin-bottom:4px; display:block;">User</span>${text}`;
+    div.innerHTML = `<span style="font-weight:bold; color:#1a1a1a; font-size:10px; margin-bottom:4px; display:block;">User</span>${text}`;
   }
   msgArea.appendChild(div);
   msgArea.scrollTop = msgArea.scrollHeight;
@@ -8158,7 +8165,7 @@ window.updateRadarChart = function(changedKey) {
   const rpEl = document.getElementById('remain-points');
   if(rpEl) {
     rpEl.textContent = remain;
-    rpEl.style.color = remain === 0 ? '#d32f2f' : '#1a5c53';
+    rpEl.style.color = remain === 0 ? '#d32f2f' : '#1a1a1a';
   }
 
   // 確定値を変数とラベルに反映
@@ -8582,12 +8589,12 @@ window.showDetailedData2Modal = function() {
     let html = '<table class="dd2-table" style="width:100%; border-collapse:collapse; font-size:12px;">';
     html += `
       <thead>
-        <tr style="background:#f8fafc;">
-          <th style="width:24px; padding:8px 4px; border-bottom:2px solid #3b9487; color:#1a1a1a;">馬番</th>
-          <th style="text-align:left; padding:8px 4px; border-bottom:2px solid #3b9487; color:#1a1a1a; min-width:100px;">馬名</th>
-          <th style="text-align:left; padding:8px 6px; border-bottom:2px solid #3b9487; border-left:1px solid #cbd5e1; color:#1a1a1a;">騎手<span style="font-size:9px;font-weight:normal;color:#64748b;margin-left:4px;">(勝率 / 単回)</span></th>
-          <th style="text-align:left; padding:8px 6px; border-bottom:2px solid #3b9487; border-left:1px solid #cbd5e1; color:#1a1a1a;">調教師<span style="font-size:9px;font-weight:normal;color:#64748b;margin-left:4px;">(勝率 / 単回)</span></th>
-          <th style="text-align:left; padding:8px 6px; border-bottom:2px solid #3b9487; border-left:1px solid #cbd5e1; color:#1a1a1a;">種牡馬<span style="font-size:9px;font-weight:normal;color:#64748b;margin-left:4px;">(勝率 / 単回)</span></th>
+        <tr style="background:#f4f2ec;">
+          <th style="width:24px; padding:8px 4px; border-bottom:2px solid #1a1a1a; color:#1a1a1a;">馬番</th>
+          <th style="text-align:left; padding:8px 4px; border-bottom:2px solid #1a1a1a; color:#1a1a1a; min-width:100px;">馬名</th>
+          <th style="text-align:left; padding:8px 6px; border-bottom:2px solid #1a1a1a; border-left:1px solid #dcdad3; color:#1a1a1a;">騎手<span style="font-size:9px;font-weight:normal;color:#9b9a92;margin-left:4px;">(勝率 / 単回)</span></th>
+          <th style="text-align:left; padding:8px 6px; border-bottom:2px solid #1a1a1a; border-left:1px solid #dcdad3; color:#1a1a1a;">調教師<span style="font-size:9px;font-weight:normal;color:#9b9a92;margin-left:4px;">(勝率 / 単回)</span></th>
+          <th style="text-align:left; padding:8px 6px; border-bottom:2px solid #1a1a1a; border-left:1px solid #dcdad3; color:#1a1a1a;">種牡馬<span style="font-size:9px;font-weight:normal;color:#9b9a92;margin-left:4px;">(勝率 / 単回)</span></th>
         </tr>
       </thead><tbody>
     `;
@@ -8611,9 +8618,9 @@ window.showDetailedData2Modal = function() {
         return `<div style="display:flex; flex-direction:column; padding:4px; min-width:80px; max-width: 90px;">
                   <div style="${nameStyle}">${name || '-'}</div>
                   <div style="font-size:12px; text-align:right; margin-bottom:2px; letter-spacing:-0.5px;">
-                    <span style="${winStyle}">${formatPct(win)}</span> <span style="color:#cbd5e1; font-weight:normal; margin:0 2px;">/</span> <span style="${retStyle}">${formatPct(ret)}</span>
+                    <span style="${winStyle}">${formatPct(win)}</span> <span style="color:#dcdad3; font-weight:normal; margin:0 2px;">/</span> <span style="${retStyle}">${formatPct(ret)}</span>
                   </div>
-                  <div style="font-size:10px; color:#64748b; text-align:right; letter-spacing:-0.5px;">${chaku || '0.0.0.0 / 0'}</div>
+                  <div style="font-size:10px; color:#9b9a92; text-align:right; letter-spacing:-0.5px;">${chaku || '0.0.0.0 / 0'}</div>
                 </div>`;
     };
 
@@ -8629,13 +8636,13 @@ window.showDetailedData2Modal = function() {
         let goodCount = (jGood?1:0)+(tGood?1:0)+(sGood?1:0);
         
         let markHtml = '';
-        let rowStyle = 'border-bottom: 1px solid #e2e8f0; border-left: 4px solid transparent;';
+        let rowStyle = 'border-bottom: 1px solid #e8e6df; border-left: 4px solid transparent;';
         if(goodCount >= 2) { 
             markHtml = '<span style="border:1px solid #ef4444; color:#ef4444; font-weight:bold; margin-left:6px; padding:1px 4px; border-radius:3px; font-size:10px;">特</span>'; 
-            rowStyle = 'border-bottom: 1px solid #e2e8f0; border-left: 4px solid #ef4444; background:#fffcf0;'; 
+            rowStyle = 'border-bottom: 1px solid #e8e6df; border-left: 4px solid #ef4444; background:#fffcf0;'; 
         } else if(jGood || tGood || sGood) { 
             markHtml = '<span style="border:1px solid #d97706; color:#d97706; font-weight:bold; margin-left:6px; padding:1px 4px; border-radius:3px; font-size:10px;">狙</span>'; 
-            rowStyle = 'border-bottom: 1px solid #e2e8f0; border-left: 4px solid #f59e0b;'; 
+            rowStyle = 'border-bottom: 1px solid #e8e6df; border-left: 4px solid #f59e0b;'; 
         }
 
         const jChaku = `${h.campData.j1||0}.${h.campData.j2||0}.${h.campData.j3||0}.${h.campData.jOut||0} / ${h.campData.jTot||0}`;
@@ -8648,9 +8655,9 @@ window.showDetailedData2Modal = function() {
         html += `<tr style="${rowStyle}">` +
             `<td style="padding:6px 2px;"><div class="waku-box waku-${h.waku}" style="margin:auto; width:22px; height:22px; font-size:12px;">${h.num}</div></td>` +
             `<td style="text-align:left; font-weight:bold; font-size:13px; padding:6px 4px;">${h.name}${markHtml}</td>` +
-            `<td style="border-left:1px dashed #e2e8f0; padding:4px;">${buildCampCell(displayJockey, h.campData.jWin, h.campData.jRet, jChaku)}</td>` +
-            `<td style="border-left:1px dashed #e2e8f0; padding:4px;">${buildCampCell(h.campData.trainer, h.campData.tWin, h.campData.tRet, tChaku)}</td>` +
-            `<td style="border-left:1px dashed #e2e8f0; padding:4px;">${buildCampCell(h.campData.sire, h.campData.sWin, h.campData.sRet, sChaku)}</td>` +
+            `<td style="border-left:1px dashed #e8e6df; padding:4px;">${buildCampCell(displayJockey, h.campData.jWin, h.campData.jRet, jChaku)}</td>` +
+            `<td style="border-left:1px dashed #e8e6df; padding:4px;">${buildCampCell(h.campData.trainer, h.campData.tWin, h.campData.tRet, tChaku)}</td>` +
+            `<td style="border-left:1px dashed #e8e6df; padding:4px;">${buildCampCell(h.campData.sire, h.campData.sWin, h.campData.sRet, sChaku)}</td>` +
             `</tr>`;
     });
     html += '</tbody></table>';
@@ -8812,21 +8819,21 @@ window.closeDetailedData2Modal = function() {
       const br=+cv.dataset.br,sp=+cv.dataset.sp,di=+cv.dataset.di,tn=cv.dataset.turn==='1'?1:-1;
       const S=Math.min(W,H),cx=W/2,cy=H/2,th=rad(br),cs=Math.cos(th),sn=Math.sin(th),L=S*0.30,Wd=S*0.135;
       const toS=(lx,ly)=>[cx+lx*cs-ly*sn,cy+lx*sn+ly*cs];
-      g.fillStyle="#9aa9a0";g.font="bold 10px sans-serif";g.textAlign="center";g.textBaseline="middle";
+      g.fillStyle="#9b9a92";g.font="bold 10px sans-serif";g.textAlign="center";g.textBaseline="middle";
       [["北",0],["東",90],["南",180],["西",270]].forEach(([t,a])=>{const rr=rad(a);g.fillText(t,cx+Math.sin(rr)*S*0.45,cy-Math.cos(rr)*S*0.45);});
       g.save();g.translate(cx,cy);g.rotate(th);g.scale(tn,1);
-      g.fillStyle="rgba(0,134,110,.06)";g.strokeStyle="#9aa9a0";g.lineWidth=1.5;
+      g.fillStyle="rgba(0,134,110,.06)";g.strokeStyle="#9b9a92";g.lineWidth=1.5;
       g.beginPath();g.roundRect(-Wd,-L,2*Wd,2*L,Wd);g.fill();g.stroke();
       g.strokeStyle="#dfe6ec";g.lineWidth=1;g.beginPath();g.roundRect(-Wd*.46,-L+Wd*.55,Wd*.92,2*L-Wd*1.1,Wd*.46);g.stroke();
       const chev=(x,y,dir,s,col,lw)=>{g.strokeStyle=col;g.lineWidth=lw;g.lineCap="round";g.lineJoin="round";g.beginPath();g.moveTo(x-s,y);g.lineTo(x,y+dir*s);g.lineTo(x+s,y);g.stroke();};
       g.strokeStyle="#2f7d2b";g.lineWidth=2;g.beginPath();g.moveTo(Wd,L-Wd*.7);g.lineTo(Wd,-L+Wd*.7);g.stroke();
       g.beginPath();g.moveTo(Wd-6,-L+Wd*.7);g.lineTo(Wd+6,-L+Wd*.7);g.stroke();
       [-L*.4,-L*.05,L*.3].forEach(y=>chev(Wd,y,-1,5.5,"#2f7d2b",3));
-      g.strokeStyle="#9aa9a0";g.lineWidth=1.4;g.beginPath();g.moveTo(-Wd,-L+Wd*.7);g.lineTo(-Wd,L-Wd*.7);g.stroke();
-      [-L*.3,L*.05,L*.4].forEach(y=>chev(-Wd,y,1,4.5,"#9aa9a0",2.4));
+      g.strokeStyle="#9b9a92";g.lineWidth=1.4;g.beginPath();g.moveTo(-Wd,-L+Wd*.7);g.lineTo(-Wd,L-Wd*.7);g.stroke();
+      [-L*.3,L*.05,L*.4].forEach(y=>chev(-Wd,y,1,4.5,"#9b9a92",2.4));
       g.restore();
       g.font="bold 10px sans-serif";let p=toS(tn*(Wd+14),0);g.fillStyle="#2f7d2b";g.fillText("直線",p[0],p[1]);
-      p=toS(tn*(-Wd-16),0);g.fillStyle="#9aa9a0";g.fillText("向正面",p[0],p[1]);
+      p=toS(tn*(-Wd-16),0);g.fillStyle="#9b9a92";g.fillText("向正面",p[0],p[1]);
       if(sp>0){const to=rad((di+180)%360),wx=Math.sin(to),wy=-Math.cos(to),qx=-wy,qy=wx;
         const base=0.32+0.4*Math.min(sp/9,1),lw=2.4+Math.min(sp/6,1.8),alen=S*0.24,spacing=S*0.12,spd=0.13+sp*0.008,hL=8,hW=4.2;
         for(let i=0;i<3;i++){const phase=((el*spd)+i/3)%1,lon=-W*0.44+phase*W*0.88;
