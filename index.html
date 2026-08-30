@@ -1466,8 +1466,11 @@ input[type=number], input[type=text], textarea, select {
 
       <!-- ③指数一覧＋勝率 -->
       <section class="big-card">
-        <div class="bc-head">
-          <span class="bc-title">アウトプットアレンジ</span>
+        <div class="bc-head" style="align-items:flex-start;">
+          <div style="flex:1;min-width:0;">
+            <span class="mk-eyebrow">OUTPUT</span>
+            <span class="bc-title" style="display:block;margin-top:2px;"><span class="mk-mark">勝率設定</span></span>
+          </div>
         </div>
           <div class="main-table-area">
         <!-- 小タイトル：各馬評価（＋詳細表示トグル） -->
@@ -1515,7 +1518,7 @@ input[type=number], input[type=text], textarea, select {
       <!-- ▼ 勝率設定（アウトプットアレンジ内の小セクション） ▼ -->
       <div class="stat-card">
              <div class="sub-head">
-        <span class="sub-head-ttl">勝率設定</span>
+        <span class="sub-head-ttl">勝率グラフ</span>
         <span id="haran-badge-2" style="display:none;"></span>
         <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto;">
           <span style="font-size:11px;font-weight:700;color:#9b9a92;">合計 <span id="total-val" style="color:var(--mk-dark);font-weight:800;">0.0</span>%</span>
@@ -1553,8 +1556,11 @@ input[type=number], input[type=text], textarea, select {
 
       <!-- ④買い目ビルダー -->
       <section class="big-card">
-        <div class="bc-head">
-          <span class="bc-title">買い目ビルダー</span>
+        <div class="bc-head" style="align-items:flex-start;">
+          <div style="flex:1;min-width:0;">
+            <span class="mk-eyebrow">BET BUILDER</span>
+            <span class="bc-title" style="display:block;margin-top:2px;"><span class="mk-mark">買い目</span></span>
+          </div>
         </div>
       <div class="ticket-builder">
         <!-- 操作バー：AI推奨・券種・買い目生成（ボタンサイズ統一） -->
