@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アーカイブ — MUKETSU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#f7faf5;color:#1c2e1f;font-family:"Zen Kaku Gothic New",-apple-system,sans-serif;line-height:1.6;padding:16px}
+  .wrap{max-width:1040px;margin:0 auto}
+  .titlecard{background:#1c2e1f;border-radius:16px;padding:20px 22px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+  .titlecard .t{font-family:"Playfair Display",serif;font-weight:700;color:#f2f5ee;font-size:22px;letter-spacing:.02em}
+  .titlecard .s{font-size:11px;color:#a9c19c;letter-spacing:.1em}
+  .paid{font-size:10px;font-weight:700;color:#1c2e1f;background:#e2c766;border-radius:12px;padding:4px 12px;letter-spacing:.05em}
+  .back{font-size:12px;color:#5c8a46;text-decoration:none}
+  .steps{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+  .step{font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;background:#eef3ea;color:#8a9a83}
+  .step.on{background:#1c2e1f;color:#eef3e8}
+  .card{background:#fff;border:1px solid #e6ece0;border-radius:16px;box-shadow:0 1px 3px rgba(60,90,63,.06);padding:18px;margin-bottom:14px}
+  .card h2{font-family:"Playfair Display",serif;font-weight:600;font-size:16px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+
+  /* calendar */
+  .cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .cal-head button{background:#eef3ea;border:none;border-radius:10px;width:32px;height:32px;font-size:16px;color:#1c2e1f;cursor:pointer}
+  .cal-head .ym{font-weight:700;font-size:15px}
+  .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+  .cal .dow{font-size:10px;color:#8a9a83;text-align:center;padding:2px 0;font-weight:700}
+  .cal .day{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;font-size:13px;color:#c3ccbc;background:#fafcf8;border:1px solid #eef3ea;position:relative}
+  .cal .day.race{color:#1c2e1f;background:#fff;border-color:#cfe0c4;cursor:pointer;font-weight:700}
+  .cal .day.race:hover{background:#eef3ea}
+  .cal .day.race.sel{background:#1c2e1f;color:#eef3e8;border-color:#1c2e1f}
+  .cal .day .dot{width:5px;height:5px;border-radius:50%;background:#5c8a46;margin-top:3px}
+  .cal .day.sel .dot{background:#a9c19c}
+  .cal .day.sun{color:#c98a8a}
+  .cal .day.race.sun{color:#c0655a}
+  .cal .day.blank{background:transparent;border:none}
+
+  .venues{display:flex;gap:10px;flex-wrap:wrap}
+  .venue{flex:1;min-width:130px;background:#fff;border:1px solid #cfe0c4;border-radius:14px;padding:14px;cursor:pointer;text-align:center;transition:all .2s}
+  .venue:hover{background:#eef3ea}
+  .venue.sel{background:#1c2e1f;border-color:#1c2e1f}
+  .venue .vn{font-family:"Playfair Display",serif;font-weight:600;font-size:18px}
+  .venue.sel .vn{color:#f2f5ee}
+  .venue .vm{font-size:10px;color:#8a9a83;margin-top:2px}
+  .venue.sel .vm{color:#a9c19c}
+
+  .races{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}
+  .race{background:#f3f8ee;border:1px solid #e6ece0;border-radius:10px;padding:9px 0;text-align:center;font-weight:700;font-size:13px;color:#3f4a3d;cursor:pointer}
+  .race:hover{background:#eef3ea}
+  .race.sel{background:#1c2e1f;color:#eef3e8;border-color:#1c2e1f}
+  .race .rt{font-size:9px;font-weight:400;color:#8a9a83;margin-top:1px}
+  .race.sel .rt{color:#a9c19c}
+
+  /* result detail */
+  .detail-empty{color:#8a9a83;font-size:13px;text-align:center;padding:24px}
+  .mono{font-variant-numeric:tabular-nums}
+  .rrow{display:grid;grid-template-columns:26px 1fr 44px 44px;gap:8px;padding:8px 0;border-bottom:1px solid #edf1e8;font-size:13px;align-items:center}
+  .rrow.head{color:#8a9a83;font-size:10px;font-weight:700;border-bottom:1px solid #cfe0c4}
+  .memo-box{background:#eef3ea;border-radius:10px;padding:10px 12px;font-size:12px;color:#4b5a48;margin-top:12px}
+  .pl{display:inline-flex;background:#eaf0e4;color:#3d5a3f;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px}
+  .waku{display:inline-flex;width:22px;height:22px;border-radius:4px;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+  .w1{background:#fff;color:#000;border:1px solid #d0d0c8}.w3{background:#e2544a;color:#fff}.w4{background:#4b93cf;color:#fff}.w5{background:#f5d64b;color:#3a3320}.w6{background:#58b25a;color:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="titlecard">
+    <div>
+      <div class="t">Archive</div>
+      <div class="s">過去の予想・メモ・結果を振り返る</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="paid">有料会員機能</span>
+      <a class="back" href="./">← ツールに戻る</a>
+    </div>
+  </div>
+
+  <div class="steps">
+    <span class="step on" id="st1">1 日付</span>
+    <span class="step" id="st2">2 会場</span>
+    <span class="step" id="st3">3 レース</span>
+  </div>
+
+  <div class="card">
+    <h2>日付を選ぶ</h2>
+    <div class="cal-head">
+      <button onclick="calMove(-1)">‹</button>
+      <div class="ym" id="cal-ym">2026年 8月</div>
+      <button onclick="calMove(1)">›</button>
+    </div>
+    <div class="cal" id="cal"></div>
+  </div>
+
+  <div class="card" id="venue-card" style="display:none;">
+    <h2>会場を選ぶ <span id="sel-date" style="font-size:12px;color:#8a9a83;font-weight:400;"></span></h2>
+    <div class="venues" id="venues"></div>
+  </div>
+
+  <div class="card" id="race-card" style="display:none;">
+    <h2>レースを選ぶ <span id="sel-venue" style="font-size:12px;color:#8a9a83;font-weight:400;"></span></h2>
+    <div class="races" id="races"></div>
+  </div>
+
+  <div class="card" id="detail-card" style="display:none;">
+    <h2 id="detail-title">レース詳細</h2>
+    <div id="detail-body"></div>
+  </div>
+
+</div>
+
+<script>
+  const RACE_DAYS = { '2026-08-01':['札幌','新潟','中京'], '2026-08-02':['札幌','新潟','中京'], '2026-08-08':['札幌','新潟','中京'], '2026-08-09':['札幌','新潟','中京'], '2026-08-15':['札幌','新潟','小倉'], '2026-08-16':['札幌','新潟','小倉'], '2026-08-22':['札幌','新潟','中京'], '2026-08-23':['札幌','新潟','中京'], '2026-08-29':['札幌','新潟','中京'], '2026-08-30':['札幌','新潟','中京'] };
+  let calY=2026, calM=8, selDate=null, selVenue=null;
+  const DOW=['日','月','火','水','木','金','土'];
+
+  function pad(n){return (n<10?'0':'')+n;}
+  function renderCal(){
+    document.getElementById('cal-ym').textContent = calY+'年 '+calM+'月';
+    const first=new Date(calY,calM-1,1).getDay();
+    const days=new Date(calY,calM,0).getDate();
+    let html=DOW.map((d,i)=>'<div class="dow" style="color:'+(i===0?'#c98a8a':i===6?'#6f9ec2':'#8a9a83')+'">'+d+'</div>').join('');
+    for(let i=0;i<first;i++) html+='<div class="day blank"></div>';
+    for(let d=1;d<=days;d++){
+      const key=calY+'-'+pad(calM)+'-'+pad(d);
+      const dow=new Date(calY,calM-1,d).getDay();
+      const has=RACE_DAYS[key];
+      let cls='day'+(has?' race':'')+(dow===0?' sun':'')+(selDate===key?' sel':'');
+      html+='<div class="'+cls+'"'+(has?' onclick="pickDate(\''+key+'\')"':'')+'>'+d+(has?'<span class="dot"></span>':'')+'</div>';
+    }
+    document.getElementById('cal').innerHTML=html;
+  }
+  function calMove(dir){ calM+=dir; if(calM<1){calM=12;calY--;} if(calM>12){calM=1;calY++;} renderCal(); }
+
+  function pickDate(key){
+    selDate=key; selVenue=null;
+    renderCal();
+    document.getElementById('st2').classList.add('on');
+    document.getElementById('sel-date').textContent = '（'+key.replace(/-/g,'/')+'）';
+    const vs=RACE_DAYS[key]||[];
+    document.getElementById('venues').innerHTML = vs.map(v=>'<div class="venue" onclick="pickVenue(\''+v+'\')"><div class="vn">'+v+'</div><div class="vm">12レース</div></div>').join('');
+    document.getElementById('venue-card').style.display='block';
+    document.getElementById('race-card').style.display='none';
+    document.getElementById('detail-card').style.display='none';
+    document.getElementById('venue-card').scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+  function pickVenue(v){
+    selVenue=v;
+    [...document.querySelectorAll('.venue')].forEach(e=>e.classList.toggle('sel', e.querySelector('.vn').textContent===v));
+    document.getElementById('st3').classList.add('on');
+    document.getElementById('sel-venue').textContent='（'+v+'）';
+    const times=['9:40','10:15','10:45','11:15','11:45','12:20','13:00','13:35','14:10','14:45','15:20','16:00'];
+    let html='';
+    for(let r=1;r<=12;r++) html+='<div class="race" onclick="pickRace('+r+',this)">'+r+'R<div class="rt">'+times[r-1]+'</div></div>';
+    document.getElementById('races').innerHTML=html;
+    document.getElementById('race-card').style.display='block';
+    document.getElementById('detail-card').style.display='none';
+    document.getElementById('race-card').scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+  function pickRace(r,el){
+    [...document.querySelectorAll('.race')].forEach(e=>e.classList.remove('sel'));
+    el.classList.add('sel');
+    document.getElementById('detail-title').textContent = selVenue+' '+r+'R　芝1600m 未勝利';
+    // ダミーの過去記録（会員機能で実データに差し替え）
+    document.getElementById('detail-body').innerHTML = `
+      <div class="rrow head"><span>印</span><span>馬名</span><span style="text-align:right">勝率</span><span style="text-align:right">結果</span></div>
+      <div class="rrow"><span class="waku w1">1</span><span style="font-weight:700">フレイムジョーカー</span><span class="mono" style="text-align:right;color:#2f6d3a;font-weight:700">32%</span><span class="mono" style="text-align:right;font-weight:700">1着</span></div>
+      <div class="rrow"><span class="waku w3">5</span><span style="font-weight:700">ニシノイーグル</span><span class="mono" style="text-align:right;color:#2f6d3a;font-weight:700">21%</span><span class="mono" style="text-align:right">3着</span></div>
+      <div class="rrow"><span class="waku w6">9</span><span style="font-weight:700">サンライズホープ</span><span class="mono" style="text-align:right;color:#2f6d3a;font-weight:700">13%</span><span class="mono" style="text-align:right">2着</span></div>
+      <div class="memo-box"><b style="color:#1c2e1f">あなたのメモ：</b>内が伸びる馬場。◎の先行力を評価。相手は差し2頭に絞った。</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;"><span style="font-size:12px;color:#8a9a83">馬連 1-5 / EV 1.24 で参入</span><span class="pl">的中 +7,200</span></div>
+    `;
+    document.getElementById('detail-card').style.display='block';
+    document.getElementById('detail-card').scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+
+  renderCal();
+</script>
+</body>
+</html>
