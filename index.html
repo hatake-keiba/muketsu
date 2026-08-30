@@ -1245,6 +1245,7 @@ input[type=number], input[type=text], textarea, select {
       <section class="big-card">
         <div class="bc-head" style="align-items:flex-start;">
           <div style="flex:1;min-width:0;">
+            <span class="mk-eyebrow">RACE INFORMATION</span>
             <div id="race-info-title" style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;color:#1a1a1a;font-size:28px;letter-spacing:.005em;line-height:1.08;">—</div>
             <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
               <span id="race-info-haran" style="font-size:10px;color:#9b9a92;background:#f4f2ec;border:1px solid #e8e6df;border-radius:10px;padding:2px 9px;font-weight:700;letter-spacing:.04em;"></span>
@@ -1313,8 +1314,11 @@ input[type=number], input[type=text], textarea, select {
 
       <!-- レースシミュレーター（RACE INFORMATIONと同じ大項目レイヤーの別カード） -->
       <section class="big-card">
-        <div class="bc-head">
-          <span class="bc-title" style="font-size:22px;">レースシミュレーター</span>
+        <div class="bc-head" style="align-items:flex-start;">
+          <div style="flex:1;min-width:0;">
+            <span class="mk-eyebrow">RACE SIMULATOR</span>
+            <span class="bc-title" style="display:block;font-size:22px;margin-top:2px;"><span class="mk-mark">展開想定</span></span>
+          </div>
         </div>
        <div class="simulator-wrapper">
         <div class="sub-head" style="display:none;">
@@ -1407,8 +1411,11 @@ input[type=number], input[type=text], textarea, select {
 
       <!-- ②メモ＋AI相談 -->
       <section class="big-card">
-        <div class="bc-head">
-          <span class="bc-title">メモ・AI壁打ち</span>
+        <div class="bc-head" style="align-items:flex-start;">
+          <div style="flex:1;min-width:0;">
+            <span class="mk-eyebrow">TALK WITH YOURSELF</span>
+            <span class="bc-title" style="display:block;margin-top:2px;">メモ・AI壁打ち</span>
+          </div>
         </div>
       <!-- ▼ メモ（localStorage永続化・リロードで消えない） ▼ -->
       <div class="memo-card">
@@ -1417,7 +1424,7 @@ input[type=number], input[type=text], textarea, select {
           <button id="ai-mic-btn" style="display:none;" onclick="toggleAIMic()"></button>
         </div>
         <textarea id="ai-pace-comment" class="memo-card-textarea"
-          placeholder="このレースの予想・狙い・気づきを自由に記入…（入力すると自動で保存されます）"
+          placeholder="自由記入（自動保存）"
           oninput="saveAIComment(this.value)"></textarea>
       </div>
       <!-- ▼ AI相談（壁打ち）スロット：課金者のみアクティベート・未課金はグレーアウト ▼ -->
@@ -1430,10 +1437,10 @@ input[type=number], input[type=text], textarea, select {
         <div class="ai-talk-inner" id="ai-talk-inner">
           <div class="ai-talk-body">
             <div id="ai-chat-log" class="ai-chat-log">
-              <div class="ai-chat-empty">このレースについて相談できます。</div>
+              <div class="ai-chat-empty">AIにこのレースに関する質問を</div>
             </div>
             <div class="ai-chat-inputbar">
-              <textarea id="ai-chat-input" class="ai-chat-input" rows="2" placeholder="質問や気になることを入力…" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAiChat();}"></textarea>
+              <textarea id="ai-chat-input" class="ai-chat-input" rows="2" placeholder="入力" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAiChat();}"></textarea>
               <button id="ai-mic-chat-btn" class="ai-mic-chat-btn" onclick="toggleAiVoiceInput()" title="音声で入力">🎤</button>
               <button id="ai-chat-send" class="ai-talk-btn" onclick="sendAiChat()">送信</button>
             </div>
