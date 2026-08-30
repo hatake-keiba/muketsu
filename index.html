@@ -5159,9 +5159,11 @@ window.drawOaChartModal = function() {
 
         if(isHarvilleCalculated) {
           barWidthPct = Math.min((h.winRate / 60) * 100, 100);
-          let ev = (!isNaN(tOdds) && h.winRate > 0) ? (tOdds * h.winRate / 100) : 0;
-          if(ev >= 1.0) { barStyle = 'linear-gradient(90deg, #d4f34a, #e2ff5c)'; } /* 妙味＝蛍光ライム */
-          else { barStyle = 'linear-gradient(90deg, #d8dcc4, #e6e9d4)'; } /* それ以外＝淡い */
+          // グラフバーは蛍光ライム。勝率が高いほど鮮やか（低い馬は淡い蛍光）
+          const wr = h.winRate || 0;
+          if(wr >= 15) { barStyle = 'linear-gradient(90deg, #d4f34a, #e2ff5c)'; }
+          else if(wr >= 7) { barStyle = 'linear-gradient(90deg, #dbef70, #e7f78e)'; }
+          else { barStyle = 'linear-gradient(90deg, #e6ebc6, #eef0dc)'; }
         } else {
           if(graphSortKey === 'odds') {
             barWidthPct = (!isNaN(tOdds) && tOdds > 0) ? Math.min(80 / tOdds, 100) : 0;
