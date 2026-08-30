@@ -727,7 +727,7 @@ input[type=number], input[type=text], textarea, select {
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Old+Mincho:wght@600;700;900&family=Zen+Kurenaido&display=swap">
 <style id="muketsu-theme">
   :root{
     --mk-bg:#f7faf5; --mk-card:#ffffff; --mk-line:#e6ece0; --mk-line2:#edf1e8;
@@ -740,7 +740,7 @@ input[type=number], input[type=text], textarea, select {
 
   /* カード・パネルを白＋淡ボーダー＋大きめ角丸に（＝トップレベルの箱だけカード化） */
   .race-card, .nav-area, .system-section, .filter-panel, .ticket-builder,
-  .simulator-wrapper, .main-table-area, .graph-container, .memo-card{
+  .simulator-wrapper, .main-table-area, .memo-card, .stat-card{
     background:var(--mk-card) !important; border:1px solid var(--mk-line) !important;
     border-radius:16px !important; box-shadow:0 1px 2px rgba(60,90,63,.05) !important;
     margin:12px !important; }
@@ -748,22 +748,29 @@ input[type=number], input[type=text], textarea, select {
   /* カード規則性：カードの“中の箱”はカード扮装を解除（枠・影・角丸・余白を消して素の帯に） */
   .pace-board{ background:transparent !important; border:none !important;
     border-radius:0 !important; box-shadow:none !important; margin:0 !important; padding:6px 0 0 !important; }
+  /* 勝率カード内：見出し帯とグラフ本体は素の帯（緑基調に統一） */
+  .stat-card{ overflow:hidden; }
+  .stat-card .graph-section-title{ background:var(--mk-tint) !important; color:var(--mk-dark) !important;
+    border:none !important; border-bottom:1px solid var(--mk-line) !important;
+    border-left:none !important; }
+  .stat-card .chart-area, .stat-card #graph-container{ background:transparent !important;
+    border:none !important; border-radius:0 !important; box-shadow:none !important; margin:0 !important; }
 
   /* メモ独立カード */
   .memo-card{ overflow:hidden; }
-  .memo-card-head{ display:flex; align-items:center; gap:10px; flex-wrap:wrap;
-    padding:12px 16px 8px; }
-  .memo-card-title{ font-family:"Playfair Display",serif; font-weight:600;
-    color:var(--mk-dark); font-size:15px; letter-spacing:.02em; }
-  .memo-card-sub{ font-size:10px; color:#9aa892; letter-spacing:.04em; }
-  .memo-card-textarea{ width:calc(100% - 32px); display:block; margin:0 16px 14px;
-    min-height:96px; font-size:12.5px; line-height:1.7; padding:11px 13px;
+  .memo-card-head{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+    padding:13px 18px 9px; }
+  .memo-card-title{ font-family:"Zen Old Mincho","Shippori Mincho",serif; font-weight:700;
+    color:var(--mk-dark); font-size:17px; letter-spacing:.08em; }
+  .memo-card-sub{ font-size:10px; color:#9aa892; letter-spacing:.06em; }
+  .memo-card-textarea{ width:calc(100% - 36px); display:block; margin:0 18px 16px;
+    min-height:100px; font-size:14px; line-height:1.9; padding:13px 15px;
     border:1px solid var(--mk-line) !important; border-radius:12px !important;
     background:#fcfdfb; color:#2b332a; resize:vertical; box-sizing:border-box;
-    font-family:"Zen Kaku Gothic New",sans-serif; transition:border-color .2s, box-shadow .2s; }
+    font-family:"Zen Kurenaido","Zen Kaku Gothic New",sans-serif; transition:border-color .2s, box-shadow .2s; }
   .memo-card-textarea:focus{ outline:none; border-color:var(--mk-accent) !important;
     box-shadow:0 0 0 3px rgba(92,138,70,.12) !important; background:#fff; }
-  .memo-card-textarea::placeholder{ color:#b6c1ac; }
+  .memo-card-textarea::placeholder{ color:#b6c1ac; font-family:"Zen Kaku Gothic New",sans-serif; }
 
   /* 見出し帯：グレー→ダーク緑テキスト・白地 */
   .section-title{ background:var(--mk-tint) !important; color:var(--mk-dark) !important;
@@ -1161,6 +1168,8 @@ input[type=number], input[type=text], textarea, select {
                </div>
       </div>
 
+      <!-- ▼ 勝率ページ：シミュレーターとは別カード ▼ -->
+      <div class="stat-card">
              <div class="graph-section-title">
         <div style="font-size:11px;display:flex;align-items:center;flex-wrap:wrap;">▼ グラフ＆印 <span id="haran-badge-2"></span></div>
         <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
@@ -1187,8 +1196,10 @@ input[type=number], input[type=text], textarea, select {
       <div class="chart-area" id="graph-container">
         <div id="chart-rows"></div>
       </div>
+      </div>
+      <!-- ▲ 勝率ページ カードここまで ▲ -->
 
-       
+
       <div class="ticket-builder">
         <div class="ticket-builder-header">
           買い目ビルダー
@@ -4467,8 +4478,15 @@ window.drawOaChartModal = function() {
           if(race.tenkaiVal > 0 && (h.style==='差'||h.style==='追')) favScore++;
           if(race.biasVal < 0 && h.waku <= 3) favScore++;
           if(race.biasVal > 0 && h.waku >= 6) favScore++;
-          const favGlow = favScore>0 ? 'box-shadow:0 0 0 2px rgba(92,138,70,.55),0 0 10px rgba(92,138,70,.5),0 2px 4px rgba(0,0,0,0.25);' : 'box-shadow:0 2px 4px rgba(0,0,0,0.3);';
-          let innerHTML = `<div class="waku-box waku-${h.waku}" style="width:24px;height:24px;font-size:13px;${favGlow}border-radius:4px;">${h.num}</div><span style="display:${nameDisplay};font-family:'Zen Kaku Gothic New',sans-serif;font-size:9px;font-weight:700;color:#1c2e1f;text-shadow:0 1px 2px rgba(255,255,255,.9);margin-top:2px;letter-spacing:0;">${shortName}</span>`;
+          // 有利馬は「金色リング＋有利タグ」で明確化（薄緑背景に埋もれないよう暖色に）
+          const isFav = favScore > 0;
+          const favGlow = isFav
+            ? 'box-shadow:0 0 0 2.5px #f6a417,0 0 0 4.5px rgba(246,164,23,.35),0 2px 5px rgba(0,0,0,0.3);'
+            : 'box-shadow:0 2px 4px rgba(0,0,0,0.3);';
+          const favTag = isFav
+            ? `<span style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:#f6a417;color:#3a2600;font-size:7.5px;font-weight:800;line-height:1;padding:2px 4px;border-radius:6px;letter-spacing:.02em;white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.25);z-index:5;">有利</span>`
+            : '';
+          let innerHTML = `<div style="position:relative;">${favTag}<div class="waku-box waku-${h.waku}" style="width:24px;height:24px;font-size:13px;${favGlow}border-radius:4px;">${h.num}</div></div><span style="display:${nameDisplay};font-family:'Zen Kaku Gothic New',sans-serif;font-size:9px;font-weight:700;color:${isFav?'#a56a00':'#1c2e1f'};text-shadow:0 1px 2px rgba(255,255,255,.9);margin-top:3px;letter-spacing:0;">${shortName}</span>`;
           
           if(!wrapper) {
             wrapper = document.createElement('div');
