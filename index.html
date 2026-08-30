@@ -889,6 +889,26 @@ input[type=number], input[type=text], textarea, select {
   .ai-chat-input:focus{ outline:none; border-color:var(--mk-accent) !important; box-shadow:0 0 0 3px rgba(92,138,70,.12) !important; }
   #ai-chat-send{ padding:9px 16px !important; border-radius:10px !important; white-space:nowrap; align-self:stretch; }
 
+  /* AI課金ロック：未課金はグレーアウト＋オーバーレイ、課金者はアクティベート */
+  .ai-talk-slot{ position:relative; }
+  .ai-lock-badge{ margin-left:auto; font-size:9.5px; font-weight:800; letter-spacing:.03em;
+    color:#a5762a; background:#faf3e6; border:1px solid #ecdcc0; border-radius:999px; padding:3px 9px; }
+  .ai-lock-overlay{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    background:rgba(247,250,245,.72); backdrop-filter:blur(2px); -webkit-backdrop-filter:blur(2px);
+    border-radius:12px; padding:14px; text-align:center; }
+  .ai-lock-card{ max-width:300px; }
+  .ai-lock-ico{ font-size:26px; margin-bottom:6px; }
+  .ai-lock-ttl{ font-family:"Zen Old Mincho",serif; font-weight:700; font-size:15px; color:var(--mk-dark); letter-spacing:.04em; }
+  .ai-lock-desc{ font-size:11px; color:#6f7d68; line-height:1.6; margin:6px 0 12px; }
+  .ai-lock-btn{ font-family:"Zen Kaku Gothic New",sans-serif; font-size:12.5px; font-weight:700;
+    color:#eef3e8; background:var(--mk-dark); border:none; border-radius:999px; padding:9px 22px; cursor:pointer; }
+  .ai-lock-btn:hover{ opacity:.9; }
+  /* ロック中は中身を触れなくする＋褪せさせる */
+  .ai-talk-slot.locked .ai-talk-inner{ filter:grayscale(1) opacity(.5); pointer-events:none; user-select:none; }
+  /* 課金済み（unlocked）ではオーバーレイとバッジを消す */
+  .ai-talk-slot.unlocked .ai-lock-overlay{ display:none; }
+  .ai-talk-slot.unlocked .ai-lock-badge{ display:none; }
+
   /* 見出し帯：グレー→ダーク緑テキスト・白地 */
   .section-title{ background:var(--mk-tint) !important; color:var(--mk-dark) !important;
     border-top:none !important; border-bottom:1px solid var(--mk-line) !important;
@@ -1241,20 +1261,33 @@ input[type=number], input[type=text], textarea, select {
           placeholder="このレースの予想・狙い・気づきを自由に記入…（入力すると自動で保存されます）"
           oninput="saveAIComment(this.value)"></textarea>
       </div>
-      <!-- ▼ AI相談（壁打ち）スロット：会員はキー不要・運営GAS経由 ▼ -->
-      <div class="ai-talk-slot">
+      <!-- ▼ AI相談（壁打ち）スロット：課金者のみアクティベート・未課金はグレーアウト ▼ -->
+      <div class="ai-talk-slot" id="ai-talk-slot">
         <div class="ai-talk-head">
           <span class="ai-talk-dot"></span>AI相談（壁打ち）
+          <span class="ai-lock-badge" id="ai-lock-badge">🔒 有料機能</span>
         </div>
-        <div class="ai-talk-body">
-          <div id="ai-chat-log" class="ai-chat-log">
-            <div class="ai-chat-empty">競馬データを踏まえたAIに、このレースの相談ができます。<br>下の欄に質問や気になることを入力してください。</div>
+        <!-- 中身（グレーアウト対象） -->
+        <div class="ai-talk-inner" id="ai-talk-inner">
+          <div class="ai-talk-body">
+            <div id="ai-chat-log" class="ai-chat-log">
+              <div class="ai-chat-empty">競馬データを踏まえたAIに、このレースの相談ができます。<br>下の欄に質問や気になることを入力してください。</div>
+            </div>
+            <div class="ai-chat-inputbar">
+              <textarea id="ai-chat-input" class="ai-chat-input" rows="2" placeholder="例）この人気馬、消しでいいと思う？相談したい"></textarea>
+              <button id="ai-chat-send" class="ai-talk-btn" onclick="sendAiChat()">送信</button>
+            </div>
+            <p class="ai-talk-note">※ このレースの出馬表・過去データ・あなたのメモを踏まえてAIが回答します</p>
           </div>
-          <div class="ai-chat-inputbar">
-            <textarea id="ai-chat-input" class="ai-chat-input" rows="2" placeholder="例）この人気馬、消しでいいと思う？相談したい"></textarea>
-            <button id="ai-chat-send" class="ai-talk-btn" onclick="sendAiChat()">送信</button>
+        </div>
+        <!-- 未課金時のロックオーバーレイ -->
+        <div class="ai-lock-overlay" id="ai-lock-overlay">
+          <div class="ai-lock-card">
+            <div class="ai-lock-ico">🔒</div>
+            <div class="ai-lock-ttl">AI相談は有料メンバー限定</div>
+            <div class="ai-lock-desc">出馬表・過去走・あなたのメモを踏まえて、AIと壁打ちできます。</div>
+            <button class="ai-lock-btn" onclick="openAiUnlock()">プランを見る</button>
           </div>
-          <p class="ai-talk-note">※ このレースの出馬表・過去データ・あなたのメモを踏まえてAIが回答します</p>
         </div>
       </div>
       <!-- ▲ メモカードここまで ▲ -->
@@ -3379,6 +3412,34 @@ function buildNavigation() {
 
     function _getAiKey(){ try { return localStorage.getItem(AI_KEY_LS) || ''; } catch(e){ return ''; } }
 
+    /* ===== AIの課金ロック（未課金はグレーアウト・課金者のみアクティベート） =====
+       ※ ここは将来「本物の会員ログイン＋決済判定」に差し替える接続点。
+          いまは端末フラグ（localStorage）で擬似的にロック解除する。 */
+    const AI_PAID_LS = 'muketsu_ai_unlocked';
+    function isAiUnlocked(){
+      try { return localStorage.getItem(AI_PAID_LS) === '1'; } catch(e){ return false; }
+    }
+    function applyAiLockState(){
+      const slot = document.getElementById('ai-talk-slot');
+      if(!slot) return;
+      const paid = isAiUnlocked();
+      slot.classList.toggle('unlocked', paid);
+      slot.classList.toggle('locked', !paid);
+    }
+    // プランを見る（将来：決済ページ or noteへ）。今は仮のアンロック導線。
+    function openAiUnlock(){
+      const ok = confirm('AI相談は有料メンバー限定の機能です。\n\n（デモ）このブラウザでAIを有効化しますか？\n※ 本番では会員ログイン・決済後に自動で有効化されます。');
+      if(ok){
+        try { localStorage.setItem(AI_PAID_LS, '1'); } catch(e){}
+        applyAiLockState();
+      }
+    }
+    // 運営が会員の課金状態を反映するためのフック（本物のログイン実装時に呼ぶ）
+    function setAiPaid(paid){
+      try { if(paid) localStorage.setItem(AI_PAID_LS,'1'); else localStorage.removeItem(AI_PAID_LS); } catch(e){}
+      applyAiLockState();
+    }
+
     // 現在レースの文脈（メモ＋出馬表）を組み立て
     function _buildRaceContext(){
       if(!currentRaceId || !racesData[currentRaceId]) return '（レース未選択）';
@@ -3413,6 +3474,7 @@ function buildNavigation() {
     }
 
     async function sendAiChat(){
+      if(!isAiUnlocked()){ openAiUnlock(); return; }
       const inp = document.getElementById('ai-chat-input');
       const q = (inp.value || '').trim();
       if(!q) return;
@@ -5271,6 +5333,7 @@ renderCourseFeature(); // ←★★ここに1行追加するだけです！★�
       updateHaranBadge(currentRaceId);
       restoreAIComment();
       if(typeof restoreAiChat === 'function') restoreAiChat();
+      if(typeof applyAiLockState === 'function') applyAiLockState();
       renderStandardTime();
       // レース質タブの表示をこのレースの状態に同期
       (function(){
