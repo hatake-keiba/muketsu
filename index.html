@@ -4204,10 +4204,11 @@ window.drawOaChartModal = function() {
       const maxNum = Math.max(...nums) || 1, minNum = Math.min(...nums) || 1, numRange = maxNum > minNum ? (maxNum - minNum) : 1;
       
       horses.forEach(h => {
+        // 縦=ラチ。内枠(num小)=内ラチ(上/y小)、外枠(num大)=外ラチ(下/y大)。
+        // トラック帯15〜85%内・上下ラベルと被らないよう 0.22〜0.78 に配置。
         let yRatio = (h.num - minNum) / numRange;
-        let yNoise = ((h.num * 7) % 10 - 5) / 200.0;
-        if(isStraight) h._autoY = Math.max(0.12, Math.min(0.90, 0.18 + (yRatio * 0.66) + yNoise));
-        else h._autoY = Math.max(0.12, Math.min(0.90, 0.84 - (yRatio * 0.66) + yNoise));
+        let yNoise = ((h.num * 7) % 10 - 5) / 260.0;
+        h._autoY = Math.max(0.20, Math.min(0.80, 0.24 + (yRatio * 0.52) + yNoise));
         
         let baseX = (h.style === '逃') ? 0.85 : (h.style === '先') ? 0.60 : (h.style === '差') ? 0.35 : 0.15;
         let tenFOffset = 0;
