@@ -3460,10 +3460,15 @@ function buildNavigation() {
 
     // 本番：運営GAS経由（会員キー不要）
     async function _askViaGas(q, context, hist){
+      const r = racesData[currentRaceId] || {};
+      // GASが各馬の近走を名前検索で引けるよう、馬名・会場を渡す
+      const horses = (r.horses||[]).map(h=>({num:h.num, name:h.name}));
       const resp = await fetch(AI_GAS_URL, {
         method:'POST',
         headers:{'Content-Type':'text/plain;charset=utf-8'}, // GASのCORS回避のためtext/plain
-        body: JSON.stringify({ action:'ai_chat', raceId: currentRaceId, question:q, context, history:hist })
+        body: JSON.stringify({ action:'ai_chat', raceId: currentRaceId,
+          basho: r.basho||'', info: r.info||'', raceName: r.raceName||'',
+          horses: horses, question:q, context, history:hist })
       });
       const data = await resp.json();
       if(!resp.ok || data.error) throw new Error(data.error || ('サーバーエラー HTTP '+resp.status));
