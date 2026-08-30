@@ -7732,7 +7732,7 @@ window.executeMyAI = function(targetId, isSilentParam) {
   const commentText = honmei ? `【${myAIData.name} による解析結果】\n本命候補：${honmei.num}番（${honmei.name}）\n選定理由：${reason}\n推奨券種：${p.type}を中心に資金配分を実行します。` : `【${myAIData.name} による解析結果】\n本命候補：なし`;
   
   // データとして裏側に確実に保存
-  racesData[tRaceId].comment = commentText;
+  /* AI解析は会員メモに書き込まない */ // racesData[tRaceId].comment = commentText;
 
   // 今画面で見ているレースの時だけ、画面上のテキストエリアと買い目に反映させる
   if (tRaceId === currentRaceId) {
