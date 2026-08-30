@@ -879,7 +879,9 @@ input[type=number], input[type=text], textarea, select {
   .graph-head .gh-num{ width:28px; text-align:center; flex:0 0 auto; }
   .graph-head .gh-name{ width:88px; text-align:left; flex:0 0 auto; }
   .graph-head .gh-bar{ flex:1 1 auto; text-align:left; padding-left:6px; }
-  .graph-head .gh-val{ width:75px; text-align:right; flex:0 0 auto; padding-right:6px; }
+  .graph-head .gh-val{ width:75px; text-align:right; flex:0 0 auto; padding-right:22px; }
+  /* バーと勝率数値の間隔を確保 */
+  .stat-card .val-col-wrapper{ margin-left:12px !important; }
   /* 勝率設定の行：白/淡緑のシマウマ＋余白（各馬評価と統一） */
   .stat-card .horse-row{ margin:0 !important; padding:6px 4px !important; border-bottom:1px solid #efeee8; }
   .stat-card .horse-row:nth-child(odd){ background:#ffffff; }
@@ -950,6 +952,12 @@ input[type=number], input[type=text], textarea, select {
     border-radius:10px !important; resize:vertical; font-family:"Zen Kaku Gothic New",sans-serif; background:#fcfdfb; }
   .ai-chat-input:focus{ outline:none; border-color:var(--mk-accent) !important; box-shadow:0 0 0 3px rgba(0,0,0,.18) !important; }
   #ai-chat-send{ padding:9px 16px !important; border-radius:10px !important; white-space:nowrap; align-self:stretch; }
+  /* 音声入力ボタン */
+  .ai-mic-chat-btn{ align-self:stretch; flex:0 0 auto; width:42px; border:1px solid var(--mk-line);
+    background:#fff; border-radius:10px; font-size:16px; cursor:pointer; transition:all .2s; }
+  .ai-mic-chat-btn:hover{ background:#f4f2ec; }
+  .ai-mic-chat-btn.recording{ background:#1a1a1a; border-color:#1a1a1a; animation:mic-pulse 1.2s infinite; }
+  @keyframes mic-pulse{ 0%,100%{ box-shadow:0 0 0 0 rgba(0,0,0,.25);} 50%{ box-shadow:0 0 0 5px rgba(0,0,0,0);} }
 
   /* AI課金ロック：未課金はグレーアウト＋オーバーレイ、課金者はアクティベート */
   .ai-talk-slot{ position:relative; }
@@ -1369,7 +1377,6 @@ input[type=number], input[type=text], textarea, select {
       <div class="memo-card">
         <div class="sub-head">
           <span class="sub-head-ttl">メモ</span>
-          <span style="font-size:10px;color:#9b9a92;font-weight:400;">自分の予想を書き残す・自動保存</span>
           <button id="ai-mic-btn" style="display:none;" onclick="toggleAIMic()"></button>
         </div>
         <textarea id="ai-pace-comment" class="memo-card-textarea"
@@ -1386,13 +1393,13 @@ input[type=number], input[type=text], textarea, select {
         <div class="ai-talk-inner" id="ai-talk-inner">
           <div class="ai-talk-body">
             <div id="ai-chat-log" class="ai-chat-log">
-              <div class="ai-chat-empty">競馬データを踏まえたAIに、このレースの相談ができます。<br>下の欄に質問や気になることを入力してください。</div>
+              <div class="ai-chat-empty">このレースについて相談できます。</div>
             </div>
             <div class="ai-chat-inputbar">
-              <textarea id="ai-chat-input" class="ai-chat-input" rows="2" placeholder="例）この人気馬、消しでいいと思う？相談したい（Enterで送信 / Shift+Enterで改行）" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAiChat();}"></textarea>
+              <textarea id="ai-chat-input" class="ai-chat-input" rows="2" placeholder="質問や気になることを入力…" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAiChat();}"></textarea>
+              <button id="ai-mic-chat-btn" class="ai-mic-chat-btn" onclick="toggleAiVoiceInput()" title="音声で入力">🎤</button>
               <button id="ai-chat-send" class="ai-talk-btn" onclick="sendAiChat()">送信</button>
             </div>
-            <p class="ai-talk-note">※ このレースの出馬表・過去データ・あなたのメモを踏まえてAIが回答します</p>
           </div>
         </div>
         <!-- 未課金時のロックオーバーレイ -->
@@ -3607,6 +3614,31 @@ function buildNavigation() {
       log.appendChild(div);
       log.scrollTop = log.scrollHeight;
       return div;
+    }
+
+    /* ===== AIチャットの音声入力（ブラウザ標準の音声認識・日本語） ===== */
+    let _aiRecognition = null, _aiRecording = false;
+    function toggleAiVoiceInput(){
+      if(!isAiUnlocked()){ openAiUnlock(); return; }
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const btn = document.getElementById('ai-mic-chat-btn');
+      if(!SR){ alert('お使いのブラウザは音声入力に対応していません（Chrome推奨）。'); return; }
+      if(_aiRecording){ if(_aiRecognition) _aiRecognition.stop(); return; }
+      _aiRecognition = new SR();
+      _aiRecognition.lang = 'ja-JP';
+      _aiRecognition.interimResults = true;
+      _aiRecognition.continuous = false;
+      const input = document.getElementById('ai-chat-input');
+      const base = input.value ? input.value + ' ' : '';
+      _aiRecognition.onstart = () => { _aiRecording = true; if(btn) btn.classList.add('recording'); };
+      _aiRecognition.onresult = (e) => {
+        let txt = '';
+        for(let i=0;i<e.results.length;i++) txt += e.results[i][0].transcript;
+        input.value = base + txt;
+      };
+      _aiRecognition.onerror = () => { _aiRecording=false; if(btn) btn.classList.remove('recording'); };
+      _aiRecognition.onend = () => { _aiRecording=false; if(btn) btn.classList.remove('recording'); input.focus(); };
+      try { _aiRecognition.start(); } catch(e){}
     }
 
     async function sendAiChat(){
