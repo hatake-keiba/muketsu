@@ -5229,7 +5229,7 @@ window.drawOaChartModal = function() {
           let evColor = isHighEv ? '#d32f2f' : '#1a1a1a';
           
           // ★変更点1: バーの右側に配置するため、flex-shrink:0 を付けて潰れないようにし、テキストを少しコンパクト化
-                  confirmHtml = `<div style="display:flex; align-items:center; gap:5px; margin-left:8px; font-size:10px; background:#f4f2ec; border:1px solid #e8e6df; border-radius:4px; padding:2px 6px; white-space:nowrap; flex-shrink:0;">
+                  confirmHtml = `<div style="display:flex; align-items:center; gap:5px; margin-left:18px; font-size:10px; background:#f4f2ec; border:1px solid #e8e6df; border-radius:8px; padding:3px 8px; white-space:nowrap; flex-shrink:0;">
             <span style="color:#3d3d3a;">単${oL}</span>
             <span style="color:${evColor}; font-weight:bold;">期${evValue||'-'}</span>
             <span style="color:#94a3b8; font-size:9px; border-left:1px solid #dcdad3; padding-left:4px;">勝${winR.toFixed(0)} 連${renritsu} 複${fukuR}</span>
