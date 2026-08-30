@@ -359,14 +359,14 @@
   .nav-race-btn.active.is-turf,
   .nav-race-btn.active.is-dirt {
     background: #1a1a1a !important;
-    border: 2px solid #1a1a1a !important;
-    box-shadow: 0 0 0 3px rgba(0,0,0,.35) !important;
+    border: 2px solid #a6c22e !important;
+    box-shadow: 0 0 0 3px rgba(166,194,46,.35) !important;
     transform: scale(1.05);
     z-index: 10;
     position: relative;
   }
-  .nav-race-btn.active .r-num,
-  .nav-race-btn.active .r-time { color: #f4f2ec !important; }
+  .nav-race-btn.active .r-num { color: #bcd63f !important; }
+  .nav-race-btn.active .r-time { color: #cfe0a0 !important; }
   /* ▲▲ ここまで ▲▲ */
 
     
@@ -722,9 +722,11 @@ input[type=number], input[type=text], textarea, select {
     --mk-ink2:#3d3d3a;
     --mk-mute:#9b9a92;          /* 補助テキスト：ミュートグレー */
     --mk-dark:#1a1a1a;          /* “濃”は黒に */
-    --mk-accent:#1a1a1a;        /* ライムイエロー（強調1点） */
+    --mk-accent:#1a1a1a;        /* 主アクセントは黒 */
     --mk-accent2:#3d3d3a;
     --mk-tint:#f4f2ec;          /* 淡い面 */
+    --mk-lime:#a6c22e;          /* 重い蛍光ライム＝要所のハイライト専用 */
+    --mk-lime2:#bcd63f;
     --mk-lime-ink:#1a1a1a;      /* ライム上に載せる文字は黒 */
   }
   body{ background:var(--mk-bg) !important; color:var(--mk-ink) !important;
@@ -799,8 +801,9 @@ input[type=number], input[type=text], textarea, select {
   .pill-sm{ font-size:10.5px !important; padding:5px 12px !important; }
   .pill-ghost{ background:#fff !important; color:#8a9483 !important; }
   .pill-ghost:hover{ background:#f4f2ec !important; color:var(--mk-dark) !important; }
-  .pill-accent{ background:#1a1a1a !important; color:#f4f2ec !important; border-color:#1a1a1a !important; }
-  .pill-accent:hover{ opacity:.9; background:#1a1a1a !important; color:#f4f2ec !important; }
+  /* 主要アクション（確定・買い目を作る）＝黒地に蛍光文字でハイライト */
+  .pill-accent{ background:#1a1a1a !important; color:#bcd63f !important; border-color:#1a1a1a !important; font-weight:800 !important; }
+  .pill-accent:hover{ opacity:.92; background:#1a1a1a !important; color:#bcd63f !important; }
 
   /* 小タイトル（各馬評価 / 勝率設定） */
   .sub-head{ display:flex; align-items:center; gap:10px; padding:12px 16px 8px !important;
@@ -836,8 +839,8 @@ input[type=number], input[type=text], textarea, select {
     transition:background .2s, border-color .2s, color .2s; }
   .race-quality-tab:hover{ border-color:var(--mk-accent2); background-color:#e6efe0; }
   /* 何か選択された状態＝アクセントで“タブが立っている”見た目に */
-  .race-quality-tab.is-active{ background-color:var(--mk-dark); color:#f4f2ec; border-color:var(--mk-dark);
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'><path d='M1 1l4 4 4-4' fill='none' stroke='%23cfe0c3' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>"); }
+  .race-quality-tab.is-active{ background-color:var(--mk-dark); color:#bcd63f; border-color:var(--mk-dark);
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'><path d='M1 1l4 4 4-4' fill='none' stroke='%23bcd63f' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>"); }
 
   /* 大カードの中の“旧カード”は装飾を解除して素の帯にする（＝二重カード禁止） */
   .big-card #race-info-head,
@@ -926,7 +929,7 @@ input[type=number], input[type=text], textarea, select {
   .ai-talk-slot{ margin:2px 18px 14px; border:1px dashed #dcdad3; border-radius:12px;
     background:#f7f6f1; }
   .ai-talk-head{ gap:8px; }
-  .ai-talk-dot{ width:8px; height:8px; border-radius:50%; background:var(--mk-accent);
+  .ai-talk-dot{ width:8px; height:8px; border-radius:50%; background:var(--mk-lime);
     box-shadow:0 0 0 3px rgba(0,0,0,.28); flex:0 0 auto; }
   .ai-talk-body{ padding:0 14px 12px; }
   .ai-talk-lead{ font-size:11.5px; color:#9b9a92; line-height:1.6; margin:0 0 9px; }
@@ -8776,7 +8779,8 @@ window.closeDetailedData2Modal = function() {
     if(seg) seg.querySelectorAll('span').forEach(sp=>{
       const on = sp.dataset.g===going;
       sp.style.background = on ? '#1a1a1a' : 'transparent';
-      sp.style.color = on ? '#f4f2ec' : '#9b9a92';
+      sp.style.color = on ? '#bcd63f' : '#9b9a92';  // 選択中の馬場＝蛍光文字でハイライト
+      sp.style.boxShadow = on ? 'inset 0 -3px 0 #a6c22e' : 'none';
     });
     // 芝/ダート判定（現在レースのトラック）
     var _r=(typeof racesData!=='undefined'&&currentRaceId)?racesData[currentRaceId]:null;
