@@ -769,18 +769,20 @@ input[type=number], input[type=text], textarea, select {
     border:1px solid var(--mk-line) !important; border-radius:999px !important; padding:6px 14px !important; cursor:pointer; }
   .tb-points-badge{ font-size:11px; font-weight:700; color:#6f7d68; background:#eef3ea;
     border:1px solid var(--mk-line); border-radius:999px; padding:5px 12px; }
-  /* 買い目1件＝2段カード（何の数字か em ラベルで明示） */
-  .tb-ticket-item{ display:flex !important; flex-direction:column; gap:6px; background:#fff !important;
-    border:1px solid var(--mk-line) !important; border-radius:12px !important; padding:10px 12px !important;
-    margin:8px 12px 0 !important; }
-  .tb-ti-main{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
-  .tb-ti-name{ font-family:"Zen Old Mincho",serif; font-weight:700; font-size:14px; color:var(--mk-dark); letter-spacing:.02em; }
-  .tb-ti-metrics{ display:flex; flex-wrap:wrap; gap:6px 14px; }
-  .tb-ti-cell{ display:flex; flex-direction:column; font-size:12.5px; font-weight:700; color:#2b332a;
-    font-variant-numeric:tabular-nums; }
-  .tb-ti-cell em{ font-style:normal; font-size:9px; font-weight:700; color:#9aa892; letter-spacing:.05em; margin-bottom:1px; }
+  /* 買い目1件＝コンパクトな横1行（薄く・すっと） */
+  .tb-ticket-item{ display:flex !important; align-items:center; gap:10px; background:#fff !important;
+    border:1px solid var(--mk-line) !important; border-radius:10px !important; padding:7px 10px !important;
+    margin:6px 12px 0 !important; overflow-x:auto; }
+  .tb-ti-main{ display:flex; align-items:center; gap:6px; flex:0 0 auto; }
+  .tb-ti-name{ font-family:"Zen Kaku Gothic New",sans-serif; font-weight:800; font-size:12.5px;
+    color:var(--mk-dark); white-space:nowrap; }
+  .tb-ti-metrics{ display:flex; align-items:center; gap:12px; flex:1 1 auto; }
+  .tb-ti-cell{ display:inline-flex; align-items:baseline; gap:3px; font-size:12px; font-weight:700;
+    color:#2b332a; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .tb-ti-cell em{ font-style:normal; font-size:9px; font-weight:700; color:#9aa892; letter-spacing:.03em; }
   .tb-ev-good{ color:#2f7d2b; } .tb-ev-bad{ color:#b06a5e; }
-  .tb-del-btn{ background:transparent !important; border:none !important; cursor:pointer; font-size:14px; padding:2px 4px !important; }
+  .tb-del-btn{ background:transparent !important; border:none !important; cursor:pointer; font-size:13px;
+    padding:2px !important; flex:0 0 auto; margin-left:auto; }
 
   /* 買い目ビルダー：オレンジの旧デザインを緑基調に統一 */
   .tb-odds-section{ background:#f5f8f1 !important; border-top:1px solid var(--mk-line) !important; padding:14px !important; }
@@ -977,9 +979,10 @@ input[type=number], input[type=text], textarea, select {
     font-size:12.5px !important; color:#1c2e1f !important; max-width:130px !important; letter-spacing:.01em; }
   /* 単勝：人気帯は赤、それ以外は落ち着いた色 */
   .data-table .td-odds{ font-weight:700 !important; font-variant-numeric:tabular-nums; }
-  /* 印ボタン：角丸ダーク緑 */
-  .data-table .user-mark-btn{ width:20px !important; height:20px !important; background:var(--mk-dark) !important;
-    border-radius:6px !important; font-size:11px !important; }
+  /* 印：背景なし・印の文字だけ（◎○▲△など） */
+  .data-table .user-mark-btn{ width:24px !important; height:24px !important; background:transparent !important;
+    color:#1c2e1f !important; border-radius:0 !important; font-size:15px !important; font-weight:700 !important; box-shadow:none !important; }
+  .data-table .user-mark-btn.mark-locked{ background:transparent !important; }
   /* 枠番ボックスはそのまま活かしつつ少し大きく */
   .data-table .waku-box{ width:22px !important; height:22px !important; border-radius:5px !important;
     font-size:12px !important; font-weight:800; }
@@ -1424,7 +1427,7 @@ input[type=number], input[type=text], textarea, select {
 
       <!-- ▼ 勝率設定（アウトプットアレンジ内の小セクション） ▼ -->
       <div class="stat-card">
-             <div class="graph-section-title sub-head">
+             <div class="sub-head">
         <span class="sub-head-ttl">勝率設定</span>
         <span id="haran-badge-2" style="display:none;"></span>
         <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto;">
@@ -2382,11 +2385,11 @@ function getTodayStr(){const d=new Date();const jst=new Date(d.getTime()+9*60*60
 
     const HARAN_LEVELS = [{threshold:45,stars:'★★★★★',color:'#c0392b'},{threshold:57,stars:'★★★★☆',color:'#e67e22'},{threshold:67,stars:'★★★☆☆',color:'#f39c12'},{threshold:73,stars:'★★☆☆☆',color:'#27ae60'},{threshold:80,stars:'★☆☆☆☆',color:'#2980b9'}];
     const TIER_BAR_COLORS = [
-      'linear-gradient(90deg, #d39e55, #e6b36a)', /* 1層目: キャメル */
-      'linear-gradient(90deg, #94a3b8, #cbd5e1)', /* 2層目: スレートグレー */
-      'linear-gradient(90deg, #e2e8f0, #f1f5f9)'  /* 3層目以降: ライトグレー */
+      'linear-gradient(90deg, #3f6d3a, #6f9463)', /* 1層目: 深い緑 */
+      'linear-gradient(90deg, #7ba05f, #a7c98f)', /* 2層目: 中間の緑 */
+      'linear-gradient(90deg, #cdd8c4, #e3ecdc)'  /* 3層目以降: 淡い緑 */
     ];
-    const TIER_BAR_DEFAULT = 'linear-gradient(90deg, #d39e55, #e6b36a)';
+    const TIER_BAR_DEFAULT = 'linear-gradient(90deg, #5c8a46, #8fb37a)';
 
     const COURSE_BIAS_MAP = {}; // ★中身を空っぽにして初期設定の暴走を止める
 
@@ -5502,17 +5505,15 @@ renderCourseFeature(); // ←★★ここに1行追加するだけです！★�
         }
         const payoutAmount = (t.odds > 0 && t.money > 0) ? Math.round(t.money * t.odds) : 0;
         listArea.innerHTML += `<div class="tb-ticket-item">
-          <div class="tb-ti-main">
-            <span class="tb-ti-name">${t.type} ${t.comb}</span>
-            <button class="tb-del-btn" onclick="delTicket(${i})">🗑</button>
-          </div>
+          <div class="tb-ti-main"><span class="tb-ti-name">${t.type} ${t.comb}</span></div>
           <div class="tb-ti-metrics">
-            <span class="tb-ti-cell"><em>オッズ</em>${t.odds>0?t.odds.toFixed(1)+'倍':'—'}</span>
-            <span class="tb-ti-cell"><em>的中率</em>${t.prob?(t.prob*100).toFixed(1)+'%':'—'}</span>
+            <span class="tb-ti-cell"><em>オッズ</em>${t.odds>0?t.odds.toFixed(1):'—'}</span>
+            <span class="tb-ti-cell"><em>的中</em>${t.prob?(t.prob*100).toFixed(1)+'%':'—'}</span>
             <span class="tb-ti-cell"><em>期待値</em><b class="tb-ev-${evClass}">${t.prob&&t.odds>0?(t.prob*t.odds).toFixed(2):'—'}</b></span>
             <span class="tb-ti-cell"><em>金額</em>${t.money>0?t.money+'円':'—'}</span>
-            <span class="tb-ti-cell"><em>払戻</em>${payoutAmount>0?payoutAmount.toLocaleString()+'円':'—'}</span>
+            <span class="tb-ti-cell"><em>払戻</em>${payoutAmount>0?payoutAmount.toLocaleString():'—'}</span>
           </div>
+          <button class="tb-del-btn" onclick="delTicket(${i})">🗑</button>
         </div>`;
       });
       _updateStatsPanel(totalProb, goseiOdds, totalEv, totalPurchased);
