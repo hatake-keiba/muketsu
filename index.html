@@ -917,11 +917,47 @@ input[type=number], input[type=text], textarea, select {
     border-bottom:1px solid var(--mk-line) !important; }
   .simulator-wrapper{ border-color:var(--mk-line) !important; }
 
-  /* テーブルヘッダ：黒→ダーク緑 */
-  .data-table th{ background:var(--mk-dark) !important; color:#eef3e8 !important; }
-  .main-table-area{ border-top:2px solid var(--mk-accent) !important; }
-  .rank-1{ background:#f3f8ee !important; }
-  .rank-2{ background:#f7faf5 !important; }
+  /* ===== 各馬一覧テーブル：MUKETSU調にがっつり刷新 ===== */
+  .main-table-area{ border-top:none !important; }
+  .data-table-container{ padding:6px 10px 12px; }
+  .data-table{ border-collapse:separate !important; border-spacing:0 !important; font-size:11px !important; }
+  /* ヘッダ：ダーク緑・角丸・行間広め */
+  .data-table thead th{ background:var(--mk-dark) !important; color:#dfe8d6 !important;
+    font-family:"Zen Kaku Gothic New",sans-serif !important; font-weight:700 !important;
+    font-size:10px !important; letter-spacing:.02em; padding:9px 4px !important; white-space:nowrap;
+    border:none !important; position:sticky; top:0; }
+  .data-table thead th:first-child{ border-top-left-radius:10px; }
+  .data-table thead th:last-child{ border-top-right-radius:10px; }
+  .data-table thead th.editable-header:hover{ background:#2a4227 !important; }
+  /* 行：ゼブラ＋余白＋区切りは淡いライン */
+  .data-table tbody tr{ transition:background .15s; }
+  .data-table tbody tr:nth-child(odd){ background:#ffffff !important; }
+  .data-table tbody tr:nth-child(even){ background:#f6f9f3 !important; }
+  .data-table tbody tr:hover{ background:#eef4e8 !important; }
+  .data-table td{ border:none !important; border-bottom:1px solid #eef0ea !important;
+    padding:7px 4px !important; font-size:11px !important; vertical-align:middle; color:#2b332a !important; }
+  /* 馬名：明朝で少し格を出す・左寄せ */
+  .data-table .td-name{ font-family:"Zen Old Mincho",serif !important; font-weight:700 !important;
+    font-size:12.5px !important; color:#1c2e1f !important; max-width:130px !important; letter-spacing:.01em; }
+  /* 単勝：人気帯は赤、それ以外は落ち着いた色 */
+  .data-table .td-odds{ font-weight:700 !important; font-variant-numeric:tabular-nums; }
+  /* 印ボタン：角丸ダーク緑 */
+  .data-table .user-mark-btn{ width:20px !important; height:20px !important; background:var(--mk-dark) !important;
+    border-radius:6px !important; font-size:11px !important; }
+  /* 枠番ボックスはそのまま活かしつつ少し大きく */
+  .data-table .waku-box{ width:22px !important; height:22px !important; border-radius:5px !important;
+    font-size:12px !important; font-weight:800; }
+  /* セル内の入力/セレクトを枠なしフラットに（テーブルに馴染ませる） */
+  .data-table input[type=number], .data-table select{ border:1px solid #dfe6d8 !important;
+    border-radius:7px !important; background:#fff !important; font-size:11px !important; padding:4px 5px !important;
+    color:#2b332a !important; }
+  .data-table input[type=number]:focus, .data-table select:focus{ outline:none;
+    border-color:var(--mk-accent) !important; box-shadow:0 0 0 2px rgba(92,138,70,.14) !important; }
+  .memo-input{ width:130px !important; }
+  .memo-input:focus{ background:#fbfdf9 !important; box-shadow:0 0 0 2px rgba(92,138,70,.16) !important; }
+  /* マーカー上位のハイライトは淡緑系に統一（ゼブラより優先） */
+  .data-table tbody tr td.rank-1, .rank-1{ background:#e7f1dd !important; }
+  .data-table tbody tr td.rank-2, .rank-2{ background:#f0f6ea !important; }
 
   /* ボタン群をダーク緑ピル/セージに（機能色は個別維持されるものは後段で調整可） */
   .btn-primary{ background:var(--mk-dark) !important; color:#eef3e8 !important; border:none !important; border-radius:20px !important; }
@@ -1300,21 +1336,10 @@ input[type=number], input[type=text], textarea, select {
           <span class="bc-title">アウトプットアレンジ</span>
         </div>
           <div class="main-table-area">
-        <!-- ▼ 基準タイム（ライトテーマに統一） ▼ -->
-        <details class="std-time-details">
-          <summary class="std-time-summary">▼ 基準タイム</summary>
-          <div class="main-table-sort-bar" style="border-bottom: none; padding-top: 0;">
-            <div id="standard-time-container"></div>
-          </div>
-        </details>
-        <!-- ▲ ここまで ▲ -->
-        <!-- ▼ ③のツールバー（上位マーカー＋詳細列トグル）※コース陣営はレース情報へ移動 -->
-        <div class="arrange-toolbar">
-          <label id="marker-toggle-label" style="font-size: 11px; font-weight: 700; color: var(--mk-dark); display: none; cursor: pointer; user-select: none;">
-            <input type="checkbox" id="marker-toggle-cb" onchange="toggleMarkers(this.checked)"> 👑 上位マーカー表示
-          </label>
-          <button id="toggle-detail-btn" class="pill-btn" onclick="toggleDetailCols()">▶ 詳細データを開く</button>
-        </div>
+        <!-- 基準タイム・詳細データトグルは撤去。互換のため参照要素だけ非表示で残す -->
+        <div id="standard-time-container" style="display:none;"></div>
+        <label id="marker-toggle-label" style="display:none;"><input type="checkbox" id="marker-toggle-cb" onchange="toggleMarkers(this.checked)"></label>
+        <button id="toggle-detail-btn" style="display:none;" onclick="toggleDetailCols()"></button>
 
         <!-- ▼ コース傾向用の枠（陣営モード時のみ表示） ▼ -->
         <div id="camp-course-feature" style="display:none; background:#f8fafc; border-left:4px solid #d39e55; padding:6px 10px; font-size:11px; font-weight:bold; color:#333; margin:4px 8px; border-radius:3px;"></div>
