@@ -4302,15 +4302,15 @@ window.drawOaChartModal = function() {
       if(bgLayer) {
         const isDirt = race.info && race.info.includes('ダ') && !isStraight;
         const baba = race.baba || '良';
-        let baseColor = isDirt ? '#f5dfc6' : '#e8f5e9', trackColor = isDirt ? '#e6af73' : '#bfe6c3';
+        let baseColor = isDirt ? '#efe6da' : '#eaf1e4', trackColor = isDirt ? '#ddc6a8' : '#cfe0c4';
         if(!isDirt) {
-          if(baba === '稍') { baseColor = '#e0f2f1'; trackColor = '#b2dfdb'; }
-          else if(baba === '重') { baseColor = '#f1f8e9'; trackColor = '#c5e1a5'; }
-          else if(baba === '不') { baseColor = '#f9fbe7'; trackColor = '#dcedc8'; }
+          if(baba === '稍') { trackColor = '#c4d9b7'; }
+          else if(baba === '重') { trackColor = '#b7d3a6'; }
+          else if(baba === '不') { trackColor = '#aecb9b'; }
         } else {
-          if(baba === '稍') { baseColor = '#fdf5e6'; trackColor = '#e6d2b5'; }
-          else if(baba === '重') { baseColor = '#fff8e1'; trackColor = '#ffe082'; }
-          else if(baba === '不') { baseColor = '#fff3e0'; trackColor = '#ffcc80'; }
+          if(baba === '稍') { trackColor = '#d3bd9e'; }
+          else if(baba === '重') { trackColor = '#c9ad86'; }
+          else if(baba === '不') { trackColor = '#bd9d72'; }
         }
         
         const startLineX = isLeft ? 5 : 95;
@@ -4337,10 +4337,10 @@ window.drawOaChartModal = function() {
       
       if(readyOverlay) {
         if(step === 0) {
-          readyOverlay.style.opacity = '1'; readyOverlay.style.display = 'flex';
+          readyOverlay.style.display = 'none';
           readyOverlay.innerHTML = `<div style="text-align:center;pointer-events:auto;z-index:100;"><div style="font-size:42px;font-weight:bold;color:rgba(255,255,255,0.9);text-shadow:0 0 15px rgba(0,0,0,0.5),2px 2px 4px rgba(0,0,0,0.8);font-style:italic;letter-spacing:6px;margin-bottom:8px;">Ready ?</div><button onclick="advancePaceStep()" style="background:#e65100;color:#fff;border:none;border-radius:20px;padding:6px 20px;font-size:13px;font-weight:bold;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,0.3);">▶ スタンバイ</button></div>`;
         } else if(step === 1) {
-          readyOverlay.style.opacity = '1'; readyOverlay.style.display = 'flex';
+          readyOverlay.style.display = 'none';
          readyOverlay.innerHTML = `<div style="text-align:center;pointer-events:auto;z-index:100;"><button onclick="advancePaceStep()" style="background:#d32f2f;color:#fff;border:none;border-radius:20px;padding:10px 28px;font-size:16px;font-weight:bold;cursor:pointer;box-shadow:0 4px 6px rgba(0,0,0,0.4);animation:btn-pulse 1.5s infinite;">展開を予想する</button></div>`;
         } else {
           readyOverlay.style.opacity = '0';
