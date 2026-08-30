@@ -1058,7 +1058,7 @@ input[type=number], input[type=text], textarea, select {
                 <button style="display:none;" onclick="clearCanvas()">クリア</button>
                 <button style="display:none;" onclick="resetRaceStart()">リセット</button>
               </div>
-              <div id="pace-canvas" style="flex-grow: 1; position: relative; border-radius: 10px; overflow: hidden; min-height: 230px;">
+              <div id="pace-canvas" style="flex-grow: 1; position: relative; border-radius: 10px; overflow: hidden; min-height: 320px;">
                  <div id="pace-bg-layer" style="position:absolute; inset:0; z-index:1; pointer-events:none;"></div>
                  <canvas id="pace-draw-layer"></canvas>
                  <div id="pace-horse-layer"></div>
@@ -4245,8 +4245,27 @@ window.drawOaChartModal = function() {
       }
       horses.forEach(h => {
         h._autoX = Math.max(0.04, Math.min(0.96, h._autoX));
-        h._autoY = Math.max(0.12, Math.min(0.90, h._autoY));
+        h._autoY = Math.max(0.08, Math.min(0.94, h._autoY));
       });
+      // 端に張り付いて縦に逃げられず被ったペアは横にずらす最終パス
+      for(let s = 0; s < 8; s++){
+        let moved = false;
+        for(let i = 0; i < horses.length; i++){
+          for(let j = i + 1; j < horses.length; j++){
+            // iの名前(box下 約0.06)がjの番号に被るか、その逆
+            const nameGapY = 0.06;
+            const clash = (a,b)=>Math.abs(a._autoX-b._autoX) < MINX*0.9 &&
+                                 Math.abs((a._autoY+nameGapY)-b._autoY) < 0.055;
+            if(clash(horses[i],horses[j]) || clash(horses[j],horses[i])){
+              const dir = horses[i]._autoX <= horses[j]._autoX ? -1 : 1;
+              horses[i]._autoX = Math.max(0.04, Math.min(0.96, horses[i]._autoX + dir*0.06));
+              horses[j]._autoX = Math.max(0.04, Math.min(0.96, horses[j]._autoX - dir*0.06));
+              moved = true;
+            }
+          }
+        }
+        if(!moved) break;
+      }
     }
 
     function renderPaceBoard() {
