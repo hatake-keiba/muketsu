@@ -927,7 +927,7 @@ input[type=number], input[type=text], textarea, select {
     <div class="race-card" id="main-tool" style="display:none;">
       <div id="race-info-head" style="padding:16px 18px 16px;background:#fff;border:1px solid #e6ece0;border-radius:16px;margin:12px;box-shadow:0 1px 3px rgba(60,90,63,.06);">
         <div style="font-size:10px;letter-spacing:.18em;color:#8a9a83;font-weight:700;">RACE INFO ─ レース情報</div>
-        <div id="race-info-title" style="font-family:'Playfair Display',serif;font-weight:600;color:#1c2e1f;font-size:20px;margin-top:3px;">—</div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:3px;"><span id="race-info-title" style="font-family:'Playfair Display',serif;font-weight:600;color:#1c2e1f;font-size:20px;">—</span><span id="race-info-haran" style="font-size:10px;color:#8a9285;background:#f0f2ec;border:1px solid #e2e6dc;border-radius:10px;padding:2px 9px;font-weight:700;letter-spacing:.04em;"></span></div>
 
         <div style="display:grid;grid-template-columns:1fr auto;gap:14px;margin-top:12px;align-items:start;">
           <div style="display:flex;flex-direction:column;gap:10px;">
@@ -953,6 +953,7 @@ input[type=number], input[type=text], textarea, select {
           </div>
 
           <div class="visual" style="text-align:center;width:150px;">
+            <a id="jra-baba-link" href="#" target="_blank" rel="noopener" style="display:inline-block;font-size:9px;color:#5c8a46;text-decoration:none;margin-bottom:4px;border-bottom:1px dotted #a9c19c;">JRA公式 馬場情報 ↗</a>
             <canvas class="trk" id="bb-track" data-br="0" data-turn="0" data-sp="0" data-di="0" style="width:150px;max-width:150px;aspect-ratio:1;display:block;margin:0 auto;background:linear-gradient(#fbfdfc,#eef4f2);border:1px solid #dfe6ec;border-radius:8px;"></canvas>
             <div id="bb-wind-cap" style="font-size:10px;color:#7a828a;margin-top:5px;line-height:1.4;">—<span id="bb-wind-time" style="color:#b8bdc3;margin-left:4px;"></span></div>
           </div>
@@ -8159,6 +8160,24 @@ window.closeDetailedData2Modal = function() {
     if(cap){ cap.firstChild.nodeValue = w ? (w.label + (w.sp?(' '+w.sp+'m/s'):'')) : '—'; }
     const wt=document.getElementById('bb-wind-time');
     if(wt) wt.textContent = (w&&w.time)?w.time:'';
+    // 波乱度★（グレー小カード）
+    try{
+      var hb=document.getElementById('race-info-haran');
+      if(hb && typeof calcRaceStrengthInfo==='function' && typeof judgeHaranLevel==='function' && currentRaceId){
+        var _hi=calcRaceStrengthInfo(currentRaceId);
+        if(_hi){ var _lv=judgeHaranLevel(_hi); hb.textContent='波乱度 '+_lv.stars; hb.style.display=''; }
+        else { hb.textContent=''; }
+      }
+    }catch(e){}
+    // JRA公式 馬場情報リンク（会場別）
+    try{
+      var link=document.getElementById('jra-baba-link');
+      if(link){
+        var idxMap={'札幌':1,'函館':2,'福島':3,'新潟':4,'東京':5,'中山':6,'中京':7,'京都':8,'阪神':9,'小倉':10};
+        var n=idxMap[basho];
+        link.href = n ? ('https://www.jra.go.jp/keiba/baba/'+(n===1?'index.html':'index'+n+'.html')) : 'https://www.jra.go.jp/keiba/baba/';
+      }
+    }catch(e){}
     if(typeof window._drawTrackOnce==='function') window._drawTrackOnce();
   };
 
