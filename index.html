@@ -4224,12 +4224,14 @@ window.drawOaChartModal = function() {
       });
       
       // 被り防止：馬名(馬番の下)を考慮し縦を重く見る楕円距離で分離
-      const MINX = 0.11, MINY = 0.22; // 縦は名前分だけ大きく確保
-      for(let s = 0; s < 30; s++) {
+      // 被り防止：馬名(馬番の下)を考慮し縦を重く見る楕円距離で分離。
+      // クランプを毎反復かけることで、端に張り付いた馬からは他馬が確実に逃げる。
+      const MINX = 0.11, MINY = 0.24; // 縦は名前分だけ大きく確保
+      const clamp = h => { h._autoX = Math.max(0.06,Math.min(0.94,h._autoX)); h._autoY = Math.max(0.07,Math.min(0.95,h._autoY)); };
+      for(let s = 0; s < 60; s++) {
         for(let i = 0; i < horses.length; i++) {
           for(let j = i + 1; j < horses.length; j++) {
             let dx = horses[i]._autoX - horses[j]._autoX, dy = horses[i]._autoY - horses[j]._autoY;
-            // 正規化距離（X,Yで別々の最小間隔）
             let nx = dx / MINX, ny = dy / MINY;
             let nd = Math.sqrt(nx*nx + ny*ny);
             if(nd < 1 && nd > 0.0001){
@@ -4237,34 +4239,12 @@ window.drawOaChartModal = function() {
               horses[i]._autoX += (nx/nd) * scale * MINX; horses[i]._autoY += (ny/nd) * scale * MINY;
               horses[j]._autoX -= (nx/nd) * scale * MINX; horses[j]._autoY -= (ny/nd) * scale * MINY;
             } else if(nd <= 0.0001){
-              // 完全一致は微小にずらす
-              horses[i]._autoY += 0.02; horses[j]._autoY -= 0.02;
+              horses[i]._autoY += 0.03; horses[j]._autoY -= 0.03;
+              horses[i]._autoX += 0.03; horses[j]._autoX -= 0.03;
             }
           }
         }
-      }
-      horses.forEach(h => {
-        h._autoX = Math.max(0.04, Math.min(0.96, h._autoX));
-        h._autoY = Math.max(0.08, Math.min(0.94, h._autoY));
-      });
-      // 端に張り付いて縦に逃げられず被ったペアは横にずらす最終パス
-      for(let s = 0; s < 8; s++){
-        let moved = false;
-        for(let i = 0; i < horses.length; i++){
-          for(let j = i + 1; j < horses.length; j++){
-            // iの名前(box下 約0.06)がjの番号に被るか、その逆
-            const nameGapY = 0.06;
-            const clash = (a,b)=>Math.abs(a._autoX-b._autoX) < MINX*0.9 &&
-                                 Math.abs((a._autoY+nameGapY)-b._autoY) < 0.055;
-            if(clash(horses[i],horses[j]) || clash(horses[j],horses[i])){
-              const dir = horses[i]._autoX <= horses[j]._autoX ? -1 : 1;
-              horses[i]._autoX = Math.max(0.04, Math.min(0.96, horses[i]._autoX + dir*0.06));
-              horses[j]._autoX = Math.max(0.04, Math.min(0.96, horses[j]._autoX - dir*0.06));
-              moved = true;
-            }
-          }
-        }
-        if(!moved) break;
+        horses.forEach(clamp);
       }
     }
 
