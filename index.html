@@ -367,23 +367,17 @@
     @media (prefers-reduced-motion: reduce){ .nav-race-btn.highlight{ animation:none; box-shadow:0 0 0 1px rgba(59,148,135,.5),0 0 14px rgba(59,148,135,.3);} }
   /* ▼▼ 追加：ナビゲーションボタンが光るエフェクト ▼▼ */
   .nav-race-btn { transition: all 0.2s ease; }
-  .nav-race-btn.active.is-turf {
-    background: #f0fdf4 !important;
-    border: 2px solid #3b9487 !important;
-    box-shadow: 0 0 8px rgba(59, 148, 135, 0.6) !important;
-    transform: scale(1.05);
-    z-index: 10;
-    position: relative;
-  }
+  .nav-race-btn.active.is-turf,
   .nav-race-btn.active.is-dirt {
-    background: #fdf8ed !important;
-    border: 2px solid #d39e55 !important;
-    box-shadow: 0 0 8px rgba(211, 158, 85, 0.6) !important;
+    background: #1a1a1a !important;
+    border: 2px solid #1a1a1a !important;
+    box-shadow: 0 0 0 3px rgba(195,236,63,.5) !important;
     transform: scale(1.05);
     z-index: 10;
     position: relative;
   }
-  .nav-race-btn.active .r-num { color: #333 !important; }
+  .nav-race-btn.active .r-num,
+  .nav-race-btn.active .r-time { color: #f4f2ec !important; }
   /* ▲▲ ここまで ▲▲ */
 
     
@@ -730,9 +724,19 @@ input[type=number], input[type=text], textarea, select {
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
 <style id="muketsu-theme">
   :root{
-    --mk-bg:#f7faf5; --mk-card:#ffffff; --mk-line:#e6ece0; --mk-line2:#edf1e8;
-    --mk-ink:#1c2e1f; --mk-ink2:#4b5a48; --mk-mute:#8a9a83;
-    --mk-dark:#1c2e1f; --mk-accent:#5c8a46; --mk-accent2:#6f9463; --mk-tint:#eef3ea;
+    /* ペーパー地 × 黒 × ライムアクセント（参考デザイン準拠） */
+    --mk-bg:#eceae3;            /* ページ背景：温かみのあるオフホワイト */
+    --mk-card:#ffffff;          /* カード：白 */
+    --mk-line:#e8e6df;          /* 罫線：ごく淡いグレージュ */
+    --mk-line2:#f0eee8;
+    --mk-ink:#1a1a1a;           /* 本文・見出し：ほぼ黒 */
+    --mk-ink2:#3d3d3a;
+    --mk-mute:#9b9a92;          /* 補助テキスト：ミュートグレー */
+    --mk-dark:#1a1a1a;          /* “濃”は黒に */
+    --mk-accent:#c3ec3f;        /* ライムイエロー（強調1点） */
+    --mk-accent2:#d4f34a;
+    --mk-tint:#f4f2ec;          /* 淡い面 */
+    --mk-lime-ink:#1a1a1a;      /* ライム上に載せる文字は黒 */
   }
   body{ background:var(--mk-bg) !important; color:var(--mk-ink) !important;
         font-family:"Zen Kaku Gothic New",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif !important; }
@@ -741,7 +745,7 @@ input[type=number], input[type=text], textarea, select {
   /* ▼ トップレベルのカードを統一（タイトル/絞り込み/レース目次/4大カード） */
   .system-section, .filter-panel, .race-nav-wrap, .big-card{
     background:var(--mk-card) !important; border:1px solid var(--mk-line) !important;
-    border-radius:16px !important; box-shadow:0 1px 3px rgba(60,90,63,.06) !important;
+    border-radius:22px !important; box-shadow:0 1px 2px rgba(0,0,0,.04) !important;
     margin:12px !important; }
   .big-card{ overflow:hidden; padding-bottom:4px; }
   .race-nav-wrap{ overflow:hidden; }
@@ -806,8 +810,8 @@ input[type=number], input[type=text], textarea, select {
   .pill-sm{ font-size:10.5px !important; padding:5px 12px !important; }
   .pill-ghost{ background:#fff !important; color:#8a9483 !important; }
   .pill-ghost:hover{ background:#f0f2ec !important; color:var(--mk-dark) !important; }
-  .pill-accent{ background:var(--mk-accent) !important; color:#fff !important; border-color:var(--mk-accent) !important; }
-  .pill-accent:hover{ opacity:.9; background:var(--mk-accent) !important; color:#fff !important; }
+  .pill-accent{ background:var(--mk-accent) !important; color:#1a1a1a !important; border-color:var(--mk-accent) !important; }
+  .pill-accent:hover{ opacity:.9; background:var(--mk-accent) !important; color:#1a1a1a !important; }
 
   /* 小タイトル（各馬評価 / 勝率設定） */
   .sub-head{ display:flex; align-items:center; gap:10px; padding:12px 16px 8px !important;
@@ -856,7 +860,7 @@ input[type=number], input[type=text], textarea, select {
     background:transparent !important; border:none !important;
     border-radius:0 !important; box-shadow:none !important; margin:0 !important; }
   .big-card #race-info-head{ padding:14px 18px 10px !important; }
-  .big-card .main-table-area{ border-top:1px solid var(--mk-line) !important; }
+  .big-card .main-table-area{ border-top:none !important; }
 
   /* 大カードの見出し */
   .bc-head{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
@@ -1031,11 +1035,11 @@ input[type=number], input[type=text], textarea, select {
 
   /* ボタン群をダーク緑ピル/セージに（機能色は個別維持されるものは後段で調整可） */
   .btn-primary{ background:var(--mk-dark) !important; color:#eef3e8 !important; border:none !important; border-radius:20px !important; }
-  .btn-success{ background:var(--mk-accent) !important; color:#fff !important; border:none !important; border-radius:20px !important; }
+  .btn-success{ background:var(--mk-accent) !important; color:#1a1a1a !important; border:none !important; border-radius:20px !important; font-weight:700 !important; }
   .btn-danger{ background:#b06a5e !important; color:#fff !important; border:none !important; border-radius:20px !important; }
   .sync-btn{ background:var(--mk-dark) !important; border-radius:16px !important; }
   .baba-btn{ border-radius:16px !important; border-color:var(--mk-line) !important; }
-  .baba-btn.active{ background:var(--mk-accent) !important; border-color:var(--mk-accent) !important; }
+  .baba-btn.active{ background:var(--mk-accent) !important; border-color:var(--mk-accent) !important; color:#1a1a1a !important; }
 
   /* レース選択ボタン：白＋淡緑、選択は淡緑 */
   .nav-race-btn{ background:#f3f8ee !important; border:1px solid var(--mk-line) !important; color:#3f4a3d !important; border-radius:10px !important;
@@ -1049,11 +1053,15 @@ input[type=number], input[type=text], textarea, select {
 <body>
 
 <div class="app-container">
-  <div id="site-title" style="text-align:center;padding:30px 10px 22px;background:#1f3d2b;border-radius:16px;margin:12px;position:relative;overflow:hidden;">
-    <div style="font-family:'Fraunces','Helvetica Neue',serif;font-weight:900;color:#f2f5ee;font-size:clamp(40px,11vw,84px);letter-spacing:.22em;line-height:1;text-indent:.22em;">MUKETSU</div>
-    <div style="width:56px;height:2px;background:#8fae82;margin:12px auto 10px;"></div>
-    <div style="color:#a9c19c;font-size:11px;letter-spacing:.32em;text-indent:.32em;font-weight:600;">無血で勝つ・回収</div>
-    <div style="color:#5a6473;font-size:10px;letter-spacing:.15em;margin-top:6px;">壁打ちできる次世代競馬新聞</div>
+  <div id="site-title" style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:28px 26px;background:#1a1a1a;border-radius:22px;margin:12px;position:relative;overflow:hidden;">
+    <div style="text-align:left;">
+      <div style="font-family:'Fraunces','Helvetica Neue',serif;font-weight:900;color:#f4f2ec;font-size:clamp(34px,8vw,60px);letter-spacing:.18em;line-height:1;text-indent:.18em;">MUKETSU</div>
+      <div style="color:#c3ec3f;font-size:10px;letter-spacing:.34em;text-indent:.34em;font-weight:700;margin-top:12px;">PACE ANALYSIS NEWSPAPER</div>
+    </div>
+    <div style="text-align:right;">
+      <div style="color:#f4f2ec;font-size:12px;font-weight:700;letter-spacing:.08em;">無血で勝つ・回収</div>
+      <div style="color:#8f8e86;font-size:10px;letter-spacing:.06em;margin-top:4px;">書き込める次世代競馬新聞</div>
+    </div>
   </div>
   <style>
     #ai-console-panel, #master-panel, #system-details { display:none !important; }
@@ -1234,12 +1242,12 @@ input[type=number], input[type=text], textarea, select {
             </div>
             <div id="bb-cush-wrap">
               <div style="display:flex;justify-content:space-between;font-size:10px;color:#8a9a83;margin-bottom:3px;"><span>クッション値</span><span id="bb-cush-v" style="color:#2f6d3a;font-weight:700;">—</span></div>
-              <div style="height:9px;background:#eef3ea;border-radius:5px;overflow:hidden;"><div id="bb-cush-bar" style="height:100%;width:0%;background:#5c8a46;border-radius:4px;transition:width .4s;"></div></div>
+              <div style="height:9px;background:#e8e6df;border-radius:5px;overflow:hidden;"><div id="bb-cush-bar" style="height:100%;width:0%;background:#1a1a1a;border-radius:4px;transition:width .4s;"></div></div>
               <div style="display:flex;justify-content:space-between;font-size:8px;color:#b9c4b2;margin-top:1px;"><span>柔 7</span><span>硬 12</span></div>
             </div>
             <div>
               <div style="display:flex;justify-content:space-between;font-size:10px;color:#8a9a83;margin-bottom:3px;"><span id="bb-moist-label">含水率(芝)</span><span id="bb-moist-v" style="color:#1c2e1f;font-weight:700;">—</span></div>
-              <div style="height:9px;background:#eef3ea;border-radius:5px;overflow:hidden;"><div id="bb-moist-bar" style="height:100%;width:0%;background:#5c8a46;border-radius:4px;transition:width .4s,background .3s;"></div></div>
+              <div style="height:9px;background:#e8e6df;border-radius:5px;overflow:hidden;"><div id="bb-moist-bar" style="height:100%;width:0%;background:#1a1a1a;border-radius:4px;transition:width .4s,background .3s;"></div></div>
               <div style="display:flex;justify-content:space-between;font-size:8px;color:#b9c4b2;margin-top:1px;"><span>乾 0%</span><span>湿 25%</span></div>
             </div>
           </div>
@@ -2419,11 +2427,11 @@ function getTodayStr(){const d=new Date();const jst=new Date(d.getTime()+9*60*60
 
     const HARAN_LEVELS = [{threshold:45,stars:'★★★★★',color:'#c0392b'},{threshold:57,stars:'★★★★☆',color:'#e67e22'},{threshold:67,stars:'★★★☆☆',color:'#f39c12'},{threshold:73,stars:'★★☆☆☆',color:'#27ae60'},{threshold:80,stars:'★☆☆☆☆',color:'#2980b9'}];
     const TIER_BAR_COLORS = [
-      'linear-gradient(90deg, #4fa06b, #7ecb93)', /* 1層目: 澄んだ緑 */
-      'linear-gradient(90deg, #86c39a, #aeddba)', /* 2層目: 中間の緑 */
-      'linear-gradient(90deg, #c9e4cf, #e2f1e6)'  /* 3層目以降: 淡い緑 */
+      'linear-gradient(90deg, #c3ec3f, #d4f34a)', /* 1層目: ライム（最上位を強調） */
+      'linear-gradient(90deg, #2b2b28, #4a4a44)', /* 2層目: ダーク */
+      'linear-gradient(90deg, #bdbcb4, #d6d5cd)'  /* 3層目以降: グレー */
     ];
-    const TIER_BAR_DEFAULT = 'linear-gradient(90deg, #58b57e, #93d5a8)';
+    const TIER_BAR_DEFAULT = 'linear-gradient(90deg, #2b2b28, #55554e)';
 
     const COURSE_BIAS_MAP = {}; // ★中身を空っぽにして初期設定の暴走を止める
 
@@ -8760,7 +8768,7 @@ window.closeDetailedData2Modal = function() {
     if(g('bb-moist-bar')){
       const p=mv!=null?Math.max(0,Math.min(100,mv/25*100)):0;
       g('bb-moist-bar').style.width=p+'%';
-      g('bb-moist-bar').style.background = isDirt ? '#a5744a' : '#5c8a46';
+      g('bb-moist-bar').style.background = isDirt ? '#a5744a' : '#1a1a1a';
     }
     // 風トラックcanvas
     const w=(window._WIND&&window._WIND.wind&&basho)?window._WIND.wind[basho]:null;
