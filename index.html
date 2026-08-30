@@ -4220,7 +4220,7 @@ window.drawOaChartModal = function() {
         if(isStraight) stagger = -stagger;
         let xNoise = ((h.num * 13) % 10 - 5) / 100.0;
         let finalX = baseX + tenFOffset + stagger + xNoise;
-        h._autoX = !isLeft ? Math.max(0.05, Math.min(0.95, (1.0 - finalX))) : Math.max(0.05, Math.min(0.95, finalX));
+        h._autoX = Math.max(0.05, Math.min(0.95, finalX)); // 進行方向固定（右=前/ゴール方向）
       });
       
       for(let s = 0; s < 14; s++) {
@@ -4314,10 +4314,10 @@ window.drawOaChartModal = function() {
           else if(baba === '不') { trackColor = '#bd9d72'; }
         }
         
-        const startLineX = isLeft ? 5 : 95;
+        const startLineX = 5; // 後方（左端）
         let sX = Math.abs(race.tenkaiVal) / 50 * 0.55, sY = Math.abs(race.biasVal) / 50 * 0.55, gX = '', gY = '';
         if(race.tenkaiVal !== 0) {
-          let frontDark = race.tenkaiVal > 0, backDark = race.tenkaiVal < 0, darkLeft = isLeft ? backDark : frontDark;
+          let darkLeft = race.tenkaiVal < 0; // 前傾なら後方(左)が不利
           gX = `<linearGradient id="gX" x1="${darkLeft?'0':'1'}" y1="0" x2="${darkLeft?'1':'0'}" y2="0"><stop offset="0%" stop-color="#000" stop-opacity="${sX}"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></linearGradient>`;
         }
         if(race.biasVal !== 0) {
@@ -4328,15 +4328,13 @@ window.drawOaChartModal = function() {
         
         const arrowLeftSvg = `<polygon points="60,5 45,5 45,1 35,7.5 45,14 45,10 60,10" fill="rgba(255,255,255,0.6)" stroke="#e53935" stroke-width="1" />`;
         const arrowRightSvg = `<polygon points="40,5 55,5 55,1 65,7.5 55,14 55,10 40,10" fill="rgba(255,255,255,0.6)" stroke="#e53935" stroke-width="1" />`;
-        const arrowSvg = isLeft ? arrowRightSvg : arrowLeftSvg;
+        const arrowSvg = arrowRightSvg; // 進行方向は右で固定
         let textTop = isStraight ? "内 ラチ" : "大 外 ↑", textBottom = isStraight ? "外 ラチ ↓" : "内 ラチ";
         
         let bgSvg = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;"><defs>${gX}${gY}</defs><rect width="100" height="100" fill="${baseColor}" /><rect x="0" y="15" width="100" height="70" fill="${trackColor}" />${race.tenkaiVal!==0?`<rect x="0" y="15" width="100" height="70" fill="url(#gX)" style="mix-blend-mode:multiply;" />`:''}${race.biasVal!==0?`<rect x="0" y="15" width="100" height="70" fill="url(#gY)" style="mix-blend-mode:multiply;" />`:''}<rect x="${startLineX-0.6}" y="15" width="1.2" height="70" fill="#9aa9a0" opacity="0.55" /></svg>`;
-        // 進路：左回り=馬は右へ進む(→) / 右回り=左へ進む(←)。isLeft変数はrightでtrueの逆命名なので実回りで判定
-        const realLeft = (currentCourseDir === 'left');
-        const _dir = realLeft ? 'コース：左回り →' : (isStraight ? '直線コース' : 'コース：右回り ←');
         const textOverlay = `<div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;font-family:'Zen Kaku Gothic New',sans-serif;">
-          <div style="position:absolute;top:5px;left:50%;transform:translateX(-50%);color:#6b7a6b;font-size:9px;font-weight:700;letter-spacing:1px;background:rgba(255,255,255,.6);padding:1px 8px;border-radius:8px;">${_dir}</div>
+          <div style="position:absolute;top:5px;left:8px;color:#6b7a6b;font-size:9px;font-weight:700;letter-spacing:1px;background:rgba(255,255,255,.6);padding:1px 8px;border-radius:8px;">道中の位置取り（想定）</div>
+          <div style="position:absolute;top:5px;right:8px;color:#5c8a46;font-size:10px;font-weight:700;background:rgba(255,255,255,.6);padding:1px 8px;border-radius:8px;">進行方向 →</div>
           <div style="position:absolute;top:19%;left:6px;color:#8a9a83;font-size:9px;font-weight:700;">内ラチ</div>
           <div style="position:absolute;bottom:5px;left:6px;color:#8a9a83;font-size:9px;font-weight:700;">外ラチ</div>
         </div>`;
