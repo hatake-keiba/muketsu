@@ -759,6 +759,20 @@ input[type=number], input[type=text], textarea, select {
   #main-tool{ background:transparent !important; border:none !important;
     border-radius:0 !important; box-shadow:none !important; margin:0 !important; padding:0 !important; }
 
+  /* レース質を選択（タブ風ピル・セレクト） */
+  .race-quality-tab{ margin-left:auto; -webkit-appearance:none; appearance:none;
+    font-family:"Zen Kaku Gothic New",sans-serif !important; font-size:11px; font-weight:700;
+    color:#5b6b58; letter-spacing:.02em; cursor:pointer; outline:none;
+    background:#eef3ea; border:1px solid var(--mk-line);
+    border-radius:999px; padding:6px 30px 6px 14px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'><path d='M1 1l4 4 4-4' fill='none' stroke='%235c8a46' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat:no-repeat; background-position:right 12px center;
+    transition:background .2s, border-color .2s, color .2s; }
+  .race-quality-tab:hover{ border-color:var(--mk-accent2); background-color:#e6efe0; }
+  /* 何か選択された状態＝アクセントで“タブが立っている”見た目に */
+  .race-quality-tab.is-active{ background-color:var(--mk-dark); color:#eef3e8; border-color:var(--mk-dark);
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'><path d='M1 1l4 4 4-4' fill='none' stroke='%23cfe0c3' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>"); }
+
   /* 大カードの中の“旧カード”は装飾を解除して素の帯にする（＝二重カード禁止） */
   .big-card #race-info-head,
   .big-card .simulator-wrapper,
@@ -998,7 +1012,6 @@ input[type=number], input[type=text], textarea, select {
     <div class="race-nav-wrap" id="race-nav-wrap" style="display:none;">
       <div class="bc-head">
         <span class="bc-title">レース目次</span>
-        <span class="bc-sub">会場・レースを選ぶ</span>
       </div>
       <div class="nav-area" id="nav-area"></div>
     </div>
@@ -1008,10 +1021,8 @@ input[type=number], input[type=text], textarea, select {
       <section class="big-card">
         <div class="bc-head">
           <span class="bc-title">レース情報</span>
-          <span class="bc-sub">馬場・風・展開を確認する</span>
-          <select id="race-status-select" onchange="updateRaceStatus(this.value)"
-            style="margin-left:auto;font-size:10px;font-weight:700;border:1px solid #e2e6dc;border-radius:14px;background:#f5f7f2;color:#6b7a6b;padding:3px 10px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;">
-            <option value="">評価メモ</option>
+          <select id="race-status-select" class="race-quality-tab" onchange="updateRaceStatus(this.value)">
+            <option value="">レース質を選択</option>
             <option value="勝負">勝負レース</option>
             <option value="絞る">絞って勝負</option>
             <option value="万馬券">万馬券狙い</option>
@@ -1156,7 +1167,6 @@ input[type=number], input[type=text], textarea, select {
       <section class="big-card">
         <div class="bc-head">
           <span class="bc-title">メモ・AI壁打ち</span>
-          <span class="bc-sub">自分の予想を書き残し、AIに壁打ちする</span>
         </div>
       <!-- ▼ メモ（localStorage永続化・リロードで消えない） ▼ -->
       <div class="memo-card">
@@ -1186,7 +1196,6 @@ input[type=number], input[type=text], textarea, select {
       <section class="big-card">
         <div class="bc-head">
           <span class="bc-title">アウトプットアレンジ</span>
-          <span class="bc-sub">指数一覧と勝率を確認・調整する</span>
         </div>
           <div class="main-table-area">
         <!-- ▼ 基準タイムを開閉式に変更 ▼ -->
@@ -1282,7 +1291,6 @@ input[type=number], input[type=text], textarea, select {
       <section class="big-card">
         <div class="bc-head">
           <span class="bc-title">買い目ビルダー</span>
-          <span class="bc-sub">軸・相手を選んで買い目を組み立てる</span>
         </div>
       <div class="ticket-builder">
         <div class="ticket-builder-header">
@@ -3304,6 +3312,11 @@ function buildNavigation() {
       }
     }
     
+    function syncRaceQualityTab(){
+      const sel = document.getElementById('race-status-select');
+      if(sel) sel.classList.toggle('is-active', !!sel.value);
+    }
+
     function updateRaceStatus(val) {
       if(!currentRaceId) return;
       if(val === 'custom') {
@@ -3328,6 +3341,7 @@ function buildNavigation() {
       } else {
         racesData[currentRaceId].status = val;
       }
+      syncRaceQualityTab();
       buildNavigation();
     }
 
@@ -5068,6 +5082,19 @@ renderCourseFeature(); // ←★★ここに1行追加するだけです！★�
       updateHaranBadge(currentRaceId);
       restoreAIComment();
       renderStandardTime();
+      // レース質タブの表示をこのレースの状態に同期
+      (function(){
+        const sel = document.getElementById('race-status-select');
+        if(sel){
+          const st = racesData[currentRaceId].status || '';
+          if(st && !Array.from(sel.options).some(o=>o.value===st)){
+            const opt=document.createElement('option'); opt.value=st; opt.textContent='🏷️ '+st;
+            sel.insertBefore(opt, sel.lastElementChild);
+          }
+          sel.value = st;
+          syncRaceQualityTab();
+        }
+      })();
     }
 
     function renderTicketBuilder() {
