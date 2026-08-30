@@ -1241,29 +1241,20 @@ input[type=number], input[type=text], textarea, select {
           placeholder="このレースの予想・狙い・気づきを自由に記入…（入力すると自動で保存されます）"
           oninput="saveAIComment(this.value)"></textarea>
       </div>
-      <!-- ▼ AI相談（壁打ち）スロット ▼ -->
+      <!-- ▼ AI相談（壁打ち）スロット：会員はキー不要・運営GAS経由 ▼ -->
       <div class="ai-talk-slot">
         <div class="ai-talk-head">
           <span class="ai-talk-dot"></span>AI相談（壁打ち）
-          <button class="ai-key-toggle" onclick="toggleAiKeyPanel()" title="APIキー設定">⚙️ キー設定</button>
         </div>
         <div class="ai-talk-body">
-          <div id="ai-key-panel" class="ai-key-panel" style="display:none;">
-            <label class="ai-key-label">あなたの Gemini API キー</label>
-            <div style="display:flex;gap:6px;flex-wrap:wrap;">
-              <input type="password" id="ai-key-input" class="ai-key-input" placeholder="AIza... から始まるキー" />
-              <button class="pill-btn" onclick="saveAiKey()">保存</button>
-            </div>
-            <p class="ai-key-help">キーはこの端末のブラウザにのみ保存され、外部に送信されません。<a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" style="color:#5c8a46;">無料キーを取得 ↗</a></p>
-          </div>
           <div id="ai-chat-log" class="ai-chat-log">
-            <div class="ai-chat-empty">メモや出馬表をもとに壁打ちできます。下の欄に質問や相談を入力してください。</div>
+            <div class="ai-chat-empty">競馬データを踏まえたAIに、このレースの相談ができます。<br>下の欄に質問や気になることを入力してください。</div>
           </div>
           <div class="ai-chat-inputbar">
             <textarea id="ai-chat-input" class="ai-chat-input" rows="2" placeholder="例）この人気馬、消しでいいと思う？相談したい"></textarea>
             <button id="ai-chat-send" class="ai-talk-btn" onclick="sendAiChat()">送信</button>
           </div>
-          <p class="ai-talk-note">※ 現在のレースのメモ・出馬表を参考にAIが回答します</p>
+          <p class="ai-talk-note">※ このレースの出馬表・過去データ・あなたのメモを踏まえてAIが回答します</p>
         </div>
       </div>
       <!-- ▲ メモカードここまで ▲ -->
@@ -3378,28 +3369,14 @@ function buildNavigation() {
       sel.classList.toggle('is-active', !!st);
     }
 
-    /* ===== AI相談（壁打ち）：Gemini API（会員が自分のキーを入力） ===== */
-    const AI_KEY_LS = 'muketsu_gemini_key';
+    /* ===== AI相談（壁打ち）：会員はキー不要・運営GASプロキシ経由 =====
+       会員のブラウザ → 運営GAS(Geminiキー保管＋過去データ付与) → Gemini
+       GAS未設定でも動くよう、キーがブラウザにある場合は直接Geminiにフォールバック（開発用）。 */
+    const AI_GAS_URL = ''; // ← 運営のGAS WebアプリURLをここに設定（未設定なら開発フォールバック）
+    const AI_KEY_LS = 'muketsu_gemini_key'; // 開発フォールバック用（本番は会員には見せない）
     // レースごとの会話履歴（メモリ内）
     const aiChatHistory = {};
 
-    function toggleAiKeyPanel(){
-      const p = document.getElementById('ai-key-panel');
-      if(!p) return;
-      const show = p.style.display === 'none';
-      p.style.display = show ? 'block' : 'none';
-      if(show){
-        const inp = document.getElementById('ai-key-input');
-        try { inp.value = localStorage.getItem(AI_KEY_LS) || ''; } catch(e){}
-      }
-    }
-    function saveAiKey(){
-      const inp = document.getElementById('ai-key-input');
-      const v = (inp.value || '').trim();
-      try { if(v) localStorage.setItem(AI_KEY_LS, v); else localStorage.removeItem(AI_KEY_LS); } catch(e){}
-      document.getElementById('ai-key-panel').style.display = 'none';
-      alert(v ? 'APIキーを保存しました。' : 'APIキーを削除しました。');
-    }
     function _getAiKey(){ try { return localStorage.getItem(AI_KEY_LS) || ''; } catch(e){ return ''; } }
 
     // 現在レースの文脈（メモ＋出馬表）を組み立て
@@ -3439,12 +3416,6 @@ function buildNavigation() {
       const inp = document.getElementById('ai-chat-input');
       const q = (inp.value || '').trim();
       if(!q) return;
-      const key = _getAiKey();
-      if(!key){
-        alert('先に「⚙️ キー設定」からご自分の Gemini API キーを入力してください。');
-        toggleAiKeyPanel();
-        return;
-      }
       inp.value = '';
       _appendAiMsg('user', q);
       const rid = currentRaceId || '_';
@@ -3454,42 +3425,64 @@ function buildNavigation() {
       const sendBtn = document.getElementById('ai-chat-send');
       sendBtn.disabled = true;
 
-      // システム指示（運営ノウハウはここに将来差し込む）
-      const system = 'あなたは競馬新聞ツール「MUKETSU」の相談相手AIです。利用者が自分の予想を整理する“壁打ち”役に徹してください。'
-        + '断定的な購入指示や「絶対当たる」等の表現は避け、根拠を添えて考える材料を返します。'
-        + '出馬表・利用者のメモが与えられたら、それを踏まえて簡潔（目安3〜6行）に答えてください。日本語で。';
       const context = _buildRaceContext();
-      // 会話履歴（直近6往復）＋今回
       const hist = aiChatHistory[rid].slice(-6);
-      const contents = [];
-      contents.push({ role:'user', parts:[{ text: system + '\n\n以下は今見ているレースの情報です。\n' + context }] });
-      contents.push({ role:'model', parts:[{ text:'了解しました。レース情報を把握しました。相談をどうぞ。' }] });
-      hist.forEach(m => contents.push({ role: m.role, parts:[{ text: m.text }] }));
-      contents.push({ role:'user', parts:[{ text: q }] });
 
       try {
-        const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + encodeURIComponent(key);
-        const resp = await fetch(url, {
-          method:'POST', headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({ contents, generationConfig:{ temperature:0.7, maxOutputTokens:600 } })
-        });
-        const data = await resp.json();
-        if(!resp.ok){
-          const msg = (data && data.error && data.error.message) ? data.error.message : ('HTTP '+resp.status);
-          throw new Error(msg);
+        let ans;
+        if(AI_GAS_URL){
+          // 本番：運営GASプロキシ（キーはGAS側／過去データもGAS側で付与）
+          ans = await _askViaGas(q, context, hist);
+        } else {
+          // 開発フォールバック：ブラウザに開発用キーがあれば直接Gemini
+          const key = _getAiKey();
+          if(!key){
+            throw new Error('AIサーバーが未設定です（運営がGASを接続すると利用できます）');
+          }
+          ans = await _askGeminiDirect(q, context, hist, key);
         }
-        const ans = (((data.candidates||[])[0]||{}).content||{}).parts?.map(p=>p.text).join('') || '（応答が空でした）';
         loading.classList.remove('loading');
         loading.textContent = ans.trim();
         aiChatHistory[rid].push({ role:'user', text:q });
         aiChatHistory[rid].push({ role:'model', text:ans.trim() });
       } catch(err){
         loading.classList.remove('loading');
-        loading.textContent = '⚠️ エラー: ' + err.message + '\n（キーが正しいか、無料枠の上限に達していないかご確認ください）';
+        loading.textContent = '⚠️ ' + err.message;
       } finally {
         const log = document.getElementById('ai-chat-log'); log.scrollTop = log.scrollHeight;
         sendBtn.disabled = false;
       }
+    }
+
+    const AI_SYSTEM = 'あなたは競馬新聞ツール「MUKETSU」の相談相手AIです。利用者が自分の予想を整理する“壁打ち”役に徹してください。'
+      + '断定的な購入指示や「絶対当たる」等の表現は避け、根拠を添えて考える材料を返します。'
+      + '与えられた出馬表・過去データ・利用者のメモを踏まえ、簡潔（目安3〜6行）に日本語で答えてください。';
+
+    // 本番：運営GAS経由（会員キー不要）
+    async function _askViaGas(q, context, hist){
+      const resp = await fetch(AI_GAS_URL, {
+        method:'POST',
+        headers:{'Content-Type':'text/plain;charset=utf-8'}, // GASのCORS回避のためtext/plain
+        body: JSON.stringify({ action:'ai_chat', raceId: currentRaceId, question:q, context, history:hist })
+      });
+      const data = await resp.json();
+      if(!resp.ok || data.error) throw new Error(data.error || ('サーバーエラー HTTP '+resp.status));
+      return data.answer || '（応答が空でした）';
+    }
+
+    // 開発フォールバック：直接Gemini
+    async function _askGeminiDirect(q, context, hist, key){
+      const contents = [];
+      contents.push({ role:'user', parts:[{ text: AI_SYSTEM + '\n\n以下は今見ているレースの情報です。\n' + context }] });
+      contents.push({ role:'model', parts:[{ text:'了解しました。レース情報を把握しました。相談をどうぞ。' }] });
+      hist.forEach(m => contents.push({ role: m.role, parts:[{ text: m.text }] }));
+      contents.push({ role:'user', parts:[{ text: q }] });
+      const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + encodeURIComponent(key);
+      const resp = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ contents, generationConfig:{ temperature:0.7, maxOutputTokens:600 } }) });
+      const data = await resp.json();
+      if(!resp.ok){ throw new Error((data&&data.error&&data.error.message) || ('HTTP '+resp.status)); }
+      return (((data.candidates||[])[0]||{}).content||{}).parts?.map(p=>p.text).join('') || '（応答が空でした）';
     }
 
     // レース切替時にチャットログを復元
