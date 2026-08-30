@@ -1058,7 +1058,7 @@ input[type=number], input[type=text], textarea, select {
                 <button style="display:none;" onclick="clearCanvas()">クリア</button>
                 <button style="display:none;" onclick="resetRaceStart()">リセット</button>
               </div>
-              <div id="pace-canvas" style="flex-grow: 1; position: relative; border-radius: 10px; overflow: hidden; min-height: 130px;">
+              <div id="pace-canvas" style="flex-grow: 1; position: relative; border-radius: 10px; overflow: hidden; min-height: 230px;">
                  <div id="pace-bg-layer" style="position:absolute; inset:0; z-index:1; pointer-events:none;"></div>
                  <canvas id="pace-draw-layer"></canvas>
                  <div id="pace-horse-layer"></div>
@@ -4202,8 +4202,8 @@ window.drawOaChartModal = function() {
       horses.forEach(h => {
         let yRatio = (h.num - minNum) / numRange;
         let yNoise = ((h.num * 7) % 10 - 5) / 200.0;
-        if(isStraight) h._autoY = Math.max(0.15, Math.min(0.85, 0.20 + (yRatio * 0.6) + yNoise));
-        else h._autoY = Math.max(0.15, Math.min(0.85, 0.80 - (yRatio * 0.6) + yNoise));
+        if(isStraight) h._autoY = Math.max(0.12, Math.min(0.90, 0.18 + (yRatio * 0.66) + yNoise));
+        else h._autoY = Math.max(0.12, Math.min(0.90, 0.84 - (yRatio * 0.66) + yNoise));
         
         let baseX = (h.style === '逃') ? 0.85 : (h.style === '先') ? 0.60 : (h.style === '差') ? 0.35 : 0.15;
         let tenFOffset = 0;
@@ -4219,11 +4219,11 @@ window.drawOaChartModal = function() {
         h._autoX = !isLeft ? Math.max(0.05, Math.min(0.95, (1.0 - finalX))) : Math.max(0.05, Math.min(0.95, finalX));
       });
       
-      for(let s = 0; s < 8; s++) {
+      for(let s = 0; s < 14; s++) {
         for(let i = 0; i < horses.length; i++) {
           for(let j = i + 1; j < horses.length; j++) {
             let dx = horses[i]._autoX - horses[j]._autoX, dy = horses[i]._autoY - horses[j]._autoY;
-            let dist = Math.sqrt(dx * dx + dy * dy), minDist = 0.08;
+            let dist = Math.sqrt(dx * dx + dy * dy), minDist = 0.115;
             if(dist < minDist && dist > 0) {
               let push = (minDist - dist) / 2, pushX = (dx / dist) * push, pushY = (dy / dist) * push;
               horses[i]._autoX += pushX; horses[i]._autoY += pushY;
@@ -4233,8 +4233,8 @@ window.drawOaChartModal = function() {
         }
       }
       horses.forEach(h => {
-        h._autoX = Math.max(0.03, Math.min(0.97, h._autoX));
-        h._autoY = Math.max(0.15, Math.min(0.85, h._autoY));
+        h._autoX = Math.max(0.04, Math.min(0.96, h._autoX));
+        h._autoY = Math.max(0.12, Math.min(0.90, h._autoY));
       });
     }
 
@@ -7738,7 +7738,7 @@ window.executeMyAI = function(targetId, isSilentParam) {
   if (tRaceId === currentRaceId) {
     const ta = document.getElementById('ai-pace-comment');
     if(ta) {
-      ta.value = commentText;
+      /* 会員メモは自動入力しない */ // ta.value = commentText;
     }
     if (typeof changeTicketType === 'function') changeTicketType(p.type);
     setTimeout(() => {
