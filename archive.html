@@ -156,6 +156,7 @@
     let html='';
     for(let r=1;r<=12;r++) html+='<div class="race" onclick="pickRace('+r+',this)">'+r+'R<div class="rt">'+times[r-1]+'</div></div>';
     document.getElementById('races').innerHTML=html;
+    document.getElementById('detail-card').style.display='none';
     document.getElementById('race-card').style.display='block';
     document.getElementById('detail-card').style.display='none';
     document.getElementById('race-card').scrollIntoView({behavior:'smooth',block:'nearest'});
