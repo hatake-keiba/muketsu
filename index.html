@@ -738,12 +738,22 @@ input[type=number], input[type=text], textarea, select {
         font-family:"Zen Kaku Gothic New",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif !important; }
   .app-container{ max-width:1100px; }
 
-  /* ▼ 4つの大カードだけをカード化。他のトップレベル箱は個別カード化する（従来通り） */
-  .nav-area, .system-section, .filter-panel, .big-card{
+  /* ▼ トップレベルのカードを統一（タイトル/絞り込み/レース目次/4大カード） */
+  .system-section, .filter-panel, .race-nav-wrap, .big-card{
     background:var(--mk-card) !important; border:1px solid var(--mk-line) !important;
     border-radius:16px !important; box-shadow:0 1px 3px rgba(60,90,63,.06) !important;
     margin:12px !important; }
   .big-card{ overflow:hidden; padding-bottom:4px; }
+  .race-nav-wrap{ overflow:hidden; }
+  /* レース目次の中身は素の帯（カード化しない） */
+  .race-nav-wrap .nav-area{ background:transparent !important; border:none !important;
+    border-radius:0 !important; box-shadow:none !important; margin:0 !important; padding:8px 12px 12px !important; }
+  .filter-panel{ overflow:hidden; }
+
+  /* 大カードの丸番号 */
+  .bc-num{ display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px;
+    border-radius:50%; background:var(--mk-dark); color:#eef3e8; font-size:11px; font-weight:800;
+    flex:0 0 auto; }
 
   /* #main-tool は透明コンテナ（大カードを束ねるだけ・自身はカードにしない） */
   #main-tool{ background:transparent !important; border:none !important;
@@ -840,7 +850,7 @@ input[type=number], input[type=text], textarea, select {
 <body>
 
 <div class="app-container">
-  <div id="site-title" style="text-align:center;padding:26px 10px 18px;background:#1f3d2b;border-radius:8px;margin-bottom:12px;position:relative;overflow:hidden;">
+  <div id="site-title" style="text-align:center;padding:30px 10px 22px;background:#1f3d2b;border-radius:16px;margin:12px;position:relative;overflow:hidden;">
     <div style="font-family:'Fraunces','Helvetica Neue',serif;font-weight:900;color:#f2f5ee;font-size:clamp(40px,11vw,84px);letter-spacing:.22em;line-height:1;text-indent:.22em;">MUKETSU</div>
     <div style="width:56px;height:2px;background:#8fae82;margin:12px auto 10px;"></div>
     <div style="color:#a9c19c;font-size:11px;letter-spacing:.32em;text-indent:.32em;font-weight:600;">無血で勝つ・回収</div>
@@ -947,9 +957,9 @@ input[type=number], input[type=text], textarea, select {
  
     <!-- ▲▲ ここまで追加 ▲▲ -->
 
-    <div class="filter-panel" id="filter-panel" style="display:none; background:#fff; padding:6px; border-radius:6px; margin-bottom:8px; box-shadow:0 1px 3px rgba(0,0,0,.1);">
-      <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-        <span style="font-size:11px; font-weight:bold; color:#1565c0;">レース絞り込み:</span>
+    <div class="filter-panel" id="filter-panel" style="display:none;">
+      <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; padding:10px 14px;">
+        <span style="font-size:11px; font-weight:700; color:var(--mk-dark); letter-spacing:.04em;">🔍 レース絞り込み</span>
         <select id="global-filter-select" onchange="applyGlobalFilter()" style="padding:2px 4px; font-size:11px; border:1px solid #ccc; border-radius:3px; outline:none;">
           <option value="all">すべてのレース</option>
           <option value="haran1">堅いレース (波乱度★1)</option>
@@ -985,16 +995,23 @@ input[type=number], input[type=text], textarea, select {
       </div>
     </div>
 
-    <div class="nav-area" id="nav-area" style="display:none;"></div>
+    <div class="race-nav-wrap" id="race-nav-wrap" style="display:none;">
+      <div class="bc-head">
+        <span class="bc-title">レース目次</span>
+        <span class="bc-sub">会場・レースを選ぶ</span>
+      </div>
+      <div class="nav-area" id="nav-area"></div>
+    </div>
 
     <div class="race-card" id="main-tool" style="display:none;">
       <!-- ①レース情報＋シミュレーター -->
       <section class="big-card">
-      <div id="race-info-head" style="padding:14px 18px 14px;background:#fff;border:1px solid #e6ece0;border-radius:16px;margin:12px;box-shadow:0 1px 3px rgba(60,90,63,.06);">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-          <div style="font-size:10px;letter-spacing:.18em;color:#8a9a83;font-weight:700;">RACE INFO ─ レース情報</div>
+        <div class="bc-head">
+          <span class="bc-num">①</span>
+          <span class="bc-title">レース情報 ＆ シミュレーター</span>
+          <span class="bc-sub">馬場・風・展開を確認する</span>
           <select id="race-status-select" onchange="updateRaceStatus(this.value)"
-            style="font-size:10px;font-weight:700;border:1px solid #e2e6dc;border-radius:14px;background:#f5f7f2;color:#6b7a6b;padding:3px 10px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;">
+            style="margin-left:auto;font-size:10px;font-weight:700;border:1px solid #e2e6dc;border-radius:14px;background:#f5f7f2;color:#6b7a6b;padding:3px 10px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;">
             <option value="">評価メモ</option>
             <option value="勝負">勝負レース</option>
             <option value="絞る">絞って勝負</option>
@@ -1005,9 +1022,9 @@ input[type=number], input[type=text], textarea, select {
             <option value="custom">自由入力...</option>
           </select>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:3px;"><span id="race-info-title" style="font-family:'Playfair Display',serif;font-weight:600;color:#1c2e1f;font-size:20px;">—</span><span id="race-info-haran" style="font-size:10px;color:#8a9285;background:#f0f2ec;border:1px solid #e2e6dc;border-radius:10px;padding:2px 9px;font-weight:700;letter-spacing:.04em;"></span></div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding:0 18px;"><span id="race-info-title" style="font-family:'Playfair Display',serif;font-weight:600;color:#1c2e1f;font-size:20px;">—</span><span id="race-info-haran" style="font-size:10px;color:#8a9285;background:#f0f2ec;border:1px solid #e2e6dc;border-radius:10px;padding:2px 9px;font-weight:700;letter-spacing:.04em;"></span></div>
 
-        <div style="display:grid;grid-template-columns:1fr auto;gap:16px;margin-top:12px;align-items:center;">
+        <div style="display:grid;grid-template-columns:1fr auto;gap:16px;margin-top:12px;padding:0 18px 4px;align-items:center;">
           <div style="display:flex;flex-direction:column;gap:17px;">
             <div>
               <div style="font-size:9px;color:#8a9a83;letter-spacing:.1em;margin-bottom:4px;">馬場状態</div>
@@ -1036,7 +1053,6 @@ input[type=number], input[type=text], textarea, select {
             <div id="bb-wind-cap" style="font-size:10px;color:#7a828a;margin-top:5px;line-height:1.4;">—<span id="bb-wind-time" style="color:#b8bdc3;margin-left:4px;"></span></div>
           </div>
         </div>
-      </div>
       <!-- AI/10分前オッズは別途新設予定のため下部に退避（機能温存・非表示） -->
       <div id="race-toolbar" style="display:none;">
         <button onclick="window.openAiSetupModal()">🤖 AI: <span id="race-ai-name">総合フラット型AI</span></button>
@@ -1140,6 +1156,7 @@ input[type=number], input[type=text], textarea, select {
       <!-- ②メモ＋AI相談 -->
       <section class="big-card">
         <div class="bc-head">
+          <span class="bc-num">②</span>
           <span class="bc-title">メモ ＆ AI相談</span>
           <span class="bc-sub">自分の予想を書き残し、AIに壁打ちする</span>
         </div>
@@ -1170,6 +1187,7 @@ input[type=number], input[type=text], textarea, select {
       <!-- ③指数一覧＋勝率 -->
       <section class="big-card">
         <div class="bc-head">
+          <span class="bc-num">③</span>
           <span class="bc-title">指数一覧 ＆ 勝率</span>
           <span class="bc-sub">出馬表と各馬の勝率を確認する</span>
         </div>
@@ -1266,6 +1284,7 @@ input[type=number], input[type=text], textarea, select {
       <!-- ④買い目ビルダー -->
       <section class="big-card">
         <div class="bc-head">
+          <span class="bc-num">④</span>
           <span class="bc-title">買い目ビルダー</span>
           <span class="bc-sub">軸・相手を選んで買い目を組み立てる</span>
         </div>
@@ -3018,7 +3037,8 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
           const keys = Object.keys(racesData);
           if(keys.length > 0) {
             document.getElementById('nav-area').style.display = 'flex';
-            document.getElementById('filter-panel').style.display = 'block'; 
+            document.getElementById('race-nav-wrap').style.display = 'block';
+            document.getElementById('filter-panel').style.display = 'block';
             document.getElementById('main-tool').style.display = 'block';
             document.getElementById('master-panel').style.display = 'flex';
             buildNavigation();
@@ -5730,6 +5750,7 @@ function autoGenerateTickets(mode = 'win') {
   });
   
   document.getElementById('nav-area').style.display = 'flex';
+  document.getElementById('race-nav-wrap').style.display = 'block';
   document.getElementById('filter-panel').style.display = 'block';
   document.getElementById('main-tool').style.display = 'block';
   document.getElementById('master-panel').style.display = 'flex';
