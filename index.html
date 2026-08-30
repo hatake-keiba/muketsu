@@ -1041,10 +1041,10 @@ input[type=number], input[type=text], textarea, select {
             
             <!-- ▼ 変更：初期状態では非表示（display:none）にしておく ▼ -->
             <div id="pace-track-area" style="display:flex; flex-direction: column; border-top: 1px dashed #ccc; padding-top: 8px;">
-              <div id="pace-control-bar" style="display:none; justify-content: space-between; align-items: center; margin-bottom: 4px; flex-wrap:wrap; gap:4px;">
+              <div id="pace-control-bar" style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 4px; flex-wrap:wrap; gap:4px;">
 
   <div style="display:flex; gap:4px; align-items:center;">
-    <span style="font-size:10px; font-weight:bold; color:#1565c0; white-space:nowrap;">スタート隊列</span>
+    <span style="font-size:10px; font-weight:700; color:#1c2e1f; white-space:nowrap;">想定隊列</span>
 
                   <select id="pace-pred-select" onchange="updateRaceText('pacePred', this.value)" style="font-size:11px; padding:2px 4px; border-radius:3px; border:1px solid #ccc; font-weight:bold; color:#d32f2f;">
                     <option value="ハイペース">ハイペース</option>
@@ -1058,20 +1058,18 @@ input[type=number], input[type=text], textarea, select {
                     <option value="内荒れ">内荒れ</option>
                   </select>
                 </div>
-                <div style="display:flex; gap: 2px;">
-                  <button class="btn-success" style="font-size:9px; padding:2px 6px; background:#757575; border:none; border-radius:3px; color:#fff; font-weight:bold; cursor:pointer;" onclick="resetRaceStart()" title="全馬を非表示に戻します">リセット</button>
-                  <button class="btn-primary" style="font-size:9px; padding:2px 8px; background:#e65100; border:none; border-radius:3px; color:#fff; font-weight:bold; cursor:pointer; box-shadow: 0 2px 4px rgba(230,81,0,0.4);" onclick="triggerRaceStart()">▶ 展開スタート</button>
-                  <span style="border-left:1px solid #ccc; margin:0 4px;"></span>
-                  <button class="btn-primary" style="font-size:9px; padding:2px 4px; background:#1a73e8; border:none;" id="btn-draw-mode" onclick="toggleDrawMode()">ペン</button>
-                  <button class="btn-primary" style="font-size:9px; padding:2px 4px; background:#757575; border:none;" onclick="clearCanvas()">クリア</button>
-                 
+                <div style="display:flex; gap: 6px; align-items:center;">
+                  <button id="pace-run-btn" style="font-size:11px; padding:5px 14px; background:#1c2e1f; border:none; border-radius:16px; color:#eef3e8; font-weight:700; cursor:pointer;" onclick="triggerRaceStart()">▶ 動かす</button>
+                  <button id="btn-draw-mode" style="display:none;" onclick="toggleDrawMode()">ペン</button>
+                  <button style="display:none;" onclick="clearCanvas()">クリア</button>
+                  <button style="display:none;" onclick="resetRaceStart()">リセット</button>
                 </div>
               </div>
-              <div id="pace-canvas" style="flex-grow: 1; position: relative; border: 1px solid #ccc; border-radius: 6px; overflow: hidden; min-height: 150px;">
+              <div id="pace-canvas" style="flex-grow: 1; position: relative; border-radius: 10px; overflow: hidden; min-height: 130px;">
                  <div id="pace-bg-layer" style="position:absolute; inset:0; z-index:1; pointer-events:none;"></div>
                  <canvas id="pace-draw-layer"></canvas>
                  <div id="pace-horse-layer"></div>
-                 <div id="ready-overlay" style="position:absolute; inset:0; z-index:20; display:flex; align-items:center; justify-content:center; transition:opacity 0.6s ease-in-out;"></div>
+                 <div id="ready-overlay" style="position:absolute; inset:0; z-index:20; display:none; align-items:center; justify-content:center; transition:opacity 0.6s ease-in-out;"></div>
               </div>
             </div>
           </div>
@@ -8142,7 +8140,7 @@ window.closeDetailedData2Modal = function() {
     // 展開図トラックの背景（芝=緑 / ダート=薄茶）シンプル
     try{
       var pc=document.getElementById('pace-canvas');
-      if(pc){ pc.style.background = isDirt ? '#efe6da' : '#e7efe1'; pc.style.border='1px solid '+(isDirt?'#dcc9b3':'#cfe0c4'); }
+      if(pc){ pc.style.background = isDirt ? '#efe6da' : '#e7efe1'; pc.style.border='1px solid '+(isDirt?'#e0d2bf':'#d5e2ca'); var bg=document.getElementById('pace-bg-layer'); if(bg) bg.style.background=isDirt?'#efe6da':'#e7efe1'; }
       var pb=document.getElementById('pace-board');
       if(pb){ pb.style.background = isDirt ? '#f7f2ea' : '#f4f8f0'; }
     }catch(e){}
