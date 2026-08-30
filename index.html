@@ -3258,6 +3258,17 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
     }
     
     function saveApiUrl(val) { localStorage.setItem('keiba_gas_url', val); }
+    // 管理者用：コンソールから setGasUrl('https://script.google.com/.../exec') でGAS URLを設定（会員には非表示）
+    window.setGasUrl = function(url){
+      url = (url||'').trim();
+      if(!url.includes('script.google.com')){ console.warn('GAS URLの形式が正しくありません'); return '形式エラー'; }
+      try{ localStorage.setItem('keiba_gas_url', url); }catch(e){}
+      const el = document.getElementById('api-url-input'); if(el) el.value = url;
+      const el2 = document.getElementById('AI_GAS_URL_runtime'); // AIも同じURLを使う場合の受け皿
+      console.log('✅ GAS URL を保存しました。オッズ更新ボタンが使えます。');
+      return 'OK: ' + url;
+    };
+    window.getGasUrl = function(){ try{ return localStorage.getItem('keiba_gas_url')||'(未設定)'; }catch(e){ return '(未設定)'; } };
     function loadApiUrl() { 
       const saved = localStorage.getItem('keiba_gas_url'); 
       if(saved) { 
@@ -6042,9 +6053,11 @@ function autoGenerateTickets(mode = 'win') {
     }
 
     async function syncOddsFromGAS() {
-      const gasUrl = (document.getElementById('api-url-input').value || '').trim();
+      // GAS URLは管理者が設定（会員には非表示）。入力欄→localStorage の順で参照
+      let gasUrl = (document.getElementById('api-url-input')?.value || '').trim();
+      if(!gasUrl){ try{ gasUrl = (localStorage.getItem('keiba_gas_url')||'').trim(); }catch(e){} }
       const statusEl = document.getElementById('sync-status');
-      if(!gasUrl || !gasUrl.includes('script.google.com')) { alert('GAS URLが設定されていません。'); return; }
+      if(!gasUrl || !gasUrl.includes('script.google.com')) { alert('GAS URLが未設定です。\n（管理者：ブラウザのコンソールで setGasUrl(\'あなたのGAS URL\') を実行してください）'); return; }
       if(!currentRaceId) { alert('レースを選択してください'); return; }
       const idMatch = currentRaceId.match(/^(.)(\d+)$/);
       if(!idMatch) { alert('レースIDの形式が正しくありません: ' + currentRaceId); return; }
