@@ -4248,7 +4248,7 @@ window.drawOaChartModal = function() {
       const isStraight = currentCourseDir === 'straight';
     const controlBar = document.getElementById('pace-control-bar');
       if (controlBar) {
-        controlBar.style.display = step === 0 ? 'none' : 'flex';
+        controlBar.style.display = 'none';
       }
       
       const containers = {
@@ -4359,14 +4359,15 @@ window.drawOaChartModal = function() {
           }
         });
         
+        // 静的表示：最初から脚質に応じた展開配置（散らばり）を見せる
+        if(step === 0 && typeof assignAutoPositions === 'function'){ assignAutoPositions(horses); }
         sortedForGate.forEach((h, idx) => {
           let targetX, targetY, opacity = '1', nameDisplay = 'block';
           if(step === 0) {
-            // 静的表示：最初から隊列（step1相当）を見せる
-            targetX = gateX;
-            if(isStraight) targetY = 0.25 + (idx / Math.max(1, sortedForGate.length - 1)) * 0.5;
-            else targetY = 0.75 - (idx / Math.max(1, sortedForGate.length - 1)) * 0.5;
-            nameDisplay = 'none';
+            // 脚質に応じた展開配置（_autoX/_autoY）を静的に
+            targetX = h.customX !== null ? h.customX : h._autoX;
+            targetY = h.customY !== null ? h.customY : h._autoY;
+            nameDisplay = 'block';
           }
           else if(step === 1) {
             targetX = gateX;
