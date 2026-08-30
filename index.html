@@ -2592,12 +2592,17 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
       if(!currentRaceId) return;
       const ta = document.getElementById('ai-pace-comment');
       if(!ta) return;
-      // 永続化メモを最優先で復元
+      // 永続化メモを最優先で復元。会員が手で保存したメモは【…】でも絶対に消さない。
       const store = _loadMemoStore();
       var saved = store[_memoKey(currentRaceId)];
-      var c = (saved !== undefined && saved !== null) ? saved : (racesData[currentRaceId].comment || '');
-      // AI自動生成文（【…】で始まる）は会員メモに出さない
-      if(/^\s*【/.test(c)) c='';
+      var c;
+      if(saved !== undefined && saved !== null){
+        c = saved; // 会員の保存メモ → 無条件で復元
+      } else {
+        c = racesData[currentRaceId].comment || '';
+        // 埋め込みAI自動生成文（【AI…】/【…見解】等）だけは会員メモに出さない
+        if(/^\s*【\s*AI/.test(c) || /^\s*【[^】]*(見解|分析|レース見解|展開)[^】]*】/.test(c)) c='';
+      }
       ta.value = c;
       racesData[currentRaceId].comment = c;
     }
