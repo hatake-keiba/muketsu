@@ -1041,29 +1041,22 @@ input[type=number], input[type=text], textarea, select {
             
             <!-- ▼ 変更：初期状態では非表示（display:none）にしておく ▼ -->
             <div id="pace-track-area" style="display:flex; flex-direction: column; border-top: 1px dashed #ccc; padding-top: 8px;">
-              <div id="pace-control-bar" style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 4px; flex-wrap:wrap; gap:4px;">
-
-  <div style="display:flex; gap:4px; align-items:center;">
-    <span style="font-size:10px; font-weight:700; color:#1c2e1f; white-space:nowrap;">想定隊列</span>
-
-                  <select id="pace-pred-select" onchange="updateRaceText('pacePred', this.value)" style="font-size:11px; padding:2px 4px; border-radius:3px; border:1px solid #ccc; font-weight:bold; color:#1c2e1f;">
-                    <option value="ハイペース">ハイペース</option>
-                    <option value="ミドルペース" selected>ミドルペース</option>
-                    <option value="スローペース">スローペース</option>
-                  </select>
-                  <select id="tb-pred-select" onchange="updateRaceText('tbPred', this.value)" style="font-size:11px; padding:2px 4px; border-radius:3px; border:1px solid #ccc; font-weight:bold; color:#1c2e1f;">
-                    <option value="内前有利">内前有利</option>
-                    <option value="フラット" selected>フラット</option>
-                    <option value="外差し有利">外差し有利</option>
-                    <option value="内荒れ">内荒れ</option>
-                  </select>
-                </div>
-                <div style="display:flex; gap: 6px; align-items:center;">
-                  <button id="pace-run-btn" style="font-size:11px; padding:5px 14px; background:#1c2e1f; border:none; border-radius:16px; color:#eef3e8; font-weight:700; cursor:pointer;" onclick="triggerRaceStart()">▶ 動かす</button>
-                  <button id="btn-draw-mode" style="display:none;" onclick="toggleDrawMode()">ペン</button>
-                  <button style="display:none;" onclick="clearCanvas()">クリア</button>
-                  <button style="display:none;" onclick="resetRaceStart()">リセット</button>
-                </div>
+              <div id="pace-control-bar" style="display:none;">
+                <select id="pace-pred-select" onchange="updateRaceText('pacePred', this.value)">
+                  <option value="ハイペース">ハイペース</option>
+                  <option value="ミドルペース" selected>ミドルペース</option>
+                  <option value="スローペース">スローペース</option>
+                </select>
+                <select id="tb-pred-select" onchange="updateRaceText('tbPred', this.value)">
+                  <option value="内前有利">内前有利</option>
+                  <option value="フラット" selected>フラット</option>
+                  <option value="外差し有利">外差し有利</option>
+                  <option value="内荒れ">内荒れ</option>
+                </select>
+                <button id="pace-run-btn" style="display:none;" onclick="triggerRaceStart()">動かす</button>
+                <button id="btn-draw-mode" style="display:none;" onclick="toggleDrawMode()">ペン</button>
+                <button style="display:none;" onclick="clearCanvas()">クリア</button>
+                <button style="display:none;" onclick="resetRaceStart()">リセット</button>
               </div>
               <div id="pace-canvas" style="flex-grow: 1; position: relative; border-radius: 10px; overflow: hidden; min-height: 130px;">
                  <div id="pace-bg-layer" style="position:absolute; inset:0; z-index:1; pointer-events:none;"></div>
@@ -1080,7 +1073,7 @@ input[type=number], input[type=text], textarea, select {
             <button id="ai-mic-btn" style="display:none;" onclick="toggleAIMic()"></button>
           </div>
                    <textarea id="ai-pace-comment" class="ai-pace-textarea"
-            placeholder="「1番：トモの踏み込み良い」「〇〇(馬名)：パドック気配抜群」のように入力し「各馬へ反映」を押すと、上の表のメモ欄に自動リンクします。"
+            placeholder="このレースのメモを自由に記入…"
             oninput="saveAIComment(this.value)"></textarea>
 
         </div>
@@ -4283,6 +4276,8 @@ window.drawOaChartModal = function() {
       horses.forEach(h => {
         const el = containers[h.style];
         if(el) {
+          const wrap = document.createElement('span');
+          wrap.style.cssText = 'display:inline-flex;flex-direction:column;align-items:center;gap:1px;';
           const box = document.createElement('span');
           box.className = `waku-box waku-${h.waku}`;
           box.textContent = h.num;
@@ -4291,7 +4286,12 @@ window.drawOaChartModal = function() {
           box.style.touchAction = 'none';
           box.title = h.name;
           setupDragEvents(box, h);
-          el.appendChild(box);
+          const nm = document.createElement('span');
+          const kn = (h.name||'').replace(/[^ァ-ヴー・]+[A-Za-z0-9]*/g,'') || h.name || '';
+          nm.textContent = (kn||h.name||'').substring(0,3);
+          nm.style.cssText = "font-family:'Zen Kaku Gothic New',sans-serif;font-size:8px;font-weight:700;color:#4b5a48;line-height:1;max-width:26px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;";
+          wrap.appendChild(box); wrap.appendChild(nm);
+          el.appendChild(wrap);
         }
       });
       
@@ -4327,8 +4327,9 @@ window.drawOaChartModal = function() {
         const arrowSvg = isLeft ? arrowRightSvg : arrowLeftSvg;
         let textTop = isStraight ? "内 ラチ" : "大 外 ↑", textBottom = isStraight ? "外 ラチ ↓" : "内 ラチ";
         
-        let bgSvg = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;"><defs>${gX}${gY}</defs><rect width="100" height="100" fill="${baseColor}" /><rect x="0" y="15" width="100" height="70" fill="${trackColor}" />${race.tenkaiVal!==0?`<rect x="0" y="15" width="100" height="70" fill="url(#gX)" style="mix-blend-mode:multiply;" />`:''}${race.biasVal!==0?`<rect x="0" y="15" width="100" height="70" fill="url(#gY)" style="mix-blend-mode:multiply;" />`:''}${arrowSvg}<rect x="${startLineX}" y="15" width="1.5" height="70" fill="#e53935" opacity="0.7" /></svg>`;
-        const textOverlay = `<div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;font-family:sans-serif;"><div style="position:absolute;top:18px;left:${isLeft?'5%':'auto'};right:${isLeft?'auto':'5%'};transform:translateX(${isLeft?'-50%':'50%'});color:#e53935;font-size:11px;font-weight:bold;opacity:0.7;">START</div><div style="position:absolute;bottom:2px;left:50%;transform:translateX(-50%);color:rgba(0,0,0,0.4);font-size:10px;font-weight:bold;letter-spacing:4px;">${textBottom}</div><div style="position:absolute;top:2px;left:50%;transform:translateX(-50%);color:rgba(0,0,0,0.4);font-size:10px;font-weight:bold;letter-spacing:4px;">${textTop}</div></div>`;
+        let bgSvg = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;"><defs>${gX}${gY}</defs><rect width="100" height="100" fill="${baseColor}" /><rect x="0" y="15" width="100" height="70" fill="${trackColor}" />${race.tenkaiVal!==0?`<rect x="0" y="15" width="100" height="70" fill="url(#gX)" style="mix-blend-mode:multiply;" />`:''}${race.biasVal!==0?`<rect x="0" y="15" width="100" height="70" fill="url(#gY)" style="mix-blend-mode:multiply;" />`:''}<rect x="${startLineX-0.6}" y="15" width="1.2" height="70" fill="#9aa9a0" opacity="0.55" /></svg>`;
+        const _dir = isLeft ? '→ 進路' : '← 進路';
+        const textOverlay = `<div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;font-family:'Zen Kaku Gothic New',sans-serif;"><div style="position:absolute;top:6px;left:50%;transform:translateX(-50%);color:#6b7a6b;font-size:10px;font-weight:700;letter-spacing:2px;">${_dir}</div></div>`;
         bgLayer.innerHTML = bgSvg + textOverlay;
       }
       
@@ -4381,7 +4382,7 @@ window.drawOaChartModal = function() {
           
           let wrapper = document.getElementById('horse-idx-' + h.num);
           let shortName = h.name.replace(/[^ァ-ヴー・]+[A-Za-z0-9]*/g, '').substring(0, 3) || h.name.substring(0, 3);
-          let innerHTML = `<div class="waku-box waku-${h.waku}" style="width:24px;height:24px;font-size:13px;box-shadow:0 2px 4px rgba(0,0,0,0.3);border-radius:4px;">${h.num}</div><span style="display:${nameDisplay};font-size:9px;font-weight:bold;color:#333;text-shadow:1px 1px 0 #fff,-1px -1px 0 #fff,1px -1px 0 #fff,-1px 1px 0 #fff;margin-top:2px;">${shortName}</span>`;
+          let innerHTML = `<div class="waku-box waku-${h.waku}" style="width:24px;height:24px;font-size:13px;box-shadow:0 2px 4px rgba(0,0,0,0.3);border-radius:4px;">${h.num}</div><span style="display:${nameDisplay};font-family:'Zen Kaku Gothic New',sans-serif;font-size:9px;font-weight:700;color:#1c2e1f;text-shadow:0 1px 2px rgba(255,255,255,.9);margin-top:2px;letter-spacing:0;">${shortName}</span>`;
           
           if(!wrapper) {
             wrapper = document.createElement('div');
