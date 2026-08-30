@@ -902,7 +902,7 @@ input[type=number], input[type=text], textarea, select {
     text-overflow:ellipsis; }
   .stat-card .horse-name{ display:none !important; } /* 旧オーバーレイ名は不使用 */
   /* バー＝傾向色。太めトラック・角丸 */
-  .stat-card .bar-col{ height:22px !important; background:#f0eee8; border-radius:9px; overflow:hidden; }
+  .stat-card .bar-col{ height:22px !important; background:transparent !important; border-radius:9px; overflow:visible; }
   .stat-card .visual-bar{ height:22px !important; top:0 !important; border-radius:9px !important; opacity:1 !important; }
   /* 勝率数値：黒地にライム文字で強調 */
   .stat-card .val-col-inner{ background:#f0eee8 !important; border:1px solid #e8e6df !important; border-radius:9px !important; padding:3px 8px !important; }
@@ -5126,7 +5126,10 @@ window.drawOaChartModal = function() {
       let totalRate = 0;
       race.horses.forEach(h => totalRate += h.winRate);
       const sortedHorses = getSortedHorsesForGraph();
-      
+      // バーの最大値＝レース内の最高勝率（少し余白）。馬毎の差が見えるよう相対スケール化
+      const _maxWinRate = Math.max(1, ...race.horses.map(h => h.winRate || 0));
+      const _barDenom = Math.max(_maxWinRate * 1.08, 5); // 最上位が約93%まで伸びる
+
       let realCoreMap = {};
       const validOddsHorses = [...race.horses]
         .filter(h => !isNaN(parseFloat(h.odds)) && parseFloat(h.odds) > 0)
@@ -5194,7 +5197,7 @@ window.drawOaChartModal = function() {
         let isHighEv = false;
 
         if(isHarvilleCalculated) {
-          barWidthPct = Math.min((h.winRate / 60) * 100, 100);
+          barWidthPct = Math.min((h.winRate / _barDenom) * 100, 100);
           // グラフバーは蛍光ライム。勝率が高いほど鮮やか（低い馬は淡い蛍光）
           const wr = h.winRate || 0;
           if(wr >= 15) { barStyle = 'linear-gradient(90deg, #a6c22e, #bcd63f)'; }
@@ -5205,10 +5208,10 @@ window.drawOaChartModal = function() {
             barWidthPct = (!isNaN(tOdds) && tOdds > 0) ? Math.min(80 / tOdds, 100) : 0;
             barStyle = oddsTierMap[h.num] ? TIER_BAR_COLORS[Math.min(oddsTierMap[h.num] - 1, TIER_BAR_COLORS.length - 1)] : TIER_BAR_DEFAULT;
           } else if(graphSortKey === 'winRate' && winRateTierOf[h.num]) {
-            barWidthPct = Math.min((h.winRate / 60) * 100, 100);
+            barWidthPct = Math.min((h.winRate / _barDenom) * 100, 100);
             barStyle = TIER_BAR_COLORS[Math.min(winRateTierOf[h.num] - 1, TIER_BAR_COLORS.length - 1)];
           } else {
-            barWidthPct = Math.min((h.winRate / 60) * 100, 100);
+            barWidthPct = Math.min((h.winRate / _barDenom) * 100, 100);
             barStyle = TIER_BAR_DEFAULT;
           }
         }
