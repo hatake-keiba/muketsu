@@ -336,7 +336,7 @@
     #pace-horse-layer { position: absolute; inset: 0; z-index: 15; pointer-events: none; }
     
     .oa-textarea-memo { width: 100%; height: 45px; font-size: 11px; padding: 6px; border: 1px solid #4a4a8a; border-radius: 4px; background: #0d0d1e; color: #fff; resize: vertical; font-family: inherit; }
-    .bar-ev-high { background: linear-gradient(90deg, #d4f34a, #e2ff5c) !important; box-shadow: none !important; }
+    .bar-ev-high { background: linear-gradient(90deg, #a6c22e, #bcd63f) !important; box-shadow: none !important; }
     .koso-match { background-color: #fff9c4 !important; border: 1px solid #fbc02d !important; border-radius: 3px; }
     .koso-starred { background-color: #ffcc80 !important; box-shadow: inset 0 0 0 2px #ff9800 !important; }
     
@@ -2434,11 +2434,11 @@ function getTodayStr(){const d=new Date();const jst=new Date(d.getTime()+9*60*60
     const HARAN_LEVELS = [{threshold:45,stars:'★★★★★',color:'#c0392b'},{threshold:57,stars:'★★★★☆',color:'#e67e22'},{threshold:67,stars:'★★★☆☆',color:'#f39c12'},{threshold:73,stars:'★★☆☆☆',color:'#1a1a1a'},{threshold:80,stars:'★☆☆☆☆',color:'#2980b9'}];
     /* グラフバーは蛍光イエロー〜ライム（唯一の彩色アクセント）。上位ほど鮮やか */
     const TIER_BAR_COLORS = [
-      'linear-gradient(90deg, #d4f34a, #e2ff5c)', /* 1層目: 鮮やかな蛍光ライム */
-      'linear-gradient(90deg, #cfe86a, #dcf08a)', /* 2層目: 淡い蛍光 */
-      'linear-gradient(90deg, #e6e9d4, #eef0e0)'  /* 3層目以降: ごく淡い */
+      'linear-gradient(90deg, #a6c22e, #bcd63f)', /* 1層目: 鮮やかな蛍光ライム */
+      'linear-gradient(90deg, #b3c95e, #c4d67a)', /* 2層目: 淡い蛍光 */
+      'linear-gradient(90deg, #d3d8bd, #e0e4cf)'  /* 3層目以降: ごく淡い */
     ];
-    const TIER_BAR_DEFAULT = 'linear-gradient(90deg, #d4f34a, #e2ff5c)';
+    const TIER_BAR_DEFAULT = 'linear-gradient(90deg, #a6c22e, #bcd63f)';
 
     const COURSE_BIAS_MAP = {}; // ★中身を空っぽにして初期設定の暴走を止める
 
@@ -5194,9 +5194,9 @@ window.drawOaChartModal = function() {
           barWidthPct = Math.min((h.winRate / 60) * 100, 100);
           // グラフバーは蛍光ライム。勝率が高いほど鮮やか（低い馬は淡い蛍光）
           const wr = h.winRate || 0;
-          if(wr >= 15) { barStyle = 'linear-gradient(90deg, #d4f34a, #e2ff5c)'; }
-          else if(wr >= 7) { barStyle = 'linear-gradient(90deg, #dbef70, #e7f78e)'; }
-          else { barStyle = 'linear-gradient(90deg, #e6ebc6, #eef0dc)'; }
+          if(wr >= 15) { barStyle = 'linear-gradient(90deg, #a6c22e, #bcd63f)'; }
+          else if(wr >= 7) { barStyle = 'linear-gradient(90deg, #b3c95e, #c4d67a)'; }
+          else { barStyle = 'linear-gradient(90deg, #d3d8bd, #e0e4cf)'; }
         } else {
           if(graphSortKey === 'odds') {
             barWidthPct = (!isNaN(tOdds) && tOdds > 0) ? Math.min(80 / tOdds, 100) : 0;
