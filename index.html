@@ -3308,6 +3308,26 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
       buildNavigation();
       renderRaceList();
     }
+// 発走時刻をnetkeiba（運営GAS経由）から取得して各レースに反映
+async function refreshSchedule(dateYmd){
+  if(!AI_GAS_URL) return; // GAS未接続なら何もしない
+  try{
+    const resp = await fetch(AI_GAS_URL, {
+      method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({ action:'schedule', date: dateYmd })
+    });
+    const data = await resp.json();
+    if(!data || !data.schedule) return;
+    Object.keys(racesData).forEach(rId=>{
+      const r = racesData[rId];
+      const rnum = parseInt((rId.match(/\d+/)||['0'])[0]);
+      const key = (r.basho||'') + '-' + rnum;
+      if(data.schedule[key]) r.departureTime = data.schedule[key];
+    });
+    buildNavigation();
+  }catch(e){ /* 取得失敗は無視（時刻は—のまま） */ }
+}
+
 function buildNavigation() {
   const nav = document.getElementById('nav-area');
   if(!nav) return;
@@ -3441,7 +3461,8 @@ function buildNavigation() {
         btn.className = 'nav-race-btn ' + (isDirt ? 'is-dirt' : 'is-turf') + (isSelected ? ' active' : '');
         btn.style.cssText = `padding: 4px; text-align: center; border: 1px solid #e2e8f0; border-radius: 4px; cursor: pointer; background: #fff; ${bottomBorder}`;
         btn.onclick = () => { selectRace(rId); };
-        btn.innerHTML = `<div class="r-num" style="font-size:12px; font-weight:bold; color: #666;">${rn}R</div><div style="font-size:9px; font-weight:bold; color: ${timeColor}; margin-top:2px;">${timeStr}</div>`;
+        // 発走時刻の行は常に確保（空でも高さを揃える）＝目次のカタつき防止
+        btn.innerHTML = `<div class="r-num" style="font-size:12px; font-weight:bold; color: #666;">${rn}R</div><div class="r-time" style="font-size:9px; font-weight:bold; color: ${timeColor}; margin-top:2px; min-height:12px;">${timeStr || '—'}</div>`;
         buttonsDiv.appendChild(btn);
      }
 
