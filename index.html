@@ -831,6 +831,9 @@ input[type=number], input[type=text], textarea, select {
   .pill-sm{ font-size:10.5px !important; padding:5px 12px !important; }
   .pill-ghost{ background:#fff !important; color:#8a9483 !important; }
   .pill-ghost:hover{ background:#f4f2ec !important; color:var(--mk-dark) !important; }
+  /* ベージュ系ボタン（オッズ更新・リセット・買い目コピー・詳細データ） */
+  .pill-beige{ background:#d8ccae !important; color:#5c5341 !important; border-color:#c9bb96 !important; font-weight:700 !important; }
+  .pill-beige:hover{ background:#ccbf9b !important; color:#4a4234 !important; border-color:#bcac82 !important; }
   /* 主要アクション（確定・買い目を作る）＝黒地に蛍光文字でハイライト */
   .pill-accent{ background:#1a1a1a !important; color:#ccf23f !important; border-color:#1a1a1a !important; font-weight:800 !important; }
   .pill-accent:hover{ opacity:.92; background:#1a1a1a !important; color:#ccf23f !important; }
@@ -1069,7 +1072,15 @@ input[type=number], input[type=text], textarea, select {
   .data-table tbody tr{ transition:background .15s; }
   .data-table tbody tr:nth-child(odd) td{ background:#ffffff; }
   .data-table tbody tr:nth-child(even) td{ background:#f7f6f1; }
-  .data-table tbody tr:hover td{ background:#eef4e8 !important; }
+  /* 行hoverの色付けはマウス環境のみ。タッチ端末では発火させない（タップ変色防止） */
+  @media (hover: hover) and (pointer: fine){ .data-table tbody tr:hover td{ background:#eef4e8 !important; } }
+  /* 馬名までの列（印・番・単勝・複勝・馬名）を左固定。右の指標だけ横スクロール。 */
+  .data-table th.sticky-col, .data-table td.sticky-col{ position:sticky; z-index:6; background:#fff; }
+  .data-table thead th.sticky-col{ z-index:7; background:#2f4227; }
+  .data-table tbody tr:nth-child(odd) td.sticky-col{ background:#ffffff; }
+  .data-table tbody tr:nth-child(even) td.sticky-col{ background:#f7f6f1; }
+  /* 固定列の右端に区切り線＋わずかな影で「ここから右がスクロール」を示す */
+  .data-table th.sticky-last, .data-table td.sticky-last{ box-shadow:2px 0 4px rgba(0,0,0,.08); border-right:1px solid #e0ded6; }
   .data-table td{ border:none !important; border-bottom:1px solid #efeee8 !important;
     padding:7px 4px !important; font-size:11px !important; vertical-align:middle; color:#2b332a !important; }
   /* 馬名：明朝で少し格を出す・左寄せ */
@@ -1641,11 +1652,11 @@ input[type=number], input[type=text], textarea, select {
           <span style="font-size:11px;font-weight:700;color:var(--mk-dark);">予算</span>
           <input type="number" id="budget-input" value="3000" style="width:74px;padding:5px 7px;font-size:12px;border:1px solid var(--mk-line);border-radius:8px;" oninput="updateBudget(this.value)" onchange="updateBudget(this.value)">
           <span style="font-size:11px;font-weight:700;color:var(--mk-dark);">円</span>
-          <button class="pill-btn pill-sm pill-ghost" style="margin-left:auto;" onclick="syncOddsFromGAS()">🔄 オッズ更新</button>
+          <button class="pill-btn pill-sm pill-beige" style="margin-left:auto;" onclick="syncOddsFromGAS()">🔄 オッズ更新</button>
         </div>
         <div class="tb-action-row">
-          <button class="pill-btn pill-sm pill-ghost" onclick="resetTickets()">リセット</button>
-          <button class="pill-btn pill-sm pill-ghost" onclick="copyTickets()">買い目コピー</button>
+          <button class="pill-btn pill-sm pill-beige" onclick="resetTickets()">リセット</button>
+          <button class="pill-btn pill-sm pill-beige" onclick="copyTickets()">買い目コピー</button>
         </div>
         <div class="tb-list-head" id="tb-list-head" style="display:none;">
           <span>買い目</span><span>オッズ</span><span>金額</span><span>期待値</span><span></span>
@@ -2920,9 +2931,50 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
         `;
         tbody.appendChild(tr);
       });
+      applyStickyColumns();
     }
 
-
+    // 印・番・単勝・複勝・馬名（列0〜4）を左固定。可視列だけで累積leftを計算。
+    function applyStickyColumns(){
+      const tbl = document.getElementById('main-data-table');
+      if(!tbl) return;
+      const STICKY_UNTIL = 4; // 馬名列のインデックス（この列まで固定）
+      const headRow = tbl.querySelector('thead tr');
+      if(!headRow) return;
+      const headCells = [...headRow.children];
+      // 各列が可視か（detail-col hidden は幅0扱い）
+      const isVisible = th => th && getComputedStyle(th).display !== 'none';
+      // 固定対象の可視列インデックスを左から並べ、累積left算出
+      let left = 0; let lastStickyColIdx = -1;
+      for(let c=0; c<=STICKY_UNTIL && c<headCells.length; c++){
+        const th = headCells[c];
+        if(!isVisible(th)){ // 隠れ列はスキップ（固定もしない）
+          th.classList.remove('sticky-col','sticky-last');
+          continue;
+        }
+        th.classList.add('sticky-col');
+        th.style.left = left + 'px';
+        lastStickyColIdx = c;
+        left += th.getBoundingClientRect().width;
+      }
+      // 最後の固定列に区切り線
+      headCells.forEach((th,i)=> th.classList.toggle('sticky-last', i===lastStickyColIdx));
+      // 各ボディ行に同じ設定を反映
+      [...tbl.querySelectorAll('tbody tr')].forEach(tr=>{
+        const tds=[...tr.children];
+        let l=0;
+        for(let c=0; c<=STICKY_UNTIL && c<tds.length; c++){
+          const td=tds[c], th=headCells[c];
+          if(!isVisible(th)){ td.classList.remove('sticky-col','sticky-last'); continue; }
+          td.classList.add('sticky-col');
+          td.style.left = l + 'px';
+          td.classList.toggle('sticky-last', c===lastStickyColIdx);
+          l += th.getBoundingClientRect().width;
+        }
+      });
+    }
+    // 詳細開閉やリサイズで列幅が変わるので再計算
+    window.addEventListener('resize', ()=>{ try{ applyStickyColumns(); }catch(e){} });
 
     function toggleAIMic() {
       if(!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) { alert('Chrome推奨です。'); return; }
@@ -3873,7 +3925,7 @@ function buildNavigation() {
 
       // 1. 詳細データを隠す
       const detailBtn = document.getElementById('toggle-detail-btn');
-      if(detailBtn) { detailBtn.innerHTML = '▶ 詳細データを開く'; detailBtn.style.background = '#607d8b'; }
+      if(detailBtn) { detailBtn.innerHTML = '▶ 詳細データを開く'; detailBtn.style.background = '#d8ccae'; detailBtn.style.color = '#5c5341'; detailBtn.style.borderColor = '#c9bb96'; }
       const markerLabel = document.getElementById('marker-toggle-label');
       if(markerLabel) markerLabel.style.display = 'none';
       const markerCb = document.getElementById('marker-toggle-cb');
@@ -7316,12 +7368,13 @@ document.querySelectorAll('.nav-race-btn').forEach(btn => {
         else el.classList.add('hidden');
       });
       const btn = document.getElementById('toggle-detail-btn');
-      if(btn) btn.innerHTML = isDetailOpen ? '− 詳細' : '＋ 詳細';
+      if(btn) { btn.innerHTML = isDetailOpen ? '− 詳細' : '＋ 詳細'; btn.style.background = '#d8ccae'; btn.style.color = '#5c5341'; btn.style.borderColor = '#c9bb96'; }
       // 詳細を開いたら表全体をコンパクト化（横スクロールを極力なくす）
       const tbl = document.getElementById('main-data-table');
       if(tbl) tbl.classList.toggle('detail-open', isDetailOpen);
       const label = document.getElementById('marker-toggle-label');
       if(label) label.style.display = isDetailOpen ? 'flex' : 'none';
+      try{ applyStickyColumns(); }catch(e){}
     }
     // --- ▲ ここまで全体表示・絞り込み機能のコード ▲ ---
 
