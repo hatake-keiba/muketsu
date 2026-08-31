@@ -3821,7 +3821,7 @@ function buildNavigation() {
       const rid = currentRaceId || '_';
       const hist = aiChatHistory[rid] || [];
       if(hist.length === 0){
-        log.innerHTML = '<div class="ai-chat-empty">メモや出馬表をもとに壁打ちできます。下の欄に質問や相談を入力してください。</div>';
+        log.innerHTML = '<div class="ai-chat-empty">メモや出馬表をもとに壁打ちできます。<br>下の欄に質問や相談を入力してください。</div>';
         return;
       }
       log.innerHTML = '';
