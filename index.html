@@ -68,6 +68,18 @@
     @keyframes horse-trot { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-2px); } }
     .horse-board-icon:not(.dragging) .waku-box { animation: horse-trot .5s ease-in-out infinite; }
     @media (prefers-reduced-motion: reduce){ .horse-board-icon .waku-box { animation: none !important; } }
+    /* ドット絵の馬（枠番ボックスの上に乗る・脚が2フレームで動く） */
+    .pixel-horse { position: relative; width: 30px; height: 22px; image-rendering: pixelated; }
+    .pixel-horse .ph-frame { position:absolute; inset:0; width:100%; height:100%; background-size:contain; background-repeat:no-repeat; background-position:center; }
+    .pixel-horse .ph-f2 { opacity:0; }
+    .horse-board-icon:not(.dragging) .pixel-horse .ph-f1 { animation: ph-gallop .34s steps(1) infinite; }
+    .horse-board-icon:not(.dragging) .pixel-horse .ph-f2 { animation: ph-gallop2 .34s steps(1) infinite; }
+    @keyframes ph-gallop  { 0%,50%{opacity:1;} 50.01%,100%{opacity:0;} }
+    @keyframes ph-gallop2 { 0%,50%{opacity:0;} 50.01%,100%{opacity:1;} }
+    .horse-board-icon:not(.dragging) .pixel-horse { animation: horse-bob .5s ease-in-out infinite; }
+    @keyframes horse-bob { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-1.5px);} }
+    .pixel-horse .ph-num { position:absolute; left:50%; top:52%; transform:translate(-50%,-50%); font-size:9px; font-weight:900; color:#fff; text-shadow:0 1px 1px rgba(0,0,0,.7),0 0 2px rgba(0,0,0,.6); z-index:2; }
+    @media (prefers-reduced-motion: reduce){ .pixel-horse .ph-frame, .pixel-horse { animation: none !important; } .pixel-horse .ph-f1{opacity:1;} .pixel-horse .ph-f2{opacity:0;} }
     .ai-pace-area { background: #f4f2ec; border-left: 4px solid #1a1a1a; padding: 6px 8px; }
     .ai-pace-header { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; flex-wrap: wrap; }
     .ai-pace-label { font-size: 11px; font-weight: bold; color: #1a1a1a; }
@@ -4869,6 +4881,52 @@ window.drawOaChartModal = function() {
       renderAll();
     }
 
+    // 枠番→馬体色（ドット絵馬用）
+    const WAKU_BODY = {1:'#f2f2ee',2:'#2a2a2a',3:'#e8342c',4:'#1a7ee0',5:'#ffdd00',6:'#17b04a',7:'#ff8a1e',8:'#ff69a6'};
+    // ドット絵の疾走馬（横向き・右進行）を2フレーム生成。frame=0/1で脚のポーズが変わる。
+    // 32x24グリッド。bodyは馬体色、脚とたてがみは濃色。preserveAspectRatioで拡大。
+    function pixelHorseSvg(waku, frame){
+      const body = WAKU_BODY[waku] || '#888';
+      const dark = (waku===1||waku===5||waku===7) ? '#7a6a3a' : 'rgba(0,0,0,.55)'; // 明色馬は暗めの脚、暗色馬は黒脚
+      const mane = (waku===2) ? '#555' : 'rgba(0,0,0,.5)';
+      // ピクセルを rect の集合で描く。座標は 0..32 x 0..24。
+      // 馬体（胴・首・頭）共通
+      const bodyRects = [
+        [8,7,14,7],   // 胴体
+        [20,5,6,5],   // 首〜肩
+        [24,3,6,5],   // 頭
+        [29,4,2,2],   // 鼻先
+        [7,8,2,5],    // 尻
+      ].map(r=>`<rect x="${r[0]}" y="${r[1]}" width="${r[2]}" height="${r[3]}" fill="${body}"/>`).join('');
+      // たてがみ・尾
+      const maneRects = [
+        [20,3,4,3],   // たてがみ
+        [5,6,3,3],    // 尾
+        [4,8,2,4],    // 尾
+      ].map(r=>`<rect x="${r[0]}" y="${r[1]}" width="${r[2]}" height="${r[3]}" fill="${mane}"/>`).join('');
+      // 目
+      const eye = `<rect x="27" y="4" width="1.4" height="1.4" fill="#fff"/>`;
+      // 脚（2フレームで位置を変える＝ギャロップ）
+      let legs;
+      if(frame===0){
+        legs = [
+          [9,14,2,5],   // 前脚（前）
+          [13,14,2,4],  // 前脚（後）
+          [17,14,2,5],  // 後脚（前）
+          [20,14,2,3],  // 後脚（後）
+        ];
+      } else {
+        legs = [
+          [9,14,2,3],
+          [13,14,2,5],
+          [17,14,2,3],
+          [20,14,2,5],
+        ];
+      }
+      const legRects = legs.map(r=>`<rect x="${r[0]}" y="${r[1]}" width="${r[2]}" height="${r[3]}" fill="${dark}"/>`).join('');
+      return `<svg viewBox="0 0 32 24" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;filter:drop-shadow(0 1px 1px rgba(0,0,0,.35));">${maneRects}${bodyRects}${eye}${legRects}</svg>`;
+    }
+
     function assignAutoPositions(horses) {
       const isLeft = currentCourseDir === 'right' || currentCourseDir === 'straight';
       const isStraight = currentCourseDir === 'straight';
@@ -4983,17 +5041,20 @@ window.drawOaChartModal = function() {
       if(bgLayer) {
         const isDirt = race.info && race.info.includes('ダ') && !isStraight;
         const baba = race.baba || '良';
-        // 展開図フィールド：芝＝緑 / ダート＝薄茶（ここだけ緑を使う）
-        let baseColor = isDirt ? '#e9dcc6' : '#dcecc9', trackColor = isDirt ? '#c9ab7e' : '#8fb26a';
+        // 展開図フィールド：芝＝蛍光グリーン / ダート＝薄茶（芝は蛍光、ダートは従来）
+        let baseColor = isDirt ? '#e9dcc6' : '#eef7cf', trackColor = isDirt ? '#c9ab7e' : '#ccf23f';
         if(!isDirt) {
-          if(baba === '稍') { trackColor = '#9fb87e'; }
-          else if(baba === '重') { trackColor = '#a7ad8c'; }
-          else if(baba === '不') { trackColor = '#9ba187'; }
+          // 芝の馬場悪化＝蛍光を少しくすませる（それでも蛍光寄り）
+          if(baba === '稍') { trackColor = '#c2e63a'; }
+          else if(baba === '重') { trackColor = '#b3d637'; }
+          else if(baba === '不') { trackColor = '#a3c433'; }
         } else {
           if(baba === '稍') { trackColor = '#c2a271'; }
           else if(baba === '重') { trackColor = '#b8975f'; }
           else if(baba === '不') { trackColor = '#a8874f'; }
         }
+        // ラチ（レール）色：芝は茶、ダートは従来の落ち着いた色
+        const rachiColor = isDirt ? '#8a6d45' : '#7a5a34';
         
         const startLineX = 5; // 後方（左端）
         let sX = Math.abs(race.tenkaiVal) / 50 * 0.55, sY = Math.abs(race.biasVal) / 50 * 0.55, gX = '', gY = '';
@@ -5012,12 +5073,12 @@ window.drawOaChartModal = function() {
         const arrowSvg = arrowRightSvg; // 進行方向は右で固定
         let textTop = isStraight ? "内 ラチ" : "大 外 ↑", textBottom = isStraight ? "外 ラチ ↓" : "内 ラチ";
         
-        let bgSvg = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;"><defs>${gX}${gY}</defs><rect width="100" height="100" fill="${baseColor}" /><rect x="0" y="15" width="100" height="70" fill="${trackColor}" />${race.tenkaiVal!==0?`<rect x="0" y="15" width="100" height="70" fill="url(#gX)" style="mix-blend-mode:multiply;" />`:''}${race.biasVal!==0?`<rect x="0" y="15" width="100" height="70" fill="url(#gY)" style="mix-blend-mode:multiply;" />`:''}<rect x="${startLineX-0.6}" y="15" width="1.2" height="70" fill="#9b9a92" opacity="0.55" /></svg>`;
+        let bgSvg = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;"><defs>${gX}${gY}</defs><rect width="100" height="100" fill="${baseColor}" /><rect x="0" y="15" width="100" height="70" fill="${trackColor}" />${race.tenkaiVal!==0?`<rect x="0" y="15" width="100" height="70" fill="url(#gX)" style="mix-blend-mode:multiply;" />`:''}${race.biasVal!==0?`<rect x="0" y="15" width="100" height="70" fill="url(#gY)" style="mix-blend-mode:multiply;" />`:''}<rect x="0" y="14" width="100" height="1.4" fill="${rachiColor}" /><rect x="0" y="84.6" width="100" height="1.4" fill="${rachiColor}" /><rect x="${startLineX-0.6}" y="15" width="1.2" height="70" fill="#9b9a92" opacity="0.55" /></svg>`;
         const textOverlay = `<div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;font-family:'Zen Kaku Gothic New',sans-serif;">
           <div style="position:absolute;top:5px;left:8px;color:#6b7a6b;font-size:9px;font-weight:700;letter-spacing:1px;background:rgba(255,255,255,.6);padding:1px 8px;border-radius:8px;">道中の位置取り（想定）</div>
           <div style="position:absolute;top:5px;right:8px;color:#1a1a1a;font-size:10px;font-weight:700;background:rgba(255,255,255,.6);padding:1px 8px;border-radius:8px;">進行方向 →</div>
-          <div style="position:absolute;top:19%;left:6px;color:#9b9a92;font-size:9px;font-weight:700;">内ラチ</div>
-          <div style="position:absolute;bottom:5px;left:6px;color:#9b9a92;font-size:9px;font-weight:700;">外ラチ</div>
+          <div style="position:absolute;top:16%;left:6px;color:${rachiColor};font-size:9px;font-weight:800;text-shadow:0 1px 2px rgba(255,255,255,.7);">内ラチ</div>
+          <div style="position:absolute;bottom:4%;left:6px;color:${rachiColor};font-size:9px;font-weight:800;text-shadow:0 1px 2px rgba(255,255,255,.7);">外ラチ</div>
         </div>`;
         bgLayer.innerHTML = bgSvg + textOverlay;
       }
@@ -5078,15 +5139,17 @@ window.drawOaChartModal = function() {
           if(race.tenkaiVal > 0 && (h.style==='差'||h.style==='追')) favScore++;
           if(race.biasVal < 0 && h.waku <= 3) favScore++;
           if(race.biasVal > 0 && h.waku >= 6) favScore++;
-          // 有利馬は「金色リング＋有利タグ」で明確化（薄緑背景に埋もれないよう暖色に）
+          // 有利馬は「蛍光リング＋発光＋有利タグ」で明確化
           const isFav = favScore > 0;
           const favGlow = isFav
-            ? 'box-shadow:0 0 0 2.5px #1a1a1a,0 0 0 4.5px rgba(0,0,0,.35),0 2px 5px rgba(0,0,0,0.3);'
+            ? 'box-shadow:0 0 0 2px #1a1a1a,0 0 0 4px var(--mk-lime),0 0 10px 2px rgba(204,242,63,.9),0 0 18px 4px rgba(204,242,63,.5);'
             : 'box-shadow:0 2px 4px rgba(0,0,0,0.3);';
           const favTag = isFav
-            ? `<span style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#1a1a1a;font-size:7.5px;font-weight:800;line-height:1;padding:2px 4px;border-radius:6px;letter-spacing:.02em;white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.25);z-index:5;">有利</span>`
+            ? `<span style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--mk-lime);color:#1a1a1a;font-size:7.5px;font-weight:900;line-height:1;padding:2px 5px;border-radius:6px;letter-spacing:.04em;white-space:nowrap;box-shadow:0 0 6px rgba(204,242,63,.8),0 1px 2px rgba(0,0,0,.3);z-index:5;">有利</span>`
             : '';
-          let innerHTML = `<div style="position:relative;">${favTag}<div class="waku-box waku-${h.waku}" style="width:24px;height:24px;font-size:13px;${favGlow}border-radius:4px;">${h.num}</div></div><span style="display:${nameDisplay};font-family:'Zen Kaku Gothic New',sans-serif;font-size:9px;font-weight:700;color:${isFav?'#1a1a1a':'#1a1a1a'};text-shadow:0 1px 2px rgba(255,255,255,.9);margin-top:3px;letter-spacing:0;">${shortName}</span>`;
+          const phF1 = pixelHorseSvg(h.waku, 0), phF2 = pixelHorseSvg(h.waku, 1);
+          const favWrap = isFav ? `border-radius:6px;${favGlow}` : '';
+          let innerHTML = `<div style="position:relative;">${favTag}<div class="pixel-horse" style="${favWrap}"><div class="ph-frame ph-f1">${phF1}</div><div class="ph-frame ph-f2">${phF2}</div><span class="ph-num">${h.num}</span></div></div><span style="display:${nameDisplay};font-family:'Zen Kaku Gothic New',sans-serif;font-size:9px;font-weight:700;color:#1a1a1a;text-shadow:0 1px 2px rgba(255,255,255,.9);margin-top:2px;letter-spacing:0;">${shortName}</span>`;
           
           if(!wrapper) {
             wrapper = document.createElement('div');
