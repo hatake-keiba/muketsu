@@ -7,7 +7,11 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
   <style>
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    /* 各馬評価テーブルの行・セル・棒グラフをタップしても変色させない */
+    .data-table tr, .data-table td, .stat-card .bar-col, .stat-card .visual-bar,
+    .bar-col, .visual-bar { -webkit-tap-highlight-color: transparent !important; }
+    .data-table tr:active, .data-table td:active, .stat-card .horse-row:active { background: inherit; }
     @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
     body { font-family: "Zen Kaku Gothic New", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; margin: 0; padding: 5px 2px; background: #e8e6df; color: #25352a; }
     .app-container { --sage:#e8e6df; --sage-soft:#e9eee3; --card:#f7f9f4; --ink:#25352a; --ink-soft:#6b7a6b; --dark:#1f3d2b; --accent:#1a1a1a; --line:#cdd8c6; }
