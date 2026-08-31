@@ -408,8 +408,9 @@
   .detail-col.hidden { display: none !important; }
 
   /* ▼▼ ここに追加します ▼▼ */
-  .user-hl { background-color: #ffd180 !important; }
-  input.user-hl, select.user-hl { background-color: #ffd180 !important; color: #333 !important; }
+  /* 長押しハイライト機能は廃止。既存の user-hl も無色に */
+  .user-hl { background-color: transparent !important; }
+  input.user-hl, select.user-hl { background-color: transparent !important; }
   /* ▲▲ ここまで ▲▲ */
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    ▼▼▼ フラット＆アースカラーUI（安全版） ▼▼▼
@@ -2898,8 +2899,9 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
         let kosoText = h.kosoWaku && h.kosoWaku !== '-' ? h.kosoWaku : '-';
         let kosoHtml = `<div style="padding:4px; margin:auto; user-select:none; max-width:40px; border-radius:3px; color:#333; font-weight:normal;" onpointerdown="startKosoPress(event,${h.num})" onpointerup="endKosoPress(event,${h.num})" onpointercancel="cancelKosoPress(event)" oncontextmenu="onKosoContextMenu(event,${h.num})">${kosoText} ${h.isKosoStarred ? '🌟' : ''}</div>`;
 
-        const hlClass = (field) => (h.hl && h.hl[field]) ? 'user-hl' : '';
-        const hlEvents = (field) => `onpointerdown="startCellPress(event,${h.num},'${field}')" onpointerup="endCellPress(event,${h.num},'${field}')" onpointercancel="cancelCellPress(event)" oncontextmenu="onCellContextMenu(event,${h.num},'${field}')"`;
+        // 長押しの黄色ハイライト機能は無効化（誤操作で変色するため）
+        const hlClass = (field) => '';
+        const hlEvents = (field) => '';
 
         const cOdds = hlClass('odds'), cFuku = hlClass('fuku'), cJockey = hlClass('jockey');
         const cStyle = hlClass('style'), cShisu = hlClass('shisu'), cDeki = hlClass('deki');
