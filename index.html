@@ -4958,7 +4958,7 @@ window.drawOaChartModal = function() {
       // 被り防止：馬名(馬番の下)を考慮し縦を重く見る楕円距離で分離。
       // クランプを毎反復かけることで、端に張り付いた馬からは他馬が確実に逃げる。
       // 馬はトラック帯(y15〜85%)の内側に収める。上下のラベル(道中の位置取り/内ラチ・外ラチ)と被らないよう余白を残す。
-      const MINX = 0.115, MINY = 0.22; // 縦は名前分だけ大きく確保
+      const MINX = 0.09, MINY = 0.185; // ドット絵馬はコンパクト：距離を詰めて密に配置（縦は名前分だけ確保）
       const clamp = h => { h._autoX = Math.max(0.06,Math.min(0.94,h._autoX)); h._autoY = Math.max(0.20,Math.min(0.80,h._autoY)); };
       for(let s = 0; s < 60; s++) {
         for(let i = 0; i < horses.length; i++) {
