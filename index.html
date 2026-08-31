@@ -231,7 +231,7 @@
     .val-col { width: 45px; color: #ffaa00 !important; text-align: right; font-size: 11px; font-weight: bold; background: transparent !important; border: none !important; outline: none; }
     
     .core-mark-right { font-size: 9px; color: #ffd700; font-weight: bold; white-space: nowrap; margin-right: 4px; flex-shrink: 0; min-width: 36px; text-align: right; }
-    .graph-track-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 20; cursor: pointer; touch-action: pan-y; -webkit-user-select: none; user-select: none; }
+    .graph-track-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 20; touch-action: pan-y; -webkit-user-select: none; user-select: none; pointer-events: none; }
     .graph-track-overlay.touch-ready { background: rgba(255,170,0,0.15); border-radius: 4px; transition: background 0.2s; }
     .graph-track-overlay.touch-active { background: rgba(255,170,0,0.30); cursor: grabbing; }
     .graph-mark-btn { width: 16px; height: 16px; background: #333; color: #fff; border-radius: 3px; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: box-shadow 0.2s; }
@@ -5390,7 +5390,8 @@ window.drawOaChartModal = function() {
           </div>`;
         }
 
-        const dragAttrs = `ontouchstart="startDragTouch(event,${graphIdx})" ontouchmove="moveDragTouch(event,${graphIdx})" ontouchend="endDragTouch(event,${graphIdx})" onmousedown="startDragMouse(event,${graphIdx})"`;
+        // バー本体のドラッグ操作は無効化（誤操作防止）。勝率変更は右の◀▶・数値入力のみ。
+        const dragAttrs = ``;
         const markDisp = getMarkDisplay(h);
         const isPromoted = (h.markIdx === 11);
         let markBtnClass = isPromoted ? 'graph-mark-btn mark-honmei-promoted' : 'graph-mark-btn';
