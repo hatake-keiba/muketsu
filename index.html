@@ -115,7 +115,7 @@
     }
     /* ▲▲ 追加ここまで ▲▲ */
 
-    .memo-input { width: 140px; overflow-x: auto; white-space: nowrap; transition: box-shadow 0.3s ease; color: #333; }
+    .memo-input { width: 160px; white-space: normal; word-break: break-word; overflow: hidden; resize: none; min-height: 22px; line-height: 1.4; font-family: inherit; font-size: inherit; border: 1px solid #ddd; border-radius: 4px; padding: 3px 5px; vertical-align: top; transition: box-shadow 0.3s ease; color: #333; }
     .memo-input:focus { background-color: #fffde7; box-shadow: 0 0 5px rgba(26,115,232,0.5); outline: none; position: relative; z-index: 10; }
 
     /* ★ 文字色を黒（#333）に統一 */
@@ -1109,12 +1109,12 @@ input[type=number], input[type=text], textarea, select {
     color:#2b332a !important; }
   .data-table input[type=number]:focus, .data-table select:focus{ outline:none;
     border-color:var(--mk-accent) !important; box-shadow:0 0 0 2px rgba(0,0,0,.22) !important; }
-  .memo-input{ width:130px !important; }
+  .memo-input{ width:160px !important; }
   .memo-input:focus{ background:#fbfdf9 !important; box-shadow:0 0 0 2px rgba(0,0,0,.22) !important; }
   /* 詳細表示時：列が増えるので全体をコンパクトにして横スクロールを抑える */
   .data-table.detail-open td, .data-table.detail-open thead th{ padding:5px 2px !important; font-size:9.5px !important; }
   .data-table.detail-open .td-name{ font-size:11px !important; max-width:88px !important; }
-  .data-table.detail-open .memo-input{ width:80px !important; }
+  .data-table.detail-open .memo-input{ width:120px !important; }
   .data-table.detail-open input[type=number]{ width:34px !important; padding:3px 2px !important; }
   .data-table.detail-open select{ padding:3px 2px !important; }
   .data-table.detail-open .waku-box{ width:18px !important; height:18px !important; font-size:10px !important; }
@@ -2936,11 +2936,13 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
           
           <td class="td-juba detail-col ${isDetailOpen ? '' : 'hidden'} ${jubaCls} ${cJuba}" ${hlEvents('juba')}>${h.jubaBA||'-'}</td>
           
-          <td class="${cMemo}" ${hlEvents('memo')}><input type="text" class="memo-input ${cMemo}" value="${h.memo||''}" onchange="updateHorseByNum(${h.num},'memo',this.value)"></td>
+          <td class="${cMemo}" ${hlEvents('memo')}><textarea class="memo-input ${cMemo}" rows="1" onchange="updateHorseByNum(${h.num},'memo',this.value)" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';">${h.memo||''}</textarea></td>
         `;
         tbody.appendChild(tr);
       });
       applyStickyColumns();
+      // メモ短評のtextareaを内容に合わせて高さ自動調整（全文表示）
+      try{ document.querySelectorAll('#main-data-table .memo-input').forEach(ta=>{ ta.style.height='auto'; ta.style.height=ta.scrollHeight+'px'; }); }catch(e){}
     }
 
     // 印・番・単勝・複勝・馬名（列0〜4）を左固定。可視列だけで累積leftを計算。
