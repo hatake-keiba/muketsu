@@ -295,6 +295,9 @@
     .tb-total-value { font-size: 14px; font-weight: bold; color: #fff; }
     
     .tb-budget-row { padding: 6px 8px; display: flex; align-items: center; gap: 8px; background: #f1f8e9; border-bottom: 1px solid #e8e6df; }
+    /* 買い目アクション行：オッズ更新/リセット/コピーを1行に（折り返さない） */
+    .tb-action-row { padding: 6px 8px; display: flex; align-items: center; gap: 8px; background: #f4f2ec; border-bottom: 1px solid #e8e6df; flex-wrap: nowrap; }
+    .tb-action-row .pill-btn { flex: 1 1 0; min-width: 0; white-space: nowrap; text-align: center; padding-left: 4px !important; padding-right: 4px !important; }
     .tb-ticket-list { background: #fff; max-height: 280px; overflow-y: auto; }
     .tb-ticket-item { display: flex; align-items: center; padding: 5px 8px; border-bottom: 1px solid #f0f0f0; gap: 4px; flex-wrap: wrap; }
     .tb-ticket-item:last-child { border-bottom: none; }
@@ -1635,7 +1638,9 @@ input[type=number], input[type=text], textarea, select {
           <span style="font-size:11px;font-weight:700;color:var(--mk-dark);">予算</span>
           <input type="number" id="budget-input" value="3000" style="width:74px;padding:5px 7px;font-size:12px;border:1px solid var(--mk-line);border-radius:8px;" oninput="updateBudget(this.value)" onchange="updateBudget(this.value)">
           <span style="font-size:11px;font-weight:700;color:var(--mk-dark);">円</span>
-          <button class="pill-btn pill-sm pill-ghost" style="margin-left:auto;" onclick="syncOddsFromGAS()">🔄 オッズ更新</button>
+        </div>
+        <div class="tb-action-row">
+          <button class="pill-btn pill-sm pill-ghost" onclick="syncOddsFromGAS()">🔄 オッズ更新</button>
           <button class="pill-btn pill-sm pill-ghost" onclick="resetTickets()">リセット</button>
           <button class="pill-btn pill-sm" onclick="copyTickets()">コピー</button>
         </div>
