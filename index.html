@@ -2484,6 +2484,9 @@ function getTodayStr(){const d=new Date();const jst=new Date(d.getTime()+9*60*60
     const ASHI_LIST = ['逃','先','差','追'];
     const BASHO_MAP = {'函':'函館','函館':'函館','札':'札幌','札幌':'札幌','福':'福島','福島':'福島','新':'新潟','新潟':'新潟','東':'東京','東京':'東京','中山':'中山','中':'中山','中京':'中京','名':'中京','京':'京都','京都':'京都','阪':'阪神','阪神':'阪神','小':'小倉','小倉':'小倉'};
     const VENUE_CODE_TO_CHAR = {'01':'札','02':'函','03':'福','04':'新','05':'東','06':'中','07':'名','08':'京','09':'阪','10':'小'};
+    // 運営GAS WebアプリURL（オッズ取得・AI壁打ち用）。全端末で動くようコードに直接埋め込み。
+    // GEMINI_KEYは運営GAS内で秘匿。会員はキー不要。
+    const MUKETSU_GAS_URL = 'https://script.google.com/macros/s/AKfycbzsEQR3nHZG3lFb0PHUFLaj5BtwtoURn_jYWHuqxIil2WDMXWoMK9AUgOIzox1uc6nnhg/exec';
         const BASE_ODDS_10 = [2.1, 3.8, 6.2, 10.3, 18.3, 31.7, 53.4, 84.7, 128.2, 172.0];
     const BASE_ODDS_14 = [2.5, 4.3, 6.3, 9.2, 13.3, 18.8, 27.4, 40.5, 59.1, 87.0, 131.1, 169.0, 209.6, 267.5];
     const BASE_ODDS_15 = [2.8, 4.5, 6.6, 9.1, 12.6, 17.1, 23.2, 31.4, 42.3, 57.5, 77.7, 103.3, 136.0, 179.1, 239.4, 302.4, 284.7, 363.5];
@@ -3617,7 +3620,7 @@ function buildNavigation() {
     /* ===== AI相談（壁打ち）：会員はキー不要・運営GASプロキシ経由 =====
        会員のブラウザ → 運営GAS(Geminiキー保管＋過去データ付与) → Gemini
        GAS未設定でも動くよう、キーがブラウザにある場合は直接Geminiにフォールバック（開発用）。 */
-    const AI_GAS_URL = ''; // ← 運営のGAS WebアプリURLをここに設定（未設定なら開発フォールバック）
+    const AI_GAS_URL = MUKETSU_GAS_URL; // ← 運営のGAS WebアプリURL（グローバル定数から）
     const AI_KEY_LS = 'muketsu_gemini_key'; // 開発フォールバック用（本番は会員には見せない）
     // レースごとの会話履歴（メモリ内）
     const aiChatHistory = {};
@@ -6053,8 +6056,9 @@ function autoGenerateTickets(mode = 'win') {
     }
 
     async function syncOddsFromGAS() {
-      // GAS URLは管理者が設定（会員には非表示）。入力欄→localStorage の順で参照
-      let gasUrl = (document.getElementById('api-url-input')?.value || '').trim();
+      // GAS URL：埋め込み定数を最優先。次に入力欄→localStorage（管理者上書き用）
+      let gasUrl = (typeof MUKETSU_GAS_URL !== 'undefined' ? MUKETSU_GAS_URL : '').trim();
+      if(!gasUrl){ gasUrl = (document.getElementById('api-url-input')?.value || '').trim(); }
       if(!gasUrl){ try{ gasUrl = (localStorage.getItem('keiba_gas_url')||'').trim(); }catch(e){} }
       const statusEl = document.getElementById('sync-status');
       if(!gasUrl || !gasUrl.includes('script.google.com')) { alert('GAS URLが未設定です。\n（管理者：ブラウザのコンソールで setGasUrl(\'あなたのGAS URL\') を実行してください）'); return; }
