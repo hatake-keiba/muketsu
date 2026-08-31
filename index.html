@@ -3772,30 +3772,67 @@ function buildNavigation() {
 
     /* ===== AIチャットの音声入力（ブラウザ標準の音声認識・日本語） ===== */
     let _aiRecognition = null, _aiRecording = false;
+    // 音声対話モード（Gemini Live風）：話し終わると自動送信→回答を読み上げ→自動でマイク再開
+    let _voiceLiveMode = false;   // 連続対話ON/OFF
+    let _lastVoiceText = '';
     function toggleAiVoiceInput(){
       if(!isAiUnlocked()){ openAiUnlock(); return; }
       const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
       const btn = document.getElementById('ai-mic-chat-btn');
       if(!SR){ alert('お使いのブラウザは音声入力に対応していません（Chrome推奨）。'); return; }
-      if(_aiRecording){ if(_aiRecognition) _aiRecognition.stop(); return; }
+      // 録音中にもう一度押したら停止（＝対話モードも解除）
+      if(_aiRecording){ _voiceLiveMode = false; if(_aiRecognition) _aiRecognition.stop(); return; }
+      // 読み上げ中に押したら読み上げを止めて聞き取りへ
+      try{ if(window.speechSynthesis) speechSynthesis.cancel(); }catch(e){}
+      _voiceLiveMode = true; // マイクを押した時点で対話モードON
+      _startVoiceRecognition();
+    }
+
+    function _startVoiceRecognition(){
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const btn = document.getElementById('ai-mic-chat-btn');
+      const input = document.getElementById('ai-chat-input');
       _aiRecognition = new SR();
       _aiRecognition.lang = 'ja-JP';
       _aiRecognition.interimResults = true;
       _aiRecognition.continuous = false;
-      const input = document.getElementById('ai-chat-input');
-      const base = input.value ? input.value + ' ' : '';
+      _lastVoiceText = '';
       _aiRecognition.onstart = () => { _aiRecording = true; if(btn) btn.classList.add('recording'); };
       _aiRecognition.onresult = (e) => {
         let txt = '';
         for(let i=0;i<e.results.length;i++) txt += e.results[i][0].transcript;
-        input.value = base + txt;
+        _lastVoiceText = txt;
+        input.value = txt;
       };
       _aiRecognition.onerror = () => { _aiRecording=false; if(btn) btn.classList.remove('recording'); };
-      _aiRecognition.onend = () => { _aiRecording=false; if(btn) btn.classList.remove('recording'); input.focus(); };
+      _aiRecognition.onend = () => {
+        _aiRecording=false; if(btn) btn.classList.remove('recording');
+        const said = (_lastVoiceText || '').trim();
+        if(said){
+          // 話し終えたら自動送信（読み上げ付き）。次のマイク再開はsendAiChat側で。
+          input.value = said;
+          sendAiChat(true);
+        }
+      };
       try { _aiRecognition.start(); } catch(e){}
     }
 
-    async function sendAiChat(){
+    // AIの回答を日本語で読み上げ（ブラウザ標準TTS・無料）。読み上げ後、対話モードならマイク再開。
+    function _speakAiAnswer(text){
+      if(!window.speechSynthesis || !text){ return; }
+      try{
+        speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'ja-JP'; u.rate = 1.05; u.pitch = 1.0;
+        u.onend = () => {
+          // 読み上げ終了→対話モードなら自動でまた聞き取り開始
+          if(_voiceLiveMode){ setTimeout(()=>{ if(_voiceLiveMode) _startVoiceRecognition(); }, 300); }
+        };
+        speechSynthesis.speak(u);
+      }catch(e){}
+    }
+
+    async function sendAiChat(viaVoice){
       if(!isAiUnlocked()){ openAiUnlock(); return; }
       const inp = document.getElementById('ai-chat-input');
       const q = (inp.value || '').trim();
@@ -3829,9 +3866,12 @@ function buildNavigation() {
         loading.textContent = ans.trim();
         aiChatHistory[rid].push({ role:'user', text:q });
         aiChatHistory[rid].push({ role:'model', text:ans.trim() });
+        // 音声で質問した場合は、回答を読み上げ（読み上げ後に自動でマイク再開）
+        if(viaVoice === true){ _speakAiAnswer(ans.trim()); }
       } catch(err){
         loading.classList.remove('loading');
         loading.textContent = '⚠️ ' + err.message;
+        if(viaVoice === true){ _voiceLiveMode = false; } // エラー時は対話ループを止める
       } finally {
         const log = document.getElementById('ai-chat-log'); log.scrollTop = log.scrollHeight;
         sendBtn.disabled = false;
