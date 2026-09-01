@@ -8,11 +8,59 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
   <style>
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    /* ============================================================
+       レトロゲーム(ゲームボーイ)テーマ ▸ body.gb-theme で有効化。
+       クラスを外せば元のデザインに即戻る。配色は現状(紙/近黒/蛍光)を維持。
+       ============================================================ */
+    body.gb-theme{ image-rendering:pixelated; }
+    /* 日本語＝ドット風ゴシック、英字見出し＝8bit */
+    body.gb-theme, body.gb-theme .sub-head-ttl, body.gb-theme .ai-msg,
+    body.gb-theme .memo-input, body.gb-theme input, body.gb-theme select, body.gb-theme textarea,
+    body.gb-theme button, body.gb-theme .td-name, body.gb-theme td, body.gb-theme th{
+      font-family:'DotGothic16',"Zen Kaku Gothic New",monospace !important;
+    }
+    /* 英字ラベル(eyebrow)・サイトタイトル・主要ボタンは8bitフォント */
+    body.gb-theme .mk-eyebrow{ font-family:'Press Start 2P',monospace !important; font-size:8px !important; letter-spacing:0 !important; }
+    body.gb-theme #site-title [style*="Anton"], body.gb-theme #site-title div:first-child{ font-family:'Press Start 2P',monospace !important; }
+    /* 角丸を全て四角く（ドット感） */
+    body.gb-theme *{ border-radius:0 !important; }
+    /* カード・パネルにドットのオフセット影＋太い黒枠 */
+    body.gb-theme .big-card, body.gb-theme .system-section, body.gb-theme .stat-card,
+    body.gb-theme .ai-talk-slot, body.gb-theme .master-panel{
+      border:3px solid #1a1a1a !important; box-shadow:5px 5px 0 #bdb9ac !important;
+    }
+    /* ボタン：ドット影付き・8bit風 */
+    body.gb-theme .pill-btn, body.gb-theme .pill-accent, body.gb-theme .btn-primary,
+    body.gb-theme .btn-success, body.gb-theme .ai-talk-btn, body.gb-theme .sub-head-btn,
+    body.gb-theme .race-btn, body.gb-theme .baba-btn{
+      border:2px solid #1a1a1a !important; box-shadow:3px 3px 0 rgba(26,26,26,.35) !important;
+      font-family:'DotGothic16',monospace !important; font-weight:700 !important;
+    }
+    body.gb-theme .pill-accent, body.gb-theme .btn-primary, body.gb-theme .btn-success, body.gb-theme .ai-talk-btn{
+      box-shadow:3px 3px 0 #5a6a17 !important;
+    }
+    /* ボタン押下でドット影が沈むアニメ */
+    body.gb-theme button:active{ transform:translate(2px,2px) !important; box-shadow:1px 1px 0 rgba(26,26,26,.35) !important; }
+    /* 見出しの蛍光マーカーを「ドット塗り」風に（既存.mk-markは維持されるが少し硬く） */
+    body.gb-theme .mk-mark{ background:var(--mk-lime) !important; padding:0 2px !important; }
+    /* サイトタイトルのヒーロー：スキャンライン風の細い横縞をうっすら */
+    body.gb-theme #site-title{ background-image:repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0px, rgba(255,255,255,.04) 1px, transparent 1px, transparent 3px) !important; }
+    /* 枠番ボックス・馬アイコンはドット感を強調（既存のwaku-boxを角ばらせる） */
+    body.gb-theme .waku-box{ border:1.5px solid #1a1a1a !important; }
+    /* テーブルの罫線を太めのドット風に */
+    body.gb-theme .data-table td, body.gb-theme .data-table th{ border-color:#1a1a1a !important; }
+    /* GBテーマ切替ボタン（右上固定・小さく） */
+    #gb-toggle{ position:fixed; top:6px; right:6px; z-index:99999; font-family:'Press Start 2P',monospace;
+      font-size:7px; padding:6px 8px; background:#1a1a1a; color:#ccf23f; border:2px solid #ccf23f;
+      cursor:pointer; box-shadow:2px 2px 0 rgba(0,0,0,.3); }
+    #gb-toggle:active{ transform:translate(1px,1px); }
+
     /* 各馬評価テーブルの行・セル・棒グラフをタップしても変色させない */
     .data-table tr, .data-table td, .stat-card .bar-col, .stat-card .visual-bar,
     .bar-col, .visual-bar { -webkit-tap-highlight-color: transparent !important; }
     .data-table tr:active, .data-table td:active, .stat-card .horse-row:active { background: inherit; }
-    @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Press+Start+2P&family=DotGothic16&display=swap');
     body { font-family: "Zen Kaku Gothic New", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; margin: 0; padding: 5px 2px; background: #e8e6df; color: #25352a; }
     .app-container { --sage:#e8e6df; --sage-soft:#e9eee3; --card:#f7f9f4; --ink:#25352a; --ink-soft:#6b7a6b; --dark:#1f3d2b; --accent:#1a1a1a; --line:#cdd8c6; }
     .app-container { max-width: 1100px; margin: auto; }
@@ -1141,6 +1189,18 @@ input[type=number], input[type=text], textarea, select {
 </style>
 </head>
 <body>
+<button id="gb-toggle" onclick="toggleGbTheme()">GB MODE</button>
+<script>
+  // レトロゲームテーマの切替＋保存（リロードしても維持）。OFFで即・元デザインに戻る。
+  function applyGbTheme(on){
+    document.body.classList.toggle('gb-theme', on);
+    const b=document.getElementById('gb-toggle');
+    if(b) b.textContent = on ? 'GB:ON' : 'GB MODE';
+    try{ localStorage.setItem('muketsu_gb_theme', on?'1':'0'); }catch(e){}
+  }
+  function toggleGbTheme(){ applyGbTheme(!document.body.classList.contains('gb-theme')); }
+  (function(){ try{ if(localStorage.getItem('muketsu_gb_theme')==='1') applyGbTheme(true); }catch(e){} })();
+</script>
 
 <div class="app-container">
   <div id="site-title" style="text-align:center;padding:40px 18px 32px;background:#1a1a1a;border-radius:22px;margin:12px;position:relative;">
