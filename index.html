@@ -3940,14 +3940,21 @@ function buildNavigation() {
         _lastVoiceText = txt;
         input.value = txt;
       };
-      _aiRecognition.onerror = () => { _aiRecording=false; if(btn) btn.classList.remove('recording'); };
+      _aiRecognition.onerror = (ev) => {
+        _aiRecording=false; if(btn) btn.classList.remove('recording');
+        // マイク権限拒否などの致命エラーは対話モードを止める。無音(no-speech)等は継続。
+        if(ev && (ev.error==='not-allowed' || ev.error==='service-not-allowed')){ _voiceLiveMode=false; if(btn) btn.textContent=''; }
+      };
       _aiRecognition.onend = () => {
         _aiRecording=false; if(btn) btn.classList.remove('recording');
         const said = (_lastVoiceText || '').trim();
         if(said){
-          // 話し終えたら自動送信（読み上げ付き）。次のマイク再開はsendAiChat側で。
+          // 話し終えたら自動送信（読み上げ付き）。読み上げ後にsendAiChat側でマイク再開。
           input.value = said;
           sendAiChat(true);
+        } else if(_voiceLiveMode){
+          // 無音で終わった＝まだ話していないだけ。OFFにするまで聞き続ける（Live）。
+          setTimeout(()=>{ if(_voiceLiveMode && !_aiRecording){ try{ _startVoiceRecognition(); }catch(e){} } }, 400);
         }
       };
       try { _aiRecognition.start(); } catch(e){}
