@@ -9,122 +9,50 @@
   <style>
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-    /* ============================================================
-       レトロゲーム(ゲームボーイ)テーマ ▸ body.gb-theme で有効化。
-       クラスを外せば元のデザインに即戻る。配色は現状(紙/近黒/蛍光)を維持。
-       ============================================================ */
-    body.gb-theme{ image-rendering:pixelated; }
-    /* 日本語＝ドット風ゴシック、英字見出し＝8bit */
-    body.gb-theme, body.gb-theme .sub-head-ttl, body.gb-theme .ai-msg,
-    body.gb-theme .memo-input, body.gb-theme input, body.gb-theme select, body.gb-theme textarea,
-    body.gb-theme button, body.gb-theme .td-name, body.gb-theme td, body.gb-theme th{
-      font-family:'DotGothic16',"Zen Kaku Gothic New",monospace !important;
-    }
-    /* 英字ラベル(eyebrow)・サイトタイトル・主要ボタンは8bitフォント */
-    body.gb-theme .mk-eyebrow{ font-family:'Press Start 2P',monospace !important; font-size:8px !important; letter-spacing:0 !important; }
-    body.gb-theme #site-title [style*="Anton"], body.gb-theme #site-title div:first-child{ font-family:'Press Start 2P',monospace !important; }
-    /* 角丸を全て四角く（ドット感） */
-    body.gb-theme *{ border-radius:0 !important; }
-    /* カード・パネルにドットのオフセット影＋太い黒枠 */
-    body.gb-theme .big-card, body.gb-theme .system-section, body.gb-theme .stat-card,
-    body.gb-theme .ai-talk-slot, body.gb-theme .master-panel{
-      border:3px solid #1a1a1a !important; box-shadow:5px 5px 0 #bdb9ac !important;
-    }
-    /* ボタン：ドット影付き・8bit風 */
-    body.gb-theme .pill-btn, body.gb-theme .pill-accent, body.gb-theme .btn-primary,
-    body.gb-theme .btn-success, body.gb-theme .ai-talk-btn, body.gb-theme .sub-head-btn,
-    body.gb-theme .race-btn, body.gb-theme .baba-btn{
-      border:2px solid #1a1a1a !important; box-shadow:3px 3px 0 rgba(26,26,26,.35) !important;
-      font-family:'DotGothic16',monospace !important; font-weight:700 !important;
-    }
-    body.gb-theme .pill-accent, body.gb-theme .btn-primary, body.gb-theme .btn-success, body.gb-theme .ai-talk-btn{
-      box-shadow:3px 3px 0 #5a6a17 !important;
-    }
-    /* ボタン押下でドット影が沈むアニメ */
-    body.gb-theme button:active{ transform:translate(2px,2px) !important; box-shadow:1px 1px 0 rgba(26,26,26,.35) !important; }
-    /* 見出しの蛍光マーカーを「ドット塗り」風に（既存.mk-markは維持されるが少し硬く） */
-    body.gb-theme .mk-mark{ background:var(--mk-lime) !important; padding:0 2px !important; }
-    /* サイトタイトルのヒーロー：スキャンライン風の細い横縞をうっすら */
-    body.gb-theme #site-title{ background-image:repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0px, rgba(255,255,255,.04) 1px, transparent 1px, transparent 3px) !important; }
-    /* 枠番ボックス・馬アイコンはドット感を強調（既存のwaku-boxを角ばらせる） */
-    body.gb-theme .waku-box{ border:1.5px solid #1a1a1a !important; }
-    /* テーブルの罫線を太めのドット風に */
-    body.gb-theme .data-table td, body.gb-theme .data-table th{ border-color:#1a1a1a !important; }
-    /* GBテーマ切替ボタン（右上固定・小さく） */
-    #gb-toggle{ position:fixed; top:6px; right:6px; z-index:99999; font-family:'Press Start 2P',monospace;
-      font-size:7px; padding:6px 8px; background:#1a1a1a; color:#ccf23f; border:2px solid #ccf23f;
-      cursor:pointer; box-shadow:2px 2px 0 rgba(0,0,0,.3); }
-    #gb-toggle:active{ transform:translate(1px,1px); }
-
-    /* ============================================================
-       ヴィンテージ・スポーツテーマ ▸ body.vintage-theme で有効化。
-       濃紺×クリーム×レンガ赤。Oswald(コンデンス体)＋太ゴシック。
-       クラスを外せば元のデザインに即戻る。
-       ============================================================ */
-    body.vintage-theme{ background:#e5dcc6 !important; --vt-navy:#1a2b4a; --vt-cream:#f0e9d8; --vt-red:#d84a3a; }
-    /* 全体の紙地をクリームに */
-    body.vintage-theme .app-container{ }
-    /* 英字ラベル・見出し数字・ボタンはOswald(コンデンス体) */
-    body.vintage-theme .mk-eyebrow, body.vintage-theme .sub-head-btn,
-    body.vintage-theme .pill-btn, body.vintage-theme .val-col,
-    body.vintage-theme .tb-total-value, body.vintage-theme #site-title{
-      font-family:'Oswald',"Zen Kaku Gothic New",sans-serif !important; letter-spacing:.06em !important;
-    }
-    /* 日本語見出し・馬名は極太ゴシック */
-    body.vintage-theme .sub-head-ttl, body.vintage-theme .td-name, body.vintage-theme .hr-name-label{
-      font-family:"Zen Kaku Gothic New",sans-serif !important; font-weight:900 !important;
-    }
-    /* 角を控えめに（少しだけ角ばらせる・完全な直角ではなく2px） */
-    body.vintage-theme .big-card, body.vintage-theme .system-section, body.vintage-theme .stat-card,
-    body.vintage-theme .ai-talk-slot, body.vintage-theme .master-panel, body.vintage-theme .data-table-container{
-      border-radius:3px !important; border:2.5px solid var(--vt-navy) !important; box-shadow:4px 4px 0 rgba(26,43,74,.18) !important;
-      background:var(--vt-cream) !important;
-    }
-    /* 見出しバー(sub-head)の頭バーを赤に */
-    body.vintage-theme .sub-head::before{ background:var(--vt-red) !important; }
-    body.vintage-theme .sub-head-ttl{ color:var(--vt-navy) !important; }
-    body.vintage-theme .mk-eyebrow{ color:var(--vt-red) !important; }
-    /* 蛍光マーカー→濃紺の下線ハイライトに置換（クリームに映える） */
-    body.vintage-theme .mk-mark{ background:linear-gradient(transparent 55%, rgba(216,74,58,.35) 55%) !important; padding:0 3px !important; }
-    /* サイトタイトルのヒーロー：濃紺地×クリーム文字、蛍光→クリーム/赤 */
-    body.vintage-theme #site-title{ background:var(--vt-navy) !important; border-radius:4px !important; }
-    body.vintage-theme #site-title > div:first-child{ font-family:'Oswald',sans-serif !important; color:var(--vt-cream) !important; letter-spacing:.04em !important; }
-    body.vintage-theme #site-title span[style*="ccf23f"], body.vintage-theme #site-title [style*="ccf23f"]{ color:var(--vt-red) !important; }
-    /* 主要ボタン：濃紺地×クリーム文字（蛍光の代わり） */
-    body.vintage-theme .pill-accent, body.vintage-theme .btn-primary, body.vintage-theme .btn-success,
-    body.vintage-theme .ai-talk-btn{
-      background:var(--vt-navy) !important; color:var(--vt-cream) !important; border:2px solid var(--vt-navy) !important;
-      box-shadow:3px 3px 0 rgba(26,43,74,.25) !important; border-radius:2px !important; font-weight:700 !important;
-    }
-    /* サブボタン：クリーム地×濃紺枠 */
-    body.vintage-theme .pill-btn, body.vintage-theme .pill-ghost, body.vintage-theme .sub-head-btn,
-    body.vintage-theme .race-btn, body.vintage-theme .baba-btn{
-      background:var(--vt-cream) !important; color:var(--vt-navy) !important; border:2px solid var(--vt-navy) !important;
-      border-radius:2px !important; box-shadow:2px 2px 0 rgba(26,43,74,.15) !important;
-    }
-    /* 選択中の馬場・レース質は赤 */
-    body.vintage-theme .baba-btn.active, body.vintage-theme .race-btn.active,
-    body.vintage-theme .race-btn[class*="status-"].active{
-      background:var(--vt-red) !important; color:var(--vt-cream) !important; border-color:var(--vt-red) !important;
-    }
-    /* ボタン押下でオフセット影が沈む */
-    body.vintage-theme button:active{ transform:translate(1px,1px) !important; }
-    /* 勝率バーをレンガ赤系に（テーマ統一） */
-    body.vintage-theme .stat-card .visual-bar{ background:linear-gradient(90deg,#c65a48,#d88a7a) !important; }
-    /* テーブル罫線を濃紺に */
-    body.vintage-theme .data-table td, body.vintage-theme .data-table th{ border-color:rgba(26,43,74,.25) !important; }
-    body.vintage-theme .data-table thead th{ background:var(--vt-navy) !important; color:var(--vt-cream) !important; }
-    /* ヴィンテージテーマ切替ボタン（GBの下） */
-    #vt-toggle{ position:fixed; top:38px; right:6px; z-index:99999; font-family:'Oswald',sans-serif;
-      font-size:10px; font-weight:700; letter-spacing:.08em; padding:6px 9px; background:#1a2b4a; color:#f0e9d8;
-      border:2px solid #d84a3a; cursor:pointer; box-shadow:2px 2px 0 rgba(0,0,0,.25); }
-    #vt-toggle:active{ transform:translate(1px,1px); }
+    /* ============ 左スライドメニュー ============ */
+    #mk-menu-btn{ position:fixed; top:12px; left:12px; z-index:100000; width:46px; height:46px;
+      background:#1a1a1a; border:2px solid #ccf23f; border-radius:12px; cursor:pointer;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px;
+      box-shadow:0 3px 8px rgba(0,0,0,.28); }
+    #mk-menu-btn span{ display:block; width:20px; height:2.5px; background:#ccf23f; border-radius:2px; transition:.25s; }
+    #mk-menu-btn.open span:nth-child(1){ transform:translateY(7.5px) rotate(45deg); }
+    #mk-menu-btn.open span:nth-child(2){ opacity:0; }
+    #mk-menu-btn.open span:nth-child(3){ transform:translateY(-7.5px) rotate(-45deg); }
+    #mk-menu-overlay{ position:fixed; inset:0; z-index:99998; background:rgba(20,20,18,.5);
+      opacity:0; pointer-events:none; transition:opacity .25s; }
+    #mk-menu-overlay.open{ opacity:1; pointer-events:auto; }
+    #mk-menu-panel{ position:fixed; top:0; left:0; bottom:0; z-index:99999; width:74%; max-width:290px;
+      background:#f4f2ec; border-right:3px solid #1a1a1a; box-shadow:8px 0 30px rgba(0,0,0,.22);
+      transform:translateX(-105%); transition:transform .28s cubic-bezier(.4,0,.2,1);
+      display:flex; flex-direction:column; overflow-y:auto; }
+    #mk-menu-panel.open{ transform:translateX(0); }
+    .mk-menu-hd{ background:#1a1a1a; color:#ccf23f; font-family:'Zen Kaku Gothic New',sans-serif;
+      font-weight:900; font-size:26px; letter-spacing:.06em; padding:26px 22px 20px; line-height:1; }
+    .mk-menu-hd small{ display:block; font-size:9px; color:#8a9a3a; letter-spacing:.24em; font-weight:800; margin-bottom:8px; }
+    .mk-menu-item{ display:flex; align-items:center; gap:14px; padding:18px 22px; cursor:pointer;
+      font-family:'Zen Kaku Gothic New',sans-serif; font-weight:700; font-size:16px; color:#1a1a1a;
+      border:none; border-bottom:1px solid #e4e2d9; background:none; text-align:left; width:100%; transition:background .15s; }
+    .mk-menu-item:hover, .mk-menu-item:active{ background:#eceae3; }
+    .mk-menu-item.active{ background:#1a1a1a; color:#ccf23f; }
+    .mk-menu-item .ic{ font-size:22px; width:28px; text-align:center; }
+    .mk-menu-item .ar{ margin-left:auto; color:#c9c8c0; font-size:15px; }
+    .mk-menu-item.active .ar{ color:#ccf23f; }
+    /* ページ切替：初期はレースのみ表示 */
+    .mk-page{ display:none; }
+    .mk-page.active{ display:block; }
+    /* データ部屋・使い方の空箱の見た目 */
+    .mk-placeholder{ max-width:1100px; margin:24px auto; padding:40px 22px; text-align:center; }
+    .mk-placeholder .ph-eyebrow{ font-size:10px; font-weight:800; letter-spacing:.18em; color:#9b9a92; display:block; margin-bottom:10px; }
+    .mk-placeholder h2{ font-family:'Zen Kaku Gothic New',sans-serif; font-weight:900; font-size:30px; color:#1a1a1a; margin:0 0 6px; }
+    .mk-placeholder h2 .mk-mk{ background:linear-gradient(transparent 55%, #ccf23f 55%); padding:0 4px; }
+    .mk-placeholder p{ color:#8a8a82; font-size:13px; line-height:1.8; margin:14px 0 0; }
+    .mk-placeholder .ph-box{ margin-top:28px; border:2px dashed #cfcdc4; border-radius:14px; padding:44px 20px; color:#b0aea6; font-size:13px; background:#faf9f5; }
 
     /* 各馬評価テーブルの行・セル・棒グラフをタップしても変色させない */
     .data-table tr, .data-table td, .stat-card .bar-col, .stat-card .visual-bar,
     .bar-col, .visual-bar { -webkit-tap-highlight-color: transparent !important; }
     .data-table tr:active, .data-table td:active, .stat-card .horse-row:active { background: inherit; }
-    @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Press+Start+2P&family=DotGothic16&family=Oswald:wght@500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
     body { font-family: "Zen Kaku Gothic New", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; margin: 0; padding: 5px 2px; background: #e8e6df; color: #25352a; }
     .app-container { --sage:#e8e6df; --sage-soft:#e9eee3; --card:#f7f9f4; --ink:#25352a; --ink-soft:#6b7a6b; --dark:#1f3d2b; --accent:#1a1a1a; --line:#cdd8c6; }
     .app-container { max-width: 1100px; margin: auto; }
@@ -1253,30 +1181,38 @@ input[type=number], input[type=text], textarea, select {
 </style>
 </head>
 <body>
-<button id="gb-toggle" onclick="toggleGbTheme()">GB MODE</button>
-<button id="vt-toggle" onclick="toggleVtTheme()">VINTAGE</button>
-<script>
-  // 各テーマの切替＋保存（リロードでも維持）。OFFで即・元デザインに戻る。テーマは排他。
-  function applyGbTheme(on){
-    document.body.classList.toggle('gb-theme', on);
-    if(on) document.body.classList.remove('vintage-theme');
-    const b=document.getElementById('gb-toggle'); if(b) b.textContent = on ? 'GB:ON' : 'GB MODE';
-    const v=document.getElementById('vt-toggle'); if(v) v.textContent='VINTAGE';
-    try{ localStorage.setItem('muketsu_theme', on?'gb':''); }catch(e){}
-  }
-  function applyVtTheme(on){
-    document.body.classList.toggle('vintage-theme', on);
-    if(on) document.body.classList.remove('gb-theme');
-    const v=document.getElementById('vt-toggle'); if(v) v.textContent = on ? 'VINTAGE:ON' : 'VINTAGE';
-    const b=document.getElementById('gb-toggle'); if(b) b.textContent='GB MODE';
-    try{ localStorage.setItem('muketsu_theme', on?'vintage':''); }catch(e){}
-  }
-  function toggleGbTheme(){ applyGbTheme(!document.body.classList.contains('gb-theme')); }
-  function toggleVtTheme(){ applyVtTheme(!document.body.classList.contains('vintage-theme')); }
-  (function(){ try{ const t=localStorage.getItem('muketsu_theme')||localStorage.getItem('muketsu_gb_theme'); if(t==='gb'||t==='1') applyGbTheme(true); else if(t==='vintage') applyVtTheme(true); }catch(e){} })();
-</script>
 
-<div class="app-container">
+<!-- ============ 左スライドメニュー ============ -->
+<button id="mk-menu-btn" onclick="toggleMkMenu()" aria-label="メニュー"><span></span><span></span><span></span></button>
+<div id="mk-menu-overlay" onclick="closeMkMenu()"></div>
+<nav id="mk-menu-panel" aria-label="メインメニュー">
+  <div class="mk-menu-hd"><small>MENU</small>MUKETSU</div>
+  <button class="mk-menu-item active" data-page="race"  onclick="showMkPage('race')"><span class="ic">🏇</span>レース<span class="ar">›</span></button>
+  <button class="mk-menu-item"        data-page="data"  onclick="showMkPage('data')"><span class="ic">📊</span>データ部屋<span class="ar">›</span></button>
+  <button class="mk-menu-item"        data-page="usage" onclick="showMkPage('usage')"><span class="ic">📖</span>使い方<span class="ar">›</span></button>
+</nav>
+
+<!-- データ部屋（箱だけ） -->
+<div class="mk-page" id="page-data">
+  <div class="mk-placeholder">
+    <span class="ph-eyebrow">DATA ROOM</span>
+    <h2><span class="mk-mk">データ部屋</span></h2>
+    <p>種牡馬・騎手・厩舎の成績など、予想に使うデータをここにまとめます。<br>（中身は準備中）</p>
+    <div class="ph-box">🔧 ここにデータを追加していきます</div>
+  </div>
+</div>
+
+<!-- 使い方（箱だけ） -->
+<div class="mk-page" id="page-usage">
+  <div class="mk-placeholder">
+    <span class="ph-eyebrow">HOW TO USE</span>
+    <h2><span class="mk-mk">使い方</span></h2>
+    <p>MUKETSUの使い方ガイドをここに載せます。<br>（中身は準備中）</p>
+    <div class="ph-box">🔧 ここに使い方を追加していきます</div>
+  </div>
+</div>
+
+<div class="app-container mk-page active" id="page-race">
   <div id="site-title" style="text-align:center;padding:40px 18px 32px;background:#1a1a1a;border-radius:22px;margin:12px;position:relative;">
     <div style="font-family:'Anton','Fraunces','Helvetica Neue',sans-serif;font-weight:400;color:#ccf23f;font-size:clamp(56px,17vw,116px);letter-spacing:.04em;line-height:.9;white-space:nowrap;">MUKETSU</div>
     <div style="color:#c9c8c0;font-size:13px;letter-spacing:.1em;font-weight:700;margin-top:20px;">期待値計算で<span style="color:#ccf23f;">無血で勝つ・回収</span></div>
@@ -9303,6 +9239,29 @@ window.closeDetailedData2Modal = function() {
     if(document.readyState==='complete') setTimeout(boot,300);
     else window.addEventListener('load', function(){ setTimeout(boot,300); });
   })();
+</script>
+<script>
+  // 左スライドメニュー＋ページ切替
+  function toggleMkMenu(){
+    const open = !document.getElementById('mk-menu-panel').classList.contains('open');
+    document.getElementById('mk-menu-panel').classList.toggle('open', open);
+    document.getElementById('mk-menu-overlay').classList.toggle('open', open);
+    document.getElementById('mk-menu-btn').classList.toggle('open', open);
+  }
+  function closeMkMenu(){
+    ['mk-menu-panel','mk-menu-overlay','mk-menu-btn'].forEach(id=>document.getElementById(id).classList.remove('open'));
+  }
+  function showMkPage(name){
+    document.querySelectorAll('.mk-page').forEach(p=>p.classList.remove('active'));
+    const pg = document.getElementById('page-'+name);
+    if(pg) pg.classList.add('active');
+    document.querySelectorAll('.mk-menu-item').forEach(b=>b.classList.toggle('active', b.dataset.page===name));
+    closeMkMenu();
+    window.scrollTo(0,0);
+    try{ localStorage.setItem('muketsu_page', name); }catch(e){}
+  }
+  // 起動時：前回のページを復元（デフォルトはレース）
+  (function(){ try{ const p=localStorage.getItem('muketsu_page'); if(p && p!=='race' && document.getElementById('page-'+p)) showMkPage(p); }catch(e){} })();
 </script>
 </body>
 </html>
