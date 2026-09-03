@@ -31,7 +31,7 @@
       display:flex; flex-direction:column; overflow-y:auto; }
     #mk-menu-panel.open{ transform:translateX(0); }
     .mk-menu-hd{ background:#1a1a1a; color:#ccf23f; font-family:'Zen Kaku Gothic New',sans-serif;
-      font-weight:900; font-size:26px; letter-spacing:.06em; padding:26px 22px 20px; line-height:1; }
+      font-weight:900; font-size:26px; letter-spacing:.06em; padding:64px 22px 20px; line-height:1; }
     .mk-menu-hd small{ display:block; font-size:9px; color:#8a9a3a; letter-spacing:.24em; font-weight:800; margin-bottom:8px; }
     .mk-menu-item{ display:flex; align-items:center; gap:14px; padding:18px 22px; cursor:pointer;
       font-family:'Zen Kaku Gothic New',sans-serif; font-weight:700; font-size:16px; color:#1a1a1a;
@@ -1218,6 +1218,7 @@ input[type=number], input[type=text], textarea, select {
   <button class="mk-menu-item active" data-page="race"  onclick="showMkPage('race')"><span class="ic">🏇</span>レース<span class="ar">›</span></button>
   <button class="mk-menu-item"        data-page="data"  onclick="showMkPage('data')"><span class="ic">📊</span>データ部屋<span class="ar">›</span></button>
   <button class="mk-menu-item"        data-page="usage" onclick="showMkPage('usage')"><span class="ic">📖</span>使い方<span class="ar">›</span></button>
+  <button class="mk-menu-item"        data-page="contact" onclick="showMkPage('contact')"><span class="ic">✉️</span>お問い合わせ<span class="ar">›</span></button>
 </nav>
 
 <!-- データ部屋（目次＋箱） -->
@@ -1261,6 +1262,19 @@ input[type=number], input[type=text], textarea, select {
     <section class="mk-sec" id="use-winrate"><h3><span class="ic">📊</span>勝率設定</h3><div class="ph-box">🔧 準備中</div></section>
     <section class="mk-sec" id="use-ticket"><h3><span class="ic">🎯</span>買い目ビルダー</h3><div class="ph-box">🔧 準備中</div></section>
     <section class="mk-sec" id="use-ai"><h3><span class="ic">🤖</span>AI相談</h3><div class="ph-box">🔧 準備中</div></section>
+  </div>
+</div>
+
+<!-- お問い合わせ（箱だけ） -->
+<div class="mk-page" id="page-contact">
+  <div class="mk-room">
+    <div class="mk-room-hd">
+      <span class="ph-eyebrow">CONTACT</span>
+      <h2><span class="mk-mk">お問い合わせ</span></h2>
+      <p>ご質問・ご要望はこちらから。（フォームは準備中）</p>
+    </div>
+    <section class="mk-sec" id="contact-form"><h3><span class="ic">✉️</span>お問い合わせフォーム</h3><div class="ph-box">🔧 準備中</div></section>
+    <section class="mk-sec" id="contact-info"><h3><span class="ic">ℹ️</span>運営情報</h3><div class="ph-box">🔧 準備中</div></section>
   </div>
 </div>
 
@@ -9308,7 +9322,7 @@ window.closeDetailedData2Modal = function() {
     const pg = document.getElementById('page-'+name);
     if(pg) pg.classList.add('active');
     document.querySelectorAll('.mk-menu-item').forEach(b=>b.classList.toggle('active', b.dataset.page===name));
-    const title = {race:'MUKETSU', data:'データ部屋', usage:'使い方'}[name] || 'MUKETSU';
+    const title = {race:'MUKETSU', data:'データ部屋', usage:'使い方', contact:'お問い合わせ'}[name] || 'MUKETSU';
     const tb=document.getElementById('mk-topbar-title'); if(tb) tb.textContent = title;
     closeMkMenu();
     window.scrollTo(0,0);
