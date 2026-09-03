@@ -9,19 +9,26 @@
   <style>
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
+    /* SVGアイコン（絵文字の置き換え）：文字色に追従・行内で揃う */
+    .mk-ic{ width:1em; height:1em; vertical-align:-0.14em; flex:0 0 auto; }
+    .mk-menu-item .ic .mk-ic, .mk-toc-item .ic .mk-ic, .mk-sec h3 .ic .mk-ic{ width:1.15em; height:1.15em; }
+    .mk-menu-item .ic, .mk-toc-item .ic, .mk-sec h3 .ic{ display:inline-flex; align-items:center; justify-content:center; }
+    .ai-lock-ico .mk-ic{ width:26px; height:26px; }
+
     /* ============ 上部ヘッダーバー＋左スライドメニュー ============ */
     #mk-topbar{ position:fixed; top:0; left:0; right:0; height:52px; z-index:100000;
       background:#1a1a1a; display:flex; align-items:center; padding:0 12px; box-shadow:0 2px 8px rgba(0,0,0,.25); }
     #mk-topbar .mk-brand{ margin-left:12px; font-family:'Anton','Fraunces',sans-serif; color:#ccf23f;
       font-size:22px; letter-spacing:.06em; line-height:1; }
     body{ padding-top:52px !important; } /* 本文をバー分下げる */
-    #mk-menu-btn{ position:static; width:40px; height:40px; flex:0 0 auto;
+    #mk-menu-btn{ position:relative; width:40px; height:40px; flex:0 0 auto;
       background:transparent; border:2px solid #ccf23f; border-radius:10px; cursor:pointer;
       display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; box-shadow:none; }
     #mk-menu-btn span{ display:block; width:19px; height:2.5px; background:#ccf23f; border-radius:2px; transition:.25s; }
-    #mk-menu-btn.open span:nth-child(1){ transform:translateY(7.5px) rotate(45deg); }
+    /* ×に変形：3本目を完全に消し、1・3本目を中央で交差させる（はみ出し防止） */
+    #mk-menu-btn.open span:nth-child(1){ position:absolute; transform:rotate(45deg); }
     #mk-menu-btn.open span:nth-child(2){ opacity:0; }
-    #mk-menu-btn.open span:nth-child(3){ transform:translateY(-7.5px) rotate(-45deg); }
+    #mk-menu-btn.open span:nth-child(3){ position:absolute; transform:rotate(-45deg); }
     #mk-menu-overlay{ position:fixed; inset:0; z-index:99998; background:rgba(20,20,18,.5);
       opacity:0; pointer-events:none; transition:opacity .25s; }
     #mk-menu-overlay.open{ opacity:1; pointer-events:auto; }
@@ -162,7 +169,7 @@
     .data-table th { background: #444; color: #fff; padding: 2px 1px; white-space: nowrap; cursor: pointer; user-select: none; font-size: 10px; }
     .data-table th.editable-header { cursor: pointer; position: relative; }
     .data-table th.editable-header:hover { background: #666; }
-    .data-table th.editable-header::after { content: '✎'; font-size: 8px; opacity: 0.5; margin-left: 2px; }
+    .data-table th.editable-header::after { content:'¸E'; font-size: 8px; opacity: 0.5; margin-left: 2px; }
     .data-table td { border-bottom: 1px solid #ddd; padding: 2px 1px; font-size: 10px; vertical-align: middle; }
     .td-name { text-align: left; font-weight: bold; font-size: 10px; white-space: nowrap; max-width: 100px; overflow: hidden; text-overflow: ellipsis; transition: background-color 0.3s; }
     .name-starred { background-color: #ffd54f !important; border-radius: 2px; }
@@ -1215,10 +1222,10 @@ input[type=number], input[type=text], textarea, select {
 <div id="mk-menu-overlay" onclick="closeMkMenu()"></div>
 <nav id="mk-menu-panel" aria-label="メインメニュー">
   <div class="mk-menu-hd"><small>MENU</small>MUKETSU</div>
-  <button class="mk-menu-item active" data-page="race"  onclick="showMkPage('race')"><span class="ic">🏇</span>レース<span class="ar">›</span></button>
-  <button class="mk-menu-item"        data-page="data"  onclick="showMkPage('data')"><span class="ic">📊</span>データ部屋<span class="ar">›</span></button>
-  <button class="mk-menu-item"        data-page="usage" onclick="showMkPage('usage')"><span class="ic">📖</span>使い方<span class="ar">›</span></button>
-  <button class="mk-menu-item"        data-page="contact" onclick="showMkPage('contact')"><span class="ic">✉️</span>お問い合わせ<span class="ar">›</span></button>
+  <button class="mk-menu-item active" data-page="race"  onclick="showMkPage('race')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20v-4a6 6 0 0 1 6-6h2l4-4 3 1-1 3 2 2-3 3v9"/><circle cx="17" cy="7" r=".6" fill="currentColor"/></svg></span>レース<span class="ar">›</span></button>
+  <button class="mk-menu-item"        data-page="data"  onclick="showMkPage('data')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>データ部屋<span class="ar">›</span></button>
+  <button class="mk-menu-item"        data-page="usage" onclick="showMkPage('usage')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h5v18H6a2 2 0 0 1-2-2z"/><path d="M20 5a2 2 0 0 0-2-2h-5v18h5a2 2 0 0 0 2-2z"/></svg></span>使い方<span class="ar">›</span></button>
+  <button class="mk-menu-item"        data-page="contact" onclick="showMkPage('contact')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>お問い合わせ<span class="ar">›</span></button>
 </nav>
 
 <!-- データ部屋（目次＋箱） -->
@@ -1230,15 +1237,15 @@ input[type=number], input[type=text], textarea, select {
       <p>予想に使うデータをまとめる部屋。下の項目から選べます。</p>
     </div>
     <div class="mk-toc">
-      <a class="mk-toc-item" href="#data-sire"><span class="ic">🐴</span><b>種牡馬データ</b><span>産駒のコース・距離別成績</span></a>
-      <a class="mk-toc-item" href="#data-jockey"><span class="ic">🏇</span><b>騎手データ</b><span>騎手のコース・条件別成績</span></a>
-      <a class="mk-toc-item" href="#data-stable"><span class="ic">🏠</span><b>厩舎データ</b><span>調教師の得意条件</span></a>
-      <a class="mk-toc-item" href="#data-course"><span class="ic">📐</span><b>コースデータ</b><span>各コースの傾向・バイアス</span></a>
+      <a class="mk-toc-item" href="#data-sire"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20v-4a6 6 0 0 1 6-6h2l4-4 3 1-1 3 2 2-3 3v9"/><circle cx="17" cy="7" r=".6" fill="currentColor"/></svg></span><b>種牡馬データ</b><span>産駒のコース・距離別成績</span></a>
+      <a class="mk-toc-item" href="#data-jockey"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M5 20l3-6 4-2 4 3 3 5"/><path d="M9 12l-4 2"/></svg></span><b>騎手データ</b><span>騎手のコース・条件別成績</span></a>
+      <a class="mk-toc-item" href="#data-stable"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span><b>厩舎データ</b><span>調教師の得意条件</span></a>
+      <a class="mk-toc-item" href="#data-course"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16L16 4l4 4L8 20z"/><path d="M8 8l2 2M11 5l2 2M5 11l2 2"/></svg></span><b>コースデータ</b><span>各コースの傾向・バイアス</span></a>
     </div>
-    <section class="mk-sec" id="data-sire"><h3><span class="ic">🐴</span>種牡馬データ</h3><div class="ph-box">🔧 準備中</div></section>
-    <section class="mk-sec" id="data-jockey"><h3><span class="ic">🏇</span>騎手データ</h3><div class="ph-box">🔧 準備中</div></section>
-    <section class="mk-sec" id="data-stable"><h3><span class="ic">🏠</span>厩舎データ</h3><div class="ph-box">🔧 準備中</div></section>
-    <section class="mk-sec" id="data-course"><h3><span class="ic">📐</span>コースデータ</h3><div class="ph-box">🔧 準備中</div></section>
+    <section class="mk-sec" id="data-sire"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20v-4a6 6 0 0 1 6-6h2l4-4 3 1-1 3 2 2-3 3v9"/><circle cx="17" cy="7" r=".6" fill="currentColor"/></svg></span>種牡馬データ</h3><div class="ph-box">準備中</div></section>
+    <section class="mk-sec" id="data-jockey"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M5 20l3-6 4-2 4 3 3 5"/><path d="M9 12l-4 2"/></svg></span>騎手データ</h3><div class="ph-box">準備中</div></section>
+    <section class="mk-sec" id="data-stable"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>厩舎データ</h3><div class="ph-box">準備中</div></section>
+    <section class="mk-sec" id="data-course"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16L16 4l4 4L8 20z"/><path d="M8 8l2 2M11 5l2 2M5 11l2 2"/></svg></span>コースデータ</h3><div class="ph-box">準備中</div></section>
   </div>
 </div>
 
@@ -1251,17 +1258,17 @@ input[type=number], input[type=text], textarea, select {
       <p>MUKETSUの使い方ガイド。下の項目から選べます。</p>
     </div>
     <div class="mk-toc">
-      <a class="mk-toc-item" href="#use-start"><span class="ic">🚀</span><b>はじめに</b><span>基本の流れ</span></a>
-      <a class="mk-toc-item" href="#use-sim"><span class="ic">🎮</span><b>展開シミュレーター</b><span>展開図の見方・使い方</span></a>
-      <a class="mk-toc-item" href="#use-winrate"><span class="ic">📊</span><b>勝率設定</b><span>各馬の勝率を調整する</span></a>
-      <a class="mk-toc-item" href="#use-ticket"><span class="ic">🎯</span><b>買い目ビルダー</b><span>買い目とオッズ・期待値</span></a>
-      <a class="mk-toc-item" href="#use-ai"><span class="ic">🤖</span><b>AI相談</b><span>壁打ちの使い方</span></a>
+      <a class="mk-toc-item" href="#use-start"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c4 2 6 6 6 10l-4 4-4-4c0-4 2-8 2-10z"/><path d="M9 17l-3 4 4-3"/></svg></span><b>はじめに</b><span>基本の流れ</span></a>
+      <a class="mk-toc-item" href="#use-sim"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="4"/><path d="M7 12h3M8.5 10.5v3"/><circle cx="16" cy="11" r="1" fill="currentColor"/><circle cx="18" cy="14" r="1" fill="currentColor"/></svg></span><b>展開シミュレーター</b><span>展開図の見方・使い方</span></a>
+      <a class="mk-toc-item" href="#use-winrate"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><b>勝率設定</b><span>各馬の勝率を調整する</span></a>
+      <a class="mk-toc-item" href="#use-ticket"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></span><b>買い目ビルダー</b><span>買い目とオッズ・期待値</span></a>
+      <a class="mk-toc-item" href="#use-ai"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 5v3"/><circle cx="9" cy="13" r="1.2" fill="currentColor"/><circle cx="15" cy="13" r="1.2" fill="currentColor"/></svg></span><b>AI相談</b><span>壁打ちの使い方</span></a>
     </div>
-    <section class="mk-sec" id="use-start"><h3><span class="ic">🚀</span>はじめに</h3><div class="ph-box">🔧 準備中</div></section>
-    <section class="mk-sec" id="use-sim"><h3><span class="ic">🎮</span>展開シミュレーター</h3><div class="ph-box">🔧 準備中</div></section>
-    <section class="mk-sec" id="use-winrate"><h3><span class="ic">📊</span>勝率設定</h3><div class="ph-box">🔧 準備中</div></section>
-    <section class="mk-sec" id="use-ticket"><h3><span class="ic">🎯</span>買い目ビルダー</h3><div class="ph-box">🔧 準備中</div></section>
-    <section class="mk-sec" id="use-ai"><h3><span class="ic">🤖</span>AI相談</h3><div class="ph-box">🔧 準備中</div></section>
+    <section class="mk-sec" id="use-start"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c4 2 6 6 6 10l-4 4-4-4c0-4 2-8 2-10z"/><path d="M9 17l-3 4 4-3"/></svg></span>はじめに</h3><div class="ph-box">準備中</div></section>
+    <section class="mk-sec" id="use-sim"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="4"/><path d="M7 12h3M8.5 10.5v3"/><circle cx="16" cy="11" r="1" fill="currentColor"/><circle cx="18" cy="14" r="1" fill="currentColor"/></svg></span>展開シミュレーター</h3><div class="ph-box">準備中</div></section>
+    <section class="mk-sec" id="use-winrate"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>勝率設定</h3><div class="ph-box">準備中</div></section>
+    <section class="mk-sec" id="use-ticket"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></span>買い目ビルダー</h3><div class="ph-box">準備中</div></section>
+    <section class="mk-sec" id="use-ai"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 5v3"/><circle cx="9" cy="13" r="1.2" fill="currentColor"/><circle cx="15" cy="13" r="1.2" fill="currentColor"/></svg></span>AI相談</h3><div class="ph-box">準備中</div></section>
   </div>
 </div>
 
@@ -1273,8 +1280,8 @@ input[type=number], input[type=text], textarea, select {
       <h2><span class="mk-mk">お問い合わせ</span></h2>
       <p>ご質問・ご要望はこちらから。（フォームは準備中）</p>
     </div>
-    <section class="mk-sec" id="contact-form"><h3><span class="ic">✉️</span>お問い合わせフォーム</h3><div class="ph-box">🔧 準備中</div></section>
-    <section class="mk-sec" id="contact-info"><h3><span class="ic">ℹ️</span>運営情報</h3><div class="ph-box">🔧 準備中</div></section>
+    <section class="mk-sec" id="contact-form"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>お問い合わせフォーム</h3><div class="ph-box">準備中</div></section>
+    <section class="mk-sec" id="contact-info"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span>運営情報</h3><div class="ph-box">準備中</div></section>
   </div>
 </div>
 
@@ -1292,18 +1299,18 @@ input[type=number], input[type=text], textarea, select {
       <div id="ai-uninitialized">
         <div style="font-size: 13px; font-weight: bold; color: #1a1a1a; margin-bottom: 8px;">カスタムAIプロファイルの設定</div>
         <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-          <button class="btn-success" style="background: #1a1a1a; border-color: #1a1a1a; font-size: 12px; padding: 6px 16px; border-radius: 4px; box-shadow: none; cursor: pointer;" onclick="window.openAiSetupModal()">🤖 AIを作成 / 選択</button>
-          <button class="btn-primary" style="background:#1a1a1a !important; border:1px solid #1a1a1a !important; color:#ffffff !important; font-size:12px; padding:6px 16px; border-radius:4px; box-shadow:none; cursor:pointer;" onclick="showOddsAnalysisModal()">📊 10分前オッズ解析</button>
+          <button class="btn-success" style="background: #1a1a1a; border-color: #1a1a1a; font-size: 12px; padding: 6px 16px; border-radius: 4px; box-shadow: none; cursor: pointer;" onclick="window.openAiSetupModal()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 5v3"/><circle cx="9" cy="13" r="1.2" fill="currentColor"/><circle cx="15" cy="13" r="1.2" fill="currentColor"/></svg> AIを作成 / 選択</button>
+          <button class="btn-primary" style="background:#1a1a1a !important; border:1px solid #1a1a1a !important; color:#ffffff !important; font-size:12px; padding:6px 16px; border-radius:4px; box-shadow:none; cursor:pointer;" onclick="showOddsAnalysisModal()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg> 10分前オッズ解析</button>
         </div>
       </div>
                 <!-- AI設定後 -->
       <div id="ai-initialized" style="display: none;">
         <div style="display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap;">
           <div style="font-size: 12px; color: #3d3d3a; background: #f4f2ec; padding: 4px 10px; border: 1px solid #dcdad3; border-radius: 4px; cursor: pointer; display:flex; align-items:center; gap:4px;" onclick="window.openAiSetupModal()" title="クリックでAIを変更">
-            🤖 AI: <span id="ai-partner-name" style="font-size: 13px; font-weight: bold; color:#1a1a1a;"></span>
+            <svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 5v3"/><circle cx="9" cy="13" r="1.2" fill="currentColor"/><circle cx="15" cy="13" r="1.2" fill="currentColor"/></svg> AI: <span id="ai-partner-name" style="font-size: 13px; font-weight: bold; color:#1a1a1a;"></span>
             <span style="font-size: 9px; color:#94a3b8;">(変更)</span>
           </div>
-          <button class="btn-primary" style="background:#1a1a1a !important; border:1px solid #1a1a1a !important; color:#ffffff !important; font-size:11px; padding:5px 12px; border-radius:4px; box-shadow:none; cursor:pointer;" onclick="showOddsAnalysisModal()">📊 10分前オッズ解析</button>
+          <button class="btn-primary" style="background:#1a1a1a !important; border:1px solid #1a1a1a !important; color:#ffffff !important; font-size:11px; padding:5px 12px; border-radius:4px; box-shadow:none; cursor:pointer;" onclick="showOddsAnalysisModal()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg> 10分前オッズ解析</button>
         </div>
       </div>
 
@@ -1315,8 +1322,8 @@ input[type=number], input[type=text], textarea, select {
       <!-- ▼ 1100px を 850px に変更、padding を 10px に変更 ▼ -->
       <div class="modal-box" style="width: 850px; max-width: none; border-radius: 8px; padding: 10px; margin: 0 auto;">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #1a1a1a; padding-bottom: 8px; margin-bottom: 10px;">
-          <h2 style="color:#1a1a1a; font-size:18px; margin:0; border:none; padding:0;">📊 10分前オッズ解析</h2>
-          <button class="btn-danger" style="background:#e74c3c; border:none; padding:6px 12px; font-size:13px; font-weight:bold; border-radius:4px; box-shadow:none;" onclick="closeOddsAnalysisModal()">✖ 閉じる</button>
+          <h2 style="color:#1a1a1a; font-size:18px; margin:0; border:none; padding:0;"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg> 10分前オッズ解析</h2>
+          <button class="btn-danger" style="background:#e74c3c; border:none; padding:6px 12px; font-size:13px; font-weight:bold; border-radius:4px; box-shadow:none;" onclick="closeOddsAnalysisModal()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg> 閉じる</button>
         </div>
         <div id="oa-modal-content" style="max-height: 80vh; overflow-y: auto;"></div>
       </div>
@@ -1328,7 +1335,7 @@ input[type=number], input[type=text], textarea, select {
     <div id="master-panel" style="display:none; margin-bottom:8px;">
       <details style="background:#fff; border-radius:6px; box-shadow:0 1px 3px rgba(0,0,0,.1); border:1px solid #e8e6df; outline:none; width:100%;">
         <summary style="padding:8px; font-size:12px; font-weight:bold; color:#3d3d3a; cursor:pointer; user-select:none; background:#f4f2ec; border-radius:6px;">
-          ▼ ⚙️ 設定（オッズ自動取得 / 管理者メニュー）
+          ▼ <svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg> 設定（オッズ自動取得 / 管理者メニュー）
         </summary>
         <div style="padding:6px; background:#f4f2ec; border-top:1px dashed #dcdad3; border-radius:0 0 6px 6px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px;">
           <div style="display:flex;align-items:center;gap:6px;flex-grow:1;">
@@ -1365,7 +1372,7 @@ input[type=number], input[type=text], textarea, select {
 
   <!-- ▼▼▼ ここから下をコピーして貼り付けてください（説明文は含めないでください） ▼▼▼ -->
   <div class="admin-section" style="margin-top: 20px;">
-    <h3 style="color:#1a1a1a; border-bottom: 2px solid #1a1a1a;">📊 コース・陣営データ 一括入力 (TSV2)</h3>
+    <h3 style="color:#1a1a1a; border-bottom: 2px solid #1a1a1a;"> コース・陣営データ 一括入力 (TSV2)</h3>
     <div class="tsv-format-hint">
       さっきツールで作成した「全36レース抽出_AI解析用.csv」のデータをコピーして、ここに全レース分一括で貼り付けます。
     </div>
@@ -1386,7 +1393,7 @@ input[type=number], input[type=text], textarea, select {
 
     <div class="filter-panel" id="filter-panel" style="display:none;">
       <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; padding:10px 14px;">
-        <span style="font-size:11px; font-weight:700; color:var(--mk-dark); letter-spacing:.04em;">🔍 レース絞り込み</span>
+        <span style="font-size:11px; font-weight:700; color:var(--mk-dark); letter-spacing:.04em;"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.2-4.2"/></svg> レース絞り込み</span>
         <select id="global-filter-select" onchange="applyGlobalFilter()" style="padding:2px 4px; font-size:11px; border:1px solid #ccc; border-radius:3px; outline:none;">
           <option value="all">すべてのレース</option>
           <option value="haran1">堅いレース (波乱度★1)</option>
@@ -1413,7 +1420,7 @@ input[type=number], input[type=text], textarea, select {
         <span style="font-weight:bold;">騎手:</span>
         <input type="text" id="custom-jockey" list="jockey-list" value="" placeholder="例:武" onkeyup="applyCustomFilter()" style="width:60px; margin-right:8px; padding:1px; font-size:10px;">
         <datalist id="jockey-list"></datalist>
-        <button class="btn-danger" style="padding:2px 8px; font-size:10px; cursor:pointer;" onclick="resetCustomFilter()">✖ リセット</button>
+        <button class="btn-danger" style="padding:2px 8px; font-size:10px; cursor:pointer;" onclick="resetCustomFilter()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg> リセット</button>
       </div>
 
       <div id="top5-panel" style="display:none; margin-top:8px; border-top:1px dashed #ccc; padding-top:6px;">
@@ -1483,8 +1490,8 @@ input[type=number], input[type=text], textarea, select {
         </div>
       <!-- AI/10分前オッズは別途新設予定のため下部に退避（機能温存・非表示） -->
       <div id="race-toolbar" style="display:none;">
-        <button onclick="window.openAiSetupModal()">🤖 AI: <span id="race-ai-name">総合フラット型AI</span></button>
-        <button onclick="showOddsAnalysisModal()">📊 10分前オッズ解析</button>
+        <button onclick="window.openAiSetupModal()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 5v3"/><circle cx="9" cy="13" r="1.2" fill="currentColor"/><circle cx="15" cy="13" r="1.2" fill="currentColor"/></svg> AI: <span id="race-ai-name">総合フラット型AI</span></button>
+        <button onclick="showOddsAnalysisModal()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg> 10分前オッズ解析</button>
       </div>
       <!-- 旧「基礎データ」帯は撤去。互換のため参照される要素だけ非表示で残す -->
       <span id="race-title-text" style="display:none;"></span>
@@ -1493,7 +1500,7 @@ input[type=number], input[type=text], textarea, select {
       <a id="course-link" href="#" target="_blank" style="display:none;"></a>
         <!-- ▼ レース情報のデータリンク ▼ -->
         <div class="race-data-links">
-          <button class="pill-btn" onclick="showDetailedData2Modal()">📊 コース・陣営データ</button>
+          <button class="pill-btn" onclick="showDetailedData2Modal()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg> コース・陣営データ</button>
         </div>
       </section>
       <!-- ①レース情報ここまで -->
@@ -1617,7 +1624,7 @@ input[type=number], input[type=text], textarea, select {
       <div class="ai-talk-slot" id="ai-talk-slot">
         <div class="sub-head ai-talk-head">
           <span class="ai-talk-dot"></span><span class="sub-head-ttl">AI相談（壁打ち）</span>
-          <span class="ai-lock-badge" id="ai-lock-badge">🔒 有料機能</span>
+          <span class="ai-lock-badge" id="ai-lock-badge"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> 有料機能</span>
         </div>
         <!-- 中身（グレーアウト対象） -->
         <div class="ai-talk-inner" id="ai-talk-inner">
@@ -1635,7 +1642,7 @@ input[type=number], input[type=text], textarea, select {
         <!-- 未課金時のロックオーバーレイ -->
         <div class="ai-lock-overlay" id="ai-lock-overlay">
           <div class="ai-lock-card">
-            <div class="ai-lock-ico">🔒</div>
+            <div class="ai-lock-ico"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
             <div class="ai-lock-ttl">AI相談は有料メンバー限定</div>
             <div class="ai-lock-desc">出馬表・過去走・あなたのメモを踏まえて、AIと壁打ちできます。</div>
             <button class="ai-lock-btn" onclick="openAiUnlock()">プランを見る</button>
@@ -1717,7 +1724,7 @@ input[type=number], input[type=text], textarea, select {
       <div class="graph-mode-bar" id="graph-mode-bar" style="display:none;">
         <span>表示モード:</span>
         <span class="graph-mode-badge" id="graph-mode-badge">通常</span>
-        <span style="margin-left:auto;font-size:9px;cursor:pointer;color:#ff8a80;" onclick="resetGraphSpecialMode()">✖ 通常に戻す</span>
+        <span style="margin-left:auto;font-size:9px;cursor:pointer;color:#ff8a80;" onclick="resetGraphSpecialMode()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg> 通常に戻す</span>
       </div>
       <div id="odds-analysis-panel" style="display:none;"></div>
       <!-- 勝率設定の項目見出し（各馬評価と同じ体裁） -->
@@ -1796,7 +1803,7 @@ input[type=number], input[type=text], textarea, select {
           <span style="font-size:11px;font-weight:700;color:var(--mk-dark);">予算</span>
           <input type="number" id="budget-input" value="3000" style="width:74px;padding:5px 7px;font-size:12px;border:1px solid var(--mk-line);border-radius:8px;" oninput="updateBudget(this.value)" onchange="updateBudget(this.value)">
           <span style="font-size:11px;font-weight:700;color:var(--mk-dark);">円</span>
-          <button class="pill-btn pill-sm pill-beige" style="margin-left:auto;" onclick="syncOddsFromGAS()">🔄 オッズ更新</button>
+          <button class="pill-btn pill-sm pill-beige" style="margin-left:auto;" onclick="syncOddsFromGAS()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.5-5.8"/><path d="M20 4v5h-5"/></svg> オッズ更新</button>
         </div>
         <div class="tb-action-row">
           <button class="pill-btn pill-sm pill-beige" onclick="resetTickets()">リセット</button>
@@ -1829,10 +1836,10 @@ input[type=number], input[type=text], textarea, select {
             <div class="rep-header" id="repHeader">
                 <div id="repHeaderTitle">プラン概要補足</div>
                 <div style="display: flex; gap: 8px;">
-                    <button class="rep-header-btn" style="color:#2c3e50;" onclick="copyReportText()">📋 コピー</button>
-                    <button class="rep-header-btn" style="color:#2c3e50;" onclick="window.print()">🖨️ 印刷/PDF</button>
+                    <button class="rep-header-btn" style="color:#2c3e50;" onclick="copyReportText()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M9 10h6M9 14h4"/></svg> コピー</button>
+                    <button class="rep-header-btn" style="color:#2c3e50;" onclick="window.print()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="4" y="9" width="16" height="7" rx="2"/><path d="M8 16h8v5H8z"/></svg> 印刷/PDF</button>
                     <!-- ▼ 閉じる時に元のスマホサイズに戻す処理を追加 ▼ -->
-                    <button class="rep-header-btn" style="color:#e74c3c; background:#fff;" onclick="document.getElementById('reportModal').style.display='none'; let vp = document.querySelector('meta[name=\'viewport\']'); if(vp) vp.setAttribute('content', 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no');">✖ 閉じる</button>
+                    <button class="rep-header-btn" style="color:#e74c3c; background:#fff;" onclick="document.getElementById('reportModal').style.display='none'; let vp = document.querySelector('meta[name=\'viewport\']'); if(vp) vp.setAttribute('content', 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no');"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg> 閉じる</button>
                 </div>
             </div>
             <div class="rep-content" id="reportContent"></div>
@@ -1845,8 +1852,8 @@ input[type=number], input[type=text], textarea, select {
     <div id="detailed-data2-modal" class="modal" style="align-items:flex-start; overflow-x:auto; padding-top:10px; z-index: 10000;">
       <div class="modal-box" style="width:1150px; max-width:none; border-radius:8px; padding:15px; margin:0 auto; background:#fff;">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #1a1a1a; padding-bottom:8px; margin-bottom:15px;">
-          <h2 style="color:#1a1a1a; font-size:18px; margin:0;">📊 コース・陣営適性データ</h2>
-          <button class="btn-danger" style="padding:6px 12px; font-size:13px;" onclick="closeDetailedData2Modal()">✖ 閉じる</button>
+          <h2 style="color:#1a1a1a; font-size:18px; margin:0;"> コース・陣営適性データ</h2>
+          <button class="btn-danger" style="padding:6px 12px; font-size:13px;" onclick="closeDetailedData2Modal()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg> 閉じる</button>
         </div>
         <div id="dd2-course-feature" style="background:#f4f2ec; border-left:4px solid #b8a06a; padding:8px 12px; font-size:13px; font-weight:bold; color:#333; margin-bottom:15px;"></div>
         <div id="detailed-data2-content" style="max-height:80vh; overflow-y:auto;"></div>
@@ -1940,7 +1947,7 @@ input[type=number], input[type=text], textarea, select {
           </div>
         </div>
         <div style="margin-top:10px;">
-          <button class="btn-danger" style="padding:6px 14px;" onclick="closeAdmin()">✖ 閉じる</button>
+          <button class="btn-danger" style="padding:6px 14px;" onclick="closeAdmin()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg> 閉じる</button>
         </div>
       </div>
     </div>
@@ -1974,7 +1981,7 @@ input[type=number], input[type=text], textarea, select {
           <input type="text" id="gas-url-input-modal" class="gas-url-input" placeholder="https://script.google.com/macros/s/XXXXX/exec">
           <div style="display:flex;gap:8px;margin-top:8px;">
             <button class="btn-success" style="padding:6px 16px;font-size:12px;flex-grow:1;" onclick="saveGasUrlFromModal()">保存して接続</button>
-            <button class="btn-danger" style="padding:6px 14px;font-size:12px;" onclick="closeGasModal()">✖ 閉じる</button>
+            <button class="btn-danger" style="padding:6px 14px;font-size:12px;" onclick="closeGasModal()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg> 閉じる</button>
           </div>
         </div>
       </div>
@@ -1982,7 +1989,7 @@ input[type=number], input[type=text], textarea, select {
     <!-- GASモーダル -->
     <div id="gas-modal" class="modal">
       <div class="gas-modal-box">
-        <h2>⚙️ GAS設定ガイド — オッズ自動取得</h2>
+        <h2><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg> GAS設定ガイド — オッズ自動取得</h2>
         <div class="gas-step">
           <div style="display:flex;align-items:center;margin-bottom:6px;">
             <span class="gas-step-num">1</span>
@@ -1996,7 +2003,7 @@ input[type=number], input[type=text], textarea, select {
             <span class="gas-step-title">GASコードを貼り付ける</span>
           </div>
           <div style="text-align:right;margin:4px 0;">
-            <button class="btn-primary" style="padding:4px 10px;font-size:11px;" onclick="copyGasCode()">📋 コードをコピー</button>
+            <button class="btn-primary" style="padding:4px 10px;font-size:11px;" onclick="copyGasCode()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M9 10h6M9 14h4"/></svg> コードをコピー</button>
           </div>
           <textarea id="gas-code-display" class="gas-code-area" readonly></textarea>
         </div>
@@ -2007,8 +2014,8 @@ input[type=number], input[type=text], textarea, select {
           </div>
           <input type="text" id="gas-url-input-modal" class="gas-url-input" placeholder="https://script.google.com/macros/s/XXXXX/exec">
           <div style="display:flex;gap:8px;margin-top:8px;">
-            <button class="btn-success" style="padding:6px 16px;font-size:12px;flex-grow:1;" onclick="saveGasUrlFromModal()">✅ 保存して接続</button>
-            <button class="btn-danger" style="padding:6px 14px;font-size:12px;" onclick="closeGasModal()">✕ 閉じる</button>
+            <button class="btn-success" style="padding:6px 16px;font-size:12px;flex-grow:1;" onclick="saveGasUrlFromModal()">保存して接続</button>
+            <button class="btn-danger" style="padding:6px 14px;font-size:12px;" onclick="closeGasModal()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg> 閉じる</button>
           </div>
         </div>
       </div>
@@ -2019,9 +2026,9 @@ input[type=number], input[type=text], textarea, select {
             <div class="rep-header" id="repHeader">
                 <div id="repHeaderTitle">プラン概要補足</div>
                 <div style="display: flex; gap: 8px;">
-                    <button class="rep-header-btn" style="color:#2c3e50;" onclick="copyReportText()">📋 コピー</button>
-                    <button class="rep-header-btn" style="color:#2c3e50;" onclick="window.print()">🖨️ 印刷/PDF</button>
-                    <button class="rep-header-btn" style="color:#e74c3c; background:#fff;" onclick="document.getElementById('reportModal').style.display='none'">✖ 閉じる</button>
+                    <button class="rep-header-btn" style="color:#2c3e50;" onclick="copyReportText()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M9 10h6M9 14h4"/></svg> コピー</button>
+                    <button class="rep-header-btn" style="color:#2c3e50;" onclick="window.print()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="4" y="9" width="16" height="7" rx="2"/><path d="M8 16h8v5H8z"/></svg> 印刷/PDF</button>
+                    <button class="rep-header-btn" style="color:#e74c3c; background:#fff;" onclick="document.getElementById('reportModal').style.display='none'"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg> 閉じる</button>
                 </div>
             </div>
             <div class="rep-content" id="reportContent"></div>
@@ -2139,7 +2146,7 @@ input[type=number], input[type=text], textarea, select {
           
           <div style="display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid #e8e6df; padding-top: 10px;">
             <button class="btn-danger" style="background:#94a3b8; border:none; box-shadow:none;" onclick="backToModeSelection()">◀ 戻る</button>
-            <button class="btn-success" style="background:#1a1a1a; border-color:#1a1a1a; color:#ccf23f; font-weight:800; font-size:13px; padding:6px 20px; box-shadow:none;" onclick="saveTuningAI()">✅ この設定で確定</button>
+            <button class="btn-success" style="background:#1a1a1a; border-color:#1a1a1a; color:#ccf23f; font-weight:800; font-size:13px; padding:6px 20px; box-shadow:none;" onclick="saveTuningAI()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg> この設定で確定</button>
           </div>
         </div>
 
@@ -2702,8 +2709,8 @@ function getTodayStr(){const d=new Date();const jst=new Date(d.getTime()+9*60*60
     }
     
     function getCoreLabelByMark(markIdx) {
-      if(markIdx === 1 || markIdx === 11) return {label:'🎯コア', cls:'oa-core-hoshi'};
-      if(markIdx === 2) return {label:'🔑コア', cls:'oa-core-spade'};
+      if(markIdx === 1 || markIdx === 11) return {label:'◎コア', cls:'oa-core-hoshi'};
+      if(markIdx === 2) return {label:'鍵コア', cls:'oa-core-spade'};
       return null;
     }
 
@@ -2962,7 +2969,7 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
       const modeBadge = document.getElementById('graph-mode-badge');
       if(modeBar) {
         modeBar.style.display = (key === 'odds') ? 'flex' : 'none';
-        if(modeBadge) { modeBadge.textContent = (key === 'odds') ? '📊 オッズ解析モード' : '通常'; }
+        if(modeBadge) { modeBadge.textContent = (key === 'odds') ? 'オッズ解析モード' : '通常'; }
       }
       renderGraph();
     }
@@ -3033,7 +3040,7 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
 
         let matchCls = h.isKosoStarred ? 'koso-starred' : '';
         let kosoText = h.kosoWaku && h.kosoWaku !== '-' ? h.kosoWaku : '-';
-        let kosoHtml = `<div style="padding:4px; margin:auto; user-select:none; max-width:40px; border-radius:3px; color:#333; font-weight:normal;" onpointerdown="startKosoPress(event,${h.num})" onpointerup="endKosoPress(event,${h.num})" onpointercancel="cancelKosoPress(event)" oncontextmenu="onKosoContextMenu(event,${h.num})">${kosoText} ${h.isKosoStarred ? '🌟' : ''}</div>`;
+        let kosoHtml = `<div style="padding:4px; margin:auto; user-select:none; max-width:40px; border-radius:3px; color:#333; font-weight:normal;" onpointerdown="startKosoPress(event,${h.num})" onpointerup="endKosoPress(event,${h.num})" onpointercancel="cancelKosoPress(event)" oncontextmenu="onKosoContextMenu(event,${h.num})">${kosoText} ${h.isKosoStarred ? '★' : ''}</div>`;
 
         // 長押しの黄色ハイライト機能は無効化（誤操作で変色するため）
         const hlClass = (field) => '';
@@ -3136,7 +3143,7 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
     function stopAIMic() {
       _micActive = false;
       const b = document.getElementById('ai-mic-btn');
-      if(b) { b.classList.remove('recording'); b.textContent = '🎤'; }
+      if(b) { b.classList.remove('recording'); b.innerHTML = "<svg class=\"mk-ic\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"9\" y=\"2\" width=\"6\" height=\"11\" rx=\"3\"/><path d=\"M5 10a7 7 0 0 0 14 0\"/><path d=\"M12 17v4\"/></svg>"; }
       if(_micRecognition) { try { _micRecognition.stop(); } catch(e) {} _micRecognition = null; }
     }
     
@@ -3242,7 +3249,7 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
       if(resultLines.length > 0) {
         ta.value = resultLines.join('\n');
         saveAIComment(ta.value);
-        alert('✨ テキスト整理完了！\n「✨ グラフ・印へ反映」を押してください。');
+        alert(' テキスト整理完了！\n「 グラフ・印へ反映」を押してください。');
       } else {
         alert('出走馬や評価キーワードが見つかりませんでした。');
       }
@@ -3280,8 +3287,8 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
         });
         if(cnt > 0) {
           applySimulation(); renderAll(); 
-          alert(`✅ ${cnt}件のコンピ指数を反映しました！`); 
-          ta.value = '✅ コンピ指数反映済み'; 
+          alert(` ${cnt}件のコンピ指数を反映しました！`); 
+          ta.value = ' コンピ指数反映済み'; 
           return;
         }
       }
@@ -3337,7 +3344,7 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
       if(updatedCount > 0) {
         normalizeTo100(false); 
         renderAll(); 
-        alert(`✨ グラフ・印への反映完了！\n\n` + logLines.join('\n'));
+        alert(` グラフ・印への反映完了！\n\n` + logLines.join('\n'));
       } else {
         alert('反映できる印やキーワードが見つかりませんでした。');
       }
@@ -3443,7 +3450,7 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
         }
         autoAssignMarksByWinRate();
         document.getElementById(inputId).value = '';
-        alert(`✅ ${updateCount}頭の単勝オッズを読み込み、勝率と印を自動設定しました！`);
+        alert(` ${updateCount}頭の単勝オッズを読み込み、勝率と印を自動設定しました！`);
       } else {
         alert('オッズデータを読み取れませんでした。\nフォーマットをご確認ください。');
       }
@@ -3486,7 +3493,7 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
       try{ localStorage.setItem('keiba_gas_url', url); }catch(e){}
       const el = document.getElementById('api-url-input'); if(el) el.value = url;
       const el2 = document.getElementById('AI_GAS_URL_runtime'); // AIも同じURLを使う場合の受け皿
-      console.log('✅ GAS URL を保存しました。オッズ更新ボタンが使えます。');
+      console.log(' GAS URL を保存しました。オッズ更新ボタンが使えます。');
       return 'OK: ' + url;
     };
     window.getGasUrl = function(){ try{ return localStorage.getItem('keiba_gas_url')||'(未設定)'; }catch(e){ return '(未設定)'; } };
@@ -3592,12 +3599,12 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
       const apiInput = document.getElementById('api-url-input');
       if(apiInput) apiInput.value = url;
       closeGasModal();
-      alert('✅ GAS URLを保存しました！');
+      alert(' GAS URLを保存しました！');
     }
     
     function copyGasCode() {
       const code = document.getElementById('gas-code-display').value;
-      navigator.clipboard.writeText(code).then(() => alert('📋 GASコードをコピーしました！'));
+      navigator.clipboard.writeText(code).then(() => alert(' GASコードをコピーしました！'));
     }
     
     let adminUnlocked = false;
@@ -3727,11 +3734,11 @@ function buildNavigation() {
       <div style="display:none;">
         <select style="font-size:10px; padding:0 2px; border:1px solid #dcdad3; border-radius:3px; background:#fff; color:#9b9a92; outline:none; cursor:pointer;" onchange="updateVenueWeather('${basho}', this.value)">
           <option value="" ${!wStr?'selected':''}>天気</option>
-          <option value="晴" ${wStr.includes('晴')?'selected':''}>☀️晴</option>
-          <option value="曇" ${wStr.includes('曇')?'selected':''}>☁️曇</option>
-          <option value="小雨" ${wStr.includes('小雨')?'selected':''}>☔小雨</option>
-          <option value="雨" ${wStr==='雨'?'selected':''}>☔雨</option>
-          <option value="雪" ${wStr.includes('雪')?'selected':''}>⛄雪</option>
+          <option value="晴" ${wStr.includes('晴')?'selected':''}>晴晴</option>
+          <option value="曇" ${wStr.includes('曇')?'selected':''}>曇曇</option>
+          <option value="小雨" ${wStr.includes('小雨')?'selected':''}>小雨</option>
+          <option value="雨" ${wStr==='雨'?'selected':''}>雨</option>
+          <option value="雪" ${wStr.includes('雪')?'selected':''}>雪</option>
         </select>
         
         <input type="text" value="${venueMemoStr}" placeholder="馬場メモ..." style="flex-grow:1; max-width:500px; padding:0 4px; font-size:10px; border:1px solid #dcdad3; border-radius:3px; outline:none; color:#3d3d3a; background:#fff;" onchange="updateVenueMemoManual('${basho}', this.value)">
@@ -3961,18 +3968,30 @@ function buildNavigation() {
     }
 
     // AIの回答を日本語で読み上げ（ブラウザ標準TTS・無料）。読み上げ後、対話モードならマイク再開。
+    // ★ChromeはonendがまれにこないためタイマーでもフォールバックしてLiveを継続させる。
+    let _resumeGuard = 0;
+    function _resumeMicAfterSpeak(){
+      if(!_voiceLiveMode || _aiRecording) return;
+      const now = Date.now();
+      if(now - _resumeGuard < 500) return; // 二重発火防止
+      _resumeGuard = now;
+      try{ _startVoiceRecognition(); }catch(e){}
+    }
     function _speakAiAnswer(text){
-      if(!window.speechSynthesis || !text){ return; }
+      if(!text) return;
+      // TTS非対応でも会話は継続させる（読み上げなしで即マイク再開）
+      if(!window.speechSynthesis){ if(_voiceLiveMode) setTimeout(_resumeMicAfterSpeak, 400); return; }
       try{
         speechSynthesis.cancel();
         const u = new SpeechSynthesisUtterance(text);
         u.lang = 'ja-JP'; u.rate = 1.05; u.pitch = 1.0;
-        u.onend = () => {
-          // 読み上げ終了→対話モードなら自動でまた聞き取り開始
-          if(_voiceLiveMode){ setTimeout(()=>{ if(_voiceLiveMode) _startVoiceRecognition(); }, 300); }
-        };
+        u.onend = () => { if(_voiceLiveMode) setTimeout(_resumeMicAfterSpeak, 250); };
+        u.onerror = () => { if(_voiceLiveMode) setTimeout(_resumeMicAfterSpeak, 250); };
         speechSynthesis.speak(u);
-      }catch(e){}
+        // フォールバック：読み上げ時間を文字数から推定し、onendが来なくても再開
+        const est = Math.min(20000, 1200 + text.length * 130); // 1文字≈130ms
+        setTimeout(()=>{ if(_voiceLiveMode && !_aiRecording){ try{ speechSynthesis.cancel(); }catch(e){} _resumeMicAfterSpeak(); } }, est);
+      }catch(e){ if(_voiceLiveMode) setTimeout(_resumeMicAfterSpeak, 400); }
     }
 
     async function sendAiChat(viaVoice){
@@ -4013,7 +4032,7 @@ function buildNavigation() {
         if(viaVoice === true){ _speakAiAnswer(ans.trim()); }
       } catch(err){
         loading.classList.remove('loading');
-        loading.textContent = '⚠️ ' + err.message;
+        loading.textContent = ' ' + err.message;
         if(viaVoice === true){ _voiceLiveMode = false; } // エラー時は対話ループを止める
       } finally {
         const log = document.getElementById('ai-chat-log'); log.scrollTop = log.scrollHeight;
@@ -4087,7 +4106,7 @@ function buildNavigation() {
           if(!exists && cv.trim() !== '') {
             const opt = document.createElement('option');
             opt.value = cv.trim();
-            opt.textContent = '🏷️ ' + cv.trim();
+            opt.textContent = '' + cv.trim();
             sel.insertBefore(opt, sel.lastElementChild);
           }
           sel.value = cv.trim();
@@ -4616,9 +4635,9 @@ window.showOddsAnalysisModal = function() {
 
     let coreSorted = [...validHorses].sort((a, b) => b.coreRatio - a.coreRatio);
     validHorses.forEach(h => h.coreLabel = '');
-    if(coreSorted.length > 0) coreSorted[0].coreLabel = '🎯コア';
-    if(coreSorted.length > 1) coreSorted[1].coreLabel = '🔑コア';
-    if(coreSorted.length > 2) coreSorted[2].coreLabel = '🔑コア';
+    if(coreSorted.length > 0) coreSorted[0].coreLabel = '◎コア';
+    if(coreSorted.length > 1) coreSorted[1].coreLabel = '鍵コア';
+    if(coreSorted.length > 2) coreSorted[2].coreLabel = '鍵コア';
 
     window.oaChartData = validHorses;
     if (!window.oaChartMode) {
@@ -4638,10 +4657,10 @@ window.showOddsAnalysisModal = function() {
 
      let html = '';
     // ▼ スタイリッシュな緑調のAI見解
-    html += '<div style="background:#f4f2ec; border:1px solid #1a1a1a; border-left:5px solid #1a1a1a; padding:12px 16px; margin-bottom:15px; border-radius:6px; font-size:15px; font-weight:bold; color:#1a1a1a; display:flex; align-items:center; gap:10px;"><span>🤖</span><span>【AI見解】 ' + recText + '</span></div>';
+    html += '<div style="background:#f4f2ec; border:1px solid #1a1a1a; border-left:5px solid #1a1a1a; padding:12px 16px; margin-bottom:15px; border-radius:6px; font-size:15px; font-weight:bold; color:#1a1a1a; display:flex; align-items:center; gap:10px;"><span></span><span>【AI見解】 ' + recText + '</span></div>';
     
     html += '<div style="width:100%; max-width:650px; margin:0 auto 20px; position:relative; min-height:300px;">' +
-                '<button onclick="toggleOaChartModeModal()" style="position:absolute; top:-10px; right:0; background:#1a1a1a; color:#fff; border:1px solid #1a1a1a; padding:8px 16px; border-radius:20px; font-size:13px; font-weight:bold; cursor:pointer; z-index:20; box-shadow:0 2px 4px rgba(0,0,0,0.1);" id="oaChartToggleBtn">📊 横棒グラフで見る</button>' +
+                '<button onclick="toggleOaChartModeModal()" style="position:absolute; top:-10px; right:0; background:#1a1a1a; color:#fff; border:1px solid #1a1a1a; padding:8px 16px; border-radius:20px; font-size:13px; font-weight:bold; cursor:pointer; z-index:20; box-shadow:0 2px 4px rgba(0,0,0,0.1);" id="oaChartToggleBtn"> 横棒グラフで見る</button>' +
                 '<canvas id="oaPieChartModal"></canvas>' +
                 '<div id="oaBarChartAreaModal" style="display:none; width:100%; padding-top:30px;"></div>' +
              '</div>';
@@ -4658,7 +4677,7 @@ window.showOddsAnalysisModal = function() {
             let ratio = h.actualOdds / prevOdds;
             if (ratio >= 1.8) {
                 // ▼ 断層の色を少し落ち着かせ、文字サイズアップ
-                html += '<tr style="background-color:#fff5f5; color:#ef4444; font-weight:bold; font-size:13px;"><td colspan="6" style="padding:8px; border-top:2px dashed #fca5a5; border-bottom:2px dashed #fca5a5; letter-spacing:1px;">🔻 第' + dansoCount + '断層 (' + ratio.toFixed(2) + '倍) 🔻</td></tr>';
+                html += '<tr style="background-color:#fff5f5; color:#ef4444; font-weight:bold; font-size:13px;"><td colspan="6" style="padding:8px; border-top:2px dashed #fca5a5; border-bottom:2px dashed #fca5a5; letter-spacing:1px;">▼ 第' + dansoCount + '断層 (' + ratio.toFixed(2) + '倍) ▼</td></tr>';
                 dansoCount++;
             }
         }
@@ -4667,12 +4686,12 @@ window.showOddsAnalysisModal = function() {
         // ▼ コアバッジも緑＆キャメルのテーマに合わせる
         let coreHtml = '';
         if(h.coreLabel) {
-            let badgeClass = h.coreLabel.includes('🎯') ? 'background:#fffcf0; color:#b8a06a; border:1px solid #b8a06a;' : 'background:#f4f2ec; color:#1a1a1a; border:1px solid #1a1a1a;';
+            let badgeClass = h.coreLabel.includes('◎') ? 'background:#fffcf0; color:#b8a06a; border:1px solid #b8a06a;' : 'background:#f4f2ec; color:#1a1a1a; border:1px solid #1a1a1a;';
             coreHtml = '<span style="font-size:11px; font-weight:bold; padding:2px 6px; border-radius:4px; white-space:nowrap; ' + badgeClass + '">' + h.coreLabel + '</span>';
         }
 
         let fukuCellClass = h.isFukuUre ? 'background-color:#f0f9ff;' : '';
-        let fukuMark = h.isFukuUre ? '<span style="font-size:11px; color:#0284c7; font-weight:bold; margin-left:4px;">🔺</span>' : '';
+        let fukuMark = h.isFukuUre ? '<span style="font-size:11px; color:#0284c7; font-weight:bold; margin-left:4px;">▲</span>' : '';
         
         const wakuBadge = '<span class="waku-box waku-' + h.waku + '" style="width:20px; height:20px; font-size:12px; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;">' + h.num + '</span>';
 
@@ -4748,7 +4767,7 @@ window.drawOaChartModal = function() {
     if (window.oaChartMode === 'pie') {
         pieCanvas.style.display = 'block';
         barArea.style.display = 'none';
-        btn.innerText = '📊 横棒グラフで見る';
+        btn.innerText = '横棒グラフで見る';
 
         const ctx = pieCanvas.getContext('2d');
         let chartLabels = [];
@@ -4817,7 +4836,7 @@ window.drawOaChartModal = function() {
         // 横棒グラフモード
         pieCanvas.style.display = 'none';
         barArea.style.display = 'block';
-        btn.innerText = '📊 円グラフで見る';
+        btn.innerText = '円グラフで見る';
 
         // ▼ タイトルを緑色に
         let html = '<div style="font-size:16px; font-weight:bold; text-align:center; color:#1a1a1a; margin-bottom:15px;">オッズ断層と支持率 (横棒グラフ)</div>';
@@ -4838,7 +4857,7 @@ window.drawOaChartModal = function() {
 
             let coreHtml = '';
             if(h.coreLabel) {
-                let badgeClass = h.coreLabel.includes('🎯') ? 'background:#fffcf0; color:#b8a06a; border:1px solid #b8a06a;' : 'background:#f4f2ec; color:#1a1a1a; border:1px solid #1a1a1a;';
+                let badgeClass = h.coreLabel.includes('◎') ? 'background:#fffcf0; color:#b8a06a; border:1px solid #b8a06a;' : 'background:#f4f2ec; color:#1a1a1a; border:1px solid #1a1a1a;';
                 coreHtml = '<span style="font-size:11px; font-weight:bold; padding:2px 6px; border-radius:4px; margin-right:12px; min-width:48px; text-align:center; box-sizing:border-box; ' + badgeClass + '">' + h.coreLabel + '</span>';
             } else {
                 coreHtml = '<span style="display:inline-block; margin-right:12px; min-width:48px; box-sizing:border-box;"></span>';
@@ -5022,13 +5041,13 @@ window.drawOaChartModal = function() {
         canvas.style.pointerEvents = 'auto';
         canvas.style.zIndex = '30';
         btn.style.background = '#d32f2f';
-        btn.textContent = '✅ ペン';
+        btn.textContent = 'ペン';
         adjustCanvasSize();
       } else {
         canvas.style.pointerEvents = 'none';
         canvas.style.zIndex = '10';
         btn.style.background = '#1a1a1a';
-        btn.textContent = '✍️ ペン';
+        btn.textContent = 'ペン';
       }
     }
     
@@ -5542,9 +5561,9 @@ window.drawOaChartModal = function() {
 
       ratioList.sort((a, b) => b.ratio - a.ratio);
 
-      if(ratioList.length > 0) realCoreMap[ratioList[0].num] = '🎯コア';
-      if(ratioList.length > 1) realCoreMap[ratioList[1].num] = '🔑コア';
-      if(ratioList.length > 2) realCoreMap[ratioList[2].num] = '🔑コア';
+      if(ratioList.length > 0) realCoreMap[ratioList[0].num] = '◎コア';
+      if(ratioList.length > 1) realCoreMap[ratioList[1].num] = '鍵コア';
+      if(ratioList.length > 2) realCoreMap[ratioList[2].num] = '鍵コア';
       
       const oddsTierMap = race._oddsTierMap || {};
       let winRateTierOf = {}, winRateBreaks = [];
@@ -5649,8 +5668,8 @@ window.drawOaChartModal = function() {
         if(graphSortKey === 'odds' && realCoreMap[h.num]) {
           const label = realCoreMap[h.num];
           let cls = '';
-          if(label.includes('🎯')) { cls = 'oa-core-hoshi'; } 
-          else if(label.includes('🔑')) { cls = 'oa-core-spade'; }
+          if(label.includes('◎')) { cls = 'oa-core-hoshi'; } 
+          else if(label.includes('鍵')) { cls = 'oa-core-spade'; }
           coreHtml = `<span class="oa-core-badge ${cls}" style="margin-right:6px;">${label}</span>`;
         }
 
@@ -5820,7 +5839,7 @@ window.drawOaChartModal = function() {
           btn.style.boxShadow = '0 0 0 3px #fff, 0 0 0 5px #1a1a1a';
           setTimeout(() => { btn.style.boxShadow = 'none'; }, 1200);
         }
-        alert(`✅ メモからキーワードを読み取り、${updatedCount}頭の勝率に反映しました！`);
+        alert(` メモからキーワードを読み取り、${updatedCount}頭の勝率に反映しました！`);
       } else {
         alert('メモの中に、勝率に影響するキーワード（絶好調、上積み、不安など）が見つかりませんでした。');
       }
@@ -5911,7 +5930,7 @@ renderCourseFeature(); // ←★★ここに1行追加するだけです！★�
         if(sel){
           const st = racesData[currentRaceId].status || '';
           if(st && !Array.from(sel.options).some(o=>o.value===st)){
-            const opt=document.createElement('option'); opt.value=st; opt.textContent='🏷️ '+st;
+            const opt=document.createElement('option'); opt.value=st; opt.textContent=''+st;
             sel.insertBefore(opt, sel.lastElementChild);
           }
           sel.value = st;
@@ -6182,8 +6201,8 @@ function autoGenerateTickets(mode = 'win') {
         });
       }
       parseAndCalculate();
-      if(matched > 0) alert(`✅ ${Object.keys(extractedMap).length}点のオッズを抽出し、${matched}点の買い目に反映しました！`);
-      else alert(`⚠️ オッズを抽出しましたが、買い目と一致しませんでした。`);
+      if(matched > 0) alert(` ${Object.keys(extractedMap).length}点のオッズを抽出し、${matched}点の買い目に反映しました！`);
+      else alert(` オッズを抽出しましたが、買い目と一致しませんでした。`);
     }
     
     function parseAndCalculate() {
@@ -6369,7 +6388,7 @@ function autoGenerateTickets(mode = 'win') {
         total += (t.money || 0);
       });
       text += `\n合計購入額: ${total}円\n`;
-      navigator.clipboard.writeText(text).then(() => alert("📋 買い目をクリップボードにコピーしました！"));
+      navigator.clipboard.writeText(text).then(() => alert(" 買い目をクリップボードにコピーしました！"));
     }
 
     async function syncOddsFromGAS() {
@@ -6458,11 +6477,11 @@ function autoGenerateTickets(mode = 'win') {
           }
         }
         
-        if(statusEl) { statusEl.textContent = `✅ ${currentRaceId} 取得完了`; statusEl.style.color = '#1a1a1a'; }
+        if(statusEl) { statusEl.textContent = `${currentRaceId} 取得完了`; statusEl.style.color = '#1a1a1a'; }
         renderAll();
         parseAndCalculate();
       } catch(err) {
-        if(statusEl) { statusEl.textContent = '❌ 失敗'; statusEl.style.color = '#d32f2f'; }
+        if(statusEl) { statusEl.textContent = '失敗'; statusEl.style.color = '#d32f2f'; }
         alert('オッズ取得エラー:\n' + err.message);
       }
     }
@@ -6636,7 +6655,7 @@ function autoGenerateTickets(mode = 'win') {
   buildNavigation();
   selectRace(Object.keys(racesData)[0]);
   document.getElementById('data-input').value = '';
-  alert(`✨ ${validCount}頭のデータを正常に読み込みました！`);
+  alert(` ${validCount}頭のデータを正常に読み込みました！`);
 }
 
     function applyQuickImport(targetId = 'quick-import-text') {
@@ -6764,7 +6783,7 @@ function autoGenerateTickets(mode = 'win') {
         if(u.length > 0) {
           totalUpdated++;
           updatedRaces.add(raceId);
-          logLines.push(`✅ ${raceId} ${h.num}番 → ${u.join('/')}`);
+          logLines.push(` ${raceId} ${h.num}番 → ${u.join('/')}`);
         }
       });
 
@@ -6987,7 +7006,7 @@ function autoGenerateTickets(mode = 'win') {
         if(u.length > 0) {
           totalUpdated++;
           updatedRaces.add(raceId);
-          logLines.push(`✅ ${raceId} ${h.num}番 ${h.name} → ${u.join('/')}`);
+          logLines.push(` ${raceId} ${h.num}番 ${h.name} → ${u.join('/')}`);
         }
       });
 
@@ -7119,7 +7138,7 @@ function autoGenerateTickets(mode = 'win') {
         if(u.length > 0) {
           totalHorses++;
           totalRaces.add(raceId);
-          logLines.push(`✅ ${raceId} ${h.num}番 → ${u.join('/')}`);
+          logLines.push(` ${raceId} ${h.num}番 → ${u.join('/')}`);
         }
       });
 
@@ -7269,7 +7288,7 @@ function autoGenerateTickets(mode = 'win') {
       
       if(updatedCount > 0) {
          renderMainTable();
-         alert(`✅ ${updatedCount}件のメモを上の表の各馬に反映しました！`);
+         alert(` ${updatedCount}件のメモを上の表の各馬に反映しました！`);
       } else {
          alert('馬名や馬番が認識できませんでした。\n「1番：トモの踏み込み良い」のように入力してください。');
       }
@@ -7784,7 +7803,7 @@ document.querySelectorAll('.nav-race-btn').forEach(btn => {
         }
       });
 
-      alert(`✅ 天候・馬場状態を ${babaUpdated} レースに一括反映しました！\n✅ 騎手変更・除外を ${updatedCount} 頭に反映しました！`);
+      alert(` 天候・馬場状態を ${babaUpdated} レースに一括反映しました！\n 騎手変更・除外を ${updatedCount} 頭に反映しました！`);
       
       if (currentRaceId) {
         const currentRace = racesData[currentRaceId];
@@ -7865,7 +7884,7 @@ document.querySelectorAll('.nav-race-btn').forEach(btn => {
         });
         
         if (updated > 0) {
-            alert('✅ 馬場メモと芝のバイアスを反映しました！');
+            alert(' 馬場メモと芝のバイアスを反映しました！');
             document.getElementById('venue-memo-input').value = '';
             
             if (typeof currentRaceId !== 'undefined' && currentRaceId) {
@@ -8003,7 +8022,7 @@ document.querySelectorAll('.nav-race-btn').forEach(btn => {
 
 // ▼▼ ここから追加：カスタムバイアス機能の完全復元 ▼▼
 if(!document.getElementById('venue-bias-modal')){
-  document.body.insertAdjacentHTML('beforeend', `<div id="venue-bias-modal" class="modal"><div class="modal-box" style="width:400px; max-width:95vw; padding:16px;"><h2 id="vb-modal-title" style="margin-bottom:12px;">会場 一括設定</h2><div class="sim-content" style="background:#fffcf0; border:1px solid #ffcc80; border-radius:6px; margin-bottom:12px;"><div class="sim-row" style="flex-wrap: wrap; gap: 4px;"><div class="sim-label">コース</div><div class="slider-container" style="flex-grow: 1; min-width: 130px;"><span class="sim-side-label text-red" style="width:16px;text-align:center;">内</span><input type="range" class="blue-slider" id="vb-sim-bias" min="-10" max="10" value="0" step="1" oninput="updateVbModalUI()"><span class="sim-side-label text-red" style="width:16px;text-align:center;">外</span></div><div style="display: flex; align-items: center; gap: 4px; margin-left: auto;"><button class="sim-adj-btn" onclick="adjustVbSimValue('vb-sim-bias', -1)">◀</button><span id="vb-sim-bias-val" class="sim-val-disp">0</span><button class="sim-adj-btn" onclick="adjustVbSimValue('vb-sim-bias', 1)">▶</button></div></div><div class="sim-row" style="flex-wrap: wrap; gap: 4px;"><div class="sim-label">展開</div><div class="slider-container" style="flex-grow: 1; min-width: 130px;"><span class="sim-side-label text-red" style="width:16px;text-align:center;">前</span><input type="range" class="blue-slider" id="vb-sim-tenkai" min="-10" max="10" value="0" step="1" oninput="updateVbModalUI()"><span class="sim-side-label text-red" style="width:16px;text-align:center;">後</span></div><div style="display: flex; align-items: center; gap: 4px; margin-left: auto;"><button class="sim-adj-btn" onclick="adjustVbSimValue('vb-sim-tenkai', -1)">◀</button><span id="vb-sim-tenkai-val" class="sim-val-disp">0</span><button class="sim-adj-btn" onclick="adjustVbSimValue('vb-sim-tenkai', 1)">▶</button></div></div></div><div style="display:flex; gap:8px;"><button class="btn-success" style="flex-grow:1; padding:8px; font-size:12px;" onclick="applyVenueBiasFromModal()">✅ 全レースに一括反映</button><button class="btn-danger" style="padding:8px 16px; font-size:12px;" onclick="closeVenueBiasModal()">キャンセル</button></div></div></div>`);
+  document.body.insertAdjacentHTML('beforeend', `<div id="venue-bias-modal" class="modal"><div class="modal-box" style="width:400px; max-width:95vw; padding:16px;"><h2 id="vb-modal-title" style="margin-bottom:12px;">会場 一括設定</h2><div class="sim-content" style="background:#fffcf0; border:1px solid #ffcc80; border-radius:6px; margin-bottom:12px;"><div class="sim-row" style="flex-wrap: wrap; gap: 4px;"><div class="sim-label">コース</div><div class="slider-container" style="flex-grow: 1; min-width: 130px;"><span class="sim-side-label text-red" style="width:16px;text-align:center;">内</span><input type="range" class="blue-slider" id="vb-sim-bias" min="-10" max="10" value="0" step="1" oninput="updateVbModalUI()"><span class="sim-side-label text-red" style="width:16px;text-align:center;">外</span></div><div style="display: flex; align-items: center; gap: 4px; margin-left: auto;"><button class="sim-adj-btn" onclick="adjustVbSimValue('vb-sim-bias', -1)">◀</button><span id="vb-sim-bias-val" class="sim-val-disp">0</span><button class="sim-adj-btn" onclick="adjustVbSimValue('vb-sim-bias', 1)">▶</button></div></div><div class="sim-row" style="flex-wrap: wrap; gap: 4px;"><div class="sim-label">展開</div><div class="slider-container" style="flex-grow: 1; min-width: 130px;"><span class="sim-side-label text-red" style="width:16px;text-align:center;">前</span><input type="range" class="blue-slider" id="vb-sim-tenkai" min="-10" max="10" value="0" step="1" oninput="updateVbModalUI()"><span class="sim-side-label text-red" style="width:16px;text-align:center;">後</span></div><div style="display: flex; align-items: center; gap: 4px; margin-left: auto;"><button class="sim-adj-btn" onclick="adjustVbSimValue('vb-sim-tenkai', -1)">◀</button><span id="vb-sim-tenkai-val" class="sim-val-disp">0</span><button class="sim-adj-btn" onclick="adjustVbSimValue('vb-sim-tenkai', 1)">▶</button></div></div></div><div style="display:flex; gap:8px;"><button class="btn-success" style="flex-grow:1; padding:8px; font-size:12px;" onclick="applyVenueBiasFromModal()">全レースに一括反映</button><button class="btn-danger" style="padding:8px 16px; font-size:12px;" onclick="closeVenueBiasModal()">キャンセル</button></div></div></div>`);
 }
 window.handleVenueBiasSelect = function(basho, type, val) {
   if (val === 'custom') { openVenueBiasModal(basho, type); } else {
@@ -8229,7 +8248,7 @@ function openFinalReport() {
         let moneyIcon = '';
         
         if (horseEv >= 1.0) {
-            moneyIcon = '<span style="font-size:11px; margin-left:2px; text-shadow:none;">💰</span>';
+            moneyIcon = '<span style="font-size:11px; margin-left:2px; text-shadow:none;">¥</span>';
         }
 
         labelsHtml += `<div style="position:absolute; left:${x}px; top:${y}px; transform:translate(-50%, -50%); font-size:14px; font-weight:bold; color:${textColor}; text-shadow:${textShadow}; z-index:5; display:flex; align-items:center;">${h.num}${moneyIcon}</div>`;
@@ -8999,11 +9018,11 @@ window.parseTsv2Paste = function() {
     });
 
     if(totalUpdated > 0) {
-        logEl.innerHTML = `✅ ${totalUpdated}頭の陣営・コース適性データを取り込みました！`;
+        logEl.innerHTML = ` ${totalUpdated}頭の陣営・コース適性データを取り込みました！`;
         logEl.style.color = "#1a1a1a";
         if (typeof renderMainTable === 'function') renderMainTable();
     } else {
-        logEl.innerHTML = `⚠️ データが見つかりませんでした。<br>上の「出馬表データの新規取り込み」でメインデータが読み込まれているか確認してください。`;
+        logEl.innerHTML = ` データが見つかりませんでした。<br>上の「出馬表データの新規取り込み」でメインデータが読み込まれているか確認してください。`;
         logEl.style.color = "#b91c1c";
     }
 }
@@ -9165,7 +9184,7 @@ window.closeDetailedData2Modal = function() {
          const url = `https://www.jra.go.jp/facilities/race/${romaji}/course/index.html`;
           
           linkEl.href = url;
-          linkEl.innerHTML = `🔗 コース傾向: ${featureText}`;
+          linkEl.innerHTML = ` コース傾向: ${featureText}`;
           linkEl.title = featureText + "\n(タップでJRA公式コース図を開きます)"; // ツールチップで全文表示
           linkEl.style.display = 'inline-block';
       } else {
