@@ -24,11 +24,14 @@
     #mk-menu-btn{ position:relative; width:40px; height:40px; flex:0 0 auto;
       background:transparent; border:2px solid #ccf23f; border-radius:10px; cursor:pointer;
       display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; box-shadow:none; }
-    #mk-menu-btn span{ display:block; width:19px; height:2.5px; background:#ccf23f; border-radius:2px; transition:.25s; }
-    /* ×に変形：3本目を完全に消し、1・3本目を中央で交差させる（はみ出し防止） */
-    #mk-menu-btn.open span:nth-child(1){ position:absolute; transform:rotate(45deg); }
-    #mk-menu-btn.open span:nth-child(2){ opacity:0; }
-    #mk-menu-btn.open span:nth-child(3){ position:absolute; transform:rotate(-45deg); }
+    /* 3本線は常に絶対配置（flexの静的位置に頼らない）→ ×のとき1本もはみ出さない */
+    #mk-menu-btn span{ position:absolute; left:50%; top:50%; width:19px; height:2.5px; margin:-1.25px 0 0 -9.5px; background:#ccf23f; border-radius:2px; transition:transform .25s, opacity .2s; transform-origin:center; }
+    #mk-menu-btn span:nth-child(1){ transform:translateY(-6px); }
+    #mk-menu-btn span:nth-child(2){ transform:translateY(0); }
+    #mk-menu-btn span:nth-child(3){ transform:translateY(6px); }
+    #mk-menu-btn.open span:nth-child(1){ transform:rotate(45deg); }
+    #mk-menu-btn.open span:nth-child(2){ opacity:0; transform:scaleX(0); }
+    #mk-menu-btn.open span:nth-child(3){ transform:rotate(-45deg); }
     #mk-menu-overlay{ position:fixed; inset:0; z-index:99998; background:rgba(20,20,18,.5);
       opacity:0; pointer-events:none; transition:opacity .25s; }
     #mk-menu-overlay.open{ opacity:1; pointer-events:auto; }
@@ -1254,9 +1257,9 @@ input[type=number], input[type=text], textarea, select {
 <div id="mk-menu-overlay" onclick="closeMkMenu()"></div>
 <nav id="mk-menu-panel" aria-label="メインメニュー">
   <div class="mk-menu-hd"><small>MENU</small>MUKETSU</div>
-  <button class="mk-menu-item active" data-page="race"  onclick="showMkPage('race')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20v-4a6 6 0 0 1 6-6h2l4-4 3 1-1 3 2 2-3 3v9"/><circle cx="17" cy="7" r=".6" fill="currentColor"/></svg></span>レース<span class="ar">›</span></button>
+  <button class="mk-menu-item active" data-page="race"  onclick="showMkPage('race')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 22V15c0-5-2.5-7.5-6-8.8L16.4 2.5l-2.2 3.1-2.4-2.8-.8 3.6C9.2 7.2 7.8 8.6 6.6 10.4L3.4 14.2c-.8 1-.4 2.2.8 2.6l3.2.8c.8.2 1.4-.1 1.8-.8l.7-1.2c1.7.8 3.3 2 4.3 3.8.6 1 .8 1.8.8 2.6z"/><circle cx="13.4" cy="10.4" r="1.1" fill="#fff"/><circle cx="5.2" cy="15.2" r=".7" fill="#fff"/></svg></span>レース<span class="ar">›</span></button>
   <button class="mk-menu-item"        data-page="data"  onclick="showMkPage('data')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>データ部屋<span class="ar">›</span></button>
-  <button class="mk-menu-item"        data-page="usage" onclick="showMkPage('usage')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h5v18H6a2 2 0 0 1-2-2z"/><path d="M20 5a2 2 0 0 0-2-2h-5v18h5a2 2 0 0 0 2-2z"/></svg></span>使い方<span class="ar">›</span></button>
+  <button class="mk-menu-item"        data-page="usage" onclick="showMkPage('usage')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h6a4 4 0 0 1 4 3 4 4 0 0 1 4-3h6v14h-6a4 4 0 0 0-4 3 4 4 0 0 0-4-3H2z"/><path d="M12 8v14"/></svg></span>使い方<span class="ar">›</span></button>
   <button class="mk-menu-item"        data-page="contact" onclick="showMkPage('contact')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>お問い合わせ<span class="ar">›</span></button>
 </nav>
 
@@ -1269,12 +1272,12 @@ input[type=number], input[type=text], textarea, select {
       <p>予想に使うデータをまとめる部屋。下の項目から選べます。</p>
     </div>
     <div class="mk-toc">
-      <a class="mk-toc-item" href="#data-sire"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20v-4a6 6 0 0 1 6-6h2l4-4 3 1-1 3 2 2-3 3v9"/><circle cx="17" cy="7" r=".6" fill="currentColor"/></svg></span><b>種牡馬データ</b><span>産駒のコース・距離別成績</span></a>
+      <a class="mk-toc-item" href="#data-sire"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 22V15c0-5-2.5-7.5-6-8.8L16.4 2.5l-2.2 3.1-2.4-2.8-.8 3.6C9.2 7.2 7.8 8.6 6.6 10.4L3.4 14.2c-.8 1-.4 2.2.8 2.6l3.2.8c.8.2 1.4-.1 1.8-.8l.7-1.2c1.7.8 3.3 2 4.3 3.8.6 1 .8 1.8.8 2.6z"/><circle cx="13.4" cy="10.4" r="1.1" fill="#fff"/><circle cx="5.2" cy="15.2" r=".7" fill="#fff"/></svg></span><b>種牡馬データ</b><span>産駒のコース・距離別成績</span></a>
       <a class="mk-toc-item" href="#data-jockey"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M5 20l3-6 4-2 4 3 3 5"/><path d="M9 12l-4 2"/></svg></span><b>騎手データ</b><span>騎手のコース・条件別成績</span></a>
       <a class="mk-toc-item" href="#data-stable"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span><b>厩舎データ</b><span>調教師の得意条件</span></a>
       <a class="mk-toc-item" href="#data-course"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16L16 4l4 4L8 20z"/><path d="M8 8l2 2M11 5l2 2M5 11l2 2"/></svg></span><b>コースデータ</b><span>各コースの傾向・バイアス</span></a>
     </div>
-    <section class="mk-sec" id="data-sire"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20v-4a6 6 0 0 1 6-6h2l4-4 3 1-1 3 2 2-3 3v9"/><circle cx="17" cy="7" r=".6" fill="currentColor"/></svg></span>種牡馬データ</h3><div class="ph-box">準備中</div></section>
+    <section class="mk-sec" id="data-sire"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 22V15c0-5-2.5-7.5-6-8.8L16.4 2.5l-2.2 3.1-2.4-2.8-.8 3.6C9.2 7.2 7.8 8.6 6.6 10.4L3.4 14.2c-.8 1-.4 2.2.8 2.6l3.2.8c.8.2 1.4-.1 1.8-.8l.7-1.2c1.7.8 3.3 2 4.3 3.8.6 1 .8 1.8.8 2.6z"/><circle cx="13.4" cy="10.4" r="1.1" fill="#fff"/><circle cx="5.2" cy="15.2" r=".7" fill="#fff"/></svg></span>種牡馬データ</h3><div class="ph-box">準備中</div></section>
     <section class="mk-sec" id="data-jockey"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M5 20l3-6 4-2 4 3 3 5"/><path d="M9 12l-4 2"/></svg></span>騎手データ</h3><div class="ph-box">準備中</div></section>
     <section class="mk-sec" id="data-stable"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>厩舎データ</h3><div class="ph-box">準備中</div></section>
     <section class="mk-sec" id="data-course"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16L16 4l4 4L8 20z"/><path d="M8 8l2 2M11 5l2 2M5 11l2 2"/></svg></span>コースデータ</h3><div class="ph-box">準備中</div></section>
