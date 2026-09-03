@@ -811,6 +811,38 @@ input[type=number], input[type=text], textarea, select {
 .oa-close-btn { display: block; width: 100%; padding: 10px; margin-top: 15px; background: #607d8b; color: #fff; text-align: center; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
 
 
+    /* ===== トースト通知（alert置き換え） ===== */
+    #mk-toast-wrap{ position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:99999; display:flex; flex-direction:column; gap:8px; align-items:center; pointer-events:none; width:min(92vw,520px); }
+    .mk-toast{ pointer-events:auto; background:#1a1a1a; color:#fff; border-left:4px solid #ccf23f; border-radius:10px; padding:11px 16px; font-family:"Zen Kaku Gothic New",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif; font-size:13px; line-height:1.55; box-shadow:0 8px 24px rgba(0,0,0,.28); max-width:100%; white-space:pre-line; word-break:break-word; opacity:0; transform:translateY(10px); transition:opacity .18s ease, transform .18s ease; cursor:pointer; }
+    .mk-toast.show{ opacity:1; transform:translateY(0); }
+    .mk-toast.err{ border-left-color:#e05a3a; }
+    @media (prefers-reduced-motion: reduce){ .mk-toast{ transition:none; } }
+    /* ===== 使い方ページ本文 ===== */
+    .mk-guide{ font-size:13.5px; line-height:1.85; color:#2b2b28; }
+    .mk-guide p{ margin:0 0 10px; }
+    .mk-guide .lead{ font-size:14px; font-weight:700; color:#1a1a1a; margin-bottom:12px; }
+    .mk-guide ol.steps{ list-style:none; counter-reset:st; margin:6px 0 14px; padding:0; display:flex; flex-direction:column; gap:8px; }
+    .mk-guide ol.steps li{ counter-increment:st; position:relative; padding:10px 12px 10px 46px; background:#faf9f5; border:1px solid #e8e6df; border-radius:10px; }
+    .mk-guide ol.steps li::before{ content:counter(st); position:absolute; left:12px; top:10px; width:24px; height:24px; border-radius:50%; background:#1a1a1a; color:#ccf23f; font-weight:900; font-size:12px; display:flex; align-items:center; justify-content:center; font-family:'Zen Kaku Gothic New',sans-serif; }
+    .mk-guide ol.steps b{ display:block; font-weight:900; color:#1a1a1a; margin-bottom:2px; }
+    .mk-guide ul.pts{ margin:4px 0 12px; padding-left:18px; }
+    .mk-guide ul.pts li{ margin:3px 0; }
+    .mk-guide .kw{ display:inline-block; background:#d8ccae; color:#5c5341; border-radius:4px; padding:0 6px; font-size:12px; font-weight:800; line-height:1.7; margin:0 1px; }
+    .mk-guide .kw.dark{ background:#1a1a1a; color:#ccf23f; }
+    .mk-guide .tip{ display:flex; gap:10px; align-items:flex-start; background:#fff; border:2px solid #1a1a1a; border-radius:10px; padding:10px 12px; margin:10px 0 4px; font-size:12.5px; }
+    .mk-guide .tip .ic{ flex:none; width:22px; height:22px; border-radius:50%; background:#ccf23f; display:flex; align-items:center; justify-content:center; }
+    .mk-guide .tip .ic .mk-ic{ width:14px; height:14px; }
+    .mk-guide .tip b{ color:#1a1a1a; }
+    .mk-guide table.mk-legend{ width:100%; border-collapse:collapse; font-size:12.5px; margin:6px 0 12px; }
+    .mk-guide table.mk-legend th, .mk-guide table.mk-legend td{ text-align:left; padding:6px 8px; border-bottom:1px solid #e8e6df; vertical-align:top; }
+    .mk-guide table.mk-legend th{ width:34%; font-weight:900; color:#1a1a1a; white-space:nowrap; }
+    .mk-guide .st{ display:inline-block; min-width:2.2em; text-align:center; color:#fff; font-size:11px; font-weight:900; border-radius:3px; padding:0 5px; line-height:1.7; }
+    .mk-guide .st.nige{ background:#d63a3a; } .mk-guide .st.senko{ background:#e7801a; } .mk-guide .st.sashi{ background:#2f6fd6; } .mk-guide .st.oikomi{ background:#7b7b78; }
+    .mk-guide .mk-faq dt{ font-weight:900; color:#1a1a1a; margin-top:10px; }
+    .mk-guide .mk-faq dd{ margin:2px 0 0; color:#4a4a46; }
+    .mk-guide .flow{ display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:8px; margin:8px 0 14px; }
+    .mk-guide .flow div{ background:#1a1a1a; color:#fff; border-radius:10px; padding:10px 10px 9px; font-size:12px; line-height:1.5; }
+    .mk-guide .flow div small{ display:block; color:#ccf23f; font-size:10px; letter-spacing:.12em; font-weight:800; margin-bottom:3px; }
   </style>
 
 
@@ -1255,7 +1287,7 @@ input[type=number], input[type=text], textarea, select {
     <div class="mk-room-hd">
       <span class="ph-eyebrow">HOW TO USE</span>
       <h2><span class="mk-mk">使い方</span></h2>
-      <p>MUKETSUの使い方ガイド。下の項目から選べます。</p>
+      <p>はじめての方は「はじめに」から。各機能の詳しい使い方は下の項目から選べます。</p>
     </div>
     <div class="mk-toc">
       <a class="mk-toc-item" href="#use-start"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c4 2 6 6 6 10l-4 4-4-4c0-4 2-8 2-10z"/><path d="M9 17l-3 4 4-3"/></svg></span><b>はじめに</b><span>基本の流れ</span></a>
@@ -1264,11 +1296,90 @@ input[type=number], input[type=text], textarea, select {
       <a class="mk-toc-item" href="#use-ticket"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></span><b>買い目ビルダー</b><span>買い目とオッズ・期待値</span></a>
       <a class="mk-toc-item" href="#use-ai"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 5v3"/><circle cx="9" cy="13" r="1.2" fill="currentColor"/><circle cx="15" cy="13" r="1.2" fill="currentColor"/></svg></span><b>AI相談</b><span>壁打ちの使い方</span></a>
     </div>
-    <section class="mk-sec" id="use-start"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c4 2 6 6 6 10l-4 4-4-4c0-4 2-8 2-10z"/><path d="M9 17l-3 4 4-3"/></svg></span>はじめに</h3><div class="ph-box">準備中</div></section>
-    <section class="mk-sec" id="use-sim"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="4"/><path d="M7 12h3M8.5 10.5v3"/><circle cx="16" cy="11" r="1" fill="currentColor"/><circle cx="18" cy="14" r="1" fill="currentColor"/></svg></span>展開シミュレーター</h3><div class="ph-box">準備中</div></section>
-    <section class="mk-sec" id="use-winrate"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>勝率設定</h3><div class="ph-box">準備中</div></section>
-    <section class="mk-sec" id="use-ticket"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></span>買い目ビルダー</h3><div class="ph-box">準備中</div></section>
-    <section class="mk-sec" id="use-ai"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 5v3"/><circle cx="9" cy="13" r="1.2" fill="currentColor"/><circle cx="15" cy="13" r="1.2" fill="currentColor"/></svg></span>AI相談</h3><div class="ph-box">準備中</div></section>
+    <section class="mk-sec" id="use-start"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c4 2 6 6 6 10l-4 4-4-4c0-4 2-8 2-10z"/><path d="M9 17l-3 4 4-3"/></svg></span>はじめに</h3><div class="mk-guide">
+      <p class="lead">MUKETSUは「自分の予想を、数字と展開図で整理して、期待値の高い買い目に落とし込む」ための道具です。</p>
+      <p>AIが答えを出すツールではありません。あなたの見立てを入力すると、勝率・展開・買い目がその場で計算され、迷いどころをAIに壁打ちできます。</p>
+      <div class="flow">
+        <div><small>STEP 1</small>レースを選ぶ</div>
+        <div><small>STEP 2</small>馬場・展開を設定</div>
+        <div><small>STEP 3</small>各馬の勝率と印を調整</div>
+        <div><small>STEP 4</small>買い目を組んでオッズ更新</div>
+        <div><small>STEP 5</small>迷ったらAIに相談</div>
+      </div>
+      <ol class="steps">
+        <li><b>レースを選ぶ</b>画面上部のレース選択ボタンから、開催場とレース番号を選びます。出馬表と各馬の基礎データは運営が事前に登録しています。</li>
+        <li><b>馬場・コンディションを確認</b><span class="kw">CONDITION</span>で馬場状態（良・稍重・重・不良）を選びます。芝は馬場の傷み具合で内外のバイアスも切り替えられます。</li>
+        <li><b>展開を読む</b><span class="kw">RACE SIMULATOR</span>の展開図で、各馬の脚質と隊列を確認します。バイアスと展開の◀▶で条件を変えると、有利になる馬がそのまま蛍光色で光ります。</li>
+        <li><b>勝率と印を決める</b><span class="kw">OUTPUT</span>の勝率グラフで、各馬の数値を◀▶で1%ずつ動かします。印（◎〇▲△）は勝率順に自動で付き、タップで手動変更もできます。</li>
+        <li><b>買い目を組む</b><span class="kw">BET BUILDER</span>で券種と予算を決め、<span class="kw">オッズ更新</span>を押すと最新オッズを取得して期待値（EV）が出ます。EVが1.0を超える買い目が「妙味あり」です。</li>
+      </ol>
+      <div class="tip"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.7.6 1 1.3 1 2.1h5c0-.8.3-1.5 1-2.1A6 6 0 0 0 12 3z"/></svg></span><div><b>入力は自動保存。</b>勝率・印・メモ・買い目は、この端末のブラウザに自動で保存されます。ページを閉じても、同じ端末・同じブラウザなら続きから使えます。別端末には引き継がれません。</div></div>
+    </div></section>
+    <section class="mk-sec" id="use-sim"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="4"/><path d="M7 12h3M8.5 10.5v3"/><circle cx="16" cy="11" r="1" fill="currentColor"/><circle cx="18" cy="14" r="1" fill="currentColor"/></svg></span>展開シミュレーター</h3><div class="mk-guide">
+      <p class="lead">展開図は「誰が前に行き、直線でどこが空くか」を1枚で見るためのものです。</p>
+      <table class="mk-legend">
+        <tr><th>脚質バッジ</th><td><span class="st nige">逃</span> 逃げ　<span class="st senko">先</span> 先行　<span class="st sashi">差</span> 差し　<span class="st oikomi">追</span> 追込。各馬評価の脚質を変えると展開図に即反映されます。</td></tr>
+        <tr><th>馬の位置</th><td>横軸が隊列（右が先頭）、縦軸が内外の位置取り。枠番の色で馬を見分けられます。</td></tr>
+        <tr><th>光っている馬</th><td>いまの馬場バイアスと展開設定で「有利」と判定された馬。蛍光色で発光します。</td></tr>
+        <tr><th>ターフの色</th><td>芝は蛍光グリーン、ダートは砂色。馬場が悪化すると芝の色が少しくすみます。</td></tr>
+      </table>
+      <ol class="steps">
+        <li><b>バイアスを決める</b>◀▶で「内有利 〜 外有利」を動かします。前開催の傾向やJRA馬場情報のメモを参考にしてください。</li>
+        <li><b>展開を決める</b>◀▶で「前有利 〜 差し有利」を動かします。逃げ・先行馬が多いほどペースは速くなり、差し馬に有利になります。</li>
+        <li><b>光った馬を確認</b>有利判定された馬は、各馬評価の勝率にも自動で上乗せされます。納得できなければ勝率バーで直接直してください。</li>
+      </ol>
+      <div class="tip"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.7.6 1 1.3 1 2.1h5c0-.8.3-1.5 1-2.1A6 6 0 0 0 12 3z"/></svg></span><div><b>脚質を疑うところから。</b>登録されている脚質は近走ベースです。乗り替わりや距離短縮で位置取りが変わりそうなら、各馬評価で脚質を変えてから展開図を見直すと精度が上がります。</div></div>
+    </div></section>
+    <section class="mk-sec" id="use-winrate"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>勝率設定</h3><div class="mk-guide">
+      <p class="lead">勝率は「あなたがその馬を何%で勝つと見るか」です。ここが買い目の期待値の土台になります。</p>
+      <ol class="steps">
+        <li><b>◀▶で動かす</b>勝率グラフの数値の左右にある◀▶で1%ずつ増減します。数値を直接入力しても構いません。バー本体をタップしても変わらないので、スクロール中の誤操作は起きません。</li>
+        <li><b>合計を確認する</b>全馬の合計がグラフの下に表示されます。100%前後を目安に整えてください。「絶対に来ない」と思う馬は0%まで下げて構いません。</li>
+        <li><b>印は勝率順に自動</b>◎〇▲△は勝率の高い順に自動で付きます。印をタップすると手動で切り替わり（◎→〇→▲→△→☆→★→注→穴→消）、長押しするとロックされて自動更新されなくなります。</li>
+        <li><b>馬名の長押しで注目馬</b>馬名を長押しすると注目馬（スター）になり、一覧で目立つようになります。</li>
+        <li><b>メモ・短評を書く</b>1頭ごとの短評は1行で自動保存。「叩き2走目」「内枠替わり」など、後でAIに相談するときの材料になります。</li>
+      </ol>
+      <table class="mk-legend">
+        <tr><th>＋詳細</th><td>右上の<span class="kw">＋ 詳細</span>で、重馬場実績・コース実績などの列を開閉できます。馬名から左は固定され、右側だけ横にスクロールします。</td></tr>
+        <tr><th>勝率グラフ</th><td>各馬の勝率を棒グラフで並べて表示。全体のバランス（1強か混戦か）を確認するのに使います。</td></tr>
+        <tr><th>単勝オッズ</th><td><span class="kw">オッズ更新</span>を押すと自動で入ります。あなたの勝率とオッズの差が、そのまま妙味になります。</td></tr>
+      </table>
+      <div class="tip"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.7.6 1 1.3 1 2.1h5c0-.8.3-1.5 1-2.1A6 6 0 0 0 12 3z"/></svg></span><div><b>目安：勝率×単勝オッズ。</b>あなたの勝率が20%で単勝が6.0倍なら、20%×6.0＝1.2で期待値プラス。これが1.0を切る馬は、どれだけ強く見えても「買いすぎ」です。</div></div>
+    </div></section>
+    <section class="mk-sec" id="use-ticket"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></span>買い目ビルダー</h3><div class="mk-guide">
+      <p class="lead">買い目ビルダーは、勝率をもとに券種ごとの的中率と期待値（EV）を出し、予算を配分します。</p>
+      <ol class="steps">
+        <li><b>予算を入れる</b>1レースに使う金額を入力します。右の<span class="kw">オッズ更新</span>で最新オッズを取得します（発走が近いほど正確です）。</li>
+        <li><b>券種と軸を選ぶ</b>単勝・複勝・馬連・ワイド・馬単・3連複・3連単から券種を選び、軸馬・相手馬を馬番で指定します。</li>
+        <li><b>EVを見る</b>各買い目に「的中率」と「EV」が出ます。EVはあなたの勝率から計算した回収期待値で、1.0が損益分岐。1.2以上を目安に絞ると無駄な点数が減ります。</li>
+        <li><b>買い目コピー</b><span class="kw">買い目コピー</span>で買い目一覧をテキストでコピーできます。IPATやメモに貼り付けて使ってください。</li>
+        <li><b>最終見解レポート</b>画面下の<span class="kw dark">最終見解レポートを出力</span>で、馬場・展開・勝率・買い目をひとつのレポートにまとめてコピーできます。</li>
+      </ol>
+      <table class="mk-legend">
+        <tr><th>リセット</th><td>このレースの買い目だけを消します。勝率や印はそのまま残ります。</td></tr>
+        <tr><th>オッズが取れない</th><td>出走前のレースで、発売中のオッズだけ取得できます。前日夜など発売前は「見つかりません」になります。</td></tr>
+        <tr><th>EVが全部1.0未満</th><td>あなたの勝率が市場（オッズ）とほぼ同じ見方だということ。無理に買わず「見送り」も選択肢です。</td></tr>
+      </table>
+      <div class="tip"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.7.6 1 1.3 1 2.1h5c0-.8.3-1.5 1-2.1A6 6 0 0 0 12 3z"/></svg></span><div><b>点数より期待値。</b>EVの高い順に3〜6点に絞るのが基本。的中率を上げるために点数を増やすと、EVの低い買い目が混ざって回収率が下がります。</div></div>
+    </div></section>
+    <section class="mk-sec" id="use-ai"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 5v3"/><circle cx="9" cy="13" r="1.2" fill="currentColor"/><circle cx="15" cy="13" r="1.2" fill="currentColor"/></svg></span>AI相談</h3><div class="mk-guide">
+      <p class="lead">AI相談は「答えを聞く場所」ではなく、あなたの予想の穴を見つける壁打ち相手です。</p>
+      <p>いま開いているレースの出馬表・あなたの勝率と短評・運営が用意した陣営データ（騎手・厩舎・種牡馬の成績）を、AIは最初から把握しています。前置きなしで聞いてください。</p>
+      <ol class="steps">
+        <li><b>文字で聞く</b>入力欄に質問を書いてEnter（送信）。「3番の種牡馬のこのコース成績は？」「逃げ馬が3頭いるけどペースはどう見る？」など具体的なほど良い回答が返ります。</li>
+        <li><b>声で聞く（Live）</b>マイクのアイコンを押すと会話モード。話し終わると自動で送信され、回答を読み上げ、そのまま次の質問を聞き続けます。もう一度マイクを押すまで続きます。</li>
+        <li><b>会話は続く</b>直前のやり取りを覚えているので「じゃあ相手は？」のような続きの質問ができます。レースを切り替えると会話もそのレースのものに変わります。</li>
+      </ol>
+      <dl class="mk-faq">
+        <dt>Q. どんな質問が向いていますか？</dt>
+        <dd>「自分の勝率で見落としはないか」「この展開なら誰が浮上するか」「陣営データで気になる数字は」など、自分の考えを検証する質問。買い目の断定は求めても返しません。</dd>
+        <dt>Q. 「そのデータは渡されていません」と言われた</dt>
+        <dd>その馬の陣営データが今週分に含まれていない状態です。AIは持っていない数字を作りません。別の切り口で聞くか、運営のデータ更新をお待ちください。</dd>
+        <dt>Q. 音声が途中で止まる</dt>
+        <dd>Chrome推奨です。読み上げ中にマイクを押すと停止し、もう一度押すと会話が再開します。マイク権限を求められたら「許可」を選んでください。</dd>
+      </dl>
+      <div class="tip"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.7.6 1 1.3 1 2.1h5c0-.8.3-1.5 1-2.1A6 6 0 0 0 12 3z"/></svg></span><div><b>短評を書いてから聞く。</b>各馬評価の短評にあなたの見立てが入っていると、AIはそれを前提に反論・補強してくれます。空のまま聞くと一般論に寄ります。</div></div>
+    </div></section>
   </div>
 </div>
 
@@ -2158,6 +2269,32 @@ input[type=number], input[type=text], textarea, select {
    
     <!-- ▲▲ ここまで追加 ▲▲ -->
 <script>
+/* ===== alert() をトーストに置き換え（スマホでOKダイアログを出さない） ===== */
+(function(){
+  function wrap(){ let w=document.getElementById('mk-toast-wrap'); if(!w){ w=document.createElement('div'); w.id='mk-toast-wrap'; document.body.appendChild(w);} return w; }
+  window.mkToast = function(msg, opt){
+    opt = opt || {};
+    const text = (msg==null?'':String(msg)).trim();
+    if(!text) return;
+    const w = wrap();
+    while(w.children.length >= 3) w.removeChild(w.firstChild);
+    const t = document.createElement('div');
+    const isErr = opt.type==='error' || (/エラー|失敗|できません|ません|違います|ください/.test(text) && !/完了|しました|反映/.test(text));
+    t.className = 'mk-toast' + (isErr ? ' err' : '');
+    t.textContent = text;
+    const ms = opt.ms || Math.min(9000, 2600 + text.length * 45);
+    let timer;
+    const kill = () => { clearTimeout(timer); t.classList.remove('show'); setTimeout(()=>{ if(t.parentNode) t.parentNode.removeChild(t); }, 200); };
+    t.addEventListener('click', kill);
+    w.appendChild(t);
+    requestAnimationFrame(()=>t.classList.add('show'));
+    timer = setTimeout(kill, ms);
+  };
+  window.__nativeAlert = window.alert;
+  window.alert = function(m){ try{ window.mkToast(m); }catch(e){ try{ window.__nativeAlert(m); }catch(_){} } };
+})();
+</script>
+<script>
 /* ▼▼ JRA全132コース完全網羅データベース ▼▼ */
 const COURSE_FEATURES = {
     "京都_ダート_1200m": "平坦でスピードが出やすい。先行馬が止まりにくい。",
@@ -2605,43 +2742,11 @@ function getHistoryData(surface, rank, odds) {
     /* ==================================== */
 
     /* ========== UI UTILITIES ========== */
-    function getDisplayMemo(h) {
-      if(!h.memo) return {text:'', isSummary:false};
-      if(summaryModeOn && h.memo.length > 8) return {text: h.memo.substring(0,8) + '...', isSummary:true};
-      return {text: h.memo, isSummary:false};
-    }
     
-    function toggleSummaryMode() {
-      summaryModeOn = !summaryModeOn;
-      renderMainTable();
-    }
     
-    function toggleArrange() {
-      const body = document.getElementById('arrange-body');
-      const arrow = document.getElementById('arrange-arrow');
-      if(body.classList.contains('open')) {
-        body.classList.remove('open');
-        arrow.style.transform = 'rotate(0deg)';
-      } else {
-        body.classList.add('open');
-        arrow.style.transform = 'rotate(180deg)';
-      }
-    }
     
-    function applyRatingImport() { alert('未実装の機能です'); }
-    function applyDekiImport() { alert('未実装の機能です'); }
-    function smartParseRaceCard() { alert('未実装の機能です'); }
-    function generateAICommentsForce() { alert('未実装の機能です'); }
     
-    function resetMemos() {
-      if(!currentRaceId) return;
-      if(confirm("全馬のメモをクリアしますか？")){
-        racesData[currentRaceId].horses.forEach(h => h.memo = '');
-        renderMainTable();
-      }
-    }
     
-    function applyMemoToGraph() { alert('未実装の機能です'); }
 
 
 
@@ -2708,11 +2813,6 @@ function getTodayStr(){const d=new Date();const jst=new Date(d.getTime()+9*60*60
       return '-';
     }
     
-    function getCoreLabelByMark(markIdx) {
-      if(markIdx === 1 || markIdx === 11) return {label:'◎コア', cls:'oa-core-hoshi'};
-      if(markIdx === 2) return {label:'鍵コア', cls:'oa-core-spade'};
-      return null;
-    }
 
     /* ========== 印の長押しロック処理 ========== */
     let _markTimer = null;
@@ -2825,18 +2925,6 @@ function getTodayStr(){const d=new Date();const jst=new Date(d.getTime()+9*60*60
   _kosoFired = true;
 }
     
-    function cycleKosoWaku(num) {
-      if(!currentRaceId) return;
-      const h = racesData[currentRaceId].horses.find(x => x.num === num);
-      if(h) {
-        const current = h.kosoWaku || '-';
-        if(current === '内') h.kosoWaku = '中';
-        else if(current === '中') h.kosoWaku = '外';
-        else if(current === '外') h.kosoWaku = '-';
-        else h.kosoWaku = '内';
-        renderAll();
-      }
-    }
     
    function toggleKosoStar(num) {
   if(!currentRaceId) return;
@@ -2853,32 +2941,9 @@ function getTodayStr(){const d=new Date();const jst=new Date(d.getTime()+9*60*60
 let _cellTimer = null;
 let _cellFired = false;
 
-function startCellPress(e, num, field) {
-  if(e.button === 2) return;
-  _cellFired = false;
-  _cellTimer = setTimeout(() => {
-    _cellFired = true;
-    toggleCellHighlight(num, field);
-  }, 500);
-}
 
-function endCellPress(e, num, field) {
-  if(e.button === 2) return;
-  if(_cellTimer) clearTimeout(_cellTimer);
-}
 
-function cancelCellPress(e) {
-  if(_cellTimer) clearTimeout(_cellTimer);
-}
 
-function onCellContextMenu(e, num, field){
-  const tag = e.target.tagName.toLowerCase();
-  if(tag !== 'input' && tag !== 'select') {
-    e.preventDefault();
-  }
-  if(!_cellFired) toggleCellHighlight(num, field);
-  _cellFired = true;
-}
 
 function toggleCellHighlight(num, field) {
   if(!currentRaceId) return;
@@ -3173,16 +3238,6 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
       _saveMemoStore(store);
     }
 
-    function clearAIComment() {
-      const ta = document.getElementById('ai-pace-comment');
-      if(ta) ta.value = '';
-      if(currentRaceId){
-        racesData[currentRaceId].comment = '';
-        const store = _loadMemoStore();
-        delete store[_memoKey(currentRaceId)];
-        _saveMemoStore(store);
-      }
-    }
 
     function restoreAIComment() {
       if(!currentRaceId) return;
@@ -3203,152 +3258,7 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
       racesData[currentRaceId].comment = c;
     }
     
-    function cleanAndSummarizeAIComment() {
-      if(!currentRaceId) { alert('レースを選択してください。'); return; }
-      const ta = document.getElementById('ai-pace-comment');
-      const text = ta.value; 
-      if(!text.trim()) { alert('テキストを入力してください。'); return; }
-      const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
-      const race = racesData[currentRaceId];
-      const sortedHorses = [...race.horses].sort((a,b) => b.name.length - a.name.length);
-      const extracted = {}; let currentH = null;
-      
-      lines.forEach(line => {
-        let found = null;
-        for(const h of sortedHorses) {
-          const cn = h.name.replace(/[^ァ-ヶー一-龠]/g, '');
-          const sn = cn.length >= 4 ? cn.substring(0,4) : cn;
-          const nm = line.match(/^\s*\[?(\d{1,2})\]?[番\s]/);
-          if(nm && parseInt(nm[1]) === h.num) { found = h; break; }
-          if(line.includes(cn) || (sn.length >= 4 && line.includes(sn))) { found = h; break; }
-        }
-        if(found) currentH = found;
-        if(!currentH) return;
-        const hn = currentH.num;
-        if(!extracted[hn]) extracted[hn] = { mark: '-', tags: [] };
-        const mm = line.match(/([◎○〇▲△☆★注◉▼×消])/);
-        if(mm && extracted[hn].mark === '-') extracted[hn].mark = mm[1];
-        COMMENT_KEYWORDS.forEach(rule => {
-          rule.words.forEach(w => {
-            if(line.includes(w) && !extracted[hn].tags.includes(w)) extracted[hn].tags.push(w);
-          });
-        });
-      });
-      
-      const resultLines = [];
-      race.horses.forEach(h => {
-        if(extracted[h.num]) {
-          const data = extracted[h.num];
-          if(data.mark !== '-' || data.tags.length > 0) {
-            const tagsStr = data.tags.length > 0 ? data.tags.join('、') : '特筆なし';
-            resultLines.push(`${h.num} ${data.mark} ${h.name}：${tagsStr}`);
-          }
-        }
-      });
-      
-      if(resultLines.length > 0) {
-        ta.value = resultLines.join('\n');
-        saveAIComment(ta.value);
-        alert(' テキスト整理完了！\n「 グラフ・印へ反映」を押してください。');
-      } else {
-        alert('出走馬や評価キーワードが見つかりませんでした。');
-      }
-    }
     
-    function applyCommentToGraph() {
-      if(!currentRaceId) { alert('レースを選択してください。'); return; }
-      const ta = document.getElementById('ai-pace-comment');
-      const text = ta.value; 
-      if(!text.trim()) { alert('AI見解エリアにテキストを入力してください。'); return; }
-      
-      const race = racesData[currentRaceId];
-      const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
-      const parsedCompi = [];
-      
-      lines.forEach(l => {
-        const parts = l.split(/[\t\s]+/).filter(Boolean);
-        if(parts.length >= 3 && /^[^\s\d]+\d+$/.test(parts[0]) && /^\d+$/.test(parts[1]) && /^(\d+|消)$/.test(parts[2])) {
-          parsedCompi.push(parts);
-        }
-      });
-      
-      if(parsedCompi.length > 0 && parsedCompi.length >= lines.length * 0.5) {
-        let cnt = 0;
-        parsedCompi.forEach(p => {
-          const bm = p[0].match(/^(.+?)(\d+)$/); if(!bm) return;
-          let vc = BASHO_MAP[bm[1]] || bm[1].charAt(0);
-          let placeChar = Object.keys(BASHO_MAP).find(k => BASHO_MAP[k] === vc && k.length === 1) || vc;
-          const rId = `${placeChar}${bm[2]}`;
-          if(!racesData[rId]) return;
-          const h = racesData[rId].horses.find(x => x.num === parseInt(p[1])); if(!h) return;
-          if(p[2] === '消') { h.shisu = 0; h.winRate = 0.1; h.markIdx = 9; }
-          else h.shisu = parseInt(p[2]);
-          cnt++;
-        });
-        if(cnt > 0) {
-          applySimulation(); renderAll(); 
-          alert(` ${cnt}件のコンピ指数を反映しました！`); 
-          ta.value = ' コンピ指数反映済み'; 
-          return;
-        }
-      }
-      
-      const sortedHorses = [...race.horses].sort((a,b) => b.name.length - a.name.length);
-      let updatedCount = 0; 
-      const logLines = []; 
-      let currentH = null;
-      
-      lines.forEach(line => {
-        let found = null;
-        for(const h of sortedHorses) {
-          const cn = h.name.replace(/[^ァ-ヶー一-龠]/g, '');
-          const sn = cn.length >= 4 ? cn.substring(0,4) : cn;
-          const nm = line.match(/^\s*(\d{1,2})\s*[◎○〇▲△☆★注◉▼×消\-]/);
-          if(nm && parseInt(nm[1]) === h.num) { found = h; break; }
-          if(line.includes(cn) || (sn.length >= 4 && line.includes(sn))) { found = h; break; }
-        }
-        if(found) currentH = found;
-        if(!currentH) return;
-        
-        let scoreDiff = 0; 
-        const appliedTags = [];
-        const mm = line.match(/([◎○〇▲△☆★注◉▼×消])/);
-        
-        if(mm) {
-          const scoreMap = {'◎':10,'○':5,'〇':5,'▲':3,'△':1,'☆':1,'★':1,'注':1,'◉':1,'▼':-2,'×':-5,'消':-100};
-          const markMap = {'◎':1,'○':2,'〇':2,'▲':3,'△':4,'☆':5,'★':6,'注':7,'穴':8,'消':9,'●':10,'◉':11,'▼':9,'×':9};
-          if(markMap[mm[1]] !== undefined) currentH.markIdx = markMap[mm[1]];
-          if(mm[1] === '消') currentH.winRate = 0.1;
-          else scoreDiff += (scoreMap[mm[1]] || 0);
-        }
-        
-        COMMENT_KEYWORDS.forEach(rule => {
-          rule.words.forEach(w => {
-            if(line.includes(w) && !appliedTags.includes(w)) {
-              scoreDiff += rule.score; appliedTags.push(w);
-            }
-          });
-        });
-        
-        if(scoreDiff !== 0 || appliedTags.length > 0 || mm) {
-          if(currentH.winRate !== 0.1) currentH.winRate = Math.max(0.1, currentH.winRate + scoreDiff);
-          const nm = appliedTags.join('・');
-          if(nm && (!currentH.memo || !currentH.memo.includes(nm))) currentH.memo = currentH.memo ? currentH.memo + ' ' + nm : nm;
-          if(scoreDiff >= 10 && ['B','C','D','E'].includes(currentH.deki)) currentH.deki = 'A';
-          updatedCount++;
-          const mc = mm ? mm[1] : '-'; 
-          logLines.push(`${currentH.num}番 ${currentH.name}: 印[${mc}] ${scoreDiff>0?'+':''}${scoreDiff}${appliedTags.length>0?' ('+appliedTags.join(',')+')':''}`);
-        }
-      });
-      
-      if(updatedCount > 0) {
-        normalizeTo100(false); 
-        renderAll(); 
-        alert(` グラフ・印への反映完了！\n\n` + logLines.join('\n'));
-      } else {
-        alert('反映できる印やキーワードが見つかりませんでした。');
-      }
-    }
 
     function cleanDeki(val) {
       if(!val) return 'C';
@@ -3401,60 +3311,6 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
       return faults;
     }
 
-    function applyTanfukuOdds(inputId) {
-      const text = document.getElementById(inputId).value;
-      if(!text.trim()) { alert('単複オッズのテキストを貼り付けてください。'); return; }
-      if(!currentRaceId) { alert('レースを選択してください。'); return; }
-      
-      const race = racesData[currentRaceId];
-      let updateCount = 0;
-      const lines = text.split('\n');
-      
-      lines.forEach(line => {
-        let foundHorse = null;
-        let odds = NaN;
-        for(const h of race.horses) {
-          if(line.includes(h.name)) {
-            foundHorse = h;
-            break;
-          }
-        }
-        if(foundHorse) {
-          const afterName = line.substring(line.indexOf(foundHorse.name) + foundHorse.name.length);
-          const oddsMatch = afterName.match(/(\d+\.\d+)/);
-          if(oddsMatch) {
-            odds = parseFloat(oddsMatch[1]);
-            foundHorse.odds = odds;
-            updateCount++;
-          }
-        } else {
-          const match = line.match(/(?:^|\s)枠?(\d+)\S*\s+(\d+)\s+([^\s\t]+)\s+(\d+\.\d+)/);
-          if(match) {
-            const num = parseInt(match[2], 10);
-            const o = parseFloat(match[4]);
-            const h = race.horses.find(x => x.num === num);
-            if(h) { h.odds = o; updateCount++; }
-          }
-        }
-      });
-      
-      if(updateCount > 0) {
-        let sumInv = 0;
-        race.horses.forEach(h => { const o = parseFloat(h.odds); if(!isNaN(o) && o > 0) sumInv += (1/o); });
-        if(sumInv > 0) {
-          race.horses.forEach(h => {
-            const o = parseFloat(h.odds); 
-            if(!isNaN(o) && o > 0) h.winRate = ((1/o)/sumInv) * 100; 
-            else h.winRate = 0;
-          });
-        }
-        autoAssignMarksByWinRate();
-        document.getElementById(inputId).value = '';
-        alert(` ${updateCount}頭の単勝オッズを読み込み、勝率と印を自動設定しました！`);
-      } else {
-        alert('オッズデータを読み取れませんでした。\nフォーマットをご確認ください。');
-      }
-    }
 
     function callGAS(url) {
       return new Promise(function(resolve, reject) {
@@ -3654,24 +3510,6 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
       renderRaceList();
     }
 // 発走時刻をnetkeiba（運営GAS経由）から取得して各レースに反映
-async function refreshSchedule(dateYmd){
-  if(!AI_GAS_URL) return; // GAS未接続なら何もしない
-  try{
-    const resp = await fetch(AI_GAS_URL, {
-      method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body: JSON.stringify({ action:'schedule', date: dateYmd })
-    });
-    const data = await resp.json();
-    if(!data || !data.schedule) return;
-    Object.keys(racesData).forEach(rId=>{
-      const r = racesData[rId];
-      const rnum = parseInt((rId.match(/\d+/)||['0'])[0]);
-      const key = (r.basho||'') + '-' + rnum;
-      if(data.schedule[key]) r.departureTime = data.schedule[key];
-    });
-    buildNavigation();
-  }catch(e){ /* 取得失敗は無視（時刻は—のまま） */ }
-}
 
 function buildNavigation() {
   const nav = document.getElementById('nav-area');
@@ -3820,20 +3658,6 @@ function buildNavigation() {
 
 
     
-    function toggleRaceStatus(raceId) {
-      const statuses = ["","勝負","絞る","万馬券","波乱","穴狙い","見送り"];
-      let cur = racesData[raceId].status || '';
-      let nextIdx = statuses.indexOf(cur);
-      if(nextIdx === -1) nextIdx = 0;
-      else nextIdx = (nextIdx + 1) % statuses.length;
-      racesData[raceId].status = statuses[nextIdx];
-      buildNavigation();
-      if(currentRaceId === raceId) {
-        const sel = document.getElementById('race-status-select');
-        if(sel && Array.from(sel.options).some(opt => opt.value === racesData[raceId].status)) sel.value = racesData[raceId].status;
-        else if(sel) sel.value = '';
-      }
-    }
     
     function syncRaceQualityTab(){
       const sel = document.getElementById('race-status-select');
@@ -3924,9 +3748,9 @@ function buildNavigation() {
       const btn = document.getElementById('ai-mic-chat-btn');
       if(!SR){ alert('お使いのブラウザは音声入力に対応していません（Chrome推奨）。'); return; }
       // 録音中にもう一度押したら停止（＝対話モードも解除）
-      if(_aiRecording){ _voiceLiveMode = false; if(_aiRecognition) _aiRecognition.stop(); return; }
+      if(_aiRecording){ _voiceLiveMode = false; _stopSpeaking(); if(_aiRecognition) _aiRecognition.stop(); return; }
       // 読み上げ中に押したら読み上げを止めて聞き取りへ
-      try{ if(window.speechSynthesis) speechSynthesis.cancel(); }catch(e){}
+      _stopSpeaking();
       _voiceLiveMode = true; // マイクを押した時点で対話モードON
       _startVoiceRecognition();
     }
@@ -3977,22 +3801,46 @@ function buildNavigation() {
       _resumeGuard = now;
       try{ _startVoiceRecognition(); }catch(e){}
     }
-    function _speakAiAnswer(text){
-      if(!text) return;
-      // TTS非対応でも会話は継続させる（読み上げなしで即マイク再開）
-      if(!window.speechSynthesis){ if(_voiceLiveMode) setTimeout(_resumeMicAfterSpeak, 400); return; }
-      try{
-        speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = 'ja-JP'; u.rate = 1.05; u.pitch = 1.0;
-        u.onend = () => { if(_voiceLiveMode) setTimeout(_resumeMicAfterSpeak, 250); };
-        u.onerror = () => { if(_voiceLiveMode) setTimeout(_resumeMicAfterSpeak, 250); };
-        speechSynthesis.speak(u);
-        // フォールバック：読み上げ時間を文字数から推定し、onendが来なくても再開
-        const est = Math.min(20000, 1200 + text.length * 130); // 1文字≈130ms
-        setTimeout(()=>{ if(_voiceLiveMode && !_aiRecording){ try{ speechSynthesis.cancel(); }catch(e){} _resumeMicAfterSpeak(); } }, est);
-      }catch(e){ if(_voiceLiveMode) setTimeout(_resumeMicAfterSpeak, 400); }
+    let _ttsSeq = 0; // 読み上げ世代（古い読み上げのコールバックを無効化）
+    function _cleanForSpeech(text){
+      return String(text||'')
+        .replace(/```[\s\S]*?```/g,' ')
+        .replace(/[*_#>`~|]/g,'')
+        .replace(/\[(.*?)\]\(.*?\)/g,'$1')
+        .replace(/https?:\/\/\S+/g,'')
+        .replace(/[ \t]+/g,' ')
+        .trim();
     }
+    // 文ごとに区切って読み上げる：Chromeの長文onend不発・途中で切れる問題を回避
+    function _speakAiAnswer(text){
+      const clean = _cleanForSpeech(text);
+      if(!clean){ if(_voiceLiveMode) setTimeout(_resumeMicAfterSpeak, 300); return; }
+      if(!window.speechSynthesis){ if(_voiceLiveMode) setTimeout(_resumeMicAfterSpeak, 400); return; }
+      const seq = ++_ttsSeq;
+      let chunks = clean.split(/(?<=[。！？!?\n])/).map(c=>c.trim()).filter(Boolean);
+      // 1チャンクが長すぎる場合は読点でさらに分割（安定上限 ≈ 120文字）
+      chunks = chunks.flatMap(c => c.length <= 120 ? [c] : c.split(/(?<=、)/).reduce((acc,piece)=>{ const last=acc[acc.length-1]; if(last!=null && (last+piece).length<=120) acc[acc.length-1]=last+piece; else acc.push(piece); return acc; },[]));
+      try{ speechSynthesis.cancel(); }catch(e){}
+      let idx = 0, fallback = null;
+      const finish = () => { clearTimeout(fallback); if(seq!==_ttsSeq) return; if(_voiceLiveMode) setTimeout(_resumeMicAfterSpeak, 250); };
+      const next = () => {
+        clearTimeout(fallback);
+        if(seq!==_ttsSeq) return;                 // 新しい読み上げ/停止で無効化
+        if(idx >= chunks.length){ finish(); return; }
+        const piece = chunks[idx++];
+        const u = new SpeechSynthesisUtterance(piece);
+        u.lang='ja-JP'; u.rate=1.05; u.pitch=1.0;
+        let done=false;
+        const go = () => { if(done) return; done=true; setTimeout(next, 60); };
+        u.onend = go; u.onerror = go;
+        fallback = setTimeout(()=>{ try{ speechSynthesis.cancel(); }catch(e){} go(); }, 1500 + piece.length*140);
+        try{ speechSynthesis.speak(u); }catch(e){ go(); }
+      };
+      try{ if(speechSynthesis.paused) speechSynthesis.resume(); }catch(e){}
+      next();
+    }
+    // マイク再押下や停止時に読み上げも無効化
+    function _stopSpeaking(){ _ttsSeq++; try{ if(window.speechSynthesis) speechSynthesis.cancel(); }catch(e){} }
 
     async function sendAiChat(viaVoice){
       if(!isAiUnlocked()){ openAiUnlock(); return; }
@@ -4269,14 +4117,6 @@ function buildNavigation() {
       });
     }
     
-    function setCourseDirection(dir) {
-      currentCourseDir = dir;
-      updateCourseDirUI();
-      if(currentRaceId) {
-        assignAutoPositions(racesData[currentRaceId].horses);
-        renderPaceBoard();
-      }
-    }
     
     function updateRaceText(field, val) {
       if(currentRaceId) {
@@ -4299,22 +4139,6 @@ function buildNavigation() {
       renderPaceBoard();
     }
     
-    function updateHorse(idx, field, val) {
-      if(!currentRaceId) return;
-      const h = racesData[currentRaceId].horses[idx];
-      if(!h) return;
-      if(field === 'shisu' || field === 'winRate' || field === 'tenF' || field === 'agariF') h[field] = parseFloat(val) || 0;
-      else if(field === 'deki') h[field] = cleanDeki(val);
-      else if(field === 'style') h[field] = cleanStyle(val);
-      else h[field] = val;
-      
-      if(field === 'style' || field === 'shisu' || field === 'deki' || field === 'tenF') {
-        assignAutoPositions(racesData[currentRaceId].horses);
-        renderPaceBoard();
-        applySimulation(currentRaceId);
-      }
-      renderAll();
-    }
 
     
 
@@ -4888,12 +4712,6 @@ window.drawOaChartModal = function() {
     let isGraphDragging = false, currentDragGraphIdx = -1;
     let _lastTouchTime = 0;
     
-    function startDragMouse(e, idx) {
-      if(Date.now() - _lastTouchTime < 1000) return;
-      isGraphDragging = true; 
-      currentDragGraphIdx = idx; 
-      updateDragVal(e, idx);
-    }
     
     function onGraphMouseMove(e) { if(isGraphDragging && currentDragGraphIdx !== -1) updateDragVal(e, currentDragGraphIdx); }
     function onGraphMouseUp(e) { if(isGraphDragging) { isGraphDragging = false; currentDragGraphIdx = -1; autoAssignMarksByWinRate(); } }
@@ -4902,59 +4720,8 @@ window.drawOaChartModal = function() {
     const LONG_PRESS_MS = 500;
     const MOVE_THRESHOLD = 8;
 
-    function startDragTouch(e, idx) {
-      _lastTouchTime = Date.now();
-      if(_touchState.longPressTimer) clearTimeout(_touchState.longPressTimer);
-      const touch = e.touches[0];
-      _touchState.isReady = false;
-      _touchState.isDragging = false;
-      _touchState.idx = idx;
-      _touchState.startX = touch.clientX;
-      _touchState.startY = touch.clientY;
-      _touchState.moved = false;
-      
-      const overlay = document.getElementById('track-' + idx);
-      _touchState.longPressTimer = setTimeout(() => {
-        if(_touchState.moved) return;
-        _touchState.isReady = true;
-        _touchState.longPressTimer = null;
-        if(overlay) {
-          overlay.classList.add('touch-ready');
-          if(navigator.vibrate) navigator.vibrate(40);
-        }
-      }, LONG_PRESS_MS);
-    }
 
-    function moveDragTouch(e, idx) {
-      if(_touchState.idx !== idx) return;
-      const touch = e.touches[0];
-      const dy = touch.clientY - _touchState.startY;
-      if(!_touchState.isReady && Math.abs(dy) > MOVE_THRESHOLD) {
-        _touchState.moved = true;
-        if(_touchState.longPressTimer) { clearTimeout(_touchState.longPressTimer); _touchState.longPressTimer = null; }
-        return;
-      }
-      if(!_touchState.isReady) return;
-      e.preventDefault();
-      _touchState.isDragging = true;
-      const overlay = document.getElementById('track-' + idx);
-      if(overlay) { overlay.classList.remove('touch-ready'); overlay.classList.add('touch-active'); }
-      updateDragVal(e, idx);
-    }
 
-    function endDragTouch(e, idx) {
-      if(_touchState.longPressTimer) { clearTimeout(_touchState.longPressTimer); _touchState.longPressTimer = null; }
-      const overlay = document.getElementById('track-' + idx);
-      if(overlay) {
-        overlay.classList.remove('touch-ready');
-        overlay.classList.add('touch-active');
-        setTimeout(() => { if(overlay) overlay.classList.remove('touch-active'); }, 200);
-      }
-      if(_touchState.isDragging) { _touchState.isDragging = false; autoAssignMarksByWinRate(); }
-      _touchState.isReady = false;
-      _touchState.idx = -1;
-      _touchState.moved = false;
-    }
 
     function updateDragVal(e, idx) {
       const sortedH = getSortedHorsesForGraph();
@@ -5748,102 +5515,8 @@ window.drawOaChartModal = function() {
     }
 
     
-    function toggleMark(idx) {
-      if(!currentRaceId) return;
-      const h = racesData[currentRaceId].horses[idx];
-      if(!h) return;
-      if(h.markIdx === 11) { h.markIdx = 0; } 
-      else { h.markIdx = (h.markIdx + 1) % MARK_DISPLAY_CYCLE.length; }
-      renderAll();
-    }
 
-    function applyShisuBonus() {
-      if(!currentRaceId) return;
-      const race = racesData[currentRaceId];
-      const mul = 1.0;
-      const validVals = race.horses.map(h => h.shisu && h.shisu > 0 ? h.shisu : 0).filter(s => s > 0);
-      if(validVals.length === 0) { alert('指数が設定されていません。'); return; }
-      const maxS = Math.max(...validVals), minS = Math.min(...validVals), range = maxS - minS || 1;
-      
-      race.horses.forEach(h => {
-        const sv = h.shisu && h.shisu > 0 ? h.shisu : 0;
-        if(sv <= 0) return;
-        const ratio = (sv - minS) / range;
-        h.winRate = parseFloat(h.winRate) || 0;
-        if(ratio >= 0.7) h.winRate += 15 * mul * ratio;
-        else if(ratio >= 0.4) h.winRate += 5 * mul * ratio;
-        else { const d = (1 - ratio) * 0.5 * mul; h.winRate = h.winRate * (1 - d); }
-        h.winRate = Math.max(0, h.winRate);
-      });
-      normalizeTo100(true);
-      const btn = document.getElementById('graph-shisu-btn');
-      if(btn) {
-        btn.style.boxShadow = '0 0 0 3px #fff, 0 0 0 5px #c62828';
-        setTimeout(() => { btn.style.boxShadow = 'none'; }, 1200);
-      }
-    }
     
-    function applyDekiBonus() {
-      if(!currentRaceId) return;
-      const race = racesData[currentRaceId];
-      const mul = 1.0;
-      const DEKI_BONUS = {S:20, A:12, B:4, C:0, D:-8, E:-12};
-      
-      race.horses.forEach(h => {
-        const deki = (h.deki || 'C').toUpperCase();
-        const bonus = (DEKI_BONUS[deki] ?? 0) * mul;
-        h.winRate = parseFloat(h.winRate) || 0;
-        if(deki === 'D' || deki === 'E') {
-          const dr = deki === 'D' ? (0.4 * mul) : (0.6 * mul);
-          h.winRate = h.winRate * Math.max(0, 1 - dr);
-        } else h.winRate += bonus;
-        h.winRate = Math.max(0, h.winRate);
-      });
-      normalizeTo100(true);
-      const btn = document.getElementById('graph-deki-btn');
-      if(btn) {
-        btn.style.boxShadow = '0 0 0 3px #fff, 0 0 0 5px #8e24aa';
-        setTimeout(() => { btn.style.boxShadow = 'none'; }, 1200);
-      }
-    }
-    function applyMemoBonus() {
-      if(!currentRaceId) return;
-      const race = racesData[currentRaceId];
-      let updatedCount = 0;
-      
-      race.horses.forEach(h => {
-        if (!h.memo) return;
-        
-        let scoreDiff = 0;
-        // COMMENT_KEYWORDSはツール上部に定義されているポジ・ネガワードのリストです
-        COMMENT_KEYWORDS.forEach(rule => {
-          rule.words.forEach(w => {
-            if(h.memo.includes(w)) {
-              scoreDiff += rule.score;
-            }
-          });
-        });
-        
-        if (scoreDiff !== 0) {
-          h.winRate = parseFloat(h.winRate) || 0;
-          h.winRate += scoreDiff;
-          h.winRate = Math.max(0.1, h.winRate); // 0未満にならないよう調整
-          updatedCount++;
-        }
-      });
-      
-      if (updatedCount > 0) {
-        normalizeTo100(true);
-        const btn = document.getElementById('graph-memo-btn');
-        if(btn) {
-          btn.style.boxShadow = '0 0 0 3px #fff, 0 0 0 5px #1a1a1a';
-          setTimeout(() => { btn.style.boxShadow = 'none'; }, 1200);
-        }
-        alert(` メモからキーワードを読み取り、${updatedCount}頭の勝率に反映しました！`);
-      } else {
-        alert('メモの中に、勝率に影響するキーワード（絶好調、上積み、不安など）が見つかりませんでした。');
-      }
-    }
 
 function calculateHarville() {
       if(!currentRaceId) return;
@@ -6162,48 +5835,6 @@ function autoGenerateTickets(mode = 'win') {
       parseAndCalculate();
     }
     
-    function extractAndApplyOdds() {
-      const text = document.getElementById('odds-input').value.trim();
-      if(!text) { alert("オッズ表を貼り付けてください。"); return; }
-      if(!currentRaceId) return;
-      const race = racesData[currentRaceId];
-      const b = race.builder;
-      if(b.type === '単勝' || b.type === '複勝') { alert("単勝・複勝のオッズは上の基礎データの表から自動取得されます。"); return; }
-      
-      const lines = text.replace(/[ ]/g, ' ').split('\n');
-      let extractedMap = {}, count = 0;
-      
-      lines.forEach(line => {
-        line = line.trim(); if(!line) return;
-        let m1 = line.match(/^\d+\s+(\d+)[^\d]+(\d+)\s+([\d.]+)\s*$/);
-        if(m1) { const nums = [parseInt(m1[1]), parseInt(m1[2])].sort((a,b) => a-b); extractedMap[nums[0]+'-'+nums[1]] = parseFloat(m1[3]); count++; return; }
-        
-        let m3 = line.match(/(\d+)[^\d]+(\d+)[^\d]+(\d+)\s+([\d.]+)/);
-        if(m3) { const nums = [parseInt(m3[1]), parseInt(m3[2]), parseInt(m3[3])].sort((a,b) => a-b); extractedMap[nums[0]+'-'+nums[1]+'-'+nums[2]] = parseFloat(m3[4]); count++; return; }
-        
-        let m2 = line.match(/(\d+)\s*[-ー=＞>]\s*(\d+)\s+([\d.]+)/);
-        if(m2) { const n1 = parseInt(m2[1]), n2 = parseInt(m2[2]); extractedMap[n1+'-'+n2] = parseFloat(m2[3]); extractedMap[[n1,n2].sort((a,b)=>a-b).join('-')] = parseFloat(m2[3]); count++; return; }
-      });
-      
-      if(count === 0) { alert("オッズを認識できませんでした。"); return; }
-      let matched = 0;
-      b.tickets.forEach(t => {
-        const nums = t.comb.split(/[->]/).map(Number).sort((a,b) => a-b);
-        const key = nums.join('-');
-        if(extractedMap[key] !== undefined) { t.odds = extractedMap[key]; matched++; }
-      });
-      
-      if(b.tickets.length === 0) {
-        Object.entries(extractedMap).forEach(([comb, odds]) => {
-          const nums = comb.split('-').map(Number);
-          if(nums.some(isNaN) || nums.some(n => n <= 0)) return;
-          if(!b.tickets.find(t => t.comb === comb)) { b.tickets.push({type:b.type, comb, odds}); matched++; }
-        });
-      }
-      parseAndCalculate();
-      if(matched > 0) alert(` ${Object.keys(extractedMap).length}点のオッズを抽出し、${matched}点の買い目に反映しました！`);
-      else alert(` オッズを抽出しましたが、買い目と一致しませんでした。`);
-    }
     
     function parseAndCalculate() {
       if(!currentRaceId) return;
@@ -6366,15 +5997,6 @@ function autoGenerateTickets(mode = 'win') {
     function updateBudget(val) { if(!currentRaceId) return; racesData[currentRaceId].builder.budget = parseFloat(val) || 0; parseAndCalculate(); }
     function delTicket(idx) { if(!currentRaceId) return; racesData[currentRaceId].builder.tickets.splice(idx, 1); renderTicketBuilder(); }
     
-    function resetTickets() {
-      if(!currentRaceId) return;
-      const b = racesData[currentRaceId].builder;
-      b.marks1 = []; b.marks2 = []; b.marks3 = []; b.tickets = [];
-      const oI = document.getElementById('odds-input'); if(oI) oI.value = '';
-      const bg = document.getElementById('tb-points-badge');
-      if(bg) { bg.textContent = '0 点'; bg.style.background = '#fff'; bg.style.borderColor = '#1a1a1a'; bg.style.color = '#1a1a1a'; }
-      renderTicketBuilder();
-    }
     
     function copyTickets() {
       if(!currentRaceId) return;
@@ -7248,51 +6870,6 @@ function autoGenerateTickets(mode = 'win') {
       }
     }
 
-    function applyMemoToHorses() {
-      if(!currentRaceId) { alert('レースを選択してください。'); return; }
-      const ta = document.getElementById('ai-pace-comment');
-      const text = ta.value; 
-      if(!text.trim()) { alert('テキストを入力してください。'); return; }
-      
-      const race = racesData[currentRaceId];
-      const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
-      const sortedHorses = [...race.horses].sort((a,b) => b.name.length - a.name.length);
-      
-      let updatedCount = 0;
-      
-      lines.forEach(line => {
-        // 【AIレース見解】などの自動生成行や区切り線はスキップ
-        if(line.startsWith('【') || line.startsWith('軸候補') || line.startsWith('状態絶好') || line.startsWith('上位') || line.startsWith('---')) return;
-
-        let foundH = null;
-        for(const h of sortedHorses) {
-          const cn = h.name.replace(/[^ァ-ヶー一-龠]/g, '');
-          const sn = cn.length >= 4 ? cn.substring(0,4) : cn;
-          // 馬番（例: "1番" や "1:"）または馬名を探す
-          const nm = line.match(/^\s*(\d{1,2})\s*[番:：、\s]/);
-          
-          if(nm && parseInt(nm[1]) === h.num) { foundH = h; break; }
-          if(line.includes(cn) || (sn.length >= 4 && line.includes(sn))) { foundH = h; break; }
-        }
-        
-        if(foundH) {
-           // 見つかった馬の行から、馬番や馬名部分をある程度削って純粋なメモにする
-           let cleanLine = line.replace(/^\s*\d{1,2}\s*[番:：、]?\s*/, '').trim();
-           // すでにメモがあればその後ろに追記
-           if(cleanLine) {
-               foundH.memo = foundH.memo ? foundH.memo + " / " + cleanLine : cleanLine;
-               updatedCount++;
-           }
-        }
-      });
-      
-      if(updatedCount > 0) {
-         renderMainTable();
-         alert(` ${updatedCount}件のメモを上の表の各馬に反映しました！`);
-      } else {
-         alert('馬名や馬番が認識できませんでした。\n「1番：トモの踏み込み良い」のように入力してください。');
-      }
-    }
 
 
     // --- ▼ ここから全体表示・絞り込み機能のコード ▼ ---
@@ -7611,19 +7188,6 @@ document.querySelectorAll('.nav-race-btn').forEach(btn => {
 
     // ▼▼ ここから追加：グラフアレンジメニューの開閉用JS ▼▼
     let isGraphArrangeOpen = false;
-    function toggleGraphArrange() {
-      isGraphArrangeOpen = !isGraphArrangeOpen;
-      const panel = document.getElementById('graph-arrange-panel');
-      const btn = document.getElementById('toggle-arrange-btn');
-      
-      if (isGraphArrangeOpen) {
-        panel.style.display = 'flex';
-        btn.innerHTML = '▲ 閉じる';
-      } else {
-        panel.style.display = 'none';
-        btn.innerHTML = '▼ アレンジ';
-      }
-    }
     // ▲▲ ここまで追加 ▲▲
     // ▼▼ 追加：騎手名を「名字のみ（同姓は＋1文字）」に短縮する関数 ▼▼
     const SAME_NAME_JOCKEYS = ['横山', '岩田', '吉田', '藤岡', '木幡', '鮫島', '武井', '松山', '国分', '斎藤', '西村', '角田', '丹内', '柴田'];
