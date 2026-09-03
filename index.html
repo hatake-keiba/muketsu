@@ -9,12 +9,16 @@
   <style>
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-    /* ============ 左スライドメニュー ============ */
-    #mk-menu-btn{ position:fixed; top:12px; left:12px; z-index:100000; width:46px; height:46px;
-      background:#1a1a1a; border:2px solid #ccf23f; border-radius:12px; cursor:pointer;
-      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px;
-      box-shadow:0 3px 8px rgba(0,0,0,.28); }
-    #mk-menu-btn span{ display:block; width:20px; height:2.5px; background:#ccf23f; border-radius:2px; transition:.25s; }
+    /* ============ 上部ヘッダーバー＋左スライドメニュー ============ */
+    #mk-topbar{ position:fixed; top:0; left:0; right:0; height:52px; z-index:100000;
+      background:#1a1a1a; display:flex; align-items:center; padding:0 12px; box-shadow:0 2px 8px rgba(0,0,0,.25); }
+    #mk-topbar .mk-brand{ margin-left:12px; font-family:'Anton','Fraunces',sans-serif; color:#ccf23f;
+      font-size:22px; letter-spacing:.06em; line-height:1; }
+    body{ padding-top:52px !important; } /* 本文をバー分下げる */
+    #mk-menu-btn{ position:static; width:40px; height:40px; flex:0 0 auto;
+      background:transparent; border:2px solid #ccf23f; border-radius:10px; cursor:pointer;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; box-shadow:none; }
+    #mk-menu-btn span{ display:block; width:19px; height:2.5px; background:#ccf23f; border-radius:2px; transition:.25s; }
     #mk-menu-btn.open span:nth-child(1){ transform:translateY(7.5px) rotate(45deg); }
     #mk-menu-btn.open span:nth-child(2){ opacity:0; }
     #mk-menu-btn.open span:nth-child(3){ transform:translateY(-7.5px) rotate(-45deg); }
@@ -47,6 +51,28 @@
     .mk-placeholder h2 .mk-mk{ background:linear-gradient(transparent 55%, #ccf23f 55%); padding:0 4px; }
     .mk-placeholder p{ color:#8a8a82; font-size:13px; line-height:1.8; margin:14px 0 0; }
     .mk-placeholder .ph-box{ margin-top:28px; border:2px dashed #cfcdc4; border-radius:14px; padding:44px 20px; color:#b0aea6; font-size:13px; background:#faf9f5; }
+    /* データ部屋・使い方：目次＋セクション */
+    .mk-room{ max-width:1000px; margin:0 auto; padding:20px 14px 60px; }
+    .mk-room-hd{ padding:14px 6px 6px; }
+    .mk-room-hd .ph-eyebrow{ font-size:10px; font-weight:800; letter-spacing:.18em; color:#9b9a92; display:block; margin-bottom:8px; }
+    .mk-room-hd h2{ font-family:'Zen Kaku Gothic New',sans-serif; font-weight:900; font-size:30px; color:#1a1a1a; margin:0; }
+    .mk-room-hd h2 .mk-mk{ background:linear-gradient(transparent 55%, #ccf23f 55%); padding:0 4px; }
+    .mk-room-hd p{ color:#8a8a82; font-size:13px; margin:12px 0 0; line-height:1.7; }
+    /* 目次カード（グリッド） */
+    .mk-toc{ display:grid; grid-template-columns:repeat(auto-fill, minmax(150px,1fr)); gap:10px; margin:20px 0 30px; }
+    .mk-toc-item{ display:flex; flex-direction:column; gap:2px; text-decoration:none; background:#fff;
+      border:2px solid #1a1a1a; border-radius:12px; padding:14px 14px; box-shadow:3px 3px 0 rgba(26,26,26,.12);
+      transition:transform .12s, box-shadow .12s; }
+    .mk-toc-item:active{ transform:translate(2px,2px); box-shadow:1px 1px 0 rgba(26,26,26,.12); }
+    .mk-toc-item .ic{ font-size:22px; margin-bottom:4px; }
+    .mk-toc-item b{ font-family:'Zen Kaku Gothic New',sans-serif; font-weight:900; font-size:14px; color:#1a1a1a; }
+    .mk-toc-item span{ font-size:11px; color:#8a8a82; line-height:1.4; }
+    /* 各セクション */
+    .mk-sec{ scroll-margin-top:64px; margin-bottom:20px; background:#fff; border:2px solid #e8e6df; border-radius:14px; padding:16px 18px; }
+    .mk-sec h3{ display:flex; align-items:center; gap:10px; font-family:'Zen Kaku Gothic New',sans-serif;
+      font-weight:900; font-size:18px; color:#1a1a1a; margin:0 0 12px; padding-bottom:10px; border-bottom:2px solid #1a1a1a; }
+    .mk-sec h3 .ic{ font-size:20px; }
+    .mk-sec .ph-box{ border:2px dashed #cfcdc4; border-radius:12px; padding:32px 16px; color:#b0aea6; font-size:13px; text-align:center; background:#faf9f5; }
 
     /* 各馬評価テーブルの行・セル・棒グラフをタップしても変色させない */
     .data-table tr, .data-table td, .stat-card .bar-col, .stat-card .visual-bar,
@@ -1182,8 +1208,11 @@ input[type=number], input[type=text], textarea, select {
 </head>
 <body>
 
-<!-- ============ 左スライドメニュー ============ -->
-<button id="mk-menu-btn" onclick="toggleMkMenu()" aria-label="メニュー"><span></span><span></span><span></span></button>
+<!-- ============ 上部ヘッダーバー＋左スライドメニュー ============ -->
+<header id="mk-topbar">
+  <button id="mk-menu-btn" onclick="toggleMkMenu()" aria-label="メニュー"><span></span><span></span><span></span></button>
+  <span class="mk-brand" id="mk-topbar-title">MUKETSU</span>
+</header>
 <div id="mk-menu-overlay" onclick="closeMkMenu()"></div>
 <nav id="mk-menu-panel" aria-label="メインメニュー">
   <div class="mk-menu-hd"><small>MENU</small>MUKETSU</div>
@@ -1192,23 +1221,47 @@ input[type=number], input[type=text], textarea, select {
   <button class="mk-menu-item"        data-page="usage" onclick="showMkPage('usage')"><span class="ic">📖</span>使い方<span class="ar">›</span></button>
 </nav>
 
-<!-- データ部屋（箱だけ） -->
+<!-- データ部屋（目次＋箱） -->
 <div class="mk-page" id="page-data">
-  <div class="mk-placeholder">
-    <span class="ph-eyebrow">DATA ROOM</span>
-    <h2><span class="mk-mk">データ部屋</span></h2>
-    <p>種牡馬・騎手・厩舎の成績など、予想に使うデータをここにまとめます。<br>（中身は準備中）</p>
-    <div class="ph-box">🔧 ここにデータを追加していきます</div>
+  <div class="mk-room">
+    <div class="mk-room-hd">
+      <span class="ph-eyebrow">DATA ROOM</span>
+      <h2><span class="mk-mk">データ部屋</span></h2>
+      <p>予想に使うデータをまとめる部屋。下の項目から選べます。</p>
+    </div>
+    <div class="mk-toc">
+      <a class="mk-toc-item" href="#data-sire"><span class="ic">🐴</span><b>種牡馬データ</b><span>産駒のコース・距離別成績</span></a>
+      <a class="mk-toc-item" href="#data-jockey"><span class="ic">🏇</span><b>騎手データ</b><span>騎手のコース・条件別成績</span></a>
+      <a class="mk-toc-item" href="#data-stable"><span class="ic">🏠</span><b>厩舎データ</b><span>調教師の得意条件</span></a>
+      <a class="mk-toc-item" href="#data-course"><span class="ic">📐</span><b>コースデータ</b><span>各コースの傾向・バイアス</span></a>
+    </div>
+    <section class="mk-sec" id="data-sire"><h3><span class="ic">🐴</span>種牡馬データ</h3><div class="ph-box">🔧 準備中</div></section>
+    <section class="mk-sec" id="data-jockey"><h3><span class="ic">🏇</span>騎手データ</h3><div class="ph-box">🔧 準備中</div></section>
+    <section class="mk-sec" id="data-stable"><h3><span class="ic">🏠</span>厩舎データ</h3><div class="ph-box">🔧 準備中</div></section>
+    <section class="mk-sec" id="data-course"><h3><span class="ic">📐</span>コースデータ</h3><div class="ph-box">🔧 準備中</div></section>
   </div>
 </div>
 
-<!-- 使い方（箱だけ） -->
+<!-- 使い方（目次＋箱） -->
 <div class="mk-page" id="page-usage">
-  <div class="mk-placeholder">
-    <span class="ph-eyebrow">HOW TO USE</span>
-    <h2><span class="mk-mk">使い方</span></h2>
-    <p>MUKETSUの使い方ガイドをここに載せます。<br>（中身は準備中）</p>
-    <div class="ph-box">🔧 ここに使い方を追加していきます</div>
+  <div class="mk-room">
+    <div class="mk-room-hd">
+      <span class="ph-eyebrow">HOW TO USE</span>
+      <h2><span class="mk-mk">使い方</span></h2>
+      <p>MUKETSUの使い方ガイド。下の項目から選べます。</p>
+    </div>
+    <div class="mk-toc">
+      <a class="mk-toc-item" href="#use-start"><span class="ic">🚀</span><b>はじめに</b><span>基本の流れ</span></a>
+      <a class="mk-toc-item" href="#use-sim"><span class="ic">🎮</span><b>展開シミュレーター</b><span>展開図の見方・使い方</span></a>
+      <a class="mk-toc-item" href="#use-winrate"><span class="ic">📊</span><b>勝率設定</b><span>各馬の勝率を調整する</span></a>
+      <a class="mk-toc-item" href="#use-ticket"><span class="ic">🎯</span><b>買い目ビルダー</b><span>買い目とオッズ・期待値</span></a>
+      <a class="mk-toc-item" href="#use-ai"><span class="ic">🤖</span><b>AI相談</b><span>壁打ちの使い方</span></a>
+    </div>
+    <section class="mk-sec" id="use-start"><h3><span class="ic">🚀</span>はじめに</h3><div class="ph-box">🔧 準備中</div></section>
+    <section class="mk-sec" id="use-sim"><h3><span class="ic">🎮</span>展開シミュレーター</h3><div class="ph-box">🔧 準備中</div></section>
+    <section class="mk-sec" id="use-winrate"><h3><span class="ic">📊</span>勝率設定</h3><div class="ph-box">🔧 準備中</div></section>
+    <section class="mk-sec" id="use-ticket"><h3><span class="ic">🎯</span>買い目ビルダー</h3><div class="ph-box">🔧 準備中</div></section>
+    <section class="mk-sec" id="use-ai"><h3><span class="ic">🤖</span>AI相談</h3><div class="ph-box">🔧 準備中</div></section>
   </div>
 </div>
 
@@ -9256,6 +9309,8 @@ window.closeDetailedData2Modal = function() {
     const pg = document.getElementById('page-'+name);
     if(pg) pg.classList.add('active');
     document.querySelectorAll('.mk-menu-item').forEach(b=>b.classList.toggle('active', b.dataset.page===name));
+    const title = {race:'MUKETSU', data:'データ部屋', usage:'使い方'}[name] || 'MUKETSU';
+    const tb=document.getElementById('mk-topbar-title'); if(tb) tb.textContent = title;
     closeMkMenu();
     window.scrollTo(0,0);
     try{ localStorage.setItem('muketsu_page', name); }catch(e){}
