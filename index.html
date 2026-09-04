@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>競馬予想 全レースデータ (シミュレーター＆AI・オッズ対応短評完全版)</title>
+  <title>K-buddy</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
   <style>
@@ -1235,7 +1235,7 @@ input[type=number], input[type=text], textarea, select {
     border-bottom:1px solid var(--mk-line) !important; }
   .simulator-wrapper{ border-color:var(--mk-line) !important; }
 
-  /* ===== 各馬一覧テーブル：MUKETSU調にがっつり刷新 ===== */
+  /* ===== 各馬一覧テーブル：K-buddy調にがっつり刷新 ===== */
   .main-table-area{ border-top:none !important; }
   .data-table-container{ padding:6px 10px 12px; }
   .data-table{ border-collapse:separate !important; border-spacing:0 !important; font-size:11px !important; }
@@ -1319,7 +1319,7 @@ input[type=number], input[type=text], textarea, select {
 </header>
 <div id="mk-menu-overlay" onclick="closeMkMenu()"></div>
 <nav id="mk-menu-panel" aria-label="メインメニュー">
-  <div class="mk-menu-hd"><small>MENU</small>MUKETSU</div>
+  <div class="mk-menu-hd"><small>MENU</small>K-buddy</div>
   <button class="mk-menu-item active" data-page="race"  onclick="showMkPage('race')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 22V15c0-5-2.5-7.5-6-8.8L16.4 2.5l-2.2 3.1-2.4-2.8-.8 3.6C9.2 7.2 7.8 8.6 6.6 10.4L3.4 14.2c-.8 1-.4 2.2.8 2.6l3.2.8c.8.2 1.4-.1 1.8-.8l.7-1.2c1.7.8 3.3 2 4.3 3.8.6 1 .8 1.8.8 2.6z"/><circle cx="13.4" cy="10.4" r="1.1" fill="#fff"/><circle cx="5.2" cy="15.2" r=".7" fill="#fff"/></svg></span>レース<span class="ar">›</span></button>
   <button class="mk-menu-item"        data-page="data"  onclick="showMkPage('data')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>データ部屋<span class="ar">›</span></button>
   <button class="mk-menu-item"        data-page="usage" onclick="showMkPage('usage')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h6a4 4 0 0 1 4 3 4 4 0 0 1 4-3h6v14h-6a4 4 0 0 0-4 3 4 4 0 0 0-4-3H2z"/><path d="M12 8v14"/></svg></span>使い方<span class="ar">›</span></button>
@@ -1363,7 +1363,7 @@ input[type=number], input[type=text], textarea, select {
       <a class="mk-toc-item" href="#use-ai"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.8 5.6h12.4v8H8.2l-3.4 2.8V13.6H2.8z"/><path d="M17.6 9h3.6v7.2h-1.6v2.6l-3.2-2.6h-3.6v-2"/></svg></span><b>AI相談</b><span>壁打ちの使い方</span></a>
     </div>
     <section class="mk-sec" id="use-start"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V3.6"/><path d="M5 4.4h11.2l-1.8 3.4 1.8 3.4H5"/></svg></span>はじめに</h3><div class="mk-guide">
-      <p class="lead">MUKETSUは「自分の予想を、数字と展開図で整理して、期待値の高い買い目に落とし込む」ための道具です。</p>
+      <p class="lead">K-buddyは「自分の予想を、数字と展開図で整理して、期待値の高い買い目に落とし込む」ための道具です。</p>
       <p>AIが答えを出すツールではありません。あなたの見立てを入力すると、勝率・展開・買い目がその場で計算され、迷いどころをAIに壁打ちできます。</p>
       <div class="flow">
         <div><small>STEP 1</small>レースを選ぶ</div>
@@ -1481,8 +1481,8 @@ input[type=number], input[type=text], textarea, select {
 
 <div class="app-container mk-page active" id="page-race">
   <div id="site-title" style="text-align:center;padding:40px 18px 32px;background:#1a1a1a;border-radius:22px;margin:12px;position:relative;">
-    <div style="font-family:'Anton','Fraunces','Helvetica Neue',sans-serif;font-weight:400;color:#ccf23f;font-size:clamp(56px,17vw,116px);letter-spacing:.04em;line-height:.9;white-space:nowrap;">MUKETSU</div>
-    <div style="color:#c9c8c0;font-size:13px;letter-spacing:.1em;font-weight:700;margin-top:20px;">期待値計算で<span style="color:#ccf23f;">無血で勝つ・回収</span></div>
+    <div style="font-family:'Anton','Fraunces','Helvetica Neue',sans-serif;font-weight:400;color:#ccf23f;font-size:clamp(52px,15vw,104px);letter-spacing:.01em;line-height:.95;white-space:nowrap;">K-buddy</div>
+    <div style="color:#c9c8c0;font-size:13px;letter-spacing:.1em;font-weight:700;margin-top:20px;">期待値計算で<span style="color:#ccf23f;">勝つ・回収する</span></div>
   </div>
   <style>
     #ai-console-panel, #master-panel, #system-details { display:none !important; }
@@ -4098,7 +4098,7 @@ function buildNavigation() {
       }
     }
 
-    const AI_SYSTEM = 'あなたは競馬新聞ツール「MUKETSU」の相談相手AIです。利用者が自分の予想を整理する“壁打ち”役に徹してください。'
+    const AI_SYSTEM = 'あなたは競馬新聞ツール「K-buddy」の相談相手AIです。利用者が自分の予想を整理する“壁打ち”役に徹してください。'
       + '断定的な購入指示や「絶対当たる」等の表現は避け、根拠を添えて考える材料を返します。'
       + '与えられた出馬表・過去データ・利用者のメモを踏まえ、簡潔（目安3〜6行）に日本語で答えてください。';
 
@@ -9150,7 +9150,7 @@ window.closeDetailedData2Modal = function() {
   /* ============================================================
      風トラックの表示切り替え
      ------------------------------------------------------------
-     風向き・風速の描画はHATAKE側の資産のため、MUKETSUでは非表示。
+     風向き・風速の描画はHATAKE側の資産のため、K-buddyでは非表示。
      戻したいときは下を true にするだけ（コードは全て残してある）。
      ブラウザのコンソールで setWindTrack(true) でも一時的に確認できる。
      ============================================================ */
@@ -9326,7 +9326,7 @@ window.closeDetailedData2Modal = function() {
     const pg = document.getElementById('page-'+name);
     if(pg) pg.classList.add('active');
     document.querySelectorAll('.mk-menu-item').forEach(b=>b.classList.toggle('active', b.dataset.page===name));
-    const title = {race:'MUKETSU', data:'データ部屋', usage:'使い方', contact:'お問い合わせ'}[name] || 'MUKETSU';
+    const title = {race:'K-buddy', data:'データ部屋', usage:'使い方', contact:'お問い合わせ'}[name] || 'K-buddy';
     const tb=document.getElementById('mk-topbar-title'); if(tb) tb.textContent = title;
     closeMkMenu();
     window.scrollTo(0,0);
