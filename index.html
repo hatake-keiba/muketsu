@@ -40,11 +40,11 @@
       transform:translateX(-105%); transition:transform .28s cubic-bezier(.4,0,.2,1);
       display:flex; flex-direction:column; overflow-y:auto; }
     #mk-menu-panel.open{ transform:translateX(0); }
-    .mk-menu-hd{ background:#1a1a1a; color:#ccf23f; font-family:'Zen Kaku Gothic New',sans-serif;
+    .mk-menu-hd{ background:#1a1a1a; color:#ccf23f; font-family:'Zen Maru Gothic','Zen Kaku Gothic New',sans-serif;
       font-weight:900; font-size:26px; letter-spacing:.06em; padding:64px 22px 20px; line-height:1; }
     .mk-menu-hd small{ display:block; font-size:9px; color:#8a9a3a; letter-spacing:.24em; font-weight:800; margin-bottom:8px; }
     .mk-menu-item{ display:flex; align-items:center; gap:14px; padding:18px 22px; cursor:pointer;
-      font-family:'Zen Kaku Gothic New',sans-serif; font-weight:700; font-size:16px; color:#1a1a1a;
+      font-family:'Zen Maru Gothic','Zen Kaku Gothic New',sans-serif; font-weight:700; font-size:16px; color:#1a1a1a;
       border:none; border-bottom:1px solid #e4e2d9; background:none; text-align:left; width:100%; transition:background .15s; }
     .mk-menu-item:hover, .mk-menu-item:active{ background:#eceae3; }
     .mk-menu-item.active{ background:#1a1a1a; color:#ccf23f; }
@@ -57,7 +57,7 @@
     /* データ部屋・使い方の空箱の見た目 */
     .mk-placeholder{ max-width:1100px; margin:24px auto; padding:40px 22px; text-align:center; }
     .mk-placeholder .ph-eyebrow{ font-size:10px; font-weight:800; letter-spacing:.18em; color:#9b9a92; display:block; margin-bottom:10px; }
-    .mk-placeholder h2{ font-family:'Zen Kaku Gothic New',sans-serif; font-weight:900; font-size:30px; color:#1a1a1a; margin:0 0 6px; }
+    .mk-placeholder h2{ font-family:'Zen Maru Gothic','Zen Kaku Gothic New',sans-serif; font-weight:900; font-size:30px; color:#1a1a1a; margin:0 0 6px; }
     .mk-placeholder h2 .mk-mk{ background:linear-gradient(transparent 55%, #ccf23f 55%); padding:0 4px; }
     .mk-placeholder p{ color:#8a8a82; font-size:13px; line-height:1.8; margin:14px 0 0; }
     .mk-placeholder .ph-box{ margin-top:28px; border:2px dashed #cfcdc4; border-radius:14px; padding:44px 20px; color:#b0aea6; font-size:13px; background:#faf9f5; }
@@ -65,7 +65,7 @@
     .mk-room{ max-width:1000px; margin:0 auto; padding:20px 14px 60px; }
     .mk-room-hd{ padding:14px 6px 6px; }
     .mk-room-hd .ph-eyebrow{ font-size:10px; font-weight:800; letter-spacing:.18em; color:#9b9a92; display:block; margin-bottom:8px; }
-    .mk-room-hd h2{ font-family:'Zen Kaku Gothic New',sans-serif; font-weight:900; font-size:30px; color:#1a1a1a; margin:0; }
+    .mk-room-hd h2{ font-family:'Zen Maru Gothic','Zen Kaku Gothic New',sans-serif; font-weight:900; font-size:30px; color:#1a1a1a; margin:0; }
     .mk-room-hd h2 .mk-mk{ background:linear-gradient(transparent 55%, #ccf23f 55%); padding:0 4px; }
     .mk-room-hd p{ color:#8a8a82; font-size:13px; margin:12px 0 0; line-height:1.7; }
     /* 目次カード（グリッド） */
@@ -75,11 +75,11 @@
       transition:transform .12s, box-shadow .12s; }
     .mk-toc-item:active{ transform:translate(2px,2px); box-shadow:1px 1px 0 rgba(26,26,26,.12); }
     .mk-toc-item .ic{ font-size:22px; margin-bottom:4px; }
-    .mk-toc-item b{ font-family:'Zen Kaku Gothic New',sans-serif; font-weight:900; font-size:14px; color:#1a1a1a; }
+    .mk-toc-item b{ font-family:'Zen Maru Gothic','Zen Kaku Gothic New',sans-serif; font-weight:900; font-size:14px; color:#1a1a1a; }
     .mk-toc-item span{ font-size:11px; color:#8a8a82; line-height:1.4; }
     /* 各セクション */
     .mk-sec{ scroll-margin-top:64px; margin-bottom:20px; background:#fff; border:2px solid #e8e6df; border-radius:14px; padding:16px 18px; }
-    .mk-sec h3{ display:flex; align-items:center; gap:10px; font-family:'Zen Kaku Gothic New',sans-serif;
+    .mk-sec h3{ display:flex; align-items:center; gap:10px; font-family:'Zen Maru Gothic','Zen Kaku Gothic New',sans-serif;
       font-weight:900; font-size:18px; color:#1a1a1a; margin:0 0 12px; padding-bottom:10px; border-bottom:2px solid #1a1a1a; }
     .mk-sec h3 .ic{ font-size:20px; }
     .mk-sec .ph-box{ border:2px dashed #cfcdc4; border-radius:12px; padding:32px 16px; color:#b0aea6; font-size:13px; text-align:center; background:#faf9f5; }
@@ -88,8 +88,8 @@
     .data-table tr, .data-table td, .stat-card .bar-col, .stat-card .visual-bar,
     .bar-col, .visual-bar { -webkit-tap-highlight-color: transparent !important; }
     .data-table tr:active, .data-table td:active, .stat-card .horse-row:active { background: inherit; }
-    @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
-    body { font-family: "Zen Kaku Gothic New", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; margin: 0; padding: 5px 2px; background: #e8e6df; color: #25352a; }
+    @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,900&family=Zen+Maru+Gothic:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
+    body { font-family: "Zen Maru Gothic","Zen Kaku Gothic New", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; margin: 0; padding: 5px 2px; background: #e8e6df; color: #25352a; }
     .app-container { --sage:#e8e6df; --sage-soft:#e9eee3; --card:#f7f9f4; --ink:#25352a; --ink-soft:#6b7a6b; --dark:#1f3d2b; --accent:#1a1a1a; --line:#cdd8c6; }
     .app-container { max-width: 1100px; margin: auto; }
     .master-panel { background: #f4f2ec; padding: 6px; border-radius: 6px; margin-bottom: 8px; border: 1px solid #e8e6df; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px; }
@@ -816,7 +816,7 @@ input[type=number], input[type=text], textarea, select {
 
     /* ===== トースト通知（alert置き換え） ===== */
     #mk-toast-wrap{ position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:99999; display:flex; flex-direction:column; gap:8px; align-items:center; pointer-events:none; width:min(92vw,520px); }
-    .mk-toast{ pointer-events:auto; background:#1a1a1a; color:#fff; border-left:4px solid #ccf23f; border-radius:10px; padding:11px 16px; font-family:"Zen Kaku Gothic New",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif; font-size:13px; line-height:1.55; box-shadow:0 8px 24px rgba(0,0,0,.28); max-width:100%; white-space:pre-line; word-break:break-word; opacity:0; transform:translateY(10px); transition:opacity .18s ease, transform .18s ease; cursor:pointer; }
+    .mk-toast{ pointer-events:auto; background:#1a1a1a; color:#fff; border-left:4px solid #ccf23f; border-radius:10px; padding:11px 16px; font-family:"Zen Maru Gothic","Zen Kaku Gothic New",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif; font-size:13px; line-height:1.55; box-shadow:0 8px 24px rgba(0,0,0,.28); max-width:100%; white-space:pre-line; word-break:break-word; opacity:0; transform:translateY(10px); transition:opacity .18s ease, transform .18s ease; cursor:pointer; }
     .mk-toast.show{ opacity:1; transform:translateY(0); }
     .mk-toast.err{ border-left-color:#e05a3a; }
     @media (prefers-reduced-motion: reduce){ .mk-toast{ transition:none; } }
@@ -826,7 +826,7 @@ input[type=number], input[type=text], textarea, select {
     .mk-guide .lead{ font-size:14px; font-weight:700; color:#1a1a1a; margin-bottom:12px; }
     .mk-guide ol.steps{ list-style:none; counter-reset:st; margin:6px 0 14px; padding:0; display:flex; flex-direction:column; gap:8px; }
     .mk-guide ol.steps li{ counter-increment:st; position:relative; padding:10px 12px 10px 46px; background:#faf9f5; border:1px solid #e8e6df; border-radius:10px; }
-    .mk-guide ol.steps li::before{ content:counter(st); position:absolute; left:12px; top:10px; width:24px; height:24px; border-radius:50%; background:#1a1a1a; color:#ccf23f; font-weight:900; font-size:12px; display:flex; align-items:center; justify-content:center; font-family:'Zen Kaku Gothic New',sans-serif; }
+    .mk-guide ol.steps li::before{ content:counter(st); position:absolute; left:12px; top:10px; width:24px; height:24px; border-radius:50%; background:#1a1a1a; color:#ccf23f; font-weight:900; font-size:12px; display:flex; align-items:center; justify-content:center; font-family:'Zen Maru Gothic','Zen Kaku Gothic New',sans-serif; }
     .mk-guide ol.steps b{ display:block; font-weight:900; color:#1a1a1a; margin-bottom:2px; }
     .mk-guide ul.pts{ margin:4px 0 12px; padding-left:18px; }
     .mk-guide ul.pts li{ margin:3px 0; }
@@ -851,7 +851,7 @@ input[type=number], input[type=text], textarea, select {
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Zen+Maru+Gothic:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
 <style id="muketsu-theme">
   :root{
     /* ペーパー地 × 黒 × ライムアクセント（参考デザイン準拠） */
@@ -871,7 +871,7 @@ input[type=number], input[type=text], textarea, select {
     --mk-lime-ink:#1a1a1a;      /* 蛍光上に載せる文字は黒 */
   }
   body{ background:var(--mk-bg) !important; color:var(--mk-ink) !important;
-        font-family:"Zen Kaku Gothic New",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif !important; }
+        font-family:"Zen Maru Gothic","Zen Kaku Gothic New",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif !important; }
   .app-container{ max-width:1100px; }
 
   /* ▼ トップレベルのカードを統一（タイトル/絞り込み/レース目次/4大カード） */
@@ -900,7 +900,7 @@ input[type=number], input[type=text], textarea, select {
     background:#f4f2ec; border-bottom:1px solid var(--mk-line); }
   .tb-toolbar-row{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
   .tb-toolbar-lbl{ font-size:10.5px; font-weight:700; color:#7a8573; min-width:44px; letter-spacing:.04em; }
-  .tb-type-select{ font-family:"Zen Kaku Gothic New",sans-serif !important; font-size:12px !important;
+  .tb-type-select{ font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif !important; font-size:12px !important;
     font-weight:700; color:var(--mk-dark) !important; background:#fff !important;
     border:1px solid var(--mk-line) !important; border-radius:999px !important; padding:6px 14px !important; cursor:pointer; }
   .tb-points-badge{ font-size:11px; font-weight:700; color:#9b9a92; background:#f4f2ec;
@@ -910,7 +910,7 @@ input[type=number], input[type=text], textarea, select {
     align-items:center; gap:8px; background:transparent !important;
     border:none !important; border-bottom:1px solid var(--mk-line) !important; border-radius:0 !important;
     padding:6px 14px !important; margin:0 !important; }
-  .tb-ti-name{ font-family:"Zen Kaku Gothic New",sans-serif; font-weight:700; font-size:12px;
+  .tb-ti-name{ font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif; font-weight:700; font-size:12px;
     color:var(--mk-dark); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .tb-ti-odds,.tb-ti-money,.tb-ti-ev{ font-size:12px; font-weight:700; text-align:right;
     font-variant-numeric:tabular-nums; white-space:nowrap; color:#2b332a; }
@@ -932,13 +932,13 @@ input[type=number], input[type=text], textarea, select {
   .odds-update-info{ display:flex; flex-direction:column; gap:2px; }
   .odds-update-title{ font-size:12px; font-weight:700; color:var(--mk-dark); letter-spacing:.03em; }
   .odds-update-note{ font-size:10px; color:#9b9a92; }
-  .odds-update-btn{ font-family:"Zen Kaku Gothic New",sans-serif; font-size:12.5px; font-weight:700;
+  .odds-update-btn{ font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif; font-size:12.5px; font-weight:700;
     color:#f4f2ec; background:var(--mk-dark); border:none; border-radius:999px; padding:9px 20px;
     cursor:pointer; box-shadow:none; transition:opacity .2s; white-space:nowrap; }
   .odds-update-btn:hover{ opacity:.88; }
 
   /* 統一ピルボタン（緑・角丸・落ち着いた） */
-  .pill-btn{ font-family:"Zen Kaku Gothic New",sans-serif; font-size:11px; font-weight:700;
+  .pill-btn{ font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif; font-size:11px; font-weight:700;
     color:var(--mk-dark); background:#f4f2ec; border:1px solid var(--mk-line) !important;
     border-radius:999px !important; padding:6px 14px !important; cursor:pointer;
     box-shadow:none !important; transition:background .2s,border-color .2s,color .2s; }
@@ -959,9 +959,9 @@ input[type=number], input[type=text], textarea, select {
     background:transparent !important; border:none !important; margin:0 !important; }
   .sub-head::before{ content:""; width:14px; height:3px; border-radius:2px; background:var(--mk-lime); flex:0 0 auto; }
   .sub-head .mk-eyebrow{ display:none; } /* CONDITION等の重複英字ラベルは隠す */
-  .sub-head-ttl{ font-family:"Zen Kaku Gothic New",sans-serif; font-weight:900; font-size:15px;
+  .sub-head-ttl{ font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif; font-weight:900; font-size:15px;
     color:var(--mk-dark); letter-spacing:.04em; }
-  .sub-head-btn{ margin-left:auto; font-family:"Zen Kaku Gothic New",sans-serif; font-size:10.5px; font-weight:700;
+  .sub-head-btn{ margin-left:auto; font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif; font-size:10.5px; font-weight:700;
     color:#9b9a92; background:#f4f2ec; border:1px solid var(--mk-line); border-radius:999px; padding:5px 12px; cursor:pointer; }
   .sub-head-btn:hover{ background:var(--mk-dark); color:#f4f2ec; }
 
@@ -980,7 +980,7 @@ input[type=number], input[type=text], textarea, select {
 
   /* レース質を選択（タブ風ピル・セレクト） */
   .race-quality-tab{ margin-left:auto; -webkit-appearance:none; appearance:none;
-    font-family:"Zen Kaku Gothic New",sans-serif !important; font-size:11px; font-weight:700;
+    font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif !important; font-size:11px; font-weight:700;
     color:#5b6b58; letter-spacing:.02em; cursor:pointer; outline:none;
     background:#f4f2ec; border:1px solid var(--mk-line);
     border-radius:999px; padding:6px 30px 6px 14px;
@@ -1008,7 +1008,7 @@ input[type=number], input[type=text], textarea, select {
   /* 大カードの見出し＝小ラベル(eyebrow)＋特大タイトル。線でなく余白で区切る */
   .bc-head{ display:flex; align-items:center; gap:12px; flex-wrap:wrap;
     padding:20px 22px 14px; border-bottom:none !important; margin-bottom:0; }
-  .bc-title{ font-family:"Zen Kaku Gothic New",sans-serif; font-weight:900 !important;
+  .bc-title{ font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif; font-weight:900 !important;
     color:var(--mk-dark); font-size:24px !important; letter-spacing:.01em; line-height:1.05; }
   .bc-sub{ font-size:10px; color:#9b9a92; letter-spacing:.05em; }
   /* eyebrow（見出しの上の小ラベル） */
@@ -1052,7 +1052,7 @@ input[type=number], input[type=text], textarea, select {
     padding:0 10px 10px !important; }
   /* 勝率設定：項目見出し（各馬評価テーブルのヘッダと同じ体裁） */
   .graph-head{ display:flex; align-items:center; gap:0; background:#f0eee8; border-bottom:2px solid #dcdad3;
-    padding:8px 4px; margin:0 10px; font-family:"Zen Kaku Gothic New",sans-serif; font-size:10px; font-weight:700;
+    padding:8px 4px; margin:0 10px; font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif; font-size:10px; font-weight:700;
     color:#3d3d3a; letter-spacing:.02em; }
   .graph-head .gh-mark{ width:26px; text-align:center; flex:0 0 auto; }
   .graph-head .gh-num{ width:28px; text-align:center; flex:0 0 auto; }
@@ -1073,7 +1073,7 @@ input[type=number], input[type=text], textarea, select {
   .stat-card .horse-row .waku-box{ width:22px !important; height:22px !important; border-radius:5px !important; font-size:12px !important; font-weight:800; }
   /* 馬名：バー上の白抜き→濃色テキストで読みやすく（明朝廃止・ゴシック） */
   /* 馬名：バーに載せず、印・枠番の右に固定幅ラベル（背景なし・黒文字） */
-  .hr-name-label{ width:88px; flex:0 0 auto; font-family:"Zen Kaku Gothic New",sans-serif;
+  .hr-name-label{ width:88px; flex:0 0 auto; font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif;
     font-weight:800; font-size:11.5px; color:#1a1a1a; white-space:nowrap; overflow:hidden;
     text-overflow:ellipsis; }
   .stat-card .horse-name{ display:none !important; } /* 旧オーバーレイ名は不使用 */
@@ -1089,17 +1089,17 @@ input[type=number], input[type=text], textarea, select {
   .memo-card{ overflow:hidden; }
   .memo-card-head{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
     padding:12px 18px 8px; }
-  .memo-card-title{ font-family:"Zen Kaku Gothic New",sans-serif; font-weight:700;
+  .memo-card-title{ font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif; font-weight:700;
     color:var(--mk-dark); font-size:15px; letter-spacing:.06em; }
   .memo-card-sub{ font-size:10px; color:#9b9a92; letter-spacing:.06em; }
   .memo-card-textarea{ width:calc(100% - 36px); display:block; margin:0 18px 14px;
     min-height:100px; font-size:14px; line-height:1.9; padding:13px 15px;
     border:1px solid var(--mk-line) !important; border-radius:12px !important;
     background:#fcfdfb; color:#2b332a; resize:vertical; box-sizing:border-box;
-    font-family:"Zen Kaku Gothic New",sans-serif; transition:border-color .2s, box-shadow .2s; }
+    font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif; transition:border-color .2s, box-shadow .2s; }
   .memo-card-textarea:focus{ outline:none; border-color:var(--mk-accent) !important;
     box-shadow:0 0 0 3px rgba(0,0,0,.18) !important; background:#fff; }
-  .memo-card-textarea::placeholder{ color:#b6c1ac; font-family:"Zen Kaku Gothic New",sans-serif; }
+  .memo-card-textarea::placeholder{ color:#b6c1ac; font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif; }
 
   /* AI相談スロット（②内） */
   .ai-talk-slot{ margin:2px 18px 14px; border:1px dashed #dcdad3; border-radius:12px;
@@ -1122,15 +1122,15 @@ input[type=number], input[type=text], textarea, select {
   .ai-chat-log{ background:#fff; border:1px solid var(--mk-line); border-radius:10px; padding:10px;
     min-height:70px; max-height:320px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; }
   .ai-chat-empty{ font-size:11px; color:#a9b3a0; line-height:1.6; text-align:center; padding:12px 6px; }
-  .ai-msg{ font-family:"Zen Kaku Gothic New",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif; font-size:13px; line-height:1.7; padding:8px 11px; border-radius:12px; max-width:88%; white-space:pre-wrap; word-break:break-word; letter-spacing:.01em; }
+  .ai-msg{ font-family:"Zen Maru Gothic","Zen Kaku Gothic New",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif; font-size:13px; line-height:1.7; padding:8px 11px; border-radius:12px; max-width:88%; white-space:pre-wrap; word-break:break-word; letter-spacing:.01em; }
   .ai-msg.user{ align-self:flex-end; background:var(--mk-dark); color:#f4f2ec; border-bottom-right-radius:4px; }
   .ai-msg.bot{ align-self:flex-start; background:#f4f2ec; color:#243021; border-bottom-left-radius:4px;
-    font-family:"Zen Kaku Gothic New",sans-serif; }
+    font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif; }
   .ai-msg.bot.loading{ color:#9b9a92; font-style:italic; }
   .ai-chat-inputbar{ display:flex; gap:7px; align-items:stretch; margin-top:9px; }
   /* 入力欄は1行の見た目・縦中央。行高＝高さでプレースホルダーが上下中央に来る。横はtext-align:center。 */
-  .ai-chat-input{ flex:1; font-family:"Zen Kaku Gothic New",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif; font-size:13px; height:44px; line-height:26px; padding:9px 11px; border:1px solid var(--mk-line) !important;
-    border-radius:10px !important; resize:none; font-family:"Zen Kaku Gothic New",sans-serif; background:#fcfdfb;
+  .ai-chat-input{ flex:1; font-family:"Zen Maru Gothic","Zen Kaku Gothic New",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif; font-size:13px; height:44px; line-height:26px; padding:9px 11px; border:1px solid var(--mk-line) !important;
+    border-radius:10px !important; resize:none; font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif; background:#fcfdfb;
     text-align:center; overflow:hidden; }
   .ai-chat-input::placeholder{ text-align:center; color:#b3bbab; line-height:26px; }
   .ai-chat-input:focus{ outline:none; border-color:var(--mk-accent) !important; box-shadow:0 0 0 3px rgba(0,0,0,.18) !important; }
@@ -1153,9 +1153,9 @@ input[type=number], input[type=text], textarea, select {
     border-radius:12px; padding:14px; text-align:center; }
   .ai-lock-card{ max-width:300px; }
   .ai-lock-ico{ font-size:26px; margin-bottom:6px; }
-  .ai-lock-ttl{ font-family:"Zen Kaku Gothic New",sans-serif; font-weight:700; font-size:15px; color:var(--mk-dark); letter-spacing:.04em; }
+  .ai-lock-ttl{ font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif; font-weight:700; font-size:15px; color:var(--mk-dark); letter-spacing:.04em; }
   .ai-lock-desc{ font-size:11px; color:#9b9a92; line-height:1.6; margin:6px 0 12px; }
-  .ai-lock-btn{ font-family:"Zen Kaku Gothic New",sans-serif; font-size:12.5px; font-weight:700;
+  .ai-lock-btn{ font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif; font-size:12.5px; font-weight:700;
     color:#f4f2ec; background:var(--mk-dark); border:none; border-radius:999px; padding:9px 22px; cursor:pointer; }
   .ai-lock-btn:hover{ opacity:.9; }
   /* ロック中は中身を触れなくする＋褪せさせる */
@@ -1167,7 +1167,7 @@ input[type=number], input[type=text], textarea, select {
   /* 見出し帯：グレー→ダーク緑テキスト・白地 */
   .section-title{ background:var(--mk-tint) !important; color:var(--mk-dark) !important;
     border-top:none !important; border-bottom:1px solid var(--mk-line) !important;
-    font-family:"Zen Kaku Gothic New",sans-serif !important; font-weight:700 !important; }
+    font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif !important; font-weight:700 !important; }
   .sim-header{ background:var(--mk-tint) !important; color:var(--mk-accent) !important;
     border-bottom:1px solid var(--mk-line) !important; }
   .simulator-wrapper{ border-color:var(--mk-line) !important; }
@@ -1178,7 +1178,7 @@ input[type=number], input[type=text], textarea, select {
   .data-table{ border-collapse:separate !important; border-spacing:0 !important; font-size:11px !important; }
   /* ヘッダ：淡いセージ地＋濃緑文字（濃グリーンをやめて軽く） */
   .data-table thead th{ background:#f0eee8 !important; color:#3d3d3a !important;
-    font-family:"Zen Kaku Gothic New",sans-serif !important; font-weight:700 !important;
+    font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif !important; font-weight:700 !important;
     font-size:10px !important; letter-spacing:.02em; padding:9px 4px !important; white-space:nowrap;
     border:none !important; border-bottom:2px solid #dcdad3 !important; position:sticky; top:0; }
   .data-table thead th:first-child{ border-top-left-radius:10px; }
@@ -1200,7 +1200,7 @@ input[type=number], input[type=text], textarea, select {
   .data-table td{ border:none !important; border-bottom:1px solid #efeee8 !important;
     padding:7px 4px !important; font-size:11px !important; vertical-align:middle; color:#2b332a !important; }
   /* 馬名：明朝で少し格を出す・左寄せ */
-  .data-table .td-name{ font-family:"Zen Kaku Gothic New",sans-serif !important; font-weight:700 !important;
+  .data-table .td-name{ font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif !important; font-weight:700 !important;
     font-size:12.5px !important; color:#1a1a1a !important; max-width:130px !important; letter-spacing:.01em; }
   /* 単勝：人気帯は赤、それ以外は落ち着いた色 */
   .data-table .td-odds{ font-weight:700 !important; font-variant-numeric:tabular-nums; }
@@ -1299,7 +1299,7 @@ input[type=number], input[type=text], textarea, select {
       <a class="mk-toc-item" href="#use-ticket"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></span><b>買い目ビルダー</b><span>買い目とオッズ・期待値</span></a>
       <a class="mk-toc-item" href="#use-ai"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 5v3"/><circle cx="9" cy="13" r="1.2" fill="currentColor"/><circle cx="15" cy="13" r="1.2" fill="currentColor"/></svg></span><b>AI相談</b><span>壁打ちの使い方</span></a>
     </div>
-    <section class="mk-sec" id="use-start"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c4 2 6 6 6 10l-4 4-4-4c0-4 2-8 2-10z"/><path d="M9 17l-3 4 4-3"/></svg></span>はじめに</h3><div class="mk-guide">
+    <section class="mk-sec" id="use-start"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V3.6"/><path d="M5 4.4h11.2l-1.8 3.4 1.8 3.4H5"/></svg></span>はじめに</h3><div class="mk-guide">
       <p class="lead">MUKETSUは「自分の予想を、数字と展開図で整理して、期待値の高い買い目に落とし込む」ための道具です。</p>
       <p>AIが答えを出すツールではありません。あなたの見立てを入力すると、勝率・展開・買い目がその場で計算され、迷いどころをAIに壁打ちできます。</p>
       <div class="flow">
@@ -1318,7 +1318,7 @@ input[type=number], input[type=text], textarea, select {
       </ol>
       <div class="tip"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.7.6 1 1.3 1 2.1h5c0-.8.3-1.5 1-2.1A6 6 0 0 0 12 3z"/></svg></span><div><b>入力は自動保存。</b>勝率・印・メモ・買い目は、この端末のブラウザに自動で保存されます。ページを閉じても、同じ端末・同じブラウザなら続きから使えます。別端末には引き継がれません。</div></div>
     </div></section>
-    <section class="mk-sec" id="use-sim"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="4"/><path d="M7 12h3M8.5 10.5v3"/><circle cx="16" cy="11" r="1" fill="currentColor"/><circle cx="18" cy="14" r="1" fill="currentColor"/></svg></span>展開シミュレーター</h3><div class="mk-guide">
+    <section class="mk-sec" id="use-sim"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.5 19.5h9a5 5 0 0 0 0-10h-9a4 4 0 0 1 0-8"/><circle cx="7.5" cy="19.5" r="2" fill="currentColor" stroke="none"/></svg></span>展開シミュレーター</h3><div class="mk-guide">
       <p class="lead">展開図は「誰が前に行き、直線でどこが空くか」を1枚で見るためのものです。</p>
       <table class="mk-legend">
         <tr><th>脚質バッジ</th><td><span class="st nige">逃</span> 逃げ　<span class="st senko">先</span> 先行　<span class="st sashi">差</span> 差し　<span class="st oikomi">追</span> 追込。各馬評価の脚質を変えると展開図に即反映されます。</td></tr>
@@ -1333,7 +1333,7 @@ input[type=number], input[type=text], textarea, select {
       </ol>
       <div class="tip"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.7.6 1 1.3 1 2.1h5c0-.8.3-1.5 1-2.1A6 6 0 0 0 12 3z"/></svg></span><div><b>脚質を疑うところから。</b>登録されている脚質は近走ベースです。乗り替わりや距離短縮で位置取りが変わりそうなら、各馬評価で脚質を変えてから展開図を見直すと精度が上がります。</div></div>
     </div></section>
-    <section class="mk-sec" id="use-winrate"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>勝率設定</h3><div class="mk-guide">
+    <section class="mk-sec" id="use-winrate"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6.5h13M3.5 12h9M3.5 17.5h15"/><circle cx="18.5" cy="6.5" r="2.2"/><circle cx="14.5" cy="12" r="2.2"/></svg></span>勝率設定</h3><div class="mk-guide">
       <p class="lead">勝率は「あなたがその馬を何%で勝つと見るか」です。ここが買い目の期待値の土台になります。</p>
       <ol class="steps">
         <li><b>◀▶で動かす</b>勝率グラフの数値の左右にある◀▶で1%ずつ増減します。数値を直接入力しても構いません。バー本体をタップしても変わらないので、スクロール中の誤操作は起きません。</li>
@@ -1349,7 +1349,7 @@ input[type=number], input[type=text], textarea, select {
       </table>
       <div class="tip"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.7.6 1 1.3 1 2.1h5c0-.8.3-1.5 1-2.1A6 6 0 0 0 12 3z"/></svg></span><div><b>目安：勝率×単勝オッズ。</b>あなたの勝率が20%で単勝が6.0倍なら、20%×6.0＝1.2で期待値プラス。これが1.0を切る馬は、どれだけ強く見えても「買いすぎ」です。</div></div>
     </div></section>
-    <section class="mk-sec" id="use-ticket"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></span>買い目ビルダー</h3><div class="mk-guide">
+    <section class="mk-sec" id="use-ticket"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 7h19v3.2a1.9 1.9 0 0 0 0 3.6V17h-19v-3.2a1.9 1.9 0 0 0 0-3.6z"/><path d="M9 9.2v1.4M9 13.4v1.4"/><path d="M12.8 12h5"/></svg></span>買い目ビルダー</h3><div class="mk-guide">
       <p class="lead">買い目ビルダーは、勝率をもとに券種ごとの的中率と期待値（EV）を出し、予算を配分します。</p>
       <ol class="steps">
         <li><b>予算を入れる</b>1レースに使う金額を入力します。右の<span class="kw">オッズ更新</span>で最新オッズを取得します（発走が近いほど正確です）。</li>
@@ -1365,7 +1365,7 @@ input[type=number], input[type=text], textarea, select {
       </table>
       <div class="tip"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.7.6 1 1.3 1 2.1h5c0-.8.3-1.5 1-2.1A6 6 0 0 0 12 3z"/></svg></span><div><b>点数より期待値。</b>EVの高い順に3〜6点に絞るのが基本。的中率を上げるために点数を増やすと、EVの低い買い目が混ざって回収率が下がります。</div></div>
     </div></section>
-    <section class="mk-sec" id="use-ai"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 5v3"/><circle cx="9" cy="13" r="1.2" fill="currentColor"/><circle cx="15" cy="13" r="1.2" fill="currentColor"/></svg></span>AI相談</h3><div class="mk-guide">
+    <section class="mk-sec" id="use-ai"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.8 5.6h12.4v8H8.2l-3.4 2.8V13.6H2.8z"/><path d="M17.6 9h3.6v7.2h-1.6v2.6l-3.2-2.6h-3.6v-2"/></svg></span>AI相談</h3><div class="mk-guide">
       <p class="lead">AI相談は「答えを聞く場所」ではなく、あなたの予想の穴を見つける壁打ち相手です。</p>
       <p>いま開いているレースの出馬表・あなたの勝率と短評・運営が用意した陣営データ（騎手・厩舎・種牡馬の成績）を、AIは最初から把握しています。前置きなしで聞いてください。</p>
       <ol class="steps">
@@ -1553,7 +1553,7 @@ input[type=number], input[type=text], textarea, select {
         <div class="bc-head" style="align-items:flex-start;">
           <div style="flex:1;min-width:0;">
             <span class="mk-eyebrow">RACE INFORMATION</span>
-            <div id="race-info-title" style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;color:#1a1a1a;font-size:28px;letter-spacing:.005em;line-height:1.08;">—</div>
+            <div id="race-info-title" style="font-family:'Zen Maru Gothic','Zen Kaku Gothic New',sans-serif;font-weight:900;color:#1a1a1a;font-size:28px;letter-spacing:.005em;line-height:1.08;">—</div>
             <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
               <span id="race-info-haran" style="font-size:10px;color:#9b9a92;background:#f4f2ec;border:1px solid #e8e6df;border-radius:10px;padding:2px 9px;font-weight:700;letter-spacing:.04em;"></span>
             </div>
@@ -5073,7 +5073,7 @@ window.drawOaChartModal = function() {
           const nm = document.createElement('span');
           const kn = (h.name||'').replace(/[^ァ-ヴー・]+[A-Za-z0-9]*/g,'') || h.name || '';
           nm.textContent = (kn||h.name||'').substring(0,3);
-          nm.style.cssText = "font-family:'Zen Kaku Gothic New',sans-serif;font-size:8px;font-weight:700;color:#4b5a48;line-height:1;max-width:26px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;";
+          nm.style.cssText = "font-family:'Zen Maru Gothic','Zen Kaku Gothic New',sans-serif;font-size:8px;font-weight:700;color:#4b5a48;line-height:1;max-width:26px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;";
           wrap.appendChild(box); wrap.appendChild(nm);
           el.appendChild(wrap);
         }
@@ -5116,7 +5116,7 @@ window.drawOaChartModal = function() {
         let textTop = isStraight ? "内 ラチ" : "大 外 ↑", textBottom = isStraight ? "外 ラチ ↓" : "内 ラチ";
         
         let bgSvg = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;"><defs>${gX}${gY}</defs><rect width="100" height="100" fill="${baseColor}" /><rect x="0" y="15" width="100" height="70" fill="${trackColor}" />${race.tenkaiVal!==0?`<rect x="0" y="15" width="100" height="70" fill="url(#gX)" style="mix-blend-mode:multiply;" />`:''}${race.biasVal!==0?`<rect x="0" y="15" width="100" height="70" fill="url(#gY)" style="mix-blend-mode:multiply;" />`:''}<rect x="0" y="14" width="100" height="1.4" fill="${rachiColor}" /><rect x="0" y="84.6" width="100" height="1.4" fill="${rachiColor}" /><rect x="${startLineX-0.6}" y="15" width="1.2" height="70" fill="#9b9a92" opacity="0.55" /></svg>`;
-        const textOverlay = `<div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;font-family:'Zen Kaku Gothic New',sans-serif;">
+        const textOverlay = `<div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;font-family:'Zen Maru Gothic','Zen Kaku Gothic New',sans-serif;">
           <div style="position:absolute;top:5px;left:8px;color:#6b7a6b;font-size:9px;font-weight:700;letter-spacing:1px;background:rgba(255,255,255,.6);padding:1px 8px;border-radius:8px;">道中の位置取り（想定）</div>
           <div style="position:absolute;top:5px;right:8px;color:#1a1a1a;font-size:10px;font-weight:700;background:rgba(255,255,255,.6);padding:1px 8px;border-radius:8px;">進行方向 →</div>
           <div style="position:absolute;top:16%;left:6px;color:${rachiColor};font-size:9px;font-weight:800;text-shadow:0 1px 2px rgba(255,255,255,.7);">内ラチ</div>
@@ -5191,7 +5191,7 @@ window.drawOaChartModal = function() {
             : '';
           const phF1 = pixelHorseSvg(h.waku, 0), phF2 = pixelHorseSvg(h.waku, 1);
           const favWrap = isFav ? `border-radius:6px;${favGlow}` : '';
-          let innerHTML = `<div style="position:relative;">${favTag}<div class="pixel-horse" style="${favWrap}"><div class="ph-frame ph-f1">${phF1}</div><div class="ph-frame ph-f2">${phF2}</div><span class="ph-num">${h.num}</span></div></div><span style="display:${nameDisplay};font-family:'Zen Kaku Gothic New',sans-serif;font-size:9px;font-weight:700;color:#1a1a1a;text-shadow:0 1px 2px rgba(255,255,255,.9);margin-top:2px;letter-spacing:0;">${shortName}</span>`;
+          let innerHTML = `<div style="position:relative;">${favTag}<div class="pixel-horse" style="${favWrap}"><div class="ph-frame ph-f1">${phF1}</div><div class="ph-frame ph-f2">${phF2}</div><span class="ph-num">${h.num}</span></div></div><span style="display:${nameDisplay};font-family:'Zen Maru Gothic','Zen Kaku Gothic New',sans-serif;font-size:9px;font-weight:700;color:#1a1a1a;text-shadow:0 1px 2px rgba(255,255,255,.9);margin-top:2px;letter-spacing:0;">${shortName}</span>`;
           
           if(!wrapper) {
             wrapper = document.createElement('div');
