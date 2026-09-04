@@ -821,6 +821,16 @@ input[type=number], input[type=text], textarea, select {
     .scratch-tag{ display:inline-block; font-size:9.5px; font-weight:800; letter-spacing:.04em;
                   background:#c2410c; color:#fff; border-radius:3px; padding:1px 5px; margin-left:5px;
                   font-family:'Noto Sans JP','BIZ UDPGothic',sans-serif; vertical-align:1px; }
+    /* ===== 読み込み中のくるくる（オッズ取得など） ===== */
+    .mk-spin{ display:inline-block; width:1em; height:1em; vertical-align:-0.16em;
+              border:2px solid currentColor; border-right-color:transparent; border-radius:50%;
+              animation:mk-spin .7s linear infinite; }
+    @keyframes mk-spin{ to{ transform:rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce){ .mk-spin{ animation-duration:2.4s; } }
+    /* ボタン自身が読み込み中のとき */
+    .is-loading{ position:relative; opacity:.75; pointer-events:none; }
+    #sync-status .mk-spin, #racecard-status .mk-spin{ margin-right:5px; }
+
     /* ===== トースト通知（alert置き換え） ===== */
     #mk-toast-wrap{ position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:99999; display:flex; flex-direction:column; gap:8px; align-items:center; pointer-events:none; width:min(92vw,520px); }
     .mk-toast{ pointer-events:auto; background:#1a1a1a; color:#fff; border-left:4px solid #ccf23f; border-radius:10px; padding:11px 16px; font-family:"BIZ UDPGothic","BIZ UDGothic",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif; font-size:13px; line-height:1.55; box-shadow:0 8px 24px rgba(0,0,0,.28); max-width:100%; white-space:pre-line; word-break:break-word; opacity:0; transform:translateY(10px); transition:opacity .18s ease, transform .18s ease; cursor:pointer; }
@@ -3504,7 +3514,7 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
         const r = racesData[key];
         const tr = document.createElement('tr');
         if(key === currentRaceId) tr.classList.add('current-race');
-        const timeLabel = r.departureTime ? r.departureTime.replace('時',':').replace('分','') : '';
+        const timeLabel = fmtPostTime(r.departureTime);
         tr.innerHTML = `<td>${r.basho || key.replace(/\d+/,'')}</td><td>${key.match(/\d+/)?.[0]||'?'}R</td><td>${timeLabel||'-'}</td><td>${r.horses.length}頭</td><td><button class="btn-primary" style="padding:2px 6px;font-size:10px;" onclick="switchRaceFromAdmin('${key}')">表示</button><button class="btn-danger" style="padding:2px 6px;font-size:10px;margin-left:4px;" onclick="deleteRaceFromAdmin('${key}')">削除</button></td>`;
         tbody.appendChild(tr);
       });
@@ -3661,7 +3671,7 @@ function buildNavigation() {
         btn.style.cssText = `padding: 4px; height:46px; box-sizing:border-box; overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align: center; border: 1px solid #e8e6df; border-radius: 10px; cursor: pointer; background: #fff;`;
         btn.onclick = () => { selectRace(rId); };
         // 発走時刻の行は常に確保（空でも高さを揃える）＝目次のカタつき防止
-        btn.innerHTML = `<div class="r-num" style="font-size:12px; font-weight:bold; color: #666;">${rn}R</div><div class="r-time" style="font-size:9px; font-weight:bold; color: ${timeColor}; margin-top:2px; min-height:12px;">${timeStr || '—'}</div>`;
+        btn.innerHTML = `<div class="r-num" style="font-size:12px; font-weight:bold; color: #666;">${rn}R</div><div class="r-time" style="font-size:10px; font-weight:bold; color: ${timeColor}; margin-top:2px; min-height:12px; white-space:nowrap; font-variant-numeric:tabular-nums; letter-spacing:-0.02em;">${fmtPostTime(timeStr) || '—'}</div>`;
         buttonsDiv.appendChild(btn);
      }
 
@@ -4025,7 +4035,7 @@ function buildNavigation() {
       
       const titleEl = document.getElementById('race-title-text');
 
-      const timeDisp = r.departureTime ? ` [${r.departureTime}]` : '';
+      const timeDisp = r.departureTime ? ` [${fmtPostTime(r.departureTime)}]` : '';
       if(titleEl) titleEl.textContent = raceId + timeDisp + (r.info ? ` ${r.info}` : '') + (r.raceName ? ` ${r.raceName}` : '');
       // レース情報ヘッダ（別枠）にも反映
       var _rit=document.getElementById('race-info-title');
@@ -6031,6 +6041,17 @@ function autoGenerateTickets(mode = 'win') {
       navigator.clipboard.writeText(text).then(() => alert(" 買い目をクリップボードにコピーしました！"));
     }
 
+    /* 発走時刻の表示を 15:10 の形にそろえる（「15時10分」「15:5」なども吸収） */
+    function fmtPostTime(v){
+      const raw = String(v == null ? '' : v).trim();
+      if(!raw) return '';
+      const m = raw.match(/(\d{1,2})\s*[:時]\s*(\d{1,2})/);
+      if(m) return m[1] + ':' + String(m[2]).padStart(2, '0');
+      const only = raw.match(/^(\d{1,2})\s*時$/);
+      if(only) return only[1] + ':00';
+      return raw;
+    }
+
     /* ===== 会員の編集を端末に保存（勝率・印・メモ・買い目・展開設定） =====
        保存先はこの端末のブラウザ。別端末には引き継がれない。
        出馬表シートが更新されたら、新しい出馬表に会員の印・メモ・買い目を移し替える。 */
@@ -6112,7 +6133,7 @@ function autoGenerateTickets(mode = 'win') {
         if(!silent) mkToast('GAS URLが未設定です。運営にご連絡ください。');
         return false;
       }
-      if(st){ st.textContent = '取得中...'; st.style.color = '#e65100'; }
+      if(st){ st.innerHTML = '<span class="mk-spin"></span>取得中…'; st.style.color = '#e65100'; }
       try {
         const data = await callGAS(gasUrl + '?action=racecard');
         if(!data || !data.ok) throw new Error((data && data.error) || '出馬表を取得できませんでした');
@@ -6157,7 +6178,12 @@ function autoGenerateTickets(mode = 'win') {
       if(!idMatch) { alert('レースIDの形式が正しくありません: ' + currentRaceId); return; }
       
       const placeChar = idMatch[1], raceNo = parseInt(idMatch[2]);
-      if(statusEl) { statusEl.textContent = '⏳ 取得中...'; statusEl.style.color = '#e65100'; }
+      if(statusEl) { statusEl.innerHTML = '<span class="mk-spin"></span>取得中…'; statusEl.style.color = '#e65100'; }
+      // オッズ更新ボタンを「取得中」の見た目にする（10秒ほどかかるため）
+      const _oddsBtns = Array.from(document.querySelectorAll('[onclick*="syncOddsFromGAS"]'));
+      const _oddsBak = _oddsBtns.map(b => b.innerHTML);
+      _oddsBtns.forEach(b => { b.classList.add('is-loading'); b.innerHTML = '<span class="mk-spin"></span> 取得中…'; });
+      const _restoreOddsBtns = () => _oddsBtns.forEach((b,i) => { b.classList.remove('is-loading'); b.innerHTML = _oddsBak[i]; });
       
       try {
         const PLACE_CHAR_TO_CODE = {'札':'01','函':'02','福':'03','新':'04','東':'05','中':'06','名':'07','京':'08','阪':'09','小':'10'};
@@ -6267,6 +6293,7 @@ function autoGenerateTickets(mode = 'win') {
           }
         }
         
+        _restoreOddsBtns();
         const exNums = scratchedNow.filter(v => typeof v === 'number');
         if(statusEl) {
           statusEl.textContent = exNums.length ? `${currentRaceId} 取得完了（除外 ${exNums.join('・')}番）` : `${currentRaceId} 取得完了`;
@@ -6279,6 +6306,7 @@ function autoGenerateTickets(mode = 'win') {
           mkToast(`${exNums.join('・')}番が除外です。勝率を振り直しました。` + (removed ? '\n該当する買い目も外しました。' : ''));
         }
       } catch(err) {
+        try{ _restoreOddsBtns(); }catch(e){}
         if(statusEl) { statusEl.textContent = '失敗'; statusEl.style.color = '#d32f2f'; }
         alert('オッズ取得エラー:\n' + err.message);
       }
@@ -8013,7 +8041,7 @@ function openFinalReport() {
         }
     }
 
-    const timeDisp = race.departureTime ? ` [${race.departureTime}]` : '';
+    const timeDisp = race.departureTime ? ` [${fmtPostTime(race.departureTime)}]` : '';
     let raceInfoText = `${currentRaceId} ${race.basho}${timeDisp} ${race.info || ''} ${race.raceName || ''}`;
     
     let raceInfoHtml = raceInfoText ? `<div style="font-size:16px; font-weight:bold; color:#1a1a1a; margin-bottom:15px; border-bottom:1px solid #dcdad3; padding-bottom:10px;">${raceInfoText}</div>` : '';
@@ -8071,7 +8099,7 @@ function copyReportText() {
     const bData = race.builder;
     if (!bData || bData.tickets.length === 0) return;
     
-    const timeDisp = race.departureTime ? ` [${race.departureTime}]` : '';
+    const timeDisp = race.departureTime ? ` [${fmtPostTime(race.departureTime)}]` : '';
     let raceInfoText = `${currentRaceId} ${race.basho}${timeDisp} ${race.info || ''} ${race.raceName || ''}`;
     
     let text = `【予想相棒 - 最終見解レポート】\n`;
