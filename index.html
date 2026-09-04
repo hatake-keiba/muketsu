@@ -821,6 +821,47 @@ input[type=number], input[type=text], textarea, select {
     .scratch-tag{ display:inline-block; font-size:9.5px; font-weight:800; letter-spacing:.04em;
                   background:#c2410c; color:#fff; border-radius:3px; padding:1px 5px; margin-left:5px;
                   font-family:'Noto Sans JP','BIZ UDPGothic',sans-serif; vertical-align:1px; }
+    /* ===== プラン案内 ===== */
+    #plan-modal{ position:fixed; inset:0; z-index:99997; display:none;
+                 background:rgba(20,20,18,.55); overflow-y:auto; padding:24px 14px; }
+    #plan-modal.open{ display:block; }
+    .plan-sheet{ max-width:640px; margin:0 auto; background:#eceae3; border-radius:18px; overflow:hidden;
+                 box-shadow:0 20px 50px rgba(0,0,0,.3); }
+    .plan-hd{ background:#1a1a1a; padding:22px 20px 18px; position:relative; }
+    .plan-hd .eye{ color:#ccf23f; font-size:10px; font-weight:800; letter-spacing:.2em;
+                   font-family:'Noto Sans JP',sans-serif; }
+    .plan-hd h3{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:21px;
+                 color:#fff; margin:8px 0 0; }
+    .plan-hd p{ color:#c9c8c0; font-size:12.5px; line-height:1.7; margin:8px 0 0; }
+    .plan-close{ position:absolute; top:14px; right:14px; width:32px; height:32px; border-radius:50%;
+                 background:rgba(255,255,255,.12); border:none; color:#fff; cursor:pointer;
+                 display:flex; align-items:center; justify-content:center; }
+    .plan-close svg{ width:16px; height:16px; }
+    .plan-body{ padding:16px; display:grid; gap:12px; }
+    .plan-card{ background:#fff; border:2px solid #e0ded6; border-radius:14px; padding:16px; }
+    .plan-card.now{ border-color:#3f7d3f; }
+    .plan-card.pick{ border-color:#1a1a1a; }
+    .plan-top{ display:flex; align-items:baseline; gap:9px; flex-wrap:wrap; }
+    .plan-name{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:17px; }
+    .plan-tag{ font-size:10px; font-weight:800; letter-spacing:.08em; border-radius:4px; padding:2px 8px;
+               font-family:'Noto Sans JP',sans-serif; }
+    .plan-tag.cur{ background:#3f7d3f; color:#fff; }
+    .plan-tag.rec{ background:#ccf23f; color:#3d4a10; }
+    .plan-price{ margin-left:auto; font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:19px;
+                 font-variant-numeric:tabular-nums; white-space:nowrap; }
+    .plan-price small{ font-size:11px; font-weight:700; color:#87867e; margin-left:2px; }
+    .plan-card ul{ margin:11px 0 0; padding:0; list-style:none; display:grid; gap:6px; }
+    .plan-card li{ display:flex; gap:8px; align-items:flex-start; font-size:13px; line-height:1.65; }
+    .plan-card li svg{ width:15px; height:15px; flex:none; margin-top:3px; }
+    .plan-card li.no{ color:#a8a69e; }
+    .plan-btn{ display:block; width:100%; margin-top:13px; text-align:center; text-decoration:none;
+               border:2px solid #1a1a1a; background:#1a1a1a; color:#ccf23f; border-radius:10px;
+               font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:14.5px;
+               padding:12px 16px; cursor:pointer; }
+    .plan-btn.ghost{ background:#fff; color:#1a1a1a; }
+    .plan-btn.done{ background:#f4f2ec; color:#87867e; border-color:#e0ded6; cursor:default; }
+    .plan-foot{ padding:0 18px 20px; color:#87867e; font-size:11.5px; line-height:1.75; }
+
     /* ===== 読み込み中のくるくる（オッズ取得など） ===== */
     .mk-spin{ display:inline-block; width:1em; height:1em; vertical-align:-0.16em;
               border:2px solid currentColor; border-right-color:transparent; border-radius:50%;
@@ -1416,6 +1457,23 @@ input[type=number], input[type=text], textarea, select {
   </div>
 </div>
 
+<!-- プラン案内（決済リンクは PLAN_LINKS に入れる） -->
+<div id="plan-modal" onclick="if(event.target===this) closePlanModal()">
+  <div class="plan-sheet">
+    <div class="plan-hd">
+      <button class="plan-close" onclick="closePlanModal()" aria-label="閉じる"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <div class="eye">MEMBERSHIP</div>
+      <h3 id="plan-title">プランのご案内</h3>
+      <p id="plan-lead">期待値で買い目を組み立てるツールです。ご利用にはご登録が必要です。</p>
+    </div>
+    <div class="plan-body" id="plan-body"></div>
+    <div class="plan-foot">
+      料金・お支払い方法は準備中です。開始までしばらくお待ちください。<br>
+      ご不明な点はお問い合わせページからご連絡ください。
+    </div>
+  </div>
+</div>
+
 <div class="app-container mk-page active" id="page-race">
   <div id="site-title" style="text-align:center;padding:40px 18px 32px;background:#1a1a1a;border-radius:22px;margin:12px;position:relative;">
     <div style="font-family:'Anton','Fraunces','Helvetica Neue',sans-serif;font-weight:400;color:#ccf23f;font-size:clamp(56px,17vw,116px);letter-spacing:.04em;line-height:.9;white-space:nowrap;">MUKETSU</div>
@@ -1776,8 +1834,8 @@ input[type=number], input[type=text], textarea, select {
         <div class="ai-lock-overlay" id="ai-lock-overlay">
           <div class="ai-lock-card">
             <div class="ai-lock-ico"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
-            <div class="ai-lock-ttl">AI相談は有料メンバー限定</div>
-            <div class="ai-lock-desc">出馬表・過去走・あなたのメモを踏まえて、AIと壁打ちできます。</div>
+            <div class="ai-lock-ttl">AI相談は上位プラン限定</div>
+            <div class="ai-lock-desc" id="ai-lock-desc">出馬表・あなたのメモ・陣営データを踏まえて、AIと壁打ちできます。</div>
             <button class="ai-lock-btn" onclick="openAiUnlock()">プランを見る</button>
           </div>
         </div>
@@ -3705,30 +3763,151 @@ function buildNavigation() {
     /* ===== AIの課金ロック（未課金はグレーアウト・課金者のみアクティベート） =====
        ※ ここは将来「本物の会員ログイン＋決済判定」に差し替える接続点。
           いまは端末フラグ（localStorage）で擬似的にロック解除する。 */
-    const AI_PAID_LS = 'muketsu_ai_unlocked';
-    function isAiUnlocked(){
-      try { return localStorage.getItem(AI_PAID_LS) === '1'; } catch(e){ return false; }
-    }
+    /* ========================================================================
+       会員プラン（未加入 / 基本 / 上位）
+       ------------------------------------------------------------------
+       ここが「この人は何を使えるか」を答える唯一の場所。
+       決済サービスが決まったら MK_PLAN.fetch の中身だけ差し替える。
+       画面側のコードは一切変更しなくてよい。
+       ======================================================================== */
+    const MK_PLAN = (function(){
+      const LS_KEY = 'muketsu_plan';
+      const PLANS = { none:0, basic:1, pro:2 };          // 数字が大きいほど上位
+      // 機能ごとの必要プラン。ここに足すだけで新しい制限をかけられる。
+      const NEEDS = {
+        tool:  'basic',   // 出馬表・展開図・勝率・買い目
+        ai:    'pro',     // AI相談
+        report:'basic',   // 最終見解レポート
+        dataroom:'basic'  // データ部屋
+      };
+      let current = 'none';
+
+      function readLocal(){
+        try {
+          const v = localStorage.getItem(LS_KEY);
+          if (v && PLANS[v] !== undefined) return v;
+          // 旧バージョンからの引き継ぎ（AI解除済みなら上位とみなす）
+          if (localStorage.getItem('muketsu_ai_unlocked') === '1') return 'pro';
+        } catch(e){}
+        return 'none';
+      }
+
+      const api = {
+        PLANS,
+        /* いまのプラン名 */
+        get(){ return current; },
+        /* 指定の機能が使えるか。画面はこれだけを見る。 */
+        can(feature){
+          const need = NEEDS[feature] || 'basic';
+          return PLANS[current] >= PLANS[need];
+        },
+        /* その機能に必要なプラン名 */
+        needs(feature){ return NEEDS[feature] || 'basic'; },
+        /* プランを設定（決済確認後・管理者テスト用） */
+        set(plan){
+          if (PLANS[plan] === undefined) return false;
+          current = plan;
+          try { localStorage.setItem(LS_KEY, plan); } catch(e){}
+          api.apply();
+          return true;
+        },
+        /* ★決済サービス接続点★
+           いまは端末の保存を読むだけ。将来ここをサーバー確認に差し替える。
+           例）const r = await fetch(API+'/me', {credentials:'include'});
+               const d = await r.json(); return d.plan;   // 'none'|'basic'|'pro' */
+        async fetch(){
+          current = readLocal();
+          api.apply();
+          return current;
+        },
+        /* 画面全体に制限を反映 */
+        apply(){
+          document.documentElement.setAttribute('data-plan', current);
+          try { if (typeof applyAiLockState === 'function') applyAiLockState(); } catch(e){}
+        }
+      };
+      return api;
+    })();
+    // 管理・動作確認用（ブラウザのコンソールから）
+    window.setPlan = p => MK_PLAN.set(p);
+    window.getPlan = () => MK_PLAN.get();
+
+    function isAiUnlocked(){ return MK_PLAN.can('ai'); }
     function applyAiLockState(){
       const slot = document.getElementById('ai-talk-slot');
       if(!slot) return;
-      const paid = isAiUnlocked();
+      const paid = MK_PLAN.can('ai');
       slot.classList.toggle('unlocked', paid);
       slot.classList.toggle('locked', !paid);
-    }
-    // プランを見る（将来：決済ページ or noteへ）。今は仮のアンロック導線。
-    function openAiUnlock(){
-      const ok = confirm('AI相談は有料メンバー限定の機能です。\n\n（デモ）このブラウザでAIを有効化しますか？\n※ 本番では会員ログイン・決済後に自動で有効化されます。');
-      if(ok){
-        try { localStorage.setItem(AI_PAID_LS, '1'); } catch(e){}
-        applyAiLockState();
+      // 基本プランの人には「上位プランで使えます」と伝える
+      const desc = document.getElementById('ai-lock-desc');
+      if(desc){
+        desc.textContent = (MK_PLAN.get() === 'basic')
+          ? '出馬表・あなたのメモ・陣営データを踏まえて、AIと壁打ちできます。上位プランでご利用いただけます。'
+          : '出馬表・あなたのメモ・陣営データを踏まえて、AIと壁打ちできます。';
       }
     }
-    // 運営が会員の課金状態を反映するためのフック（本物のログイン実装時に呼ぶ）
-    function setAiPaid(paid){
-      try { if(paid) localStorage.setItem(AI_PAID_LS,'1'); else localStorage.removeItem(AI_PAID_LS); } catch(e){}
-      applyAiLockState();
+    /* ===== プラン案内の中身 =====
+       ★決済が決まったら PLAN_LINKS にURLを入れるだけで購入ボタンが繋がる★ */
+    const PLAN_LINKS = { basic:'', pro:'' };   // 例: { basic:'https://note.com/...', pro:'...' }
+    const PLAN_PRICE = { basic:'', pro:'' };   // 例: { basic:'1,980', pro:'3,980' }
+
+    const _ic = (ok) => ok
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="#3f7d3f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="#c3c1ba" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+
+    function planCard(key, name, feats, recommend){
+      const cur = MK_PLAN.get();
+      const isNow = (cur === key);
+      const price = PLAN_PRICE[key];
+      const link = PLAN_LINKS[key];
+      const priceHtml = price ? ('¥' + price + '<small>/月</small>') : '<small>準備中</small>';
+      let btn;
+      if(isNow){
+        btn = '<span class="plan-btn done">ご利用中のプラン</span>';
+      } else if(link){
+        btn = '<a class="plan-btn' + (recommend ? '' : ' ghost') + '" href="' + link + '" target="_blank" rel="noopener">このプランに申し込む</a>';
+      } else {
+        btn = '<button class="plan-btn' + (recommend ? '' : ' ghost') + '" onclick="mkToast(\'お申し込みの受付は準備中です。開始までお待ちください。\')">申し込みは準備中</button>';
+      }
+      return '<div class="plan-card' + (isNow ? ' now' : (recommend ? ' pick' : '')) + '">'
+        + '<div class="plan-top"><span class="plan-name">' + name + '</span>'
+        + (isNow ? '<span class="plan-tag cur">ご利用中</span>' : (recommend ? '<span class="plan-tag rec">おすすめ</span>' : ''))
+        + '<span class="plan-price">' + priceHtml + '</span></div>'
+        + '<ul>' + feats.map(f => '<li class="' + (f[0] ? '' : 'no') + '">' + _ic(f[0]) + '<span>' + f[1] + '</span></li>').join('') + '</ul>'
+        + btn + '</div>';
     }
+
+    function openPlanModal(reason){
+      const t = document.getElementById('plan-title');
+      const l = document.getElementById('plan-lead');
+      if(reason === 'ai'){
+        t.textContent = 'AI相談を使うには';
+        l.textContent = '出馬表・あなたのメモ・陣営データを踏まえて、AIが壁打ち相手になります。上位プランでご利用いただけます。';
+      } else {
+        t.textContent = 'プランのご案内';
+        l.textContent = '期待値で買い目を組み立てるツールです。ご利用にはご登録が必要です。';
+      }
+      document.getElementById('plan-body').innerHTML =
+        planCard('basic', '基本プラン', [
+          [true, '毎週の出馬表と指数'],
+          [true, '展開シミュレーターと勝率の調整'],
+          [true, '買い目ビルダーと期待値の計算'],
+          [true, '最新オッズの取得'],
+          [false, 'AI相談']
+        ], MK_PLAN.get() === 'none')
+        + planCard('pro', '上位プラン', [
+          [true, '基本プランのすべて'],
+          [true, 'AI相談（文字と音声）'],
+          [true, '陣営データを踏まえた回答'],
+          [true, 'レースごとの会話の記憶']
+        ], MK_PLAN.get() === 'basic');
+      document.getElementById('plan-modal').classList.add('open');
+    }
+    function closePlanModal(){ document.getElementById('plan-modal').classList.remove('open'); }
+
+    // プラン案内を開く（決済リンクは決まり次第ここに入れる）
+    function openAiUnlock(){ openPlanModal('ai'); }
 
     // 現在レースの文脈（メモ＋出馬表）を組み立て
     function _buildRaceContext(){
@@ -9195,6 +9374,8 @@ window.closeDetailedData2Modal = function() {
         }catch(e){}
       }
   }
+  // プランを確認してから画面を出す（決済接続後はサーバーに問い合わせる）
+  MK_PLAN.fetch().catch(()=>{});
   setTimeout(mkBootRaces, 400);
 </script>
 </body>
