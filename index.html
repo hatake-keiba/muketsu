@@ -814,6 +814,13 @@ input[type=number], input[type=text], textarea, select {
 .oa-close-btn { display: block; width: 100%; padding: 10px; margin-top: 15px; background: #607d8b; color: #fff; text-align: center; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
 
 
+    /* ===== 除外馬の行（出走取消・競走除外） ===== */
+    .data-table tbody tr.row-scratched td{ background:#f4f2ec !important; color:#a8a69e !important; }
+    .data-table tbody tr.row-scratched .td-name{ text-decoration:line-through; text-decoration-thickness:1.5px; }
+    .horse-row.row-scratched{ opacity:.42; }
+    .scratch-tag{ display:inline-block; font-size:9.5px; font-weight:800; letter-spacing:.04em;
+                  background:#c2410c; color:#fff; border-radius:3px; padding:1px 5px; margin-left:5px;
+                  font-family:'Noto Sans JP','BIZ UDPGothic',sans-serif; vertical-align:1px; }
     /* ===== トースト通知（alert置き換え） ===== */
     #mk-toast-wrap{ position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:99999; display:flex; flex-direction:column; gap:8px; align-items:center; pointer-events:none; width:min(92vw,520px); }
     .mk-toast{ pointer-events:auto; background:#1a1a1a; color:#fff; border-left:4px solid #ccf23f; border-radius:10px; padding:11px 16px; font-family:"BIZ UDPGothic","BIZ UDGothic",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif; font-size:13px; line-height:1.55; box-shadow:0 8px 24px rgba(0,0,0,.28); max-width:100%; white-space:pre-line; word-break:break-word; opacity:0; transform:translateY(10px); transition:opacity .18s ease, transform .18s ease; cursor:pointer; }
@@ -1476,6 +1483,8 @@ input[type=number], input[type=text], textarea, select {
           <div style="font-size:11px;font-weight:bold;margin-bottom:2px;">出馬表データの新規取り込み</div>
           <textarea id="data-input" placeholder="出馬表データ(TARGET形式など)を貼り付け..."></textarea>
           <button class="btn-primary" style="width:100%;margin-top:4px;" onclick="importData()">データを読み込んでツールを作成</button>
+          <button class="btn-primary" style="width:100%;margin-top:6px;background:#1a1a1a;color:#ccf23f;border-color:#1a1a1a;" onclick="loadRaceCardFromGAS()">スプレッドシートから出馬表を取得</button>
+          <div id="racecard-status" style="font-size:10px;color:#8a8a82;margin-top:4px;text-align:center;"></div>
         </div>
         <div style="border-top:1px dashed #ccc;padding-top:8px;margin-bottom:8px;">
           <button class="btn-success" style="width:100%;" onclick="exportHtml()">現在の状態を保存（ダウンロード）</button>
@@ -3084,6 +3093,7 @@ function autoAssignMarksByWinRate(rId = currentRaceId) {
       tbody.innerHTML = '';
       horses.forEach(h => {
         const tr = document.createElement('tr');
+        if(h.isScratched) tr.classList.add('row-scratched');
         const markDisp = getMarkDisplay(h);
         const starCls = h.isStarred ? 'name-starred' : '';
         
@@ -5444,7 +5454,7 @@ window.drawOaChartModal = function() {
         }
 
      const rowEl = document.createElement('div');
-        rowEl.className = 'horse-row';
+        rowEl.className = 'horse-row' + (h.isScratched ? ' row-scratched' : '');
         if(isHarvilleCalculated) {
           // ★変更点2: [印・馬番] ＋ [バーグラフ] ＋ [情報テキスト] の順番に入れ替え
           rowEl.innerHTML = leftPart + barAndTrack + confirmHtml;
@@ -6016,6 +6026,41 @@ function autoGenerateTickets(mode = 'win') {
       navigator.clipboard.writeText(text).then(() => alert(" 買い目をクリップボードにコピーしました！"));
     }
 
+    /* ===== 出馬表をスプレッドシート（GAS経由）から取得 =====
+       運営が毎週貼るシートを読み、既存の取り込み処理にそのまま流し込む。
+       会員は何も準備しなくてよい。 */
+    async function loadRaceCardFromGAS(silent) {
+      const st = document.getElementById('racecard-status');
+      let gasUrl = (typeof MUKETSU_GAS_URL !== 'undefined' ? MUKETSU_GAS_URL : '').trim();
+      if(!gasUrl){ try{ gasUrl = (localStorage.getItem('keiba_gas_url')||'').trim(); }catch(e){} }
+      if(!gasUrl || !gasUrl.includes('script.google.com')){
+        if(!silent) mkToast('GAS URLが未設定です。運営にご連絡ください。');
+        return false;
+      }
+      if(st){ st.textContent = '取得中...'; st.style.color = '#e65100'; }
+      try {
+        const data = await callGAS(gasUrl + '?action=racecard');
+        if(!data || !data.ok) throw new Error((data && data.error) || '出馬表を取得できませんでした');
+        if(!data.rows || !data.rows.length) throw new Error('出馬表シートが空です');
+
+        // 既存の取り込み処理（importData）が読めるタブ区切りテキストに組み立てる
+        const tsv = [data.header.join('\t')].concat(data.rows.map(r => r.join('\t'))).join('\n');
+        const ta = document.getElementById('data-input');
+        if(!ta) throw new Error('取り込み欄が見つかりません');
+        ta.value = tsv;
+        importData();
+
+        const n = Object.keys(racesData).length;
+        if(st){ st.textContent = `${n}レース / ${data.count}頭を取得（シート更新 ${data.updatedAt||'-'}）`; st.style.color = '#1a1a1a'; }
+        try{ localStorage.setItem('muketsu_card_loaded', String(Date.now())); }catch(e){}
+        return true;
+      } catch(err) {
+        if(st){ st.textContent = '取得失敗'; st.style.color = '#d32f2f'; }
+        if(!silent) mkToast('出馬表の取得に失敗しました。\n' + err.message);
+        return false;
+      }
+    }
+
     async function syncOddsFromGAS() {
       // GAS URL：埋め込み定数を最優先。次に入力欄→localStorage（管理者上書き用）
       let gasUrl = (typeof MUKETSU_GAS_URL !== 'undefined' ? MUKETSU_GAS_URL : '').trim();
@@ -6069,8 +6114,43 @@ function autoGenerateTickets(mode = 'win') {
         if(oddsData.tanList && Array.isArray(oddsData.tanList)) {
           oddsData.tanList.forEach(item => {
             const h = racesData[currentRaceId].horses.find(x => x.num === item.num);
-            if(h) h.odds = parseFloat(item.odds) || h.odds;
+            if(h) {
+              h.odds = parseFloat(item.odds) || h.odds;
+              // 一度除外扱いになった馬が復活した場合は元に戻す
+              if(h.isScratched) { h.isScratched = false; if(h.jockey === '除外') h.jockey = h._jockeyBak || ''; }
+            }
           });
+        }
+        // ▼ 除外馬の自動反映：オッズが出ない馬＝出走取消/競走除外
+        let scratchedNow = [];
+        if(oddsData.excluded && Array.isArray(oddsData.excluded)) {
+          scratchedNow = oddsData.excluded.slice();
+          oddsData.excluded.forEach(num => {
+            const h = racesData[currentRaceId].horses.find(x => x.num === num);
+            if(h && !h.isScratched) {
+              h._jockeyBak = h.jockey;   // 復活したとき戻せるよう控えておく
+              h.isScratched = true;
+              h.jockey = '除外';
+              h.winRate = 0; h.baseWinRate = 0; h.odds = '-'; h.fukuOdds = '';
+              h.markIdx = 0; h.isMarkLocked = false;
+            }
+          });
+          // 除外が出たら、残りの馬で勝率を100%に振り直す
+          if(oddsData.excluded.length > 0) {
+            const alive = racesData[currentRaceId].horses.filter(h => !h.isScratched);
+            const sum = alive.reduce((t,h) => t + (parseFloat(h.winRate)||0), 0);
+            if(sum > 0) alive.forEach(h => { h.winRate = parseFloat(((h.winRate / sum) * 100).toFixed(1)); });
+            // 除外馬を含む買い目は自動で外す
+            const bb = racesData[currentRaceId].builder;
+            if(bb && Array.isArray(bb.tickets)) {
+              const before = bb.tickets.length;
+              bb.tickets = bb.tickets.filter(t => {
+                const nums = String(t.comb||'').split(/[^0-9]+/).filter(Boolean).map(Number);
+                return !nums.some(n => oddsData.excluded.indexOf(n) >= 0);
+              });
+              if(bb.tickets.length !== before) scratchedNow.push('_ticketsRemoved');
+            }
+          }
         }
         if(oddsData.fukuList && Array.isArray(oddsData.fukuList)) {
           oddsData.fukuList.forEach(item => {
@@ -6102,9 +6182,17 @@ function autoGenerateTickets(mode = 'win') {
           }
         }
         
-        if(statusEl) { statusEl.textContent = `${currentRaceId} 取得完了`; statusEl.style.color = '#1a1a1a'; }
+        const exNums = scratchedNow.filter(v => typeof v === 'number');
+        if(statusEl) {
+          statusEl.textContent = exNums.length ? `${currentRaceId} 取得完了（除外 ${exNums.join('・')}番）` : `${currentRaceId} 取得完了`;
+          statusEl.style.color = '#1a1a1a';
+        }
         renderAll();
         parseAndCalculate();
+        if(exNums.length){
+          const removed = scratchedNow.indexOf('_ticketsRemoved') >= 0;
+          mkToast(`${exNums.join('・')}番が除外です。勝率を振り直しました。` + (removed ? '\n該当する買い目も外しました。' : ''));
+        }
       } catch(err) {
         if(statusEl) { statusEl.textContent = '失敗'; statusEl.style.color = '#d32f2f'; }
         alert('オッズ取得エラー:\n' + err.message);
@@ -8923,6 +9011,22 @@ window.closeDetailedData2Modal = function() {
   }
   // 起動時：前回のページを復元（デフォルトはレース）
   (function(){ try{ const p=localStorage.getItem('muketsu_page'); if(p && p!=='race' && document.getElementById('page-'+p)) showMkPage(p); }catch(e){} })();
+
+  /* 起動時：レースが1つも無ければ、運営のシートから出馬表を自動で読み込む。
+     会員はボタンを押す必要がない。（取得できなければ静かに何もしない） */
+  (function(){
+    setTimeout(async function(){
+      try{
+        if(typeof racesData !== 'undefined' && Object.keys(racesData).length > 0) return;
+        if(typeof loadRaceCardFromGAS !== 'function') return;
+        const ok = await loadRaceCardFromGAS(true);
+        if(ok && typeof renderAll === 'function'){
+          const ids = Object.keys(racesData);
+          if(ids.length && !currentRaceId && typeof selectRace === 'function'){ selectRace(ids[0]); }
+        }
+      }catch(e){}
+    }, 400);
+  })();
 </script>
 </body>
 </html>
