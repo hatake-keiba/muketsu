@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MUKETSU 管理ページ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=BIZ+UDPGothic:wght@400;700&family=Noto+Sans+JP:wght@700;900&display=swap">
+<style>
+  :root{
+    --paper:#eceae3; --card:#fff; --ink:#1a1a1a; --soft:#41413c; --mute:#87867e;
+    --line:#e0ded6; --lime:#ccf23f; --bad:#c2410c; --ok:#3f7d3f; --beige:#d8ccae; --beige-ink:#5c5341;
+  }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ max-width:100%; overflow-x:hidden; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-size:14px; line-height:1.7;
+        font-family:"BIZ UDPGothic",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif; }
+  h1,h2{ font-family:"Noto Sans JP",sans-serif; font-weight:900; }
+  .wrap{ max-width:680px; margin:0 auto; padding:16px 14px 80px; }
+
+  header{ background:var(--ink); border-radius:16px; padding:22px 18px 18px; margin-bottom:16px; }
+  header .b{ font-family:Anton,sans-serif; color:var(--lime); font-size:clamp(34px,10vw,46px); line-height:.95; letter-spacing:.03em; }
+  header .s{ color:var(--lime); font-size:10px; font-weight:800; letter-spacing:.2em; margin-top:8px; font-family:"Noto Sans JP",sans-serif; }
+  header p{ color:#cbcac2; margin:10px 0 0; font-size:13px; }
+
+  .card{ background:var(--card); border:2px solid var(--line); border-radius:14px; padding:16px; margin-bottom:14px; }
+  .card h2{ font-size:16px; margin:0 0 4px; display:flex; align-items:center; gap:8px; }
+  .card h2 svg{ width:20px; height:20px; flex:none; }
+  .card .d{ color:var(--soft); font-size:12.5px; margin:0 0 12px; }
+
+  .st{ display:flex; flex-wrap:wrap; gap:8px; margin:0 0 12px; }
+  .st span{ background:#faf9f5; border:1px solid var(--line); border-radius:8px; padding:6px 10px; font-size:12px; }
+  .st span b{ font-family:"Noto Sans JP",sans-serif; font-weight:900; margin-left:5px; }
+
+  .drop{ border:2px dashed #cfcdc4; border-radius:12px; padding:24px 14px; text-align:center;
+         background:#faf9f5; cursor:pointer; transition:.15s; }
+  .drop.on{ border-color:var(--ink); background:#f3f6e6; }
+  .drop b{ font-family:"Noto Sans JP",sans-serif; font-weight:900; display:block; margin-bottom:4px; }
+  .drop small{ color:var(--mute); font-size:11.5px; }
+  .drop input{ display:none; }
+  .file{ margin-top:10px; font-size:12.5px; color:var(--soft); min-height:1.4em; }
+
+  .btn{ display:flex; align-items:center; justify-content:center; gap:6px; width:100%; margin-top:12px;
+        border:2px solid var(--ink); background:var(--ink); color:var(--lime);
+        font-family:"Noto Sans JP",sans-serif; font-weight:900; font-size:15px;
+        padding:13px 18px; border-radius:10px; cursor:pointer; }
+  .btn:disabled{ opacity:.32; cursor:default; }
+  .btn.sub{ background:#fff; color:var(--ink); font-weight:700; font-size:14px; }
+
+  .res{ margin-top:12px; border-radius:10px; padding:11px 13px; font-size:13px; display:none; white-space:pre-line; }
+  .res.ok{ display:block; background:#eef5e6; border:1px solid #c9dba8; }
+  .res.ng{ display:block; background:#fdf1ec; border:1px solid #f0c2ae; color:#7a2e12; }
+  .res.wait{ display:block; background:#faf9f5; border:1px solid var(--line); color:var(--mute); }
+  .res ul{ margin:6px 0 0; padding-left:18px; }
+
+  .pass{ display:flex; gap:8px; flex-wrap:wrap; }
+  .pass input{ flex:1; min-width:160px; font-family:inherit; font-size:15px; padding:11px 12px;
+               border:2px solid var(--line); border-radius:10px; background:#faf9f5; }
+  .pass input:focus{ outline:none; border-color:var(--ink); }
+  .pass button{ border:2px solid var(--ink); background:var(--ink); color:var(--lime); border-radius:10px;
+                font-family:"Noto Sans JP",sans-serif; font-weight:900; font-size:14px; padding:11px 20px; cursor:pointer; }
+  .hide{ display:none !important; }
+  .foot{ color:var(--mute); font-size:12px; margin-top:10px; }
+  .link{ color:var(--ink); }
+  .logout{ background:none; border:none; color:var(--mute); font-size:12px; text-decoration:underline;
+           cursor:pointer; padding:0; font-family:inherit; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="b">MUKETSU</div>
+    <div class="s">ADMIN</div>
+    <p>週末の出馬表と陣営データを差し替える画面です。CSVファイルを選んで「反映」を押すだけで、会員全員のサイトに反映されます。</p>
+  </header>
+
+  <!-- 合言葉 -->
+  <div class="card" id="gate">
+    <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>合言葉を入れてください</h2>
+    <p class="d">最初の1回だけです。次からはこの端末では入力不要になります。</p>
+    <div class="pass">
+      <input type="password" id="pass" placeholder="合言葉" autocomplete="current-password">
+      <button onclick="unlock()">開く</button>
+    </div>
+    <div class="res" id="gate-res"></div>
+  </div>
+
+  <div id="main" class="hide">
+
+    <!-- 状態 -->
+    <div class="card">
+      <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>いまの状態</h2>
+      <div class="st" id="status"><span>読み込み中…</span></div>
+      <button class="btn sub" onclick="loadStatus()">最新の状態を見る</button>
+      <div class="foot"><button class="logout" onclick="forget()">この端末の合言葉を消す</button></div>
+    </div>
+
+    <!-- 出馬表 -->
+    <div class="card">
+      <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V3.6"/><path d="M5 4.4h11.2l-1.8 3.4 1.8 3.4H5"/></svg>出馬表を差し替える</h2>
+      <p class="d">毎週前日の夜に、その週の「全36レース_完全版.csv」を選んでください。前の週のデータは自動で消えます。</p>
+      <div class="drop" id="card-drop">
+        <input type="file" id="card-input" accept=".csv,.tsv,.txt,text/csv,text/plain">
+        <b>出馬表のCSVを選ぶ</b><small>または、ここにファイルをドラッグ</small>
+      </div>
+      <div class="file" id="card-file"></div>
+      <button class="btn" id="card-btn" disabled onclick="upload('card')">出馬表を反映する</button>
+      <div class="res" id="card-res"></div>
+    </div>
+
+    <!-- 陣営データ -->
+    <div class="card">
+      <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>陣営データを差し替える</h2>
+      <p class="d">騎手・調教師・種牡馬の成績CSVです。AI相談で使います。更新があるときだけで構いません。</p>
+      <div class="drop" id="enemy-drop">
+        <input type="file" id="enemy-input" accept=".csv,.tsv,.txt,text/csv,text/plain">
+        <b>陣営データのCSVを選ぶ</b><small>または、ここにファイルをドラッグ</small>
+      </div>
+      <div class="file" id="enemy-file"></div>
+      <button class="btn" id="enemy-btn" disabled onclick="upload('enemy')">陣営データを反映する</button>
+      <div class="res" id="enemy-res"></div>
+    </div>
+
+    <p class="foot">
+      除外や出走取消は、会員が「オッズ更新」を押した時点で自動反映されます。ここで直す必要はありません。<br>
+      会員サイト：<a class="link" href="https://hatake-keiba.github.io/muketsu/" target="_blank" rel="noopener">hatake-keiba.github.io/muketsu/</a><br>
+      うまくいかないときは、赤い文をそのまま薗田さんに送ってください。
+    </p>
+  </div>
+
+</div>
+
+<script>
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbzsEQR3nHZG3lFb0PHUFLaj5BtwtoURn_jYWHuqxIil2WDMXWoMK9AUgOIzox1uc6nnhg/exec';
+const PASS_KEY = 'muketsu_admin_pass';
+const files = { card:null, enemy:null };
+
+const q = id => document.getElementById(id);
+const setRes = (id, cls, html) => { const el = q(id); el.className = 'res ' + cls; el.innerHTML = html; };
+const getPass = () => { try { return localStorage.getItem(PASS_KEY) || ''; } catch(e){ return ''; } };
+
+async function callGas(payload){
+  const res = await fetch(GAS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(Object.assign({ pass: getPass() }, payload))
+  });
+  const data = await res.json();
+  if (data && data.ok === false) throw new Error(data.error || '失敗しました');
+  return data;
+}
+
+async function unlock(){
+  const v = q('pass').value.trim();
+  if (!v) return;
+  setRes('gate-res', 'wait', '確認しています…');
+  try {
+    localStorage.setItem(PASS_KEY, v);
+    await callGas({ action: 'admin_status' });
+    q('gate').classList.add('hide');
+    q('main').classList.remove('hide');
+    loadStatus();
+  } catch(e) {
+    try { localStorage.removeItem(PASS_KEY); } catch(_){}
+    setRes('gate-res', 'ng', e.message);
+  }
+}
+
+function forget(){
+  try { localStorage.removeItem(PASS_KEY); } catch(e){}
+  location.reload();
+}
+
+async function loadStatus(){
+  q('status').innerHTML = '<span>読み込み中…</span>';
+  try {
+    const st = await callGas({ action: 'admin_status' });
+    let h = '';
+    if (st.card && !st.card.missingSheet) {
+      h += '<span>出馬表<b>' + st.card.races + 'レース／' + st.card.rows + '頭</b></span>';
+    } else {
+      h += '<span>出馬表<b>未登録</b></span>';
+    }
+    h += '<span>出馬表の更新<b>' + (st.cardUpdatedAt || '—') + '</b></span>';
+    h += '<span>陣営データ<b>' + (st.enemyRows != null ? st.enemyRows + '行' : '—') + '</b></span>';
+    h += '<span>AIキー<b>' + (st.hasKey ? '設定済み' : '未設定') + '</b></span>';
+    if (st.sheetUrl) h += '<span><a class="link" href="' + st.sheetUrl + '" target="_blank" rel="noopener">シートを開く</a></span>';
+    q('status').innerHTML = h;
+  } catch(e) {
+    q('status').innerHTML = '<span style="color:var(--bad)">' + e.message + '</span>';
+  }
+}
+
+function bind(kind){
+  const drop = q(kind + '-drop'), inp = q(kind + '-input');
+  drop.onclick = () => inp.click();
+  inp.onchange = () => pick(kind, inp.files[0]);
+  ['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('on'); }));
+  ['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('on'); }));
+  drop.addEventListener('drop', e => { if (e.dataTransfer.files[0]) pick(kind, e.dataTransfer.files[0]); });
+}
+
+function pick(kind, f){
+  if (!f) return;
+  files[kind] = f;
+  q(kind + '-file').textContent = '選択中：' + f.name + '（' + Math.round(f.size/1024) + 'KB）';
+  q(kind + '-btn').disabled = false;
+  setRes(kind + '-res', '', '');
+}
+
+function readAs(f, enc){
+  return new Promise((res, rej) => {
+    const fr = new FileReader();
+    fr.onload = () => res(fr.result);
+    fr.onerror = rej;
+    fr.readAsText(f, enc);
+  });
+}
+// Excelが書き出すShift_JISのCSVも読めるようにする
+async function readSmart(f){
+  const t = await readAs(f, 'utf-8');
+  if (!/�/.test(t.slice(0, 3000))) return t;
+  return await readAs(f, 'shift-jis');
+}
+
+async function upload(kind){
+  const f = files[kind];
+  if (!f) return;
+  const btn = q(kind + '-btn');
+  btn.disabled = true;
+  setRes(kind + '-res', 'wait', '反映しています…（10秒ほどかかります）');
+  try {
+    const text = await readSmart(f);
+    const action = kind === 'card' ? 'admin_upload_card' : 'admin_upload_enemy';
+    const r = await callGas({ action, text });
+    if (kind === 'card') {
+      const pl = Object.keys(r.places || {}).map(k => k + '：' + r.places[k] + '頭').join(' ／ ');
+      const warn = (r.warnings && r.warnings.length)
+        ? '<ul>' + r.warnings.map(x => '<li>' + x + '</li>').join('') + '</ul>' : '';
+      setRes('card-res', warn ? 'ng' : 'ok',
+        '反映しました（' + r.updatedAt + '）\nレース数：' + r.races + '　頭数：' + r.rows + '\n' + pl
+        + (warn ? '\n気になる点：' + warn : ''));
+    } else {
+      setRes('enemy-res', 'ok', '反映しました（' + r.updatedAt + '）\n' + r.rows + '行');
+    }
+    loadStatus();
+  } catch(e) {
+    setRes(kind + '-res', 'ng', '反映できませんでした。\n' + e.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+bind('card'); bind('enemy');
+q('pass').addEventListener('keydown', e => { if (e.key === 'Enter') unlock(); });
+if (getPass()) { q('gate').classList.add('hide'); q('main').classList.remove('hide'); loadStatus(); }
+</script>
+</body>
+</html>
