@@ -40,7 +40,7 @@
       transform:translateX(-105%); transition:transform .28s cubic-bezier(.4,0,.2,1);
       display:flex; flex-direction:column; overflow-y:auto; }
     #mk-menu-panel.open{ transform:translateX(0); }
-    .mk-menu-hd{ background:#1a1a1a; color:#ccf23f; font-family:'BIZ UDPGothic','BIZ UDGothic',sans-serif;
+    .mk-menu-hd{ background:#1a1a1a; color:#ccf23f; font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif;
       font-weight:900; font-size:26px; letter-spacing:.06em; padding:64px 22px 20px; line-height:1; }
     .mk-menu-hd small{ display:block; font-size:9px; color:#8a9a3a; letter-spacing:.24em; font-weight:800; margin-bottom:8px; }
     .mk-menu-item{ display:flex; align-items:center; gap:14px; padding:18px 22px; cursor:pointer;
@@ -57,7 +57,7 @@
     /* データ部屋・使い方の空箱の見た目 */
     .mk-placeholder{ max-width:1100px; margin:24px auto; padding:40px 22px; text-align:center; }
     .mk-placeholder .ph-eyebrow{ font-size:10px; font-weight:800; letter-spacing:.18em; color:#9b9a92; display:block; margin-bottom:10px; }
-    .mk-placeholder h2{ font-family:'BIZ UDPGothic','BIZ UDGothic',sans-serif; font-weight:900; font-size:30px; color:#1a1a1a; margin:0 0 6px; }
+    .mk-placeholder h2{ font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif; font-weight:900; font-size:30px; color:#1a1a1a; margin:0 0 6px; }
     .mk-placeholder h2 .mk-mk{ background:linear-gradient(transparent 55%, #ccf23f 55%); padding:0 4px; }
     .mk-placeholder p{ color:#8a8a82; font-size:13px; line-height:1.8; margin:14px 0 0; }
     .mk-placeholder .ph-box{ margin-top:28px; border:2px dashed #cfcdc4; border-radius:14px; padding:44px 20px; color:#b0aea6; font-size:13px; background:#faf9f5; }
@@ -65,21 +65,21 @@
     .mk-room{ max-width:1000px; margin:0 auto; padding:20px 14px 60px; }
     .mk-room-hd{ padding:14px 6px 6px; }
     .mk-room-hd .ph-eyebrow{ font-size:10px; font-weight:800; letter-spacing:.18em; color:#9b9a92; display:block; margin-bottom:8px; }
-    .mk-room-hd h2{ font-family:'BIZ UDPGothic','BIZ UDGothic',sans-serif; font-weight:900; font-size:30px; color:#1a1a1a; margin:0; }
+    .mk-room-hd h2{ font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif; font-weight:900; font-size:30px; color:#1a1a1a; margin:0; }
     .mk-room-hd h2 .mk-mk{ background:linear-gradient(transparent 55%, #ccf23f 55%); padding:0 4px; }
     .mk-room-hd p{ color:#8a8a82; font-size:13px; margin:12px 0 0; line-height:1.7; }
     /* 目次カード（グリッド） */
-    .mk-toc{ display:grid; grid-template-columns:repeat(auto-fill, minmax(150px,1fr)); gap:10px; margin:20px 0 30px; }
+    .mk-toc{ display:grid; grid-template-columns:repeat(auto-fill, minmax(158px,1fr)); gap:10px; margin:20px 0 30px; align-items:stretch; }
     .mk-toc-item{ display:flex; flex-direction:column; gap:2px; text-decoration:none; background:#fff;
       border:2px solid #1a1a1a; border-radius:12px; padding:14px 14px; box-shadow:3px 3px 0 rgba(26,26,26,.12);
       transition:transform .12s, box-shadow .12s; }
     .mk-toc-item:active{ transform:translate(2px,2px); box-shadow:1px 1px 0 rgba(26,26,26,.12); }
     .mk-toc-item .ic{ font-size:22px; margin-bottom:4px; }
-    .mk-toc-item b{ font-family:'BIZ UDPGothic','BIZ UDGothic',sans-serif; font-weight:900; font-size:14px; color:#1a1a1a; }
+    .mk-toc-item b{ font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif; font-weight:900; font-size:13.5px; color:#1a1a1a; letter-spacing:-0.01em; }
     .mk-toc-item span{ font-size:11px; color:#8a8a82; line-height:1.4; }
     /* 各セクション */
     .mk-sec{ scroll-margin-top:64px; margin-bottom:20px; background:#fff; border:2px solid #e8e6df; border-radius:14px; padding:16px 18px; }
-    .mk-sec h3{ display:flex; align-items:center; gap:10px; font-family:'BIZ UDPGothic','BIZ UDGothic',sans-serif;
+    .mk-sec h3{ display:flex; align-items:center; gap:10px; font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif;
       font-weight:900; font-size:18px; color:#1a1a1a; margin:0 0 12px; padding-bottom:10px; border-bottom:2px solid #1a1a1a; }
     .mk-sec h3 .ic{ font-size:20px; }
     .mk-sec .ph-box{ border:2px dashed #cfcdc4; border-radius:12px; padding:32px 16px; color:#b0aea6; font-size:13px; text-align:center; background:#faf9f5; }
@@ -88,7 +88,7 @@
     .data-table tr, .data-table td, .stat-card .bar-col, .stat-card .visual-bar,
     .bar-col, .visual-bar { -webkit-tap-highlight-color: transparent !important; }
     .data-table tr:active, .data-table td:active, .stat-card .horse-row:active { background: inherit; }
-    @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,900&family=BIZ+UDPGothic:wght@400;700&family=BIZ+UDGothic:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,900&family=BIZ+UDPGothic:wght@400;700&family=BIZ+UDGothic:wght@400;700&family=Noto+Sans+JP:wght@700;800;900&display=swap');
     body { font-family: "BIZ UDPGothic","BIZ UDGothic", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; margin: 0; padding: 5px 2px; background: #e8e6df; color: #25352a; }
     .app-container { --sage:#e8e6df; --sage-soft:#e9eee3; --card:#f7f9f4; --ink:#25352a; --ink-soft:#6b7a6b; --dark:#1f3d2b; --accent:#1a1a1a; --line:#cdd8c6; }
     .app-container { max-width: 1100px; margin: auto; }
@@ -823,11 +823,11 @@ input[type=number], input[type=text], textarea, select {
     /* ===== 使い方ページ本文 ===== */
     .mk-guide{ font-size:13.5px; line-height:1.85; color:#2b2b28; }
     .mk-guide p{ margin:0 0 10px; }
-    .mk-guide .lead{ font-size:14px; font-weight:700; color:#1a1a1a; margin-bottom:12px; }
+    .mk-guide .lead{ font-size:14px; font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif; font-weight:800; color:#1a1a1a; margin-bottom:12px; }
     .mk-guide ol.steps{ list-style:none; counter-reset:st; margin:6px 0 14px; padding:0; display:flex; flex-direction:column; gap:8px; }
     .mk-guide ol.steps li{ counter-increment:st; position:relative; padding:10px 12px 10px 46px; background:#faf9f5; border:1px solid #e8e6df; border-radius:10px; }
     .mk-guide ol.steps li::before{ content:counter(st); position:absolute; left:12px; top:10px; width:24px; height:24px; border-radius:50%; background:#1a1a1a; color:#ccf23f; font-weight:900; font-size:12px; display:flex; align-items:center; justify-content:center; font-family:'BIZ UDPGothic','BIZ UDGothic',sans-serif; }
-    .mk-guide ol.steps b{ display:block; font-weight:900; color:#1a1a1a; margin-bottom:2px; }
+    .mk-guide ol.steps b{ display:block; font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif; font-weight:900; color:#1a1a1a; margin-bottom:2px; }
     .mk-guide ul.pts{ margin:4px 0 12px; padding-left:18px; }
     .mk-guide ul.pts li{ margin:3px 0; }
     .mk-guide .kw{ display:inline-block; background:#d8ccae; color:#5c5341; border-radius:4px; padding:0 6px; font-size:12px; font-weight:800; line-height:1.7; margin:0 1px; }
@@ -838,10 +838,10 @@ input[type=number], input[type=text], textarea, select {
     .mk-guide .tip b{ color:#1a1a1a; }
     .mk-guide table.mk-legend{ width:100%; border-collapse:collapse; font-size:12.5px; margin:6px 0 12px; }
     .mk-guide table.mk-legend th, .mk-guide table.mk-legend td{ text-align:left; padding:6px 8px; border-bottom:1px solid #e8e6df; vertical-align:top; }
-    .mk-guide table.mk-legend th{ width:34%; font-weight:900; color:#1a1a1a; white-space:nowrap; }
+    .mk-guide table.mk-legend th{ width:34%; font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif; font-weight:900; color:#1a1a1a; white-space:nowrap; }
     .mk-guide .st{ display:inline-block; min-width:2.2em; text-align:center; color:#fff; font-size:11px; font-weight:900; border-radius:3px; padding:0 5px; line-height:1.7; }
     .mk-guide .st.nige{ background:#d63a3a; } .mk-guide .st.senko{ background:#e7801a; } .mk-guide .st.sashi{ background:#2f6fd6; } .mk-guide .st.oikomi{ background:#7b7b78; }
-    .mk-guide .mk-faq dt{ font-weight:900; color:#1a1a1a; margin-top:10px; }
+    .mk-guide .mk-faq dt{ font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif; font-weight:900; color:#1a1a1a; margin-top:10px; }
     .mk-guide .mk-faq dd{ margin:2px 0 0; color:#4a4a46; }
     .mk-guide .flow{ display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:8px; margin:8px 0 14px; }
     .mk-guide .flow div{ background:#1a1a1a; color:#fff; border-radius:10px; padding:10px 10px 9px; font-size:12px; line-height:1.5; }
@@ -851,7 +851,7 @@ input[type=number], input[type=text], textarea, select {
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:opsz,wght@9..144,600;9..144,900&family=BIZ+UDPGothic:wght@400;700&family=BIZ+UDGothic:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:opsz,wght@9..144,600;9..144,900&family=BIZ+UDPGothic:wght@400;700&family=BIZ+UDGothic:wght@400;700&family=Noto+Sans+JP:wght@700;800;900&display=swap">
 <style id="muketsu-theme">
   :root{
     /* ペーパー地 × 黒 × ライムアクセント（参考デザイン準拠） */
@@ -959,7 +959,7 @@ input[type=number], input[type=text], textarea, select {
     background:transparent !important; border:none !important; margin:0 !important; }
   .sub-head::before{ content:""; width:14px; height:3px; border-radius:2px; background:var(--mk-lime); flex:0 0 auto; }
   .sub-head .mk-eyebrow{ display:none; } /* CONDITION等の重複英字ラベルは隠す */
-  .sub-head-ttl{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:900; font-size:15px;
+  .sub-head-ttl{ font-family:"Noto Sans JP","BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:900; font-size:15px;
     color:var(--mk-dark); letter-spacing:.04em; }
   .sub-head-btn{ margin-left:auto; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:10.5px; font-weight:700;
     color:#9b9a92; background:#f4f2ec; border:1px solid var(--mk-line); border-radius:999px; padding:5px 12px; cursor:pointer; }
@@ -1008,7 +1008,7 @@ input[type=number], input[type=text], textarea, select {
   /* 大カードの見出し＝小ラベル(eyebrow)＋特大タイトル。線でなく余白で区切る */
   .bc-head{ display:flex; align-items:center; gap:12px; flex-wrap:wrap;
     padding:20px 22px 14px; border-bottom:none !important; margin-bottom:0; }
-  .bc-title{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:900 !important;
+  .bc-title{ font-family:"Noto Sans JP","BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:900 !important;
     color:var(--mk-dark); font-size:24px !important; letter-spacing:.01em; line-height:1.05; }
   .bc-sub{ font-size:10px; color:#9b9a92; letter-spacing:.05em; }
   /* eyebrow（見出しの上の小ラベル） */
@@ -1553,7 +1553,7 @@ input[type=number], input[type=text], textarea, select {
         <div class="bc-head" style="align-items:flex-start;">
           <div style="flex:1;min-width:0;">
             <span class="mk-eyebrow">RACE INFORMATION</span>
-            <div id="race-info-title" style="font-family:'BIZ UDPGothic','BIZ UDGothic',sans-serif;font-weight:900;color:#1a1a1a;font-size:28px;letter-spacing:.005em;line-height:1.08;">—</div>
+            <div id="race-info-title" style="font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif;font-weight:900;color:#1a1a1a;font-size:28px;letter-spacing:.005em;line-height:1.08;">—</div>
             <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
               <span id="race-info-haran" style="font-size:10px;color:#9b9a92;background:#f4f2ec;border:1px solid #e8e6df;border-radius:10px;padding:2px 9px;font-weight:700;letter-spacing:.04em;"></span>
             </div>
