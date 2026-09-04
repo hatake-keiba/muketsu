@@ -9101,6 +9101,19 @@ window.closeDetailedData2Modal = function() {
      1) この端末に保存した前回の状態があれば、まずそれを復元（オフラインでも開ける）
      2) 運営のシートを確認し、出馬表が更新されていれば取り直す。
         そのとき会員の印・メモ・買い目は新しい出馬表に移し替える。 */
+  // レースが入ったら、ナビと本体を表示する（保存復元・シート取得・埋め込みの全経路で使う）
+  function mkRevealTool(){
+    const keys = Object.keys(racesData || {});
+    if(!keys.length) return false;
+    const show = (id, disp) => { const el = document.getElementById(id); if(el) el.style.display = disp; };
+    show('nav-area','flex'); show('race-nav-wrap','block'); show('filter-panel','block');
+    show('main-tool','block'); show('master-panel','flex');
+    try{ if(typeof buildNavigation === 'function') buildNavigation(); }catch(e){}
+    const rid = (currentRaceId && racesData[currentRaceId]) ? currentRaceId : keys[0];
+    try{ if(typeof selectRace === 'function') selectRace(rid); }catch(e){}
+    return true;
+  }
+
   async function mkBootRaces(){
       try{
         if(typeof loadRaceCardFromGAS !== 'function') return;
@@ -9111,7 +9124,8 @@ window.closeDetailedData2Modal = function() {
           window._mkCardSig = saved.sig || '';
           if(typeof renderAll === 'function'){
             const rid = (saved.currentRaceId && racesData[saved.currentRaceId]) ? saved.currentRaceId : Object.keys(racesData)[0];
-            if(rid && typeof selectRace === 'function') selectRace(rid);
+            currentRaceId = rid;
+            mkRevealTool();
           }
         }
         // シート側の更新確認（署名が同じなら何もしない）
@@ -9133,12 +9147,12 @@ window.closeDetailedData2Modal = function() {
           persistRacesNow();
           if(typeof renderAll === 'function'){
             const rid = (prevCur && racesData[prevCur]) ? prevCur : Object.keys(racesData)[0];
-            if(rid && typeof selectRace === 'function') selectRace(rid);
+            currentRaceId = rid;
+            mkRevealTool();
           }
           if(typeof mkToast === 'function') mkToast('出馬表が更新されました。' + (moved ? '\n印・メモ・買い目は引き継ぎました。' : ''));
         } else {
-          const ids = Object.keys(racesData);
-          if(ids.length && !currentRaceId && typeof selectRace === 'function'){ selectRace(ids[0]); }
+          mkRevealTool();
         }
       }catch(e){}
       finally{
@@ -9146,8 +9160,7 @@ window.closeDetailedData2Modal = function() {
         try{
           if(!Object.keys(racesData).length && typeof window._mkDemoInject === 'function'){
             if(window._mkDemoInject()){
-              const ids = Object.keys(racesData);
-              if(ids.length && typeof selectRace === 'function') selectRace(ids[0]);
+              mkRevealTool();
               if(typeof mkToast === 'function') mkToast('今週の出馬表を表示しています。オッズは「オッズ更新」で最新になります。');
             }
           }
