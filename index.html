@@ -927,6 +927,29 @@ input[type=number], input[type=text], textarea, select {
     .mark-pick.on{ background:#1a1a1a; color:#ccf23f; border-color:#1a1a1a; }
     .mark-pick.honmei{ background:#ccf23f; color:#1a1a1a; border-color:#1a1a1a; }
 
+    /* ===== 日付一覧ページ ===== */
+    .mk-days{ display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px; margin:14px 0 8px; }
+    .mk-day{ display:block; text-align:left; width:100%; background:#fff; border:2px solid #e8e6df; border-radius:14px;
+             padding:14px 16px 13px; cursor:pointer; box-shadow:3px 3px 0 rgba(26,26,26,.08); transition:transform .08s; font-family:inherit; }
+    .mk-day:active{ transform:translate(2px,2px); box-shadow:1px 1px 0 rgba(26,26,26,.12); }
+    .mk-day.sel{ border-color:#1a1a1a; }
+    .mk-day .d{ display:flex; align-items:baseline; gap:8px; }
+    .mk-day .d b{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:26px; color:#1a1a1a; letter-spacing:-.01em; font-variant-numeric:tabular-nums; }
+    .mk-day .d .dow{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:13px; padding:2px 8px; border-radius:6px; background:#1a1a1a; color:#ccf23f; }
+    .mk-day .d .dow.sun{ background:#c2410c; color:#fff; }
+    .mk-day .d .tag{ margin-left:auto; font-size:10px; font-weight:800; letter-spacing:.12em; color:#8a8a82; }
+    .mk-day .v{ margin-top:6px; font-size:13px; color:#41413c; }
+    .mk-day .m{ margin-top:8px; display:flex; gap:6px; flex-wrap:wrap; }
+    .mk-day .m span{ font-size:11px; font-weight:700; background:#faf9f5; border:1px solid #e8e6df; border-radius:6px; padding:2px 8px; color:#5c5341; }
+    .mk-day .m span.on{ background:#f5fadf; border-color:#ccf23f; color:#3d4a10; }
+    .mk-day-empty{ border:2px dashed #cfcdc4; border-radius:14px; padding:26px 16px; text-align:center; color:#b0aea6; font-size:13px; background:#faf9f5; }
+    /* レースページ上部：いま見ている日付 */
+    #mk-daybar{ display:flex; align-items:center; gap:10px; margin:12px 12px 0; padding:10px 14px; background:#fff; border:2px solid #e8e6df; border-radius:12px; }
+    #mk-daybar .lbl{ font-size:10px; font-weight:800; letter-spacing:.14em; color:#8a8a82; }
+    #mk-daybar b{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:16px; color:#1a1a1a; }
+    #mk-daybar .v{ font-size:12px; color:#41413c; }
+    #mk-daybar button{ margin-left:auto; background:#1a1a1a; color:#ccf23f; border:none; border-radius:8px; padding:7px 12px; font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:12px; cursor:pointer; white-space:nowrap; }
+
     /* ===== 出走馬データの3タブ ===== */
     .hd-tabs{ display:flex; gap:6px; padding:0 8px 8px; flex-wrap:wrap; align-items:center; }
     .hd-tab{ font-family:'Noto Sans JP','BIZ UDPGothic',sans-serif; font-weight:900; font-size:12.5px;
@@ -1456,13 +1479,31 @@ input[type=number], input[type=text], textarea, select {
 <div id="mk-menu-overlay" onclick="closeMkMenu()"></div>
 <nav id="mk-menu-panel" aria-label="メインメニュー">
   <div class="mk-menu-hd"><small>MENU</small>K-buddy</div>
-  <button class="mk-menu-item active" data-page="race"  onclick="showMkPage('race')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 22V15c0-5-2.5-7.5-6-8.8L16.4 2.5l-2.2 3.1-2.4-2.8-.8 3.6C9.2 7.2 7.8 8.6 6.6 10.4L3.4 14.2c-.8 1-.4 2.2.8 2.6l3.2.8c.8.2 1.4-.1 1.8-.8l.7-1.2c1.7.8 3.3 2 4.3 3.8.6 1 .8 1.8.8 2.6z"/><circle cx="13.4" cy="10.4" r="1.1" fill="#fff"/><circle cx="5.2" cy="15.2" r=".7" fill="#fff"/></svg></span>レース<span class="ar">›</span></button>
+  <button class="mk-menu-item active" data-page="race"  onclick="showMkPage('dates')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 22V15c0-5-2.5-7.5-6-8.8L16.4 2.5l-2.2 3.1-2.4-2.8-.8 3.6C9.2 7.2 7.8 8.6 6.6 10.4L3.4 14.2c-.8 1-.4 2.2.8 2.6l3.2.8c.8.2 1.4-.1 1.8-.8l.7-1.2c1.7.8 3.3 2 4.3 3.8.6 1 .8 1.8.8 2.6z"/><circle cx="13.4" cy="10.4" r="1.1" fill="#fff"/><circle cx="5.2" cy="15.2" r=".7" fill="#fff"/></svg></span>レース<span class="ar">›</span></button>
   <button class="mk-menu-item"        data-page="data"  onclick="showMkPage('data')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>データ部屋<span class="ar">›</span></button>
   <button class="mk-menu-item"        data-page="usage" onclick="showMkPage('usage')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h6a4 4 0 0 1 4 3 4 4 0 0 1 4-3h6v14h-6a4 4 0 0 0-4 3 4 4 0 0 0-4-3H2z"/><path d="M12 8v14"/></svg></span>使い方<span class="ar">›</span></button>
   <button class="mk-menu-item"        data-page="contact" onclick="showMkPage('contact')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>お問い合わせ<span class="ar">›</span></button>
 </nav>
 
 <!-- データ部屋（目次＋箱） -->
+<div class="mk-page" id="page-dates">
+  <div class="mk-room">
+    <div class="mk-room-hd">
+      <span class="ph-eyebrow">SELECT DATE</span>
+      <h2><span class="mk-mk">レース</span></h2>
+      <p>開催日を選ぶと、その日の出馬表と、あなたが付けた印・メモが開きます。</p>
+    </div>
+    <section class="mk-sec" id="dates-current">
+      <h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>今週の開催</h3>
+      <div class="mk-days" id="mk-days-current"></div>
+    </section>
+    <section class="mk-sec" id="dates-past">
+      <h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span>過去の開催</h3>
+      <div class="mk-days" id="mk-days-past"></div>
+    </section>
+  </div>
+</div>
+
 <div class="mk-page" id="page-data">
   <div class="mk-room">
     <div class="mk-room-hd">
@@ -1633,6 +1674,10 @@ input[type=number], input[type=text], textarea, select {
   <div id="site-title" style="text-align:center;padding:40px 18px 32px;background:#1a1a1a;border-radius:22px;margin:12px;position:relative;">
     <div style="font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif;font-weight:900;color:#ccf23f;font-size:clamp(46px,13vw,92px);letter-spacing:.04em;line-height:1;white-space:nowrap;">K-buddy</div>
     <div style="color:#c9c8c0;font-size:13px;letter-spacing:.1em;font-weight:700;margin-top:20px;">期待値計算で<span style="color:#ccf23f;">勝つ・回収する</span></div>
+  </div>
+  <div id="mk-daybar" style="display:none;">
+    <span class="lbl">DATE</span><b id="mk-daybar-date">—</b><span class="v" id="mk-daybar-venues"></span>
+    <button onclick="showMkPage('dates')">日付を変える</button>
   </div>
   <style>
     #ai-console-panel, #master-panel, #system-details { display:none !important; }
@@ -5906,6 +5951,11 @@ window.drawOaChartModal = function() {
     }
     
       function updateHorseByNum(horseNum, field, val) {
+      // 会員がメモを書き換えたら「本人の記録」として扱う（CSV由来の短評と区別する）
+      try{ if(arguments[1] === 'memo' && currentRaceId && racesData[currentRaceId]){
+        const _h = racesData[currentRaceId].horses.find(x => x.num === arguments[0]);
+        if(_h && String(arguments[2] ?? '') !== String(_h.memo ?? '')) _h.memoEdited = true;
+      } }catch(e){}
       if(!currentRaceId) return;
       const race = racesData[currentRaceId];
       const h = race.horses.find(x => x.num === horseNum);
@@ -6544,7 +6594,7 @@ function autoGenerateTickets(mode = 'win') {
           if(oh.isMarkLocked) h.isMarkLocked = true;
           if(oh.isStarred) h.isStarred = true;
           if(oh.isKosoStarred) h.isKosoStarred = true;
-          if(oh.memo && oh.memo !== h.memo) h.memo = oh.memo;
+          if(oh.memoEdited && oh.memo){ h.memo = oh.memo; h.memoEdited = true; }
           if(oh.hl && Object.keys(oh.hl).length) h.hl = oh.hl;
           moved++;
         });
@@ -7287,8 +7337,8 @@ function autoGenerateTickets(mode = 'win') {
       };
     }
     
-    const kisoinToMarkIdx = {'◎':1,'〇':2,'○':2,'A':1,'▲':3,'B':2,'△':4,'C':3,'☆':5,'★':6,'注':7,'穴':8,'消':9,'●':10};
-    let markIdx = kisoinToMarkIdx[kisoin] || 0;
+    // 印は会員が自分で打つ。しまちゃんの基礎印(kisoin)は参考値として保持するだけで、印欄には入れない
+    let markIdx = 0;
     
     newRaces[raceId].horses.push({
       waku, num, name: horseName, jockey: jockey.substring(0,4), deki, winRate, baseWinRate: winRate, shisu, style,
@@ -9975,19 +10025,79 @@ window.closeDetailedData2Modal = function() {
   function closeMkMenu(){
     ['mk-menu-panel','mk-menu-overlay','mk-menu-btn'].forEach(id=>document.getElementById(id).classList.remove('open'));
   }
+  /* ===== 開催日（箱）。いまは埋め込みの1日ぶんだけ。シート/ファイル化したらここに日付が並ぶ ===== */
+  const MK_DAY_KEY = 'muketsu_day';
+  function mkDayList(){
+    const days = [];
+    const sig = window._MK_EMBED_SIG || '';
+    const m = sig.match(/(\d{4})(\d{2})(\d{2})$/);
+    if(m && Object.keys(racesData||{}).length){
+      const venues = [...new Set(Object.values(racesData).map(r=>r.basho).filter(Boolean))];
+      days.push({ date: m[1]+m[2]+m[3], y:+m[1], mo:+m[2], d:+m[3], venues, races: Object.keys(racesData).length, loaded:true });
+    }
+    return days;
+  }
+  function mkDow(y,mo,d){ return ['日','月','火','水','木','金','土'][new Date(y,mo-1,d).getDay()]; }
+  function mkDayTouch(){
+    // このレースデータに会員が付けた印・メモの数
+    let marks=0, memos=0, tickets=0;
+    Object.values(racesData||{}).forEach(r=>{
+      (r.horses||[]).forEach(h=>{ if(h.markIdx>0 && h.isMarkLocked) marks++; if(h.memoEdited && h.memo && String(h.memo).trim()) memos++; });
+      if(r.builder && (r.builder.tickets||[]).length) tickets++;
+    });
+    return {marks, memos, tickets};
+  }
+  function renderDateList(){
+    const cur = document.getElementById('mk-days-current'), past = document.getElementById('mk-days-past');
+    if(!cur || !past) return;
+    const days = mkDayList();
+    let sel = ''; try{ sel = localStorage.getItem(MK_DAY_KEY) || ''; }catch(e){}
+    const card = (dy) => {
+      const dow = mkDow(dy.y,dy.mo,dy.d);
+      const t = dy.loaded ? mkDayTouch() : {marks:0,memos:0,tickets:0};
+      return `<button class="mk-day${sel===dy.date?' sel':''}" onclick="mkOpenDay('${dy.date}')">
+        <div class="d"><b>${dy.mo}/${dy.d}</b><span class="dow${dow==='日'?' sun':''}">${dow}</span><span class="tag">${dy.races}レース</span></div>
+        <div class="v">${dy.venues.join('・')}</div>
+        <div class="m"><span class="${t.marks?'on':''}">印 ${t.marks}</span><span class="${t.memos?'on':''}">メモ ${t.memos}</span><span class="${t.tickets?'on':''}">買い目 ${t.tickets}R</span></div>
+      </button>`;
+    };
+    cur.innerHTML = days.length ? days.map(card).join('') : '<div class="mk-day-empty">今週の出馬表はまだ登録されていません。</div>';
+    past.innerHTML = '<div class="mk-day-empty">過去の開催はここに並びます。（次の開催から記録が残ります）</div>';
+  }
+  function mkOpenDay(date){
+    try{ localStorage.setItem(MK_DAY_KEY, date); }catch(e){}
+    mkUpdateDayBar();
+    showMkPage('race');
+  }
+  function mkUpdateDayBar(){
+    const bar = document.getElementById('mk-daybar'); if(!bar) return;
+    const days = mkDayList(); if(!days.length){ bar.style.display='none'; return; }
+    const dy = days[0];
+    document.getElementById('mk-daybar-date').textContent = `${dy.mo}/${dy.d}（${mkDow(dy.y,dy.mo,dy.d)}）`;
+    document.getElementById('mk-daybar-venues').textContent = dy.venues.join('・');
+    bar.style.display = 'flex';
+  }
+
   function showMkPage(name){
     document.querySelectorAll('.mk-page').forEach(p=>p.classList.remove('active'));
     const pg = document.getElementById('page-'+name);
     if(pg) pg.classList.add('active');
-    document.querySelectorAll('.mk-menu-item').forEach(b=>b.classList.toggle('active', b.dataset.page===name));
-    const title = {race:'K-buddy', data:'データ部屋', usage:'使い方', contact:'お問い合わせ'}[name] || 'K-buddy';
+    const menuKey = (name === 'dates') ? 'race' : name;
+    document.querySelectorAll('.mk-menu-item').forEach(b=>b.classList.toggle('active', b.dataset.page===menuKey));
+    if(name === 'dates') renderDateList();
+    if(name === 'race') mkUpdateDayBar();
+    const title = {race:'K-buddy', dates:'レース', data:'データ部屋', usage:'使い方', contact:'お問い合わせ'}[name] || 'K-buddy';
     const tb=document.getElementById('mk-topbar-title'); if(tb) tb.textContent = title;
     closeMkMenu();
     window.scrollTo(0,0);
     try{ localStorage.setItem('muketsu_page', name); }catch(e){}
   }
   // 起動時：前回のページを復元（デフォルトはレース）
-  (function(){ try{ const p=localStorage.getItem('muketsu_page'); if(p && p!=='race' && document.getElementById('page-'+p)) showMkPage(p); }catch(e){} })();
+  (function(){ try{
+    const p=localStorage.getItem('muketsu_page');
+    if(p && p!=='race' && p!=='dates' && document.getElementById('page-'+p)) showMkPage(p);
+    else showMkPage('dates');   // 入口は日付一覧
+  }catch(e){ showMkPage('dates'); } })();
 
   /* 起動時の流れ：
      1) この端末に保存した前回の状態があれば、まずそれを復元（オフラインでも開ける）
@@ -9997,6 +10107,7 @@ window.closeDetailedData2Modal = function() {
   function mkRevealTool(){
     const keys = Object.keys(racesData || {});
     if(!keys.length) return false;
+    try{ renderDateList(); mkUpdateDayBar(); }catch(e){}
     const show = (id, disp) => { const el = document.getElementById(id); if(el) el.style.display = disp; };
     show('nav-area','flex'); show('race-nav-wrap','block'); show('filter-panel','block');
     show('main-tool','block'); show('master-panel','flex');
