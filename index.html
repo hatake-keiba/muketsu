@@ -6670,7 +6670,9 @@ function autoGenerateTickets(mode = 'win') {
       if(det) det.style.display = (which === 'eval') ? '' : 'none';
       try{ localStorage.setItem(HD_TAB_KEY, which); }catch(e){}
       // 表示に切り替わった表で固定列の幅を測り直す（非表示中は幅0で計算されるため）
-      requestAnimationFrame(() => { try{ applyStickyColumns(); }catch(e){} });
+      // ※rAFは非表示タブで止まるので、同期で当ててから念のため少し後にもう一度
+      try{ applyStickyColumns(); }catch(e){}
+      setTimeout(() => { try{ applyStickyColumns(); }catch(e){} }, 60);
       if(which === 'past'){
         renderPastTable();
         // まだ近走が無ければ自動取得（会員がボタンを押さなくてよい）
