@@ -874,6 +874,50 @@ input[type=number], input[type=text], textarea, select {
     #ai-rally-counter.warn{ color:#8a6a1a; background:#fdf6e3; border-color:#e8d9a8; }
     #ai-rally-counter.over{ color:#fff; background:#c2410c; border-color:#c2410c; }
 
+    /* ===== 1頭ぶんの陣営データ（馬名タップで開く） ===== */
+    #hm-ov{ position:fixed; inset:0; z-index:100000; background:rgba(26,26,24,.55);
+            display:none; align-items:flex-end; justify-content:center; }
+    #hm-ov.open{ display:flex; }
+    @media (min-width:640px){ #hm-ov{ align-items:center; } }
+    #hm-box{ background:#fff; width:min(560px,100%); max-height:86vh; overflow-y:auto;
+             border-radius:18px 18px 0 0; box-shadow:0 -8px 40px rgba(0,0,0,.3);
+             animation:hm-up .18s ease-out; }
+    @media (min-width:640px){ #hm-box{ border-radius:18px; } }
+    @keyframes hm-up{ from{ transform:translateY(14px); opacity:.6; } to{ transform:none; opacity:1; } }
+    @media (prefers-reduced-motion: reduce){ #hm-box{ animation:none; } }
+    .hm-hd{ position:sticky; top:0; background:#1a1a1a; color:#fff; padding:16px 18px;
+            display:flex; align-items:flex-start; gap:12px; border-radius:18px 18px 0 0; }
+    @media (min-width:640px){ .hm-hd{ border-radius:18px 18px 0 0; } }
+    .hm-hd .num{ flex:none; width:30px; height:30px; border-radius:7px; display:flex;
+                 align-items:center; justify-content:center; font-weight:900; font-size:14px;
+                 font-family:'Noto Sans JP',sans-serif; }
+    .hm-hd .ttl{ flex:1; min-width:0; }
+    .hm-hd .nm{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:17px; line-height:1.3; }
+    .hm-hd .sub{ font-size:11.5px; color:#c9c8c0; margin-top:3px; }
+    .hm-hd .sub b{ color:#ccf23f; }
+    .hm-x{ flex:none; background:none; border:none; color:#c9c8c0; cursor:pointer; padding:2px;
+           line-height:0; border-radius:6px; }
+    .hm-x:hover{ color:#fff; background:rgba(255,255,255,.12); }
+    .hm-body{ padding:14px 16px 22px; display:flex; flex-direction:column; gap:11px; }
+    .hm-card{ border:2px solid #e8e6df; border-radius:13px; padding:12px 14px; background:#fff; }
+    .hm-card .role{ font-size:10px; font-weight:800; letter-spacing:.14em; color:#8a8a82;
+                    font-family:'Noto Sans JP',sans-serif; }
+    .hm-card .who{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:15px;
+                   color:#1a1a1a; margin:3px 0 9px; }
+    .hm-figs{ display:flex; gap:8px; flex-wrap:wrap; }
+    .hm-fig{ flex:1; min-width:76px; background:#faf9f5; border:1px solid #e8e6df;
+             border-radius:9px; padding:7px 9px; }
+    .hm-fig .k{ font-size:9.5px; color:#8a8a82; font-weight:700; letter-spacing:.06em; }
+    .hm-fig .v{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:15px;
+                color:#1a1a1a; font-variant-numeric:tabular-nums; margin-top:1px; }
+    .hm-fig.top{ background:#f5fadf; border-color:#ccf23f; }
+    .hm-fig.top .v{ color:#3d4a10; }
+    .hm-none{ font-size:12.5px; color:#8a8a82; line-height:1.7; }
+    .hm-memo{ background:#faf9f5; border:2px solid #e8e6df; border-radius:13px; padding:12px 14px; }
+    .hm-memo .role{ font-size:10px; font-weight:800; letter-spacing:.14em; color:#8a8a82;
+                    font-family:'Noto Sans JP',sans-serif; margin-bottom:5px; }
+    .hm-memo p{ margin:0; font-size:13px; line-height:1.75; color:#2b2b28; }
+
     /* ===== 出馬馬データの3タブ ===== */
     .hd-tabs{ display:flex; gap:6px; padding:0 8px 8px; flex-wrap:wrap; align-items:center; }
     .hd-tab{ font-family:'Noto Sans JP','BIZ UDPGothic',sans-serif; font-weight:900; font-size:12.5px;
@@ -1551,6 +1595,20 @@ input[type=number], input[type=text], textarea, select {
       料金・お支払い方法は準備中です。開始までしばらくお待ちください。<br>
       ご不明な点はお問い合わせページからご連絡ください。
     </div>
+  </div>
+</div>
+
+<!-- 1頭ぶんの陣営データ -->
+<div id="hm-ov" onclick="if(event.target===this) closeHorseModal()">
+  <div id="hm-box" role="dialog" aria-modal="true" aria-labelledby="hm-name">
+    <div class="hm-hd">
+      <span class="num" id="hm-num"></span>
+      <span class="ttl"><span class="nm" id="hm-name"></span><span class="sub" id="hm-sub"></span></span>
+      <button class="hm-x" onclick="closeHorseModal()" aria-label="閉じる">
+        <svg class="mk-ic" style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="hm-body" id="hm-body"></div>
   </div>
 </div>
 
@@ -3050,6 +3108,8 @@ function getTodayStr(){const d=new Date();const jst=new Date(d.getTime()+9*60*60
     function endNamePress(e, num) {
       if(e.button === 2) return;
       if(_nameTimer) clearTimeout(_nameTimer);
+      // 長押し（＝注目馬の切り替え）でなければ、その馬の陣営データを開く
+      if(!_nameFired && typeof openHorseModal === 'function') openHorseModal(num);
       if(e.cancelable && e.type.startsWith('pointer')) e.preventDefault();
     }
     
@@ -6458,6 +6518,86 @@ function autoGenerateTickets(mode = 'win') {
     }
 
     /* =========================================================
+       馬名タップ → その馬の陣営データ（騎手・調教師・種牡馬）
+       ========================================================= */
+    function openHorseModal(num){
+      if(!currentRaceId || !racesData[currentRaceId]) return;
+      const race = racesData[currentRaceId];
+      const h = (race.horses||[]).find(x => x.num === num);
+      if(!h) return;
+      const cd = h.campData || null;
+
+      const nEl = document.getElementById('hm-num');
+      nEl.textContent = h.num;
+      nEl.className = 'num waku-' + (h.waku || 1);
+      document.getElementById('hm-name').textContent = h.name || '';
+
+      const bits = [];
+      if(h.jockey) bits.push(_escapeHtml(h.jockey));
+      if(h.style) bits.push(_escapeHtml(h.style));
+      const od = (h.odds != null && h.odds !== '' && h.odds !== '-') ? parseFloat(h.odds) : null;
+      if(od !== null && !isNaN(od)) bits.push(`単勝 <b>${od.toFixed(1)}倍</b>`);
+      if(h.isScratched) bits.push('<b>除外</b>');
+      document.getElementById('hm-sub').innerHTML = bits.join('　');
+
+      // メンバー内トップを調べて蛍光を当てる
+      const best = {};
+      ['jWin','jRet','tWin','tRet','sWin','sRet'].forEach(k => {
+        let mx = null;
+        (race.horses||[]).forEach(x => {
+          const v = parseFloat(x.campData ? x.campData[k] : NaN);
+          if(!isNaN(v) && (mx === null || v > mx)) mx = v;
+        });
+        best[k] = mx;
+      });
+      // シートの値は「12.4」＝12.4%、単回収も「76.1」＝76.1%
+      const pct = v => {
+        const n = parseFloat(v);
+        return (v == null || v === '' || isNaN(n)) ? '—' : n.toFixed(1) + '%';
+      };
+      const roi = pct;
+      const chaku = (a,b,c,d) => [a,b,c,d].map(x => (x==null||x==='') ? '0' : String(x)).join('-');
+      const fig = (label, val, key, fmt) => {
+        const n = parseFloat(cd ? cd[key] : NaN);
+        const isTop = (!isNaN(n) && best[key] != null && n === best[key] && n > 0);
+        return `<div class="hm-fig${isTop ? ' top' : ''}"><div class="k">${label}</div><div class="v">${val}</div></div>`;
+      };
+      const card = (role, who, wKey, rKey, c1, c2, c3, cOut) => {
+        if(!who) return '';
+        return `<div class="hm-card">
+          <div class="role">${role}</div>
+          <div class="who">${_escapeHtml(who)}</div>
+          <div class="hm-figs">
+            ${fig('勝率', pct(cd[wKey]), wKey)}
+            ${fig('単勝回収率', roi(cd[rKey]), rKey)}
+            <div class="hm-fig"><div class="k">着別度数</div><div class="v" style="font-size:13px;">${chaku(cd[c1],cd[c2],cd[c3],cd[cOut])}</div></div>
+          </div>
+        </div>`;
+      };
+
+      let body = '';
+      if(cd){
+        body += card('JOCKEY／騎手', cd.jockeyFull || h.jockey, 'jWin', 'jRet', 'j1','j2','j3','jOut');
+        body += card('TRAINER／調教師', cd.trainer, 'tWin', 'tRet', 't1','t2','t3','tOut');
+        body += card('SIRE／種牡馬', cd.sire, 'sWin', 'sRet', 's1','s2','s3','sOut');
+      }
+      if(!body){
+        body = `<div class="hm-card"><div class="hm-none">この馬の陣営データはまだ登録されていません。<br>運営が管理ページから反映すると表示されます。</div></div>`;
+      }
+      // 会員が書いた短評も一緒に見せる
+      if(h.memo){
+        body += `<div class="hm-memo"><div class="role">MEMO／短評</div><p>${_escapeHtml(h.memo)}</p></div>`;
+      }
+      document.getElementById('hm-body').innerHTML = body;
+      document.getElementById('hm-ov').classList.add('open');
+    }
+    function closeHorseModal(){
+      const ov = document.getElementById('hm-ov');
+      if(ov) ov.classList.remove('open');
+    }
+    document.addEventListener('keydown', e => { if(e.key === 'Escape') closeHorseModal(); });
+
+    /* =========================================================
        出馬馬データの3タブ
          past : 出馬表（近走5走・netkeibaから取得）
          eval : 各馬評価（指数・脚質・短評。しまちゃんのCSV）
@@ -6631,7 +6771,7 @@ function autoGenerateTickets(mode = 'win') {
             <span class="waku-box waku-${h.waku}">${h.num}</span>
           </div></td>
           <td class="pt-fix2"><div class="pt-name">
-            <div class="pt-nm">${_escapeHtml(h.name||'')}</div>
+            <div class="pt-nm" style="cursor:pointer;" onclick="openHorseModal(${h.num})">${_escapeHtml(h.name||'')}</div>
             <div class="pt-sub">${_escapeHtml(h.jockey||'')}${h.style ? '／'+_escapeHtml(h.style) : ''}</div>
             <div class="pt-odds${odCls}">${od !== null ? od.toFixed(1)+'倍' : '—'}</div>
           </div></td>
@@ -6658,21 +6798,16 @@ function autoGenerateTickets(mode = 'win') {
       const has = horses.some(h => h.campData);
       tbl.querySelector('thead').innerHTML =
         '<tr><th>番</th><th>馬名</th>'
-        + '<th>騎手</th><th>勝率</th><th>単回</th><th>着別</th>'
-        + '<th>調教師</th><th>勝率</th><th>単回</th><th>着別</th>'
-        + '<th>種牡馬</th><th>勝率</th><th>単回</th><th>着別</th></tr>';
+        + '<th>騎手</th><th>勝率</th><th>単回収</th><th>着別</th>'
+        + '<th>調教師</th><th>勝率</th><th>単回収</th><th>着別</th>'
+        + '<th>種牡馬</th><th>勝率</th><th>単回収</th><th>着別</th></tr>';
 
-      // 「0.124」形式の勝率を12.4%に、単回0.761はそのまま倍率として出す
+      // シートの値は「12.4」＝12.4%、単回収も「76.1」＝76.1%（100を超えればプラス収支）
       const pct = v => {
         const n = parseFloat(v);
-        if(v == null || v === '' || isNaN(n)) return '—';
-        return (n <= 1 ? (n*100).toFixed(1) : n.toFixed(1)) + '%';
+        return (v == null || v === '' || isNaN(n)) ? '—' : n.toFixed(1) + '%';
       };
-      const roi = v => {
-        const n = parseFloat(v);
-        if(v == null || v === '' || isNaN(n)) return '—';
-        return n.toFixed(2);
-      };
+      const roi = pct;
       const chaku = (a,b,c,d) => {
         const arr = [a,b,c,d].map(x => (x==null||x==='') ? '0' : String(x));
         return arr.slice(0,3).join('-') + '-' + arr[3];
@@ -6701,7 +6836,7 @@ function autoGenerateTickets(mode = 'win') {
         const scr = h.isScratched ? 'row-scratched' : '';
         body += `<tr class="${scr}">
           <td><span class="waku-box waku-${h.waku}">${h.num}</span></td>
-          <td class="cm-name">${_escapeHtml(h.name||'')}</td>
+          <td class="cm-name" style="cursor:pointer;" onclick="openHorseModal(${h.num})">${_escapeHtml(h.name||'')}</td>
           <td>${_escapeHtml((cd && cd.jockeyFull) || h.jockey || '—')}</td>
           <td class="cm-stat">${cell(cd,'jWin',pct)}</td>
           <td class="cm-stat">${cell(cd,'jRet',roi)}</td>
