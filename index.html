@@ -927,7 +927,7 @@ input[type=number], input[type=text], textarea, select {
     .mark-pick.on{ background:#1a1a1a; color:#ccf23f; border-color:#1a1a1a; }
     .mark-pick.honmei{ background:#ccf23f; color:#1a1a1a; border-color:#1a1a1a; }
 
-    /* ===== 出馬馬データの3タブ ===== */
+    /* ===== 出走馬データの3タブ ===== */
     .hd-tabs{ display:flex; gap:6px; padding:0 8px 8px; flex-wrap:wrap; align-items:center; }
     .hd-tab{ font-family:'Noto Sans JP','BIZ UDPGothic',sans-serif; font-weight:900; font-size:12.5px;
              background:#fff; color:#5c5341; border:2px solid #e0ded6; border-radius:20px;
@@ -942,9 +942,7 @@ input[type=number], input[type=text], textarea, select {
     .pastwrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; border-top:1px solid #e8e6df; }
     table.past-table{ border-collapse:separate; border-spacing:0; width:max-content; min-width:100%;
                       font-family:'BIZ UDPGothic',sans-serif; }
-    .past-table th{ background:#1a1a1a; color:#fff; font-family:'Noto Sans JP',sans-serif; font-weight:900;
-                    font-size:11px; padding:7px 6px; text-align:center; white-space:nowrap;
-                    position:sticky; top:0; z-index:3; }
+    .past-table th{ white-space:nowrap; }
     .past-table td{ border-bottom:1px solid #e8e6df; padding:0; vertical-align:top; background:#fff; }
     .past-table tbody tr:nth-child(even) td{ background:#faf9f5; }
     /* 左2列を固定 */
@@ -987,14 +985,24 @@ input[type=number], input[type=text], textarea, select {
     /* コース陣営タブ */
     .campwrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
     .camp-table{ border-collapse:separate; border-spacing:0; width:max-content; min-width:100%; }
-    .camp-table th{ background:#1a1a1a; color:#fff; font-family:'Noto Sans JP',sans-serif; font-weight:900;
-                    font-size:11px; padding:7px 8px; white-space:nowrap; position:sticky; top:0; z-index:3; }
+    .camp-table th{ white-space:nowrap; }
     .camp-table td{ border-bottom:1px solid #e8e6df; padding:7px 8px; font-size:11.5px; vertical-align:top; }
     .camp-table tbody tr:nth-child(even) td{ background:#faf9f5; }
     .camp-table td.cm-name{ font-family:'Noto Sans JP',sans-serif; font-weight:900; white-space:nowrap; }
     .cm-stat{ font-variant-numeric:tabular-nums; white-space:nowrap; }
     .cm-hi{ background:#ccf23f; border-radius:3px; padding:0 4px; font-weight:900; }
 
+    /* 勝率グラフの面は上の出走馬データと同じ白にそろえる */
+    .stat-card, .stat-card .graph-section-title, .stat-card .graph-head,
+    .stat-card .chart-area, .stat-card #graph-container, .stat-card .horse-row,
+    .stat-card .graph-mode-bar{ background:#fff !important; }
+    .stat-card .horse-row:nth-child(even){ background:#f7f6f1 !important; }
+
+    /* 出馬表・コース陣営も各馬評価と同じ表体裁（左の印・番・単勝・馬名を固定） */
+    .past-table td.pt-run{ padding:0 !important; }
+    .past-table .pt-run{ padding:6px 7px; }
+    .camp-table td{ white-space:nowrap; }
+    .past-table th, .camp-table th{ position:sticky; top:0; }
     /* ===== 読み込み中のくるくる（オッズ取得など） ===== */
     .mk-spin{ display:inline-block; width:1em; height:1em; vertical-align:-0.16em;
               border:2px solid currentColor; border-right-color:transparent; border-radius:50%;
@@ -2002,9 +2010,9 @@ input[type=number], input[type=text], textarea, select {
           </div>
         </div>
           <div class="main-table-area">
-        <!-- 小タイトル：出馬馬データ（3つの見方を切り替え） -->
+        <!-- 小タイトル：出走馬データ（3つの見方を切り替え） -->
         <div class="sub-head">
-          <span class="sub-head-ttl">出馬馬データ</span>
+          <span class="sub-head-ttl">出走馬データ</span>
           <button id="toggle-detail-btn" class="sub-head-btn" onclick="toggleDetailCols()">＋ 詳細</button>
         </div>
         <div class="hd-tabs">
@@ -2024,13 +2032,13 @@ input[type=number], input[type=text], textarea, select {
         <!-- 出馬表（過去5走） -->
         <div class="hd-pane" id="hd-pane-past">
           <div class="hd-note" id="past-note">「出馬表・オッズ更新」を押すと、各馬の近走5走と最新オッズが入ります。</div>
-          <div class="pastwrap"><table class="past-table" id="past-table"><thead></thead><tbody></tbody></table></div>
+          <div class="pastwrap"><table class="data-table past-table" id="past-table"><thead></thead><tbody></tbody></table></div>
         </div>
 
         <!-- コース・陣営（騎手/調教師/種牡馬の成績） -->
         <div class="hd-pane" id="hd-pane-camp">
           <div class="hd-note" id="camp-note"></div>
-          <div class="campwrap"><table class="camp-table" id="camp-table"><thead></thead><tbody></tbody></table></div>
+          <div class="campwrap"><table class="data-table camp-table" id="camp-table"><thead></thead><tbody></tbody></table></div>
         </div>
 
         <div class="hd-pane active" id="hd-pane-eval">
@@ -3431,9 +3439,13 @@ function _unusedAutoAssignMarks(rId = currentRaceId) {
 
     // 印・番・単勝・複勝・馬名（列0〜4）を左固定。可視列だけで累積leftを計算。
     function applyStickyColumns(){
-      const tbl = document.getElementById('main-data-table');
+      // 各馬評価は「印,番,単勝,(複勝),馬名」=4まで、出馬表・コース陣営は「印,番,単勝,馬名」=3まで
+      [['main-data-table',4],['past-table',3],['camp-table',3]].forEach(([id,until]) => {
+        try{ _applyStickyTo(document.getElementById(id), until); }catch(e){}
+      });
+    }
+    function _applyStickyTo(tbl, STICKY_UNTIL){
       if(!tbl) return;
-      const STICKY_UNTIL = 4; // 馬名列のインデックス（この列まで固定）
       const headRow = tbl.querySelector('thead tr');
       if(!headRow) return;
       const headCells = [...headRow.children];
@@ -6636,7 +6648,7 @@ function autoGenerateTickets(mode = 'win') {
     document.addEventListener('keydown', e => { if(e.key === 'Escape') closeHorseModal(); });
 
     /* =========================================================
-       出馬馬データの3タブ
+       出走馬データの3タブ
          past : 出馬表（近走5走・netkeibaから取得）
          eval : 各馬評価（指数・脚質・短評。しまちゃんのCSV）
          camp : コース・陣営（騎手/調教師/種牡馬の成績）
@@ -6657,6 +6669,8 @@ function autoGenerateTickets(mode = 'win') {
       const det = document.getElementById('toggle-detail-btn');
       if(det) det.style.display = (which === 'eval') ? '' : 'none';
       try{ localStorage.setItem(HD_TAB_KEY, which); }catch(e){}
+      // 表示に切り替わった表で固定列の幅を測り直す（非表示中は幅0で計算されるため）
+      requestAnimationFrame(() => { try{ applyStickyColumns(); }catch(e){} });
       if(which === 'past'){
         renderPastTable();
         // まだ近走が無ければ自動取得（会員がボタンを押さなくてよい）
@@ -6816,6 +6830,21 @@ function autoGenerateTickets(mode = 'win') {
       </div>`;
     }
 
+    /* 出馬表・コース陣営の左側（印・番・単勝・馬名）。各馬評価と同じ体裁 */
+    function _leftHead(){
+      return '<th>印</th><th>番</th><th>単勝</th><th>馬名</th>';
+    }
+    function _leftCells(h){
+      const od = parseFloat(h.odds);
+      const odTxt = isNaN(od) ? '-' : od.toFixed(1);
+      const odStyle = (!isNaN(od) && od >= 1.0 && od <= 9.9) ? 'color:#d32f2f;' : '';
+      const star = h.isStarred ? ' name-starred' : '';
+      return `<td>${markSelectHtml(h)}</td>`
+        + `<td><div class="waku-box waku-${h.waku}" style="margin:auto;">${h.num}</div></td>`
+        + `<td class="td-odds" style="${odStyle}">${odTxt}</td>`
+        + `<td class="td-name${star}" style="cursor:pointer;" onclick="openHorseModal(${h.num})">${_escapeHtml(h.name||'')}</td>`;
+    }
+
     function renderPastTable(){
       const tbl = document.getElementById('past-table');
       if(!tbl || !currentRaceId || !racesData[currentRaceId]) return;
@@ -6853,7 +6882,7 @@ function autoGenerateTickets(mode = 'win') {
         note.textContent += `　※馬名がnetkeibaと一致しない馬が${unmatched}頭あります（出馬表の版が違う可能性）。その馬は「—」で表示します。`;
       }
 
-      let head = '<tr><th class="pt-fix1">番</th><th class="pt-fix2">馬名／単勝</th>';
+      let head = '<tr>' + _leftHead();
       for(let i=1; i<=5; i++) head += `<th>${i===1?'前走':(i===2?'前々走':i+'走前')}</th>`;
       head += '</tr>';
       tbl.querySelector('thead').innerHTML = head;
@@ -6866,19 +6895,10 @@ function autoGenerateTickets(mode = 'win') {
         const odCls = (od !== null && od < 10) ? ' fav' : '';
         let tds = '';
         for(let i=0; i<5; i++) tds += `<td class="pt-run">${_pastRunCell(runs[i], bestAgari)}</td>`;
-        body += `<tr class="${scr.trim()}">
-          <td class="pt-fix1"><div class="pt-head">
-            <span class="waku-box waku-${h.waku}">${h.num}</span>
-          </div></td>
-          <td class="pt-fix2"><div class="pt-name">
-            <div class="pt-nm" style="cursor:pointer;" onclick="openHorseModal(${h.num})">${_escapeHtml(h.name||'')}</div>
-            <div class="pt-sub">${_escapeHtml(h.jockey||'')}${h.style ? '／'+_escapeHtml(h.style) : ''}</div>
-            <div class="pt-odds${odCls}">${od !== null ? od.toFixed(1)+'倍' : '—'}</div>
-          </div></td>
-          ${tds}
-        </tr>`;
+        body += `<tr class="${scr.trim()}">${_leftCells(h)}${tds}</tr>`;
       });
       tbl.querySelector('tbody').innerHTML = body;
+      try{ _applyStickyTo(tbl, 3); }catch(e){}
     }
 
     /* ===== コース・陣営（騎手/調教師/種牡馬の成績）===== */
@@ -6897,7 +6917,7 @@ function autoGenerateTickets(mode = 'win') {
 
       const has = horses.some(h => h.campData);
       tbl.querySelector('thead').innerHTML =
-        '<tr><th>番</th><th>馬名</th>'
+        '<tr>' + _leftHead()
         + '<th>騎手</th><th>勝率</th><th>単回収</th><th>着別</th>'
         + '<th>調教師</th><th>勝率</th><th>単回収</th><th>着別</th>'
         + '<th>種牡馬</th><th>勝率</th><th>単回収</th><th>着別</th></tr>';
@@ -6934,9 +6954,7 @@ function autoGenerateTickets(mode = 'win') {
       horses.forEach(h => {
         const cd = h.campData || null;
         const scr = h.isScratched ? 'row-scratched' : '';
-        body += `<tr class="${scr}">
-          <td><span class="waku-box waku-${h.waku}">${h.num}</span></td>
-          <td class="cm-name" style="cursor:pointer;" onclick="openHorseModal(${h.num})">${_escapeHtml(h.name||'')}</td>
+        body += `<tr class="${scr}">${_leftCells(h)}
           <td>${_escapeHtml((cd && cd.jockeyFull) || h.jockey || '—')}</td>
           <td class="cm-stat">${cell(cd,'jWin',pct)}</td>
           <td class="cm-stat">${cell(cd,'jRet',roi)}</td>
@@ -6952,6 +6970,7 @@ function autoGenerateTickets(mode = 'win') {
         </tr>`;
       });
       tbl.querySelector('tbody').innerHTML = body;
+      try{ _applyStickyTo(tbl, 3); }catch(e){}
       if(!has && note){
         note.textContent = (note.textContent ? note.textContent + '　' : '')
           + '陣営データはまだ登録されていません（運営が管理ページから反映すると表示されます）。';
