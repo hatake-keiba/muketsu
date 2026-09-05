@@ -867,6 +867,81 @@ input[type=number], input[type=text], textarea, select {
     .bb-track-wrap.wind-off #bb-wind-cap{ display:none !important; }
     .bb-track-wrap.wind-off{ padding-top:2px; }
 
+    /* AI相談の回数カウンター */
+    #ai-rally-counter{ font-size:11px; font-weight:700; color:#8a8a82; margin-left:auto;
+                       background:#faf9f5; border:1px solid #e8e6df; border-radius:20px; padding:3px 10px;
+                       white-space:nowrap; font-variant-numeric:tabular-nums; }
+    #ai-rally-counter.warn{ color:#8a6a1a; background:#fdf6e3; border-color:#e8d9a8; }
+    #ai-rally-counter.over{ color:#fff; background:#c2410c; border-color:#c2410c; }
+
+    /* ===== 出馬馬データの3タブ ===== */
+    .hd-tabs{ display:flex; gap:6px; padding:0 8px 8px; flex-wrap:wrap; align-items:center; }
+    .hd-tab{ font-family:'Noto Sans JP','BIZ UDPGothic',sans-serif; font-weight:900; font-size:12.5px;
+             background:#fff; color:#5c5341; border:2px solid #e0ded6; border-radius:20px;
+             padding:7px 15px; cursor:pointer; white-space:nowrap; transition:.15s; }
+    .hd-tab:hover{ border-color:#c9bb96; }
+    .hd-tab.active{ background:#1a1a1a; color:#ccf23f; border-color:#1a1a1a; }
+    .hd-pane{ display:none; }
+    .hd-pane.active{ display:block; }
+    .hd-note{ font-size:11px; color:#8a8a82; padding:0 10px 6px; line-height:1.6; }
+
+    /* 出馬表（過去5走） */
+    .pastwrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; border-top:1px solid #e8e6df; }
+    table.past-table{ border-collapse:separate; border-spacing:0; width:max-content; min-width:100%;
+                      font-family:'BIZ UDPGothic',sans-serif; }
+    .past-table th{ background:#1a1a1a; color:#fff; font-family:'Noto Sans JP',sans-serif; font-weight:900;
+                    font-size:11px; padding:7px 6px; text-align:center; white-space:nowrap;
+                    position:sticky; top:0; z-index:3; }
+    .past-table td{ border-bottom:1px solid #e8e6df; padding:0; vertical-align:top; background:#fff; }
+    .past-table tbody tr:nth-child(even) td{ background:#faf9f5; }
+    /* 左2列を固定 */
+    .past-table th.pt-fix1, .past-table td.pt-fix1{ position:sticky; left:0; z-index:2; width:46px; min-width:46px; }
+    .past-table th.pt-fix2, .past-table td.pt-fix2{ position:sticky; left:46px; z-index:2; width:104px; min-width:104px;
+                     border-right:2px solid #1a1a1a; }
+    .past-table th.pt-fix1, .past-table th.pt-fix2{ z-index:4; }
+    .past-table tbody td.pt-fix1, .past-table tbody td.pt-fix2{ background:#fff; }
+    .past-table tbody tr:nth-child(even) td.pt-fix1,
+    .past-table tbody tr:nth-child(even) td.pt-fix2{ background:#faf9f5; }
+    .pt-head{ padding:6px 5px; display:flex; flex-direction:column; align-items:center; gap:3px; }
+    .pt-name{ padding:6px 7px; }
+    .pt-nm{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:12px; color:#1a1a1a;
+            line-height:1.25; letter-spacing:-.02em; }
+    .pt-sub{ font-size:10px; color:#6b6b64; line-height:1.4; margin-top:2px; }
+    .pt-odds{ font-size:11px; font-weight:900; color:#1a1a1a; font-variant-numeric:tabular-nums; }
+    .pt-odds.fav{ color:#c2410c; }
+    /* 1走ぶんのマス（K-buddy独自の並び） */
+    .pt-run{ width:186px; min-width:186px; padding:6px 7px; }
+    .pr{ display:flex; flex-direction:column; gap:2px; }
+    .pr-top{ display:flex; align-items:center; gap:6px; }
+    .pr-rank{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:14px; min-width:26px;
+              text-align:center; border-radius:5px; padding:1px 4px; background:#eceae3; color:#41413c;
+              font-variant-numeric:tabular-nums; }
+    .pr-rank.r1{ background:#1a1a1a; color:#ccf23f; }
+    .pr-rank.r2{ background:#d8ccae; color:#5c5341; }
+    .pr-rank.r3{ background:#e8e6df; color:#41413c; }
+    .pr-when{ font-size:10px; color:#8a8a82; white-space:nowrap; }
+    .pr-race{ font-size:11.5px; font-weight:700; color:#1a1a1a; white-space:nowrap;
+              overflow:hidden; text-overflow:ellipsis; }
+    .pr-cond{ font-size:10.5px; color:#41413c; display:flex; gap:6px; flex-wrap:wrap; }
+    .pr-fig{ display:flex; gap:8px; align-items:baseline; font-variant-numeric:tabular-nums; }
+    .pr-time{ font-size:12px; font-weight:900; color:#1a1a1a; }
+    .pr-ag{ font-size:11px; font-weight:700; color:#41413c; }
+    .pr-ag.best{ background:#ccf23f; border-radius:3px; padding:0 4px; }
+    .pr-pass{ font-size:10px; color:#5c5341; background:#f2f0ea; border:1px solid #e8e6df;
+              border-radius:3px; padding:0 4px; }
+    .pr-vs{ font-size:10px; color:#6b6b64; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .pr-none{ color:#c3c1ba; font-size:11px; padding:10px 0; text-align:center; }
+    /* コース陣営タブ */
+    .campwrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    .camp-table{ border-collapse:separate; border-spacing:0; width:max-content; min-width:100%; }
+    .camp-table th{ background:#1a1a1a; color:#fff; font-family:'Noto Sans JP',sans-serif; font-weight:900;
+                    font-size:11px; padding:7px 8px; white-space:nowrap; position:sticky; top:0; z-index:3; }
+    .camp-table td{ border-bottom:1px solid #e8e6df; padding:7px 8px; font-size:11.5px; vertical-align:top; }
+    .camp-table tbody tr:nth-child(even) td{ background:#faf9f5; }
+    .camp-table td.cm-name{ font-family:'Noto Sans JP',sans-serif; font-weight:900; white-space:nowrap; }
+    .cm-stat{ font-variant-numeric:tabular-nums; white-space:nowrap; }
+    .cm-hi{ background:#ccf23f; border-radius:3px; padding:0 4px; font-weight:900; }
+
     /* ===== 読み込み中のくるくる（オッズ取得など） ===== */
     .mk-spin{ display:inline-block; width:1em; height:1em; vertical-align:-0.16em;
               border:2px solid currentColor; border-right-color:transparent; border-radius:50%;
@@ -1819,7 +1894,7 @@ input[type=number], input[type=text], textarea, select {
       <!-- ▼ AI相談（壁打ち）スロット：課金者のみアクティベート・未課金はグレーアウト ▼ -->
       <div class="ai-talk-slot" id="ai-talk-slot">
         <div class="sub-head ai-talk-head">
-          <span class="ai-talk-dot"></span><span class="sub-head-ttl">AI相談（壁打ち）</span>
+          <span class="ai-talk-dot"></span><span class="sub-head-ttl">AI相談（壁打ち）</span><span id="ai-rally-counter" title="1日に相談できる回数です">本日 0 / 100 回</span>
           <span class="ai-lock-badge" id="ai-lock-badge"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> 有料機能</span>
         </div>
         <!-- 中身（グレーアウト対象） -->
@@ -1858,10 +1933,16 @@ input[type=number], input[type=text], textarea, select {
           </div>
         </div>
           <div class="main-table-area">
-        <!-- 小タイトル：各馬評価（＋詳細表示トグル） -->
+        <!-- 小タイトル：出馬馬データ（3つの見方を切り替え） -->
         <div class="sub-head">
-          <span class="sub-head-ttl">各馬評価</span>
+          <span class="sub-head-ttl">出馬馬データ</span>
           <button id="toggle-detail-btn" class="sub-head-btn" onclick="toggleDetailCols()">＋ 詳細</button>
+        </div>
+        <div class="hd-tabs">
+          <button class="hd-tab" data-hd="past" onclick="showHorseData('past')">出馬表</button>
+          <button class="hd-tab active" data-hd="eval" onclick="showHorseData('eval')">各馬評価</button>
+          <button class="hd-tab" data-hd="camp" onclick="showHorseData('camp')">コース・陣営</button>
+          <button class="pill-btn pill-sm pill-beige" id="past-sync-btn" style="margin-left:auto;display:none;" onclick="loadPastRuns()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.5-5.8"/><path d="M20 4v5h-5"/></svg> 出馬表・オッズ更新</button>
         </div>
         <!-- 互換のため非表示で残す -->
         <div id="standard-time-container" style="display:none;"></div>
@@ -1871,6 +1952,19 @@ input[type=number], input[type=text], textarea, select {
         <div id="camp-course-feature" style="display:none; background:#f4f2ec; border-left:4px solid #b8a06a; padding:6px 10px; font-size:11px; font-weight:bold; color:#333; margin:4px 8px; border-radius:3px;"></div>
         <!-- ▲ ボタンを追加 ▲ -->
 
+        <!-- 出馬表（過去5走） -->
+        <div class="hd-pane" id="hd-pane-past">
+          <div class="hd-note" id="past-note">「出馬表・オッズ更新」を押すと、各馬の近走5走と最新オッズが入ります。</div>
+          <div class="pastwrap"><table class="past-table" id="past-table"><thead></thead><tbody></tbody></table></div>
+        </div>
+
+        <!-- コース・陣営（騎手/調教師/種牡馬の成績） -->
+        <div class="hd-pane" id="hd-pane-camp">
+          <div class="hd-note" id="camp-note"></div>
+          <div class="campwrap"><table class="camp-table" id="camp-table"><thead></thead><tbody></tbody></table></div>
+        </div>
+
+        <div class="hd-pane active" id="hd-pane-eval">
         <div class="data-table-container">
           <table class="data-table" id="main-data-table">
                       <thead>
@@ -1898,6 +1992,7 @@ input[type=number], input[type=text], textarea, select {
             <tbody id="table-body"></tbody>
           </table>
                </div>
+        </div><!-- /hd-pane-eval -->
       </div>
 
       <!-- ▼ 勝率設定（アウトプットアレンジ内の小セクション） ▼ -->
@@ -4054,9 +4149,17 @@ function buildNavigation() {
 
     async function sendAiChat(viaVoice){
       if(!isAiUnlocked()){ openAiUnlock(); return; }
+      // 1日の上限に達していたら送らない
+      if(getAiRally().count >= AI_RALLY_MAX){
+        _voiceLiveMode = false;
+        mkToast(`本日のAI相談は上限（${AI_RALLY_MAX}回）に達しました。\n日付が変わるとまた使えます。`);
+        renderAiRally();
+        return;
+      }
       const inp = document.getElementById('ai-chat-input');
       const q = (inp.value || '').trim();
       if(!q) return;
+      bumpAiRally();
       inp.value = '';
       _appendAiMsg('user', q);
       const rid = currentRaceId || '_';
@@ -5797,6 +5900,8 @@ function calculateHarville() {
    function renderAll() {
       if(!currentRaceId) return;
       persistRaces();
+      try{ renderPastTable(); }catch(e){}
+      try{ renderCampTable(); }catch(e){}
 renderCourseFeature(); // ←★★ここに1行追加するだけです！★★
       renderCourseFeature(); // ←★コース傾向の呼び出しを追加！
       renderMainTable();
@@ -6236,6 +6341,52 @@ function autoGenerateTickets(mode = 'win') {
       return raw;
     }
 
+    /* ===== AI相談の1日あたりの回数制限 =====
+       この端末に記録する方式。日付が変わればリセットされる。
+       ※会員ログインが入るまでは端末単位。ブラウザを変えると別カウントになる。 */
+    const AI_RALLY_MAX = 100;
+    const AI_RALLY_KEY = 'muketsu_ai_rally';
+    function _todayKey(){
+      const d = new Date();
+      return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    }
+    function getAiRally(){
+      try{
+        const raw = localStorage.getItem(AI_RALLY_KEY);
+        if(!raw) return { date:_todayKey(), count:0 };
+        const o = JSON.parse(raw);
+        if(o.date !== _todayKey()) return { date:_todayKey(), count:0 };  // 日付が変わったらリセット
+        return { date:o.date, count: Number(o.count)||0 };
+      }catch(e){ return { date:_todayKey(), count:0 }; }
+    }
+    function bumpAiRally(){
+      const r = getAiRally();
+      r.count += 1;
+      try{ localStorage.setItem(AI_RALLY_KEY, JSON.stringify(r)); }catch(e){}
+      renderAiRally();
+      return r.count;
+    }
+    function renderAiRally(){
+      const el = document.getElementById('ai-rally-counter');
+      if(!el) return;
+      const r = getAiRally();
+      const left = Math.max(0, AI_RALLY_MAX - r.count);
+      el.textContent = `本日 ${r.count} / ${AI_RALLY_MAX} 回`;
+      el.classList.toggle('warn', left <= 10);
+      el.classList.toggle('over', left <= 0);
+      // 上限に達したら送信できないようにする
+      const send = document.getElementById('ai-chat-send');
+      const inp = document.getElementById('ai-chat-input');
+      const mic = document.getElementById('ai-mic-chat-btn');
+      const over = left <= 0;
+      if(send) send.disabled = over;
+      if(mic) mic.disabled = over;
+      if(inp){
+        inp.disabled = over;
+        inp.placeholder = over ? '本日の上限に達しました（明日また使えます）' : '入力';
+      }
+    }
+
     /* ===== 会員の編集を端末に保存（勝率・印・メモ・買い目・展開設定） =====
        保存先はこの端末のブラウザ。別端末には引き継がれない。
        出馬表シートが更新されたら、新しい出馬表に会員の印・メモ・買い目を移し替える。 */
@@ -6304,6 +6455,272 @@ function autoGenerateTickets(mode = 'win') {
       const _a = window.alert; window.alert = function(){};
       try { parseTsv2Paste(); } finally { window.alert = _a; }
       return true;
+    }
+
+    /* =========================================================
+       出馬馬データの3タブ
+         past : 出馬表（近走5走・netkeibaから取得）
+         eval : 各馬評価（指数・脚質・短評。しまちゃんのCSV）
+         camp : コース・陣営（騎手/調教師/種牡馬の成績）
+       ========================================================= */
+    const HD_TAB_KEY = 'muketsu_hd_tab';
+    function showHorseData(which){
+      ['past','eval','camp'].forEach(k => {
+        const pane = document.getElementById('hd-pane-' + k);
+        if(pane) pane.classList.toggle('active', k === which);
+      });
+      document.querySelectorAll('.hd-tab').forEach(b => {
+        b.classList.toggle('active', b.dataset.hd === which);
+      });
+      const btn = document.getElementById('past-sync-btn');
+      if(btn) btn.style.display = (which === 'past') ? '' : 'none';
+      const det = document.getElementById('toggle-detail-btn');
+      if(det) det.style.display = (which === 'eval') ? '' : 'none';
+      try{ localStorage.setItem(HD_TAB_KEY, which); }catch(e){}
+      if(which === 'past') renderPastTable();
+      if(which === 'camp') renderCampTable();
+    }
+
+    /* ===== 出馬表（近走5走）===== */
+    function _pastStore(){
+      if(!currentRaceId || !racesData[currentRaceId]) return null;
+      return racesData[currentRaceId]._pastRuns || null;
+    }
+    async function loadPastRuns(){
+      if(!currentRaceId){ mkToast('レースを選択してください'); return; }
+      const note = document.getElementById('past-note');
+      const btn = document.getElementById('past-sync-btn');
+      const bak = btn ? btn.innerHTML : '';
+      let gasUrl = (typeof MUKETSU_GAS_URL !== 'undefined' ? MUKETSU_GAS_URL : '').trim();
+      if(!gasUrl){ mkToast('GAS URLが未設定です。運営にご連絡ください。'); return; }
+      if(btn){ btn.classList.add('is-loading'); btn.innerHTML = '<span class="mk-spin"></span> 取得中…'; }
+      if(note) note.innerHTML = '<span class="mk-spin"></span> 近走と最新オッズを取得しています…';
+      try{
+        // レースIDを特定（オッズ更新と同じ探索）
+        const raceId12 = await _resolveNetkeibaRaceId();
+        if(!raceId12) throw new Error('直近の開催日にこのレースが見つかりません。\n（近走・オッズは前日〜当日に取得できます）');
+        const data = await callGAS(`${gasUrl}?action=pastruns&race_id=${raceId12}`);
+        if(!data || !data.ok) throw new Error((data && data.error) || '近走を取得できませんでした');
+        const map = {};
+        (data.horses||[]).forEach(h => { if(h.num) map[h.num] = h.runs || []; });
+        racesData[currentRaceId]._pastRuns = { map, updatedAt: data.updatedAt || '' };
+        try{ persistRacesNow(); }catch(e){}
+        renderPastTable();
+        if(note) note.textContent = `近走を更新しました（netkeiba ${data.updatedAt||''}）。続けてオッズも取り込みます。`;
+        // 同じ流れでオッズも最新にする
+        try{ await syncOddsFromGAS(); renderPastTable(); }catch(e){}
+      }catch(err){
+        if(note) note.textContent = '';
+        mkToast('取得できませんでした。\n' + err.message);
+      }finally{
+        if(btn){ btn.classList.remove('is-loading'); btn.innerHTML = bak; }
+      }
+    }
+
+    /* オッズ更新と同じ手順で netkeiba のレースIDを求める */
+    async function _resolveNetkeibaRaceId(){
+      let gasUrl = (typeof MUKETSU_GAS_URL !== 'undefined' ? MUKETSU_GAS_URL : '').trim();
+      const idMatch = currentRaceId.match(/^(.)(\d+)$/);
+      if(!idMatch) return null;
+      const placeChar = idMatch[1], raceNo = parseInt(idMatch[2]);
+      const PLACE_CHAR_TO_CODE = {'札':'01','函':'02','福':'03','新':'04','東':'05','中':'06','名':'07','京':'08','阪':'09','小':'10'};
+      const targetCode = PLACE_CHAR_TO_CODE[placeChar] || '';
+      const targetRaceStr = String(raceNo).padStart(2, '0');
+      function ymd(d){ return '' + d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0'); }
+      const cands = [];
+      const today = new Date();
+      for(let i=0; i<=14; i++){
+        const d = new Date(today.getFullYear(), today.getMonth(), today.getDate()-i);
+        const dow = d.getDay();
+        if(i===0 || dow===0 || dow===6) cands.push(ymd(d));
+      }
+      for(const dateStr of cands){
+        const sched = await callGAS(gasUrl + '?action=schedule&date=' + dateStr);
+        if(!sched || !sched.ok) continue;
+        if(sched.raceIds && Array.isArray(sched.raceIds)){
+          const found = sched.raceIds.find(id => id.slice(4,6) === targetCode && id.slice(10,12) === targetRaceStr);
+          if(found) return found;
+        }
+      }
+      return null;
+    }
+
+    function _escapeHtml(v){
+      return String(v==null?'':v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    /* 1走ぶんのマス。項目は同じでも並びと体裁はK-buddy独自 */
+    function _pastRunCell(run, bestAgari){
+      if(!run) return '<div class="pr-none">—</div>';
+      const rk = parseInt(run.rank, 10);
+      let rkCls = '';
+      if(rk === 1) rkCls = ' r1'; else if(rk === 2) rkCls = ' r2'; else if(rk === 3) rkCls = ' r3';
+      const agBest = (run.agari && bestAgari && parseFloat(run.agari) === bestAgari) ? ' best' : '';
+      const cond = [];
+      if(run.head) cond.push(_escapeHtml(run.head) + '頭');
+      if(run.draw) cond.push(_escapeHtml(run.draw) + '番');
+      if(run.pop) cond.push(_escapeHtml(run.pop) + '人');
+      const jk = [];
+      if(run.jockey) jk.push(_escapeHtml(run.jockey));
+      if(run.weight) jk.push(_escapeHtml(run.weight));
+      let vs = '';
+      if(run.winner){
+        const mg = run.margin ? `（${_escapeHtml(run.margin)}）` : '';
+        vs = `<div class="pr-vs">${rk === 1 ? '2着' : '勝'} ${_escapeHtml(run.winner)}${mg}</div>`;
+      }
+      return `<div class="pr">
+        <div class="pr-top">
+          <span class="pr-rank${rkCls}">${_escapeHtml(run.rank||'-')}</span>
+          <span class="pr-when">${_escapeHtml(run.date||'')} ${_escapeHtml(run.place||'')}</span>
+        </div>
+        <div class="pr-race">${_escapeHtml(run.raceName||'')}</div>
+        <div class="pr-cond"><span>${cond.join(' ')}</span><span>${jk.join(' ')}</span></div>
+        <div class="pr-fig">
+          <span>${_escapeHtml(run.course||'')}</span>
+          <span class="pr-time">${_escapeHtml(run.time||'')}</span>
+          <span>${_escapeHtml(run.going||'')}</span>
+        </div>
+        <div class="pr-fig">
+          ${run.pass ? `<span class="pr-pass">${_escapeHtml(run.pass)}</span>` : ''}
+          ${run.agari ? `<span class="pr-ag${agBest}">上${_escapeHtml(run.agari)}</span>` : ''}
+        </div>
+        ${vs}
+      </div>`;
+    }
+
+    function renderPastTable(){
+      const tbl = document.getElementById('past-table');
+      if(!tbl || !currentRaceId || !racesData[currentRaceId]) return;
+      const race = racesData[currentRaceId];
+      const store = _pastStore();
+      const horses = (race.horses||[]).slice().sort((a,b)=>(a.num||0)-(b.num||0));
+      const note = document.getElementById('past-note');
+
+      if(!store){
+        tbl.querySelector('thead').innerHTML = '';
+        tbl.querySelector('tbody').innerHTML = '';
+        if(note && !note.querySelector('.mk-spin')){
+          note.textContent = '「出馬表・オッズ更新」を押すと、各馬の近走5走と最新オッズが入ります。';
+        }
+        return;
+      }
+      if(note) note.textContent = `近走：netkeiba（${store.updatedAt||''}時点）／オッズは更新ボタンでその時点の値が入ります。`;
+
+      // メンバー中の最速上がりを出す
+      let bestAgari = null;
+      horses.forEach(h => (store.map[h.num]||[]).forEach(r => {
+        const a = parseFloat(r.agari);
+        if(!isNaN(a) && (bestAgari === null || a < bestAgari)) bestAgari = a;
+      }));
+
+      let head = '<tr><th class="pt-fix1">番</th><th class="pt-fix2">馬名／単勝</th>';
+      for(let i=1; i<=5; i++) head += `<th>${i===1?'前走':(i===2?'前々走':i+'走前')}</th>`;
+      head += '</tr>';
+      tbl.querySelector('thead').innerHTML = head;
+
+      let body = '';
+      horses.forEach(h => {
+        const runs = store.map[h.num] || [];
+        const scr = h.isScratched ? ' row-scratched' : '';
+        const od = (h.odds != null && h.odds !== '' && h.odds !== '-') ? parseFloat(h.odds) : null;
+        const odCls = (od !== null && od < 10) ? ' fav' : '';
+        let tds = '';
+        for(let i=0; i<5; i++) tds += `<td class="pt-run">${_pastRunCell(runs[i], bestAgari)}</td>`;
+        body += `<tr class="${scr.trim()}">
+          <td class="pt-fix1"><div class="pt-head">
+            <span class="waku-box waku-${h.waku}">${h.num}</span>
+          </div></td>
+          <td class="pt-fix2"><div class="pt-name">
+            <div class="pt-nm">${_escapeHtml(h.name||'')}</div>
+            <div class="pt-sub">${_escapeHtml(h.jockey||'')}${h.style ? '／'+_escapeHtml(h.style) : ''}</div>
+            <div class="pt-odds${odCls}">${od !== null ? od.toFixed(1)+'倍' : '—'}</div>
+          </div></td>
+          ${tds}
+        </tr>`;
+      });
+      tbl.querySelector('tbody').innerHTML = body;
+    }
+
+    /* ===== コース・陣営（騎手/調教師/種牡馬の成績）===== */
+    function renderCampTable(){
+      const tbl = document.getElementById('camp-table');
+      const note = document.getElementById('camp-note');
+      if(!tbl || !currentRaceId || !racesData[currentRaceId]) return;
+      const race = racesData[currentRaceId];
+      const horses = (race.horses||[]).slice().sort((a,b)=>(a.num||0)-(b.num||0));
+
+      if(note){
+        note.textContent = race.courseFeature
+          ? `コース傾向：${race.courseFeature}`
+          : 'この開催のコース傾向は登録されていません。';
+      }
+
+      const has = horses.some(h => h.campData);
+      tbl.querySelector('thead').innerHTML =
+        '<tr><th>番</th><th>馬名</th>'
+        + '<th>騎手</th><th>勝率</th><th>単回</th><th>着別</th>'
+        + '<th>調教師</th><th>勝率</th><th>単回</th><th>着別</th>'
+        + '<th>種牡馬</th><th>勝率</th><th>単回</th><th>着別</th></tr>';
+
+      // 「0.124」形式の勝率を12.4%に、単回0.761はそのまま倍率として出す
+      const pct = v => {
+        const n = parseFloat(v);
+        if(v == null || v === '' || isNaN(n)) return '—';
+        return (n <= 1 ? (n*100).toFixed(1) : n.toFixed(1)) + '%';
+      };
+      const roi = v => {
+        const n = parseFloat(v);
+        if(v == null || v === '' || isNaN(n)) return '—';
+        return n.toFixed(2);
+      };
+      const chaku = (a,b,c,d) => {
+        const arr = [a,b,c,d].map(x => (x==null||x==='') ? '0' : String(x));
+        return arr.slice(0,3).join('-') + '-' + arr[3];
+      };
+      // 各項目のメンバー内トップに蛍光を当てる
+      const best = {};
+      ['jWin','jRet','tWin','tRet','sWin','sRet'].forEach(k => {
+        let mx = null;
+        horses.forEach(h => {
+          const n = parseFloat(h.campData ? h.campData[k] : NaN);
+          if(!isNaN(n) && (mx === null || n > mx)) mx = n;
+        });
+        best[k] = mx;
+      });
+      const cell = (cd, k, fmt) => {
+        if(!cd) return '—';
+        const n = parseFloat(cd[k]);
+        const txt = fmt(cd[k]);
+        const hi = (!isNaN(n) && best[k] !== null && n === best[k] && n > 0) ? ' cm-hi' : '';
+        return `<span class="${hi.trim()}">${txt}</span>`;
+      };
+
+      let body = '';
+      horses.forEach(h => {
+        const cd = h.campData || null;
+        const scr = h.isScratched ? 'row-scratched' : '';
+        body += `<tr class="${scr}">
+          <td><span class="waku-box waku-${h.waku}">${h.num}</span></td>
+          <td class="cm-name">${_escapeHtml(h.name||'')}</td>
+          <td>${_escapeHtml((cd && cd.jockeyFull) || h.jockey || '—')}</td>
+          <td class="cm-stat">${cell(cd,'jWin',pct)}</td>
+          <td class="cm-stat">${cell(cd,'jRet',roi)}</td>
+          <td class="cm-stat">${cd ? chaku(cd.j1,cd.j2,cd.j3,cd.jOut) : '—'}</td>
+          <td>${_escapeHtml((cd && cd.trainer) || '—')}</td>
+          <td class="cm-stat">${cell(cd,'tWin',pct)}</td>
+          <td class="cm-stat">${cell(cd,'tRet',roi)}</td>
+          <td class="cm-stat">${cd ? chaku(cd.t1,cd.t2,cd.t3,cd.tOut) : '—'}</td>
+          <td>${_escapeHtml((cd && cd.sire) || '—')}</td>
+          <td class="cm-stat">${cell(cd,'sWin',pct)}</td>
+          <td class="cm-stat">${cell(cd,'sRet',roi)}</td>
+          <td class="cm-stat">${cd ? chaku(cd.s1,cd.s2,cd.s3,cd.sOut) : '—'}</td>
+        </tr>`;
+      });
+      tbl.querySelector('tbody').innerHTML = body;
+      if(!has && note){
+        note.textContent = (note.textContent ? note.textContent + '　' : '')
+          + '陣営データはまだ登録されていません（運営が管理ページから反映すると表示されます）。';
+      }
     }
 
     /* ===== 出馬表をスプレッドシート（GAS経由）から取得 =====
@@ -6641,19 +7058,8 @@ function autoGenerateTickets(mode = 'win') {
   Object.keys(racesData).forEach(rId => {
     const horses = racesData[rId].horses;
     if(horses.length === 0) return;
-    const hasKisoin = horses.some(h => h.markIdx > 0 && h.kisoin);
-    if(!hasKisoin) {
-      let validHorses = horses.filter(h => h.shisu > 0);
-      let sorted = [...validHorses].sort((a,b) => (b.shisu || 0) - (a.shisu || 0));
-      if(sorted.length === 0) sorted = [...horses].sort((a,b) => (b.baseWinRate || 0) - (a.baseWinRate || 0));
-      const defaultMarks = [1,2,3,4,5,6];
-      for(let i = 0; i < Math.min(sorted.length, defaultMarks.length); i++) {
-        const h = horses.find(x => x.num === sorted[i].num);
-        if(h) h.markIdx = defaultMarks[i];
-      }
-    }
-    applySimulation(rId);
-    autoAssignMarksByWinRate(rId);
+    // 印は会員が自分で付ける。取り込み時は自動で付けない
+
   });
   
   document.getElementById('nav-area').style.display = 'flex';
@@ -8741,17 +9147,8 @@ window.executeMyAI = function(targetId, isSilentParam) {
 
   normalizeTo100(false);
   
-  // 印の自動付与
+  // 印は会員が自分で決める。ここでは自動付与しない（勝率だけ更新する）
   const sorted = [...race.horses].sort((a, b) => b.winRate - a.winRate);
-  const marks = [1, 2, 3, 4, 5, 7]; 
-  race.horses.forEach(h => { if (!h.isMarkLocked) h.markIdx = 0; });
-  let mIdx = 0;
-  sorted.forEach(h => {
-    if (!h.isMarkLocked && mIdx < marks.length) {
-      h.markIdx = marks[mIdx];
-      mIdx++;
-    }
-  });
 
   // 短評生成
   const honmei = sorted[0];
@@ -9158,6 +9555,11 @@ window.closeDetailedData2Modal = function() {
   window.setWindTrack = function(on){
     window.MK_SHOW_WIND = !!on;
     try{ applyWindVisibility(); }catch(e){}
+  try{ renderAiRally(); }catch(e){}
+  try{
+    const t = localStorage.getItem('muketsu_hd_tab');
+    if(t && ['past','eval','camp'].includes(t)) showHorseData(t); else showHorseData('eval');
+  }catch(e){}
     try{ if(typeof updateBabaBar==='function' && typeof currentRaceId!=='undefined' && currentRaceId){
       const r = racesData[currentRaceId]; if(r) updateBabaBar(r.basho);
     } }catch(e){}
