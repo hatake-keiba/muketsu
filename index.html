@@ -963,6 +963,36 @@ input[type=number], input[type=text], textarea, select {
     .pr-none{ color:#c9c8c0; text-align:center; }
     #past-note:empty{ display:none; }
 
+    /* 馬名は内側で幅を切る（tdのmax-widthは表では効かない） */
+    .data-table .td-name .nm-clip{ display:block; max-width:104px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    @media (max-width:480px){ .data-table .td-name .nm-clip{ max-width:54px; } .data-table td.td-name{ padding-right:1px !important; padding-left:2px !important; } }
+    /* 印プルダウンの色：.data-table select の白背景指定に負けないようにする */
+    .data-table .mark-pick, .horse-row .mark-pick{ padding:0 !important; font-size:12px !important; line-height:1 !important; }
+    .data-table .mark-pick.on, .horse-row .mark-pick.on{ background:#1a1a1a !important; color:#ccf23f !important; border-color:#1a1a1a !important; }
+    .data-table .mark-pick.honmei, .horse-row .mark-pick.honmei{ background:#ccf23f !important; color:#1a1a1a !important; border-color:#1a1a1a !important; }
+
+    /* ===== 固定列を詰める（印・番・単勝・馬名）。3タブ共通 ===== */
+    .data-table td.sticky-col, .data-table th.sticky-col{ padding-left:2px !important; padding-right:2px !important; }
+    .data-table .mark-pick{ width:34px; height:24px; font-size:14px; }
+    .data-table td.td-odds{ font-variant-numeric:tabular-nums; }
+    @media (max-width:480px){
+      .data-table .mark-pick{ width:26px; height:22px; font-size:12px; border-radius:5px; }
+      .data-table td.sticky-col{ padding-left:1px !important; padding-right:1px !important; }
+      .data-table .waku-box{ width:19px !important; height:19px !important; font-size:10.5px !important; border-radius:4px !important; margin:0 auto !important; }
+      .data-table td.td-odds{ font-size:9.5px !important; padding-left:1px !important; padding-right:1px !important; max-width:28px; letter-spacing:-.02em; }
+      .data-table th.sticky-col{ font-size:9px !important; }
+      .data-table .td-name{ max-width:62px !important; font-size:10.5px !important; letter-spacing:-.02em; padding-left:3px !important; }
+      .data-table.detail-open .td-name{ max-width:62px !important; }
+    }
+    /* 勝率グラフの左側を出走馬データと同じ体裁に（縞背景・同じ印プルダウン・同じ枠ボックス） */
+    .horse-row{ background:#fff; }
+    .horse-row:nth-child(even){ background:#f7f6f1; }
+    .horse-row .mark-pick{ width:34px; height:24px; font-size:14px; }
+    @media (max-width:480px){
+      .horse-row .mark-pick{ width:28px; height:22px; font-size:12px; border-radius:5px; }
+      .horse-row .waku-box{ width:20px !important; height:20px !important; font-size:11px !important; }
+    }
+
     /* ===== 出走馬データの3タブ ===== */
     .hd-tabs{ display:flex; gap:6px; padding:0 8px 8px; flex-wrap:wrap; align-items:center; }
     .hd-tab{ font-family:'Noto Sans JP','BIZ UDPGothic',sans-serif; font-weight:900; font-size:12.5px;
@@ -3468,7 +3498,7 @@ function _unusedAutoAssignMarks(rId = currentRaceId) {
           
            <td class="detail-col ${isDetailOpen ? '' : 'hidden'} ${cFuku}" ${hlEvents('fuku')}>${h.fukuOdds||'-'}</td>
           
-          <td class="td-name ${starCls}" onpointerdown="startNamePress(event,${h.num})" onpointerup="endNamePress(event,${h.num})" onpointercancel="cancelNamePress(event)" oncontextmenu="onNameContextMenu(event,${h.num})">${h.name}</td>
+          <td class="td-name ${starCls}" onpointerdown="startNamePress(event,${h.num})" onpointerup="endNamePress(event,${h.num})" onpointercancel="cancelNamePress(event)" oncontextmenu="onNameContextMenu(event,${h.num})"><span class="nm-clip">${h.name}</span></td>
           
           <td class="${cJockey}" style="white-space: nowrap;" ${hlEvents('jockey')}>${h.jockey||'-'}</td>
           
@@ -6925,7 +6955,7 @@ function autoGenerateTickets(mode = 'win') {
       return `<td>${markSelectHtml(h)}</td>`
         + `<td><div class="waku-box waku-${h.waku}" style="margin:auto;">${h.num}</div></td>`
         + `<td class="td-odds" style="${odStyle}">${odTxt}</td>`
-        + `<td class="td-name${star}" style="cursor:pointer;" onclick="openHorseModal(${h.num})">${_escapeHtml(h.name||'')}</td>`;
+        + `<td class="td-name${star}" style="cursor:pointer;" onclick="openHorseModal(${h.num})"><span class="nm-clip">${_escapeHtml(h.name||'')}</span></td>`;
     }
 
     function renderPastTable(){
