@@ -10304,6 +10304,11 @@ window.closeDetailedData2Modal = function() {
     if(saved && (!day || saved.sig === sig)){
       racesData = saved.races; window._mkCardSig = saved.sig || sig; window._mkCurDay = date;
       currentRaceId = (saved.currentRaceId && racesData[saved.currentRaceId]) ? saved.currentRaceId : Object.keys(racesData)[0];
+      // 端末保存が陣営データ(campData)を持たない版のことがあるので、埋め込みを馬名で重ね直す（同名以外には付かない）
+      try{
+        const lack = Object.values(racesData).some(r => (r.horses||[]).length && !(r.horses||[]).some(h => h.campData));
+        if(lack && typeof window._mkApplyCampEmbed === 'function'){ window._mkApplyCampEmbed(); persistRacesNow(); }
+      }catch(e){}
     } else if(day){
       racesData = {}; currentRaceId = null;
       mkApplyDay(day);
