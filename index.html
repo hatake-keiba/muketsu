@@ -929,6 +929,17 @@ input[type=number], input[type=text], textarea, select {
 
     /* ===== 日付一覧ページ ===== */
     .mk-days{ display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px; margin:14px 0 8px; }
+    /* 今週の土日は横並び */
+    #mk-days-current{ grid-template-columns:1fr 1fr; }
+    @media (max-width:480px){
+      #mk-days-current{ gap:8px; }
+      #mk-days-current .mk-day{ padding:12px 10px; }
+      #mk-days-current .mk-day .d{ gap:6px; flex-wrap:wrap; }
+      #mk-days-current .mk-day .d b{ font-size:22px; }
+      #mk-days-current .mk-day .d .tag{ width:100%; margin-left:0; }
+      #mk-days-current .mk-day .v{ font-size:12px; }
+      #mk-days-current .mk-day .m span{ font-size:10px; padding:2px 6px; }
+    }
     .mk-day{ display:block; text-align:left; width:100%; background:#fff; border:2px solid #e8e6df; border-radius:14px;
              padding:14px 16px 13px; cursor:pointer; box-shadow:3px 3px 0 rgba(26,26,26,.08); transition:transform .08s; font-family:inherit; }
     .mk-day:active{ transform:translate(2px,2px); box-shadow:1px 1px 0 rgba(26,26,26,.12); }
@@ -10340,7 +10351,7 @@ window.closeDetailedData2Modal = function() {
     const monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - dow0);
     const ymd = d => '' + d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0');
     const weekStart = ymd(monday);
-    const curDays = days.filter(d => d.date >= weekStart), pastDays = days.filter(d => d.date < weekStart);
+    const curDays = days.filter(d => d.date >= weekStart).sort((a,b)=> a.date < b.date ? -1 : 1), pastDays = days.filter(d => d.date < weekStart);
     cur.innerHTML = curDays.length ? curDays.map(card).join('') : '<div class="mk-day-empty">今週の出走馬データはまだありません。</div>';
     past.innerHTML = pastDays.length ? pastDays.map(card).join('') : '<div class="mk-day-empty">過去の開催はここに並びます。</div>';
   }
@@ -10380,8 +10391,10 @@ window.closeDetailedData2Modal = function() {
   // 起動時：前回のページを復元（デフォルトはレース）
   (function(){ try{
     const p=localStorage.getItem('muketsu_page');
+    const d=localStorage.getItem(MK_DAY_KEY) || '';
     if(p && p!=='race' && p!=='dates' && document.getElementById('page-'+p)) showMkPage(p);
-    else showMkPage('dates');   // 入口は日付一覧
+    else if(p==='race' && d) showMkPage('race');   // 前回レースを見ていたなら、リロードしても同じ日に戻る
+    else showMkPage('dates');   // 初回の入口は日付一覧
   }catch(e){ showMkPage('dates'); } })();
 
   /* 起動時の流れ：
