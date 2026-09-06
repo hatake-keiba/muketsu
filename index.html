@@ -955,7 +955,7 @@ input[type=number], input[type=text], textarea, select {
     #hd-pane-eval .data-table tbody tr, .past-table tbody tr, .camp-table tbody tr{ height:var(--hd-row); max-height:var(--hd-row); }
     #hd-pane-eval .data-table tbody td, .camp-table tbody td{ vertical-align:middle !important; }
     .past-table td{ vertical-align:middle; }
-    .past-table .pt-run{ padding:3px 6px !important; height:var(--hd-row); overflow:hidden; }
+    .past-table .pt-run{ padding:6px 9px !important; height:var(--hd-row); overflow:hidden; }
     .pt-run .pr{ line-height:1.15; gap:1px; }
     .pt-run .pr-rank{ font-size:12px; min-width:22px; padding:0 3px; }
     .pt-run .pr-when, .pt-run .pr-vs{ font-size:9.5px; }
@@ -972,18 +972,18 @@ input[type=number], input[type=text], textarea, select {
     .data-table .mark-pick.honmei, .horse-row .mark-pick.honmei{ background:#ccf23f !important; color:#1a1a1a !important; border-color:#1a1a1a !important; }
 
     /* ===== 固定列：印 ＋ 馬（上段：枠番・単勝／下段：馬名）。馬名は全文表示 ===== */
-    .data-table td.hm-cell{ text-align:left !important; padding:3px 4px 3px 5px !important; cursor:pointer; }
-    .data-table th.hm-head{ text-align:left !important; padding-left:6px !important; }
-    .hm-top{ display:flex; align-items:center; gap:6px; }
+    .data-table td.hm-cell{ text-align:center !important; padding:3px 4px !important; cursor:pointer; }
+    .data-table th.hm-head{ text-align:center !important; }
+    .hm-top{ display:flex; align-items:center; justify-content:center; }
     .hm-top .waku-box{ margin:0 !important; }
-    .hm-odds{ font-family:'Noto Sans JP','BIZ UDPGothic',sans-serif; font-weight:900; font-size:12px; color:#1a1a1a; font-variant-numeric:tabular-nums; }
+    .hm-odds{ font-family:'Noto Sans JP','BIZ UDPGothic',sans-serif; font-weight:900; font-size:12px; color:#1a1a1a; font-variant-numeric:tabular-nums; line-height:1.1; margin-top:1px; }
     .hm-odds.fav{ color:#c2410c; }
-    .hm-nm{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:11px; color:#1a1a1a; white-space:nowrap; line-height:1.2; margin-top:3px; }
+    .hm-nm{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:11px; color:#1a1a1a; white-space:nowrap; line-height:1.2; margin-top:2px; }
     .name-starred .hm-nm{ color:#c2410c; }
     .row-scratched .hm-nm{ text-decoration:line-through; color:#a8a69e; }
     .hm-hide{ display:none !important; }
     @media (max-width:480px){
-      .data-table td.hm-cell{ padding:2px 3px 2px 4px !important; }
+      .data-table td.hm-cell{ padding:2px 3px !important; }
       .hm-nm{ font-size:10px; letter-spacing:-.02em; }
       .hm-odds{ font-size:11px; }
     }
@@ -3522,7 +3522,7 @@ function _unusedAutoAssignMarks(rId = currentRaceId) {
           
            <td class="detail-col ${isDetailOpen ? '' : 'hidden'} ${cFuku}" ${hlEvents('fuku')}>${h.fukuOdds||'-'}</td>
           
-          <td class="td-name hm-cell ${starCls}" onpointerdown="startNamePress(event,${h.num})" onpointerup="endNamePress(event,${h.num})" onpointercancel="cancelNamePress(event)" oncontextmenu="onNameContextMenu(event,${h.num})"><div class="hm-top"><span class="waku-box waku-${h.waku}">${h.num}</span><span class="hm-odds${(!isNaN(parseFloat(h.odds)) && parseFloat(h.odds) >= 1.0 && parseFloat(h.odds) <= 9.9) ? ' fav' : ''}">${!isNaN(parseFloat(h.odds))?parseFloat(h.odds).toFixed(1):'-'}</span></div><div class="hm-nm">${h.name}</div></td>
+          <td class="td-name hm-cell ${starCls}" onpointerdown="startNamePress(event,${h.num})" onpointerup="endNamePress(event,${h.num})" onpointercancel="cancelNamePress(event)" oncontextmenu="onNameContextMenu(event,${h.num})"><div class="hm-top"><span class="waku-box waku-${h.waku}">${h.num}</span></div><div class="hm-nm">${h.name}</div><div class="hm-odds${(!isNaN(parseFloat(h.odds)) && parseFloat(h.odds) >= 1.0 && parseFloat(h.odds) <= 9.9) ? ' fav' : ''}">${!isNaN(parseFloat(h.odds))?parseFloat(h.odds).toFixed(1):'-'}</div></td>
           
           <td class="${cJockey}" style="white-space: nowrap;" ${hlEvents('jockey')}>${h.jockey||'-'}</td>
           
@@ -6978,8 +6978,9 @@ function autoGenerateTickets(mode = 'win') {
       const fav = (!isNaN(od) && od >= 1.0 && od <= 9.9) ? ' fav' : '';
       const star = h.isStarred ? ' name-starred' : '';
       return `<td class="td-name hm-cell${star}" onclick="openHorseModal(${h.num})">`
-        + `<div class="hm-top"><span class="waku-box waku-${h.waku}">${h.num}</span><span class="hm-odds${fav}">${odTxt}</span></div>`
-        + `<div class="hm-nm">${_escapeHtml(h.name||'')}</div></td>`;
+        + `<div class="hm-top"><span class="waku-box waku-${h.waku}">${h.num}</span></div>`
+        + `<div class="hm-nm">${_escapeHtml(h.name||'')}</div>`
+        + `<div class="hm-odds${fav}">${odTxt}</div></td>`;
     }
     function _leftCells(h){
       return `<td>${markSelectHtml(h)}</td>` + _horseCellHtml(h);
