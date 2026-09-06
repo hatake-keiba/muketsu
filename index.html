@@ -1383,9 +1383,23 @@ input[type=number], input[type=text], textarea, select {
   .stat-card .horse-row .waku-box{ width:22px !important; height:22px !important; border-radius:5px !important; font-size:12px !important; font-weight:800; }
   /* 馬名：バー上の白抜き→濃色テキストで読みやすく（明朝廃止・ゴシック） */
   /* 馬名：バーに載せず、印・枠番の右に固定幅ラベル（背景なし・黒文字） */
-  .hr-name-label{ width:88px; flex:0 0 auto; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif;
+  .hr-nm-wrap{ width:88px; flex:0 0 auto; display:flex; flex-direction:column; line-height:1.15; min-width:0; }
+  .hr-name-label{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif;
     font-weight:800; font-size:11.5px; color:#1a1a1a; white-space:nowrap; overflow:hidden;
     text-overflow:ellipsis; }
+  .hr-odds{ font-family:'Noto Sans JP','BIZ UDPGothic',sans-serif; font-weight:900; font-size:10.5px; color:#1a1a1a; font-variant-numeric:tabular-nums; margin-top:1px; white-space:nowrap; }
+  .hr-odds.fav{ color:#c2410c; }
+  .hr-sup{ font-family:"BIZ UDPGothic",sans-serif; font-weight:700; font-size:8.5px; color:#8a8a82; margin-left:4px; }
+  @media (max-width:480px){
+    .hr-nm-wrap{ width:90px; }
+    .graph-head .gh-name{ width:90px; }
+    .hr-name-label{ font-size:10px; letter-spacing:-.02em; }
+    /* 右の勝率入力を詰めてバーの幅を確保 */
+    .stat-card .val-col-inner{ padding:1px 1px !important; }
+    .stat-card .val-col-inner button{ padding:2px 2px !important; }
+    .stat-card input.val-col{ width:30px !important; }
+    .stat-card .horse-row .waku-box{ margin-right:4px !important; }
+  }
   .stat-card .horse-name{ display:none !important; } /* 旧オーバーレイ名は不使用 */
   /* バー＝傾向色。太めトラック・角丸 */
   .stat-card .bar-col{ height:12px !important; background:transparent !important; border-radius:0 !important; overflow:visible; }
@@ -2232,7 +2246,7 @@ input[type=number], input[type=text], textarea, select {
       <div class="graph-head">
         <span class="gh-mark">印</span>
         <span class="gh-num">番</span>
-        <span class="gh-name">馬名</span>
+        <span class="gh-name">馬名・単勝</span>
         <span class="gh-bar">勝率（バー）</span>
         <span class="gh-val">勝率%</span>
       </div>
@@ -5969,7 +5983,7 @@ window.drawOaChartModal = function() {
         if(graphSortKey === 'odds') {
           const tOdds = parseFloat(h.odds);
           if(!isNaN(tOdds) && tOdds > 0) {
-            supportHtml = `<span style="font-size:9px;color:#b8a06a;margin-left:4px;font-weight:bold;">単${Number.isInteger(tOdds) ? tOdds : tOdds.toFixed(1)}倍</span><span style="font-size:8px;color:#94a3b8;margin-left:3px;">(支${(80/tOdds).toFixed(1)}%)</span>`;
+            supportHtml = `<span class="hr-sup">支持${(80/tOdds).toFixed(1)}%</span>`;
           }
         }
         
@@ -5998,7 +6012,11 @@ window.drawOaChartModal = function() {
         let markBtnClass = isPromoted ? 'graph-mark-btn mark-honmei-promoted' : 'graph-mark-btn';
         if(h.isMarkLocked) markBtnClass += ' mark-locked';
         
-        const leftPart = `<div style="display:flex;align-items:center;flex-shrink:0;gap:4px;">${markSelectHtml(h)}<div class="waku-box waku-${h.waku}" style="margin-left:4px;margin-right:6px;">${h.num}</div><div class="hr-name-label">${h.name}${supportHtml}</div></div>`;
+        // 馬名の下に単勝オッズ（2段）。1〜9.9倍は赤
+        const _od = parseFloat(h.odds);
+        const _odTxt = isNaN(_od) ? '-' : _od.toFixed(1);
+        const _odFav = (!isNaN(_od) && _od >= 1.0 && _od <= 9.9) ? ' fav' : '';
+        const leftPart = `<div style="display:flex;align-items:center;flex-shrink:0;gap:4px;">${markSelectHtml(h)}<div class="waku-box waku-${h.waku}" style="margin-left:4px;margin-right:6px;">${h.num}</div><div class="hr-nm-wrap"><div class="hr-name-label">${h.name}</div><div class="hr-odds${_odFav}">${_odTxt}${supportHtml}</div></div></div>`;
         
         let extraBarClass = isHighEv ? 'bar-ev-high' : '';
         const barAndTrack = `<div class="bar-col" style="flex-grow:1;position:relative;height:20px;margin-left:4px;"><div class="visual-bar ${extraBarClass}" id="bar-fill-${graphIdx}" style="width:${barWidthPct}%;background:${barStyle};"></div><div class="graph-track-overlay" id="track-${graphIdx}" ${dragAttrs}></div></div>`;
