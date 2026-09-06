@@ -1097,6 +1097,9 @@ input[type=number], input[type=text], textarea, select {
     /* 出馬表・コース陣営も各馬評価と同じ表体裁（左の印・番・単勝・馬名を固定） */
     .past-table td.pt-run{ padding:0 !important; }
     .camp-table td{ white-space:nowrap; }
+    /* 騎手／調教師／種牡馬の境目に薄い縦の点線 */
+    .data-table.camp-table th.cm-sep, .data-table.camp-table td.cm-sep, .camp-table th.cm-sep, .camp-table td.cm-sep{ border-left:1px dotted #cfcdc4 !important; }
+    #camp-note:empty{ display:none; }
     .past-table th, .camp-table th{ position:sticky; top:0; }
     /* ===== 読み込み中のくるくる（オッズ取得など） ===== */
     .mk-spin{ display:inline-block; width:1em; height:1em; vertical-align:-0.16em;
@@ -7062,18 +7065,14 @@ function autoGenerateTickets(mode = 'win') {
       const race = racesData[currentRaceId];
       const horses = (race.horses||[]).slice().sort((a,b)=>(a.num||0)-(b.num||0));
 
-      if(note){
-        note.textContent = race.courseFeature
-          ? `コース傾向：${race.courseFeature}`
-          : 'この開催のコース傾向は登録されていません。';
-      }
+      if(note) note.textContent = ''; // コース傾向は出さない（ユーザー指示）
 
       const has = horses.some(h => h.campData);
       tbl.querySelector('thead').innerHTML =
         '<tr>' + _leftHead()
         + '<th>騎手</th><th>勝率</th><th>単回収</th><th>着別</th>'
-        + '<th>調教師</th><th>勝率</th><th>単回収</th><th>着別</th>'
-        + '<th>種牡馬</th><th>勝率</th><th>単回収</th><th>着別</th></tr>';
+        + '<th class="cm-sep">調教師</th><th>勝率</th><th>単回収</th><th>着別</th>'
+        + '<th class="cm-sep">種牡馬</th><th>勝率</th><th>単回収</th><th>着別</th></tr>';
 
       // シートの値は「12.4」＝12.4%、単回収も「76.1」＝76.1%（100を超えればプラス収支）
       const pct = v => {
@@ -7112,11 +7111,11 @@ function autoGenerateTickets(mode = 'win') {
           <td class="cm-stat">${cell(cd,'jWin',pct)}</td>
           <td class="cm-stat">${cell(cd,'jRet',roi)}</td>
           <td class="cm-stat">${cd ? chaku(cd.j1,cd.j2,cd.j3,cd.jOut) : '—'}</td>
-          <td>${_escapeHtml((cd && cd.trainer) || '—')}</td>
+          <td class="cm-sep">${_escapeHtml((cd && cd.trainer) || '—')}</td>
           <td class="cm-stat">${cell(cd,'tWin',pct)}</td>
           <td class="cm-stat">${cell(cd,'tRet',roi)}</td>
           <td class="cm-stat">${cd ? chaku(cd.t1,cd.t2,cd.t3,cd.tOut) : '—'}</td>
-          <td>${_escapeHtml((cd && cd.sire) || '—')}</td>
+          <td class="cm-sep">${_escapeHtml((cd && cd.sire) || '—')}</td>
           <td class="cm-stat">${cell(cd,'sWin',pct)}</td>
           <td class="cm-stat">${cell(cd,'sRet',roi)}</td>
           <td class="cm-stat">${cd ? chaku(cd.s1,cd.s2,cd.s3,cd.sOut) : '—'}</td>
@@ -7125,8 +7124,7 @@ function autoGenerateTickets(mode = 'win') {
       tbl.querySelector('tbody').innerHTML = body;
       try{ _applyStickyTo(tbl, 1); }catch(e){}
       if(!has && note){
-        note.textContent = (note.textContent ? note.textContent + '　' : '')
-          + '陣営データはまだ登録されていません（運営が管理ページから反映すると表示されます）。';
+        note.textContent = '陣営データはまだ登録されていません（運営が管理ページから反映すると表示されます）。';
       }
     }
 
