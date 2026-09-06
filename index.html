@@ -1086,7 +1086,9 @@ input[type=number], input[type=text], textarea, select {
     .camp-table tbody tr:nth-child(even) td{ background:#faf9f5; }
     .camp-table td.cm-name{ font-family:'Noto Sans JP',sans-serif; font-weight:900; white-space:nowrap; }
     .cm-stat{ font-variant-numeric:tabular-nums; white-space:nowrap; }
-    .cm-hi{ background:#ccf23f; border-radius:3px; padding:0 4px; font-weight:900; }
+    .cm-hi{ background:#d4f54a; border-radius:3px; padding:0 4px; font-weight:900; }
+    .cm-hi.cm-hi2{ background:#e9f9a3; }
+    .cm-hi.cm-hi3{ background:#f5fbd6; }
 
     /* 勝率グラフの面は上の出走馬データと同じ白にそろえる */
     .stat-card, .stat-card .graph-section-title, .stat-card .graph-head,
@@ -7084,22 +7086,23 @@ function autoGenerateTickets(mode = 'win') {
         const arr = [a,b,c,d].map(x => (x==null||x==='') ? '0' : String(x));
         return arr.slice(0,3).join('-') + '-' + arr[3];
       };
-      // 各項目のメンバー内トップに蛍光を当てる
-      const best = {};
+      // 各項目のメンバー内トップ3に蛍光の濃淡（馬柱の着順・上がりと同じ3色）。同じ値は同順位、0は対象外
+      const top = {};
       ['jWin','jRet','tWin','tRet','sWin','sRet'].forEach(k => {
-        let mx = null;
+        const vals = [];
         horses.forEach(h => {
           const n = parseFloat(h.campData ? h.campData[k] : NaN);
-          if(!isNaN(n) && (mx === null || n > mx)) mx = n;
+          if(!isNaN(n) && n > 0) vals.push(n);
         });
-        best[k] = mx;
+        top[k] = [...new Set(vals)].sort((a,b)=>b-a).slice(0,3);
       });
       const cell = (cd, k, fmt) => {
         if(!cd) return '—';
         const n = parseFloat(cd[k]);
         const txt = fmt(cd[k]);
-        const hi = (!isNaN(n) && best[k] !== null && n === best[k] && n > 0) ? ' cm-hi' : '';
-        return `<span class="${hi.trim()}">${txt}</span>`;
+        const r = isNaN(n) ? -1 : top[k].indexOf(n);
+        const hi = (r >= 0) ? `cm-hi cm-hi${r+1}` : '';
+        return `<span class="${hi}">${txt}</span>`;
       };
 
       let body = '';
