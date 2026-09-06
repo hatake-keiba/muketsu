@@ -955,8 +955,8 @@ input[type=number], input[type=text], textarea, select {
     #hd-pane-eval .data-table tbody tr, .past-table tbody tr, .camp-table tbody tr{ height:var(--hd-row); max-height:var(--hd-row); }
     #hd-pane-eval .data-table tbody td, .camp-table tbody td{ vertical-align:middle !important; }
     .past-table td{ vertical-align:middle; }
-    .past-table .pt-run{ padding:6px 9px !important; height:var(--hd-row); overflow:hidden; }
-    .pt-run .pr{ line-height:1.15; gap:1px; }
+    .past-table .pt-run{ padding:0 !important; height:var(--hd-row); overflow:hidden; }
+    .pt-run .pr{ line-height:1.12; gap:1px; padding:0 9px 4px; }
     .pt-run .pr-rank{ font-size:12px; min-width:22px; padding:0 3px; }
     .pt-run .pr-when, .pt-run .pr-vs{ font-size:9.5px; }
     .pt-run .pr-top{ gap:5px; }
@@ -1057,9 +1057,12 @@ input[type=number], input[type=text], textarea, select {
     .pr-rank{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:14px; min-width:26px;
               text-align:center; border-radius:5px; padding:1px 4px; background:#eceae3; color:#41413c;
               font-variant-numeric:tabular-nums; }
-    .pr-rank.r1{ background:#1a1a1a; color:#ccf23f; }
-    .pr-rank.r2{ background:#d8ccae; color:#5c5341; }
-    .pr-rank.r3{ background:#e8e6df; color:#41413c; }
+    .pr-rank.r1, .pr-rank.r2, .pr-rank.r3{ background:#1a1a1a; color:#fff; }
+    /* 上段の帯：着順1〜3着をライムの濃淡で（案D） */
+    .pr-band{ margin:0 -9px 2px; padding:3px 9px 2px; background:#f2f0ea; }
+    .pr-band.r1{ background:#d4f54a; }
+    .pr-band.r2{ background:#e9f9a3; }
+    .pr-band.r3{ background:#f5fbd6; }
     .pr-when{ font-size:10px; color:#8a8a82; white-space:nowrap; }
     .pr-race{ font-size:11.5px; font-weight:700; color:#1a1a1a; white-space:nowrap;
               overflow:hidden; text-overflow:ellipsis; }
@@ -1067,7 +1070,10 @@ input[type=number], input[type=text], textarea, select {
     .pr-fig{ display:flex; gap:8px; align-items:baseline; font-variant-numeric:tabular-nums; }
     .pr-time{ font-size:12px; font-weight:900; color:#1a1a1a; }
     .pr-ag{ font-size:11px; font-weight:700; color:#41413c; }
-    .pr-ag.best{ background:#ccf23f; border-radius:3px; padding:0 4px; }
+    /* 上がり順位（列内1〜3位）：着順と同じ濃淡 */
+    .pr-ag.ag1{ background:#d4f54a; color:#1a1a1a; border-radius:3px; padding:0 4px; }
+    .pr-ag.ag2{ background:#e9f9a3; color:#1a1a1a; border-radius:3px; padding:0 4px; }
+    .pr-ag.ag3{ background:#f5fbd6; color:#1a1a1a; border-radius:3px; padding:0 4px; }
     .pr-pass{ font-size:10px; color:#5c5341; background:#f2f0ea; border:1px solid #e8e6df;
               border-radius:3px; padding:0 4px; }
     .pr-vs{ font-size:10px; color:#6b6b64; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -1090,7 +1096,6 @@ input[type=number], input[type=text], textarea, select {
 
     /* 出馬表・コース陣営も各馬評価と同じ表体裁（左の印・番・単勝・馬名を固定） */
     .past-table td.pt-run{ padding:0 !important; }
-    .past-table .pt-run{ padding:6px 7px; }
     .camp-table td{ white-space:nowrap; }
     .past-table th, .camp-table th{ position:sticky; top:0; }
     /* ===== 読み込み中のくるくる（オッズ取得など） ===== */
@@ -6929,12 +6934,13 @@ function autoGenerateTickets(mode = 'win') {
     }
 
     /* 1走ぶんのマス。項目は同じでも並びと体裁はK-buddy独自 */
-    function _pastRunCell(run, bestAgari){
+    function _pastRunCell(run, agRank){
       if(!run) return '<div class="pr-none">—</div>';
       const rk = parseInt(run.rank, 10);
       let rkCls = '';
       if(rk === 1) rkCls = ' r1'; else if(rk === 2) rkCls = ' r2'; else if(rk === 3) rkCls = ' r3';
-      const agBest = (run.agari && bestAgari && parseFloat(run.agari) === bestAgari) ? ' best' : '';
+      // 上がり順位（同じ列＝前走同士などで出走メンバー内の速い順）1〜3位を着順と同じ濃淡で
+      const agBest = (agRank >= 1 && agRank <= 3) ? ' ag' + agRank : '';
       const cond = [];
       if(run.head) cond.push(_escapeHtml(run.head) + '頭');
       if(run.draw) cond.push(_escapeHtml(run.draw) + '番');
@@ -6948,11 +6954,13 @@ function autoGenerateTickets(mode = 'win') {
         vs = `<div class="pr-vs">${rk === 1 ? '2着' : '勝'} ${_escapeHtml(run.winner)}${mg}</div>`;
       }
       return `<div class="pr">
+        <div class="pr-band${rkCls}">
         <div class="pr-top">
           <span class="pr-rank${rkCls}">${_escapeHtml(run.rank||'-')}</span>
           <span class="pr-when">${_escapeHtml(run.date||'')} ${_escapeHtml(run.place||'')}</span>
         </div>
         <div class="pr-race">${_escapeHtml(run.raceName||'')}</div>
+        </div>
         <div class="pr-cond"><span>${cond.join(' ')}</span><span>${jk.join(' ')}</span></div>
         <div class="pr-fig">
           <span>${_escapeHtml(run.course||'')}</span>
@@ -7009,16 +7017,20 @@ function autoGenerateTickets(mode = 'win') {
       }
       if(note) note.textContent = ``; // 但し書きは出さない（``;
 
-      // メンバー中の最速上がりを出す（馬名が一致した馬だけ）
-      let bestAgari = null, unmatched = 0;
+      // 列ごと（前走同士・前々走同士…）に出走メンバー内の上がり順位を出す（馬名が一致した馬だけ）
+      let unmatched = 0;
+      const colAg = [[],[],[],[],[]];
       horses.forEach(h => {
         const runs = _runsFor(store, h);
         if(runs === null){ unmatched++; return; }
-        runs.forEach(r => {
+        runs.forEach((r, i) => {
           const a = parseFloat(r.agari);
-          if(!isNaN(a) && (bestAgari === null || a < bestAgari)) bestAgari = a;
+          if(i < 5 && !isNaN(a)) colAg[i].push(a);
         });
       });
+      // 同タイムは同順位。上位3つの値だけ持つ
+      const colTop = colAg.map(arr => [...new Set(arr)].sort((x,y)=>x-y).slice(0,3));
+      const agRankOf = (i, r) => { const a = parseFloat(r && r.agari); if(isNaN(a)) return 0; const k = colTop[i].indexOf(a); return k < 0 ? 0 : k + 1; };
       if(note && unmatched > 0){
         note.textContent += `　※馬名がnetkeibaと一致しない馬が${unmatched}頭あります（出馬表の版が違う可能性）。その馬は「—」で表示します。`;
       }
@@ -7035,7 +7047,7 @@ function autoGenerateTickets(mode = 'win') {
         const od = (h.odds != null && h.odds !== '' && h.odds !== '-') ? parseFloat(h.odds) : null;
         const odCls = (od !== null && od < 10) ? ' fav' : '';
         let tds = '';
-        for(let i=0; i<5; i++) tds += `<td class="pt-run">${_pastRunCell(runs[i], bestAgari)}</td>`;
+        for(let i=0; i<5; i++) tds += `<td class="pt-run">${_pastRunCell(runs[i], agRankOf(i, runs[i]))}</td>`;
         body += `<tr class="${scr.trim()}">${_leftCells(h)}${tds}</tr>`;
       });
       tbl.querySelector('tbody').innerHTML = body;
