@@ -971,6 +971,30 @@ input[type=number], input[type=text], textarea, select {
     .data-table .mark-pick.on, .horse-row .mark-pick.on{ background:#1a1a1a !important; color:#ccf23f !important; border-color:#1a1a1a !important; }
     .data-table .mark-pick.honmei, .horse-row .mark-pick.honmei{ background:#ccf23f !important; color:#1a1a1a !important; border-color:#1a1a1a !important; }
 
+    /* ===== 固定列：印 ＋ 馬（上段：枠番・単勝／下段：馬名）。馬名は全文表示 ===== */
+    .data-table td.hm-cell{ text-align:left !important; padding:3px 4px 3px 5px !important; cursor:pointer; }
+    .data-table th.hm-head{ text-align:left !important; padding-left:6px !important; }
+    .hm-top{ display:flex; align-items:center; gap:6px; }
+    .hm-top .waku-box{ margin:0 !important; }
+    .hm-odds{ font-family:'Noto Sans JP','BIZ UDPGothic',sans-serif; font-weight:900; font-size:12px; color:#1a1a1a; font-variant-numeric:tabular-nums; }
+    .hm-odds.fav{ color:#c2410c; }
+    .hm-nm{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:11px; color:#1a1a1a; white-space:nowrap; line-height:1.2; margin-top:3px; }
+    .name-starred .hm-nm{ color:#c2410c; }
+    .row-scratched .hm-nm{ text-decoration:line-through; color:#a8a69e; }
+    .hm-hide{ display:none !important; }
+    @media (max-width:480px){
+      .data-table td.hm-cell{ padding:2px 3px 2px 4px !important; }
+      .hm-nm{ font-size:10px; letter-spacing:-.02em; }
+      .hm-odds{ font-size:11px; }
+    }
+    /* 印プルダウンは常に白背景（選択中は太字と黒枠だけ） */
+    .mark-pick, .mark-pick.on, .mark-pick.honmei,
+    .data-table .mark-pick, .data-table .mark-pick.on, .data-table .mark-pick.honmei,
+    .horse-row .mark-pick, .horse-row .mark-pick.on, .horse-row .mark-pick.honmei{
+      background:#fff !important; color:#1a1a1a !important; border-color:#dcdad3 !important; }
+    .mark-pick.on, .mark-pick.honmei, .data-table .mark-pick.on, .data-table .mark-pick.honmei,
+    .horse-row .mark-pick.on, .horse-row .mark-pick.honmei{ border-color:#1a1a1a !important; font-weight:900 !important; }
+
     /* ===== 固定列を詰める（印・番・単勝・馬名）。3タブ共通 ===== */
     .data-table td.sticky-col, .data-table th.sticky-col{ padding-left:2px !important; padding-right:2px !important; }
     .data-table .mark-pick{ width:34px; height:24px; font-size:14px; }
@@ -2135,10 +2159,10 @@ input[type=number], input[type=text], textarea, select {
                       <thead>
               <tr>
                 <th onclick="setMainTableSort('markIdx')" id="mth-mark">印</th>
-                <th onclick="setMainTableSort('num')" id="mth-num">番▲</th>
-                              <th onclick="setMainTableSort('odds')" id="mth-odds">単勝</th>
+                <th onclick="setMainTableSort('num')" id="mth-num" class="hm-hide">番▲</th>
+                              <th onclick="setMainTableSort('odds')" id="mth-odds" class="hm-hide">単勝</th>
                 <th class="detail-col hidden">複勝</th>
-                <th onclick="setMainTableSort('name')" id="mth-name">馬名</th>
+                <th onclick="setMainTableSort('num')" id="mth-name" class="hm-head">馬</th>
                 <th>騎手</th>
                 <th onclick="setMainTableSort('style')" id="mth-style" class="detail-col hidden">脚質</th>
 
@@ -3492,13 +3516,13 @@ function _unusedAutoAssignMarks(rId = currentRaceId) {
 
         tr.innerHTML = `
           <td>${markSelectHtml(h)}</td>
-          <td><div class="waku-box waku-${h.waku}" style="margin:auto;">${h.num}</div></td>
-          
-          <td class="td-odds ${cOdds}" style="${!isNaN(parseFloat(h.odds)) && parseFloat(h.odds) >= 1.0 && parseFloat(h.odds) <= 9.9 ? 'color: #d32f2f;' : ''}" ${hlEvents('odds')}>${!isNaN(parseFloat(h.odds))?parseFloat(h.odds).toFixed(1):'-'}</td>
+          <td class="hm-hide"><div class="waku-box waku-${h.waku}" style="margin:auto;">${h.num}</div></td>
+
+          <td class="td-odds hm-hide ${cOdds}" ${hlEvents('odds')}>${!isNaN(parseFloat(h.odds))?parseFloat(h.odds).toFixed(1):'-'}</td>
           
            <td class="detail-col ${isDetailOpen ? '' : 'hidden'} ${cFuku}" ${hlEvents('fuku')}>${h.fukuOdds||'-'}</td>
           
-          <td class="td-name ${starCls}" onpointerdown="startNamePress(event,${h.num})" onpointerup="endNamePress(event,${h.num})" onpointercancel="cancelNamePress(event)" oncontextmenu="onNameContextMenu(event,${h.num})"><span class="nm-clip">${h.name}</span></td>
+          <td class="td-name hm-cell ${starCls}" onpointerdown="startNamePress(event,${h.num})" onpointerup="endNamePress(event,${h.num})" onpointercancel="cancelNamePress(event)" oncontextmenu="onNameContextMenu(event,${h.num})"><div class="hm-top"><span class="waku-box waku-${h.waku}">${h.num}</span><span class="hm-odds${(!isNaN(parseFloat(h.odds)) && parseFloat(h.odds) >= 1.0 && parseFloat(h.odds) <= 9.9) ? ' fav' : ''}">${!isNaN(parseFloat(h.odds))?parseFloat(h.odds).toFixed(1):'-'}</span></div><div class="hm-nm">${h.name}</div></td>
           
           <td class="${cJockey}" style="white-space: nowrap;" ${hlEvents('jockey')}>${h.jockey||'-'}</td>
           
@@ -3528,7 +3552,7 @@ function _unusedAutoAssignMarks(rId = currentRaceId) {
     // 印・番・単勝・複勝・馬名（列0〜4）を左固定。可視列だけで累積leftを計算。
     function applyStickyColumns(){
       // 各馬評価は「印,番,単勝,(複勝),馬名」=4まで、出馬表・コース陣営は「印,番,単勝,馬名」=3まで
-      [['main-data-table',4],['past-table',3],['camp-table',3]].forEach(([id,until]) => {
+      [['main-data-table',4],['past-table',1],['camp-table',1]].forEach(([id,until]) => {
         try{ _applyStickyTo(document.getElementById(id), until); }catch(e){}
       });
     }
@@ -6945,17 +6969,20 @@ function autoGenerateTickets(mode = 'win') {
 
     /* 出馬表・コース陣営の左側（印・番・単勝・馬名）。各馬評価と同じ体裁 */
     function _leftHead(){
-      return '<th>印</th><th>番</th><th>単勝</th><th>馬名</th>';
+      return '<th>印</th><th class="hm-head">馬</th>';
     }
-    function _leftCells(h){
+    // 固定セル：上段に枠番と単勝、下段に馬名（全文）
+    function _horseCellHtml(h){
       const od = parseFloat(h.odds);
       const odTxt = isNaN(od) ? '-' : od.toFixed(1);
-      const odStyle = (!isNaN(od) && od >= 1.0 && od <= 9.9) ? 'color:#d32f2f;' : '';
+      const fav = (!isNaN(od) && od >= 1.0 && od <= 9.9) ? ' fav' : '';
       const star = h.isStarred ? ' name-starred' : '';
-      return `<td>${markSelectHtml(h)}</td>`
-        + `<td><div class="waku-box waku-${h.waku}" style="margin:auto;">${h.num}</div></td>`
-        + `<td class="td-odds" style="${odStyle}">${odTxt}</td>`
-        + `<td class="td-name${star}" style="cursor:pointer;" onclick="openHorseModal(${h.num})"><span class="nm-clip">${_escapeHtml(h.name||'')}</span></td>`;
+      return `<td class="td-name hm-cell${star}" onclick="openHorseModal(${h.num})">`
+        + `<div class="hm-top"><span class="waku-box waku-${h.waku}">${h.num}</span><span class="hm-odds${fav}">${odTxt}</span></div>`
+        + `<div class="hm-nm">${_escapeHtml(h.name||'')}</div></td>`;
+    }
+    function _leftCells(h){
+      return `<td>${markSelectHtml(h)}</td>` + _horseCellHtml(h);
     }
 
     function renderPastTable(){
@@ -7011,7 +7038,7 @@ function autoGenerateTickets(mode = 'win') {
         body += `<tr class="${scr.trim()}">${_leftCells(h)}${tds}</tr>`;
       });
       tbl.querySelector('tbody').innerHTML = body;
-      try{ _applyStickyTo(tbl, 3); }catch(e){}
+      try{ _applyStickyTo(tbl, 1); }catch(e){}
     }
 
     /* ===== コース・陣営（騎手/調教師/種牡馬の成績）===== */
@@ -7083,7 +7110,7 @@ function autoGenerateTickets(mode = 'win') {
         </tr>`;
       });
       tbl.querySelector('tbody').innerHTML = body;
-      try{ _applyStickyTo(tbl, 3); }catch(e){}
+      try{ _applyStickyTo(tbl, 1); }catch(e){}
       if(!has && note){
         note.textContent = (note.textContent ? note.textContent + '　' : '')
           + '陣営データはまだ登録されていません（運営が管理ページから反映すると表示されます）。';
