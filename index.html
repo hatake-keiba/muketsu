@@ -4297,9 +4297,33 @@ function buildNavigation() {
         if(h.memo) parts.push(`短評:${h.memo}`);
         return '・' + parts.join(' / ');
       });
-      let ctx = `【レース名】${r.raceName || currentRaceId}\n`;
+      // 会員の印（自分で打ったものだけ）
+      const marks = (r.horses||[]).filter(h => h.markIdx > 0 && h.isMarkLocked).map(h => `${getMarkDisplay(h)}${h.num}番${h.name||''}`);
+      // 陣営（騎手・調教師・種牡馬の勝率／単勝回収率）
+      const camp = (r.horses||[]).filter(h => h.campData).slice().sort((a,b)=>(a.num||0)-(b.num||0)).map(h => {
+        const c = h.campData, f = v => (v==null||v===''||isNaN(parseFloat(v))) ? '-' : parseFloat(v).toFixed(1);
+        return `・${h.num}番 騎手${c.jockeyFull||h.jockey||''}(勝率${f(c.jWin)}% 回収${f(c.jRet)}%) 調教師${c.trainer||''}(${f(c.tWin)}% ${f(c.tRet)}%) 種牡馬${c.sire||''}(${f(c.sWin)}% ${f(c.sRet)}%)`;
+      });
+      // 近走5走（netkeibaの馬柱）。1走＝日付 場 着順 レース名 コース タイム 上がり 通過
+      let past = [];
+      try{
+        const store = _pastStore();
+        if(store){
+          past = (r.horses||[]).slice().sort((a,b)=>(a.num||0)-(b.num||0)).map(h => {
+            const runs = _runsFor(store, h);
+            if(!runs || !runs.length) return `・${h.num}番 ${h.name||''}: 近走なし（新馬など）`;
+            const rs = runs.slice(0,5).map(x => `${x.date||''}${x.place||''} ${x.rank||'-'}着 ${x.raceName||''} ${x.course||''} ${x.time||''} 上${x.agari||'-'} 通過${x.pass||'-'} ${x.pop?x.pop+'人気':''}`.replace(/\s+/g,' ').trim());
+            return `・${h.num}番 ${h.name||''}\n  ` + rs.join('\n  ');
+          });
+        }
+      }catch(e){}
+      const head = [r.basho, r.cls, (r.track||'') + (r.dist||'')].filter(Boolean).join(' ');
+      let ctx = `【レース】${r.raceName || currentRaceId}${head ? '（' + head + '）' : ''}\n`;
       if(memo) ctx += `【私のメモ】${memo}\n`;
+      if(marks.length) ctx += `【私の印】${marks.join(' ')}\n`;
       ctx += `【出馬表】\n${lines.join('\n')}`;
+      if(camp.length) ctx += `\n【陣営データ】\n${camp.join('\n')}`;
+      if(past.length) ctx += `\n【近走5走】\n${past.join('\n')}`;
       return ctx;
     }
 
