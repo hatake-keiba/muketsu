@@ -4312,16 +4312,44 @@ function buildNavigation() {
       if(!currentRaceId || !racesData[currentRaceId]) return '（レース未選択）';
       const r = racesData[currentRaceId];
       const memo = (document.getElementById('ai-pace-comment')?.value || '').trim();
-      const lines = (r.horses || []).slice().sort((a,b)=>(a.num||0)-(b.num||0)).map(h=>{
-        const parts = [`${h.num}番 ${h.name||''}`];
+      const hs = (r.horses || []).slice().sort((a,b)=>(a.num||0)-(b.num||0));
+      const odN = h => { const o = parseFloat(h.odds); return isNaN(o) ? null : o; };
+      // 単勝人気順（オッズが入っている馬だけ）
+      const popOrder = hs.filter(h => odN(h) !== null && !h.isScratched).sort((a,b) => odN(a) - odN(b));
+      const popRank = {}; popOrder.forEach((h,i) => { popRank[h.num] = i + 1; });
+      const lines = hs.map(h=>{
+        const parts = [`${h.num}番 ${h.name||''}${h.isScratched ? '（除外・取消）' : ''}`];
         if(h.jockey) parts.push(`騎手:${h.jockey}`);
         if(h.style) parts.push(`脚質:${h.style}`);
-        if(h.shisu!=null && h.shisu!=='') parts.push(`指数:${h.shisu}`);
+        if(h.kisoin && h.kisoin !== '-') parts.push(`基礎印:${h.kisoin}`);
+        if(h.shisu!=null && h.shisu!=='' && h.shisu !== 0) parts.push(`指数:${h.shisu}`);
         if(h.deki) parts.push(`デキ:${h.deki}`);
-        if(h.odds!=null && h.odds!=='-' && h.odds!=='') parts.push(`単勝:${h.odds}`);
+        if(h.baseWinRate) parts.push(`基礎勝率:${h.baseWinRate}%`);
+        if(odN(h) !== null) parts.push(`単勝:${odN(h)}倍(${popRank[h.num]||'-'}人気)`);
+        if(h.fukuOdds && h.fukuOdds !== '-') parts.push(`複勝:${h.fukuOdds}`);
+        if(h.bestT) parts.push(`ベストT:${h.bestT}`);
+        if(h.tenF) parts.push(`テン3F:${h.tenF}`);
+        if(h.agariF) parts.push(`上がり3F:${h.agariF}`);
+        if(h.jubaBA && h.jubaBA !== '-' && h.jubaBA !== '0-0-0/0') parts.push(`重馬場:${h.jubaBA}`);
+        if(h.kosoWaku && h.kosoWaku !== '-') parts.push(`好走枠:${h.kosoWaku}`);
         if(h.memo) parts.push(`短評:${h.memo}`);
         return '・' + parts.join(' / ');
       });
+      // AIが読み取りやすいように整理した要約
+      const tag = h => `${h.num}番${h.name||''}`;
+      const under10 = popOrder.filter(h => odN(h) < 10);
+      const popLine = popOrder.slice(0,6).map(h => `${tag(h)}(${odN(h)}倍)`).join('、');
+      const styleOrder = ['逃','先','差','追'];
+      const styleLines = styleOrder.map(st => { const g = hs.filter(h => (h.style||'').startsWith(st) && !h.isScratched); return g.length ? `${st}:${g.map(tag).join('、')}` : ''; }).filter(Boolean);
+      const shisuTop = hs.filter(h => h.shisu && !h.isScratched).sort((a,b)=>b.shisu-a.shisu).slice(0,5).map(h => `${tag(h)}(${h.shisu})`).join('、');
+      const dekiGood = hs.filter(h => /^[AB]/.test(h.deki||'') && !h.isScratched).map(h => `${tag(h)}(${h.deki})`).join('、');
+      const dekiWeakPop = popOrder.slice(0,5).filter(h => /^[CDE]/.test(h.deki||'')).map(h => `${tag(h)}(${popRank[h.num]}人気・デキ${h.deki})`).join('、');
+      const digest = [];
+      if(popOrder.length) digest.push(`人気順:${popLine}（単勝10倍未満は${under10.length}頭）`);
+      if(styleLines.length) digest.push(`脚質の並び ${styleLines.join(' ／ ')}`);
+      if(shisuTop) digest.push(`指数上位:${shisuTop}`);
+      if(dekiGood) digest.push(`デキA/B:${dekiGood}`);
+      if(dekiWeakPop) digest.push(`人気馬でデキに不安:${dekiWeakPop}`);
       // 会員の印（自分で打ったものだけ）
       const marks = (r.horses||[]).filter(h => h.markIdx > 0 && h.isMarkLocked).map(h => `${getMarkDisplay(h)}${h.num}番${h.name||''}`);
       // 陣営（騎手・調教師・種牡馬の勝率／単勝回収率）
@@ -4342,9 +4370,10 @@ function buildNavigation() {
           });
         }
       }catch(e){}
-      const head = [r.basho, r.cls, (r.track||'') + (r.dist||'')].filter(Boolean).join(' ');
-      let ctx = `【レース】${r.raceName || currentRaceId}${head ? '（' + head + '）' : ''}\n`;
+      const head = [r.basho, r.nkRaceName || r.raceName, r.info, r.departureTime ? '発走' + r.departureTime : '', r.baba ? '馬場' + r.baba : ''].filter(Boolean).join(' ');
+      let ctx = `【レース】${currentRaceId} ${head}\n`;
       if(r.courseFeature) ctx += `【コース傾向】${r.courseFeature}\n`;
+      if(digest.length) ctx += `【整理】\n${digest.map(x => '・' + x).join('\n')}\n`;
       if(memo) ctx += `【私のメモ】${memo}\n`;
       if(marks.length) ctx += `【私の印】${marks.join(' ')}\n`;
       ctx += `【出馬表】\n${lines.join('\n')}`;
@@ -4471,12 +4500,12 @@ function buildNavigation() {
     function _stopSpeaking(){ _ttsSeq++; try{ if(window.speechSynthesis) speechSynthesis.cancel(); }catch(e){} }
 
     // レース概要（5項目）を定型で頼む。ここから壁打ちが始まる
-    const AI_SUMMARY_PROMPT = 'このレースの概要を、次の5項目の見出しを付けて日本語でまとめてください。各項目は3〜4文、馬は「馬番＋馬名」で書き、断定的な購入指示は避けてください。\n'
-      + '①レース解説（クラス・人気の集中度・混戦か堅いか）\n'
-      + '②コース解説（場・トラック・距離・枠やペースの傾向。コース傾向があればそれを踏まえる）\n'
-      + '③展開解説（脚質の並びから逃げ・先行の数、想定ペース、有利になりそうな脚質）\n'
-      + '④指数やデキの解説（指数上位、デキA/Bの馬、人気馬で状態に不安がある馬）\n'
-      + '⑤現状のオッズで馬券的妙味（展開と指数・デキを掛け合わせて、人気薄で狙えそうな馬とその理由）';
+    const AI_SUMMARY_PROMPT = 'このレースの概要を、次の5項目の見出し（①〜⑤）を付けて日本語でまとめてください。各項目は3〜4文。馬は必ず「馬番＋馬名」で書き、渡された数値（単勝・指数・デキ・脚質）を具体的に引用してください。断定的な購入指示や「絶対」は使わないでください。\n'
+      + '①レース解説：クラスと発走。人気の集中度（1番人気の単勝と、単勝10倍未満の頭数）から、堅いのか混戦なのかを述べる。\n'
+      + '②コース解説：場・トラック・距離の特徴（枠の有利不利、ペースが速くなりやすいか、直線の坂やタフさ）。【コース傾向】があればそれを核にする。\n'
+      + '③展開解説：【整理】の脚質の並びを使い、逃げ候補と先行勢を馬番＋馬名で列挙し、頭数から想定ペースを述べ、有利になりそうな脚質（先行残りか差し追い込みか）を結論づける。\n'
+      + '④指数やデキの解説：指数上位5頭を数値付きで並べ、デキA/Bの馬と、上位人気でデキがC以下の馬を挙げて状態面の注意点を述べる。\n'
+      + '⑤現状のオッズで馬券的妙味：③の展開と④の指数・デキを掛け合わせ、人気薄（目安5番人気以下）で狙える馬を2〜3頭、単勝と根拠つきで挙げる。';
     function askAiSummary(){
       if(!isAiUnlocked()){ openAiUnlock(); return; }
       sendAiChat(false, AI_SUMMARY_PROMPT, 'このレースの概要を5項目でまとめて');
@@ -4549,7 +4578,8 @@ function buildNavigation() {
         headers:{'Content-Type':'text/plain;charset=utf-8'}, // GASのCORS回避のためtext/plain
         body: JSON.stringify({ action:'ai_chat', raceId: currentRaceId,
           basho: r.basho||'', info: r.info||'', raceName: r.raceName||'',
-          horses: horses, question:q, context, history:hist })
+          horses: horses, question:q, context, history:hist,
+          mode: (q === AI_SUMMARY_PROMPT) ? 'summary' : 'chat' })
       });
       const data = await resp.json();
       if(!resp.ok || data.error) throw new Error(data.error || ('サーバーエラー HTTP '+resp.status));
