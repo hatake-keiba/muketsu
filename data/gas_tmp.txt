@@ -1,0 +1,1007 @@
+/**
+ * K-buddy AI壁打ち + オッズ取得 GAS Webアプリ
+ * ------------------------------------------------------------
+ * 役割：会員のブラウザからのリクエストを受け、
+ *   1) Geminiキーを運営側で保管（会員はキー不要）
+ *   2) 各馬の過去走をnetkeibaから取得してAIの文脈に付与
+ *   3) Gemini に投げて回答を返す
+ *   4) 買い目のオッズをnetkeibaから返す
+ *
+ * デプロイ手順（しまちゃん）：
+ *   1. script.google.com で新規プロジェクト → このコードを貼り付け
+ *   2. スクリプトプロパティに GEMINI_KEY を設定
+ *      （プロジェクトの設定 → スクリプト プロパティ → GEMINI_KEY = AIza...）
+ *   3. デプロイ → 新しいデプロイ → 種類「ウェブアプリ」
+ *      実行するユーザー：自分 / アクセスできるユーザー：全員
+ *   4. 発行された /exec URL を index.html の AI_GAS_URL に設定
+ * ------------------------------------------------------------
+ * netkeibaはUTF-8。EUC-JPでデコードしない（CLAUDE.md鉄則）。
+ */
+
+var GEMINI_MODEL = 'gemini-3.5-flash-lite';
+
+function doPost(e) {
+  var out = { };
+  try {
+    var req = JSON.parse(e.postData.contents || '{}');
+    if (req.action === 'ai_chat') {
+      out = handleAiChat(req);
+    } else if (req.action === 'odds') {
+      out = handleOdds(req);
+    } else if (req.action === 'schedule') {
+      out = handleSchedule(req);
+    } else if (req.action === 'racecard') {
+      out = handleRaceCard(req);
+    } else if (req.action === 'enemycard') {
+      out = handleEnemyCard(req);
+    } else if (req.action === 'pastruns') {
+      out = handlePastRuns(req);
+    } else if (req.action === 'admin_status') {
+      out = apiAdminStatus(req);
+    } else if (req.action === 'admin_upload_card') {
+      out = apiAdminUpload(req, 'card');
+    } else if (req.action === 'admin_upload_enemy') {
+      out = apiAdminUpload(req, 'enemy');
+    } else {
+      out = { error: '不明なアクションです' };
+    }
+  } catch (err) {
+    out = { error: '' + (err && err.message ? err.message : err) };
+  }
+  return ContentService
+    .createTextOutput(JSON.stringify(out))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+/* GET経由（フロントはJSONPで呼ぶ。?action=odds&race_id=...&type=1&callback=cb） */
+function doGet(e) {
+  var p = (e && e.parameter) ? e.parameter : {};
+  // ★運営用の管理ページ：Googleにログインした運営本人にだけ表示する。
+  //   「自分のみ」でデプロイしたURLを開くと、パラメータ無しでもこのページになる。
+  if (p.page === 'admin' || (!p.action && isOwnerRequest())) {
+    if (!isOwnerRequest()) {
+      return HtmlService.createHtmlOutput('<p style="font-family:sans-serif;padding:20px">この画面は運営専用です。</p>');
+    }
+    return HtmlService.createHtmlOutput(adminPageHtml())
+      .setTitle('K-buddy 管理')
+      .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+  }
+  var out = {};
+  try {
+    if (p.action === 'odds') {
+      out = handleOdds({ race_id: p.race_id || p.raceId, type: p.type });
+    } else if (p.action === 'schedule') {
+      out = handleSchedule({ date: p.date || todayYmd() });
+    } else if (p.action === 'racecard') {
+      out = handleRaceCard({ nocache: p.nocache });
+    } else if (p.action === 'enemycard') {
+      out = handleEnemyCard({ nocache: p.nocache });
+    } else if (p.action === 'pastruns') {
+      out = handlePastRuns({ race_id: p.race_id || p.raceId, nocache: p.nocache });
+    } else if (p.action === 'ai_chat') {
+      out = handleAiChat(p); // 通常はPOST。GET経由は基本使わない
+    } else {
+      out = { ok:false, error:'不明なアクションです' };
+    }
+  } catch (err) {
+    out = { ok:false, error:'' + (err && err.message ? err.message : err) };
+  }
+  var body = JSON.stringify(out);
+  if (p.callback) {
+    return ContentService.createTextOutput(p.callback + '(' + body + ');')
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+  return ContentService.createTextOutput(body).setMimeType(ContentService.MimeType.JSON);
+}
+
+// 今日の日付 YYYYMMDD（GASのタイムゾーン）
+function todayYmd() {
+  return Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyyMMdd');
+}
+
+/* ========== AI壁打ち ========== */
+function handleAiChat(req) {
+  var key = PropertiesService.getScriptProperties().getProperty('GEMINI_KEY');
+  if (!key) return { error: 'サーバーにAIキーが未設定です（運営にご連絡ください）' };
+
+  var system = 'あなたは競馬新聞ツール「K-buddy」の相談相手AIです。利用者が自分の予想を整理する“壁打ち”役に徹してください。'
+    + '断定的な購入指示や「絶対当たる」等の表現は避け、根拠を添えて考える材料を返します。'
+    + (req.mode === 'summary'
+        ? '与えられた出馬表・整理・コース傾向・近走・陣営データを踏まえ、利用者が指定した見出しと分量で日本語で答えてください。'
+        : '与えられた出馬表・陣営データ（騎手/調教師/種牡馬の成績）・利用者のメモを踏まえ、簡潔（目安3〜6行）に日本語で答えてください。')
+    + '「種牡馬の成績」「騎手の調子」「厩舎の得意条件」などを聞かれたら、渡された陣営データの数値（勝率・単回収・着別度数）を根拠に具体的に答えてください。データが渡されている項目について「情報がありません」とは言わないこと。'
+    + '重要：回答では、下に渡された陣営データに実際に書かれている固有名詞（馬名・騎手名・種牡馬名）と数値だけを使うこと。「○○」等の伏字は使わない。'
+    + '絶対禁止：陣営データに書かれていない種牡馬名・数値を推測や記憶で創作してはならない。もし陣営データが渡されていない、または該当馬のデータが無い場合は、数値を作らず「その馬の陣営データは今回渡されていません」と正直に述べること。嘘の数字を出すことは重大な誤りである。';
+
+  // 会員から届いた文脈（メモ＋出馬表）に、運営がスプレッドシートに用意した陣営データを足す。
+  // 陣営データ＝各馬の 騎手/調教師/種牡馬 の成績（勝率・単回収・着別度数）。会員は準備不要。
+  var context = req.context || '';
+  var enemy = '';
+  try { enemy = fetchEnemyDataForRace(req.horses || []); } catch (e2) { enemy = ''; }
+  if (enemy) context += '\n\n【各馬の陣営データ（騎手/調教師/種牡馬の成績）】\n' + enemy;
+
+  var contents = [];
+  contents.push({ role: 'user', parts: [{ text: system + '\n\n以下は今見ているレースの情報です。\n' + context }] });
+  contents.push({ role: 'model', parts: [{ text: '了解しました。レース情報を把握しました。相談をどうぞ。' }] });
+  var hist = req.history || [];
+  for (var i = 0; i < hist.length; i++) {
+    contents.push({ role: hist[i].role, parts: [{ text: hist[i].text }] });
+  }
+  contents.push({ role: 'user', parts: [{ text: req.question || '' }] });
+
+  var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + GEMINI_MODEL + ':generateContent?key=' + encodeURIComponent(key);
+  var resp = UrlFetchApp.fetch(url, {
+    method: 'post',
+    contentType: 'application/json',
+    payload: JSON.stringify({ contents: contents, generationConfig: { temperature: 0.7, maxOutputTokens: (req.mode === 'summary' ? 1600 : 700) } }),
+    muteHttpExceptions: true
+  });
+  var data = JSON.parse(resp.getContentText());
+  if (resp.getResponseCode() !== 200) {
+    return { error: (data.error && data.error.message) ? data.error.message : ('AIエラー ' + resp.getResponseCode()) };
+  }
+  var ans = '';
+  try { ans = data.candidates[0].content.parts.map(function(p){return p.text;}).join(''); } catch (e3) { ans = ''; }
+  return { answer: ans || '（応答が空でした）' };
+}
+
+/* ★動作確認用：エディタでこの関数を選んで「実行」すると、
+ *  ①スプレッドシートへのアクセス承認画面が出る（初回のみ→許可する）
+ *  ②実行ログに、シートが読めたか・行数・先頭の陣営データが出る。
+ *  これが成功すれば、会員からのAI質問でも陣営データが渡るようになる。 */
+function testEnemyData() {
+  var sheetId = PropertiesService.getScriptProperties().getProperty('ENEMY_SHEET_ID');
+  Logger.log('ENEMY_SHEET_ID = ' + sheetId);
+  if (!sheetId) { Logger.log('★ENEMY_SHEET_IDが未設定です。スクリプトプロパティに設定してください。'); return; }
+  try { CacheService.getScriptCache().remove('enemy_rows_v1'); } catch (e0) {} // 手動実行＝キャッシュ破棄して最新シートを読む
+  var ss = SpreadsheetApp.openById(sheetId); // ←ここで承認が求められる
+  var sh = ss.getSheets()[0];
+  var values = sh.getDataRange().getValues();
+  Logger.log('シート名: ' + sh.getName() + ' / 行数: ' + values.length);
+  Logger.log('ヘッダ: ' + JSON.stringify(values[0]));
+  // 実在馬でテスト抽出
+  var demo = fetchEnemyDataForRace([{ num: 1, name: (values[1] ? values[1][ (values[0].indexOf('馬名')>=0?values[0].indexOf('馬名'):4) ] : '') }]);
+  Logger.log('抽出テスト:\n' + demo);
+}
+
+/* ========== 陣営データ（運営が用意した週次CSV＝スプレッドシート）==========
+ * 運営が毎週、騎手/調教師/種牡馬の成績CSVをスプレッドシートに貼る。
+ * ここでは、会員が見ているレースの出走馬（馬名）に一致する行だけを抽出して
+ * AIに渡す要約テキストを作る。会員は準備不要・GASが自動で紐付ける。
+ *
+ * 事前設定（運営）：スクリプトプロパティに ENEMY_SHEET_ID = スプレッドシートのID を設定。
+ * シート1行目はヘッダ（簡易レース,コース特徴,枠,馬番,馬名,騎手,騎手勝率,…,種牡馬,種牡馬勝率,…）。
+ */
+function fetchEnemyDataForRace(horses) {
+  if (!horses || !horses.length) return '';
+  var sheetId = PropertiesService.getScriptProperties().getProperty('ENEMY_SHEET_ID');
+  if (!sheetId) return ''; // 未設定なら陣営データなしで続行（エラーにしない）
+
+  // 30分キャッシュ（同じシートを何度も読まない。testEnemyDataを実行すると即時更新）
+  var cache = CacheService.getScriptCache();
+  var cached = cache.get('enemy_rows_v1');
+  var table;
+  if (cached) {
+    try { table = JSON.parse(cached); } catch (e) { table = null; }
+  }
+  if (!table) {
+    var ss = SpreadsheetApp.openById(sheetId);
+    var sh = ss.getSheets()[0];
+    var values = sh.getDataRange().getValues();
+    if (!values || values.length < 2) return '';
+    var header = values[0].map(function(x){ return ('' + x).trim(); });
+    var idx = {};
+    header.forEach(function(h, i){ idx[h] = i; });
+    var nameCol = (idx['馬名'] != null) ? idx['馬名'] : 4;
+    var rows = [];
+    for (var r = 1; r < values.length; r++) {
+      var row = values[r];
+      var nm = ('' + (row[nameCol] || '')).trim();
+      if (nm) rows.push({ name: nm, cells: row });
+    }
+    table = { header: header, idx: idx, nameCol: nameCol, rows: rows };
+    try { cache.put('enemy_rows_v1', JSON.stringify(table), 1800); } catch (e) { /* 大きすぎたら諦める */ }
+  }
+
+  // 出走馬の馬名でマッチ（空白・記号を無視して緩く照合）
+  function norm(s){ return ('' + s).replace(/[\s　・･]/g, '').trim(); }
+  var wantSet = {};
+  for (var i = 0; i < horses.length && i < 18; i++) {
+    var nm = norm(horses[i].name || '');
+    if (nm) wantSet[nm] = horses[i].num || (i + 1);
+  }
+
+  var out = [];
+  var H = table.idx;
+  function g(cells, key){ return (H[key] != null && cells[H[key]] != null) ? ('' + cells[H[key]]).trim() : ''; }
+  for (var j = 0; j < table.rows.length; j++) {
+    var rw = table.rows[j];
+    var key = norm(rw.name);
+    if (!(key in wantSet)) continue;
+    var c = rw.cells;
+    var num = wantSet[key];
+    var seg = num + '番 ' + rw.name;
+    // 騎手
+    var jk = g(c, '騎手');
+    if (jk) seg += '｜騎手:' + jk + '(勝率' + g(c,'騎手勝率') + ' 単回' + g(c,'騎手単回') + ' ' + g(c,'騎手1着') + '-' + g(c,'騎手2着') + '-' + g(c,'騎手3着') + '-' + g(c,'騎手着外') + ')';
+    // 調教師
+    var tr = g(c, '調教師');
+    if (tr) seg += '｜厩舎:' + tr + '(勝率' + g(c,'調教勝率') + ' 単回' + g(c,'調教単回') + ' ' + g(c,'調教1着') + '-' + g(c,'調教2着') + '-' + g(c,'調教3着') + '-' + g(c,'調教着外') + ')';
+    // 種牡馬
+    var si = g(c, '種牡馬');
+    if (si) seg += '｜種牡馬:' + si + '(勝率' + g(c,'種牡馬勝率') + ' 単回' + g(c,'種牡馬単回') + ' ' + g(c,'種牡馬1着') + '-' + g(c,'種牡馬2着') + '-' + g(c,'種牡馬3着') + '-' + g(c,'種牡馬着外') + ')';
+    out.push(seg);
+  }
+  return out.join('\n');
+}
+
+var UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+
+/**
+ * 出馬表（馬名リスト）から、各馬の近走をnetkeibaで引いて要約テキストを返す。
+ * K-buddyの会員データにはnetkeibaのIDが無いため、馬名検索でhorse_idを解決する。
+ * netkeibaは全ページUTF-8（EUC-JPでデコードしない）。
+ * @param horses [{num, name}, ...]
+ */
+function fetchPastRunsForRace(horses) {
+  if (!horses || !horses.length) return '';
+  var cache = CacheService.getScriptCache();
+  var out = [];
+  // 負荷・時間対策：最大6頭まで、1頭あたり近3走（速度優先。上位数頭で十分）
+  var lim = Math.min(horses.length, 6);
+  for (var i = 0; i < lim; i++) {
+    var name = (horses[i].name || '').trim();
+    if (!name) continue;
+    var num = horses[i].num;
+    try {
+      var ck = 'past_' + name;
+      var cached = cache.get(ck);
+      if (cached != null) { if (cached) out.push(num + '番 ' + name + '：' + cached); continue; }
+      var hid = resolveHorseIdByName(name);
+      if (!hid) { cache.put(ck, '', 21600); continue; }
+      var runs = fetchHorseRecentRuns(hid, 3);
+      cache.put(ck, runs || '', 21600); // 6h キャッシュ
+      if (runs) out.push(num + '番 ' + name + '：' + runs);
+    } catch (e) { /* 1頭失敗しても続行 */ }
+  }
+  return out.join('\n');
+}
+
+/** 馬名 → horse_id（netkeiba馬名検索の先頭ヒット） */
+function resolveHorseIdByName(name) {
+  var url = 'https://db.netkeiba.com/?pid=horse_list&word=' + encodeURIComponent(name);
+  var res = UrlFetchApp.fetch(url, { headers: { 'User-Agent': UA }, muteHttpExceptions: true });
+  if (res.getResponseCode() !== 200) return '';
+  var html = res.getContentText('UTF-8');
+  // 1頭ヒット時は /horse/{id} に直接リダイレクトされることがある → 最終URLは取れないので本文から拾う
+  var m = html.match(/\/horse\/(\d{8,12})/);
+  return m ? m[1] : '';
+}
+
+/** horse_id → 近走n件の要約。
+ *  成績テーブルは JS 描画のため /horse/{id}/ では取れない。
+ *  /horse/result/{id}/ が成績表（db_h_race_results）を含むHTMLを返す。
+ *  列（2024時点・33列）: [0]日付 [1]開催 [3]R [4]レース名 [6]頭数 [7]枠 [8]馬番
+ *    [9]オッズ [10]人気 [11]着順 [13]斤量 [14]距離 [19]タイム [28]馬体重
+ */
+function fetchHorseRecentRuns(horseId, n) {
+  var url = 'https://db.netkeiba.com/horse/result/' + horseId + '/';
+  var res = UrlFetchApp.fetch(url, { headers: { 'User-Agent': UA }, muteHttpExceptions: true });
+  if (res.getResponseCode() !== 200) return '';
+  var html = res.getContentText('UTF-8');
+  var rows = html.match(/<tr[^>]*>[\s\S]*?<\/tr>/g);
+  if (!rows) return '';
+  var recs = [];
+  for (var i = 0; i < rows.length && recs.length < n; i++) {
+    var cells = rows[i].match(/<td[^>]*>[\s\S]*?<\/td>/g);
+    if (!cells || cells.length < 20) continue;
+    var t = cells.map(function (c) { return c.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim(); });
+    if (!/^\d{4}\/\d{1,2}\/\d{1,2}/.test(t[0])) continue;
+    var date = t[0];
+    var raceNm = t[4] || '';
+    var num = t[6] || '';           // 頭数
+    var rank = t[11] || '';         // 着順
+    var pop = t[10] || '';          // 人気
+    var dist = t[14] || '';         // 距離
+    var seg = date + ' ' + raceNm;
+    if (dist) seg += ' ' + dist + 'm';
+    if (rank) seg += ' ' + rank + '着';
+    if (num) seg += '/' + num + '頭';
+    if (pop) seg += ' ' + pop + '人気';
+    recs.push(seg);
+  }
+  return recs.join(' / ');
+}
+
+/* ========== 発走時刻（レース目次用・5分単位はnetkeiba表記のまま） ==========
+ * netkeibaの当日レース一覧から race_id と発走時刻を対で返す。
+ * 返却: { schedule: { "新潟-1": "09:40", "新潟-2": "10:15", ... } }
+ * フロントは basho名 + R番号 で引く。
+ */
+var NK_PLACE = {'01':'札幌','02':'函館','03':'福島','04':'新潟','05':'東京','06':'中山','07':'中京','08':'京都','09':'阪神','10':'小倉'};
+
+function handleSchedule(req) {
+  var date = req.date; // 'YYYYMMDD'
+  if (!date) return { error: '日付(date)が必要です' };
+  var url = 'https://race.netkeiba.com/top/race_list_sub.html?kaisai_date=' + encodeURIComponent(date);
+  var res = UrlFetchApp.fetch(url, { headers: { 'User-Agent': UA, 'Referer': 'https://race.netkeiba.com/' }, muteHttpExceptions: true });
+  if (res.getResponseCode() !== 200) return { error: '一覧取得失敗 ' + res.getResponseCode() };
+  var html = res.getContentText('UTF-8');
+  // 各アイテム: id="myrace_{race_id}" ... <span class="RaceList_Itemtime">HH:MM </span>
+  var re = /myrace_(\d{12})[\s\S]{0,600}?RaceList_Itemtime">\s*(\d{1,2}:\d{2})/g;
+  var m, sched = {}, raceIds = [];
+  while ((m = re.exec(html)) !== null) {
+    var rid = m[1], time = m[2];
+    raceIds.push(rid);
+    var place = NK_PLACE[rid.substring(4, 6)] || '';
+    var rnum = parseInt(rid.substring(10, 12), 10);
+    if (place && rnum) sched[place + '-' + rnum] = time;
+  }
+  return { ok: true, schedule: sched, raceIds: raceIds };
+}
+
+/* ========== オッズ取得（買い目ビルダーの「オッズ更新」用） ==========
+ * netkeibaの公式オッズAPIから指定券種のオッズを取得。
+ * GET  ?action=odds&race_id=YYYY...&type=1  で呼ばれる（doGet経由）。
+ * 返却（フロントの syncOddsFromGAS が期待する形）:
+ *   単複(type=1/2): { ok:true, tanList:[{num,odds}], fukuList:[{num,minOdds,maxOdds}] }
+ *   連系(type=4..8): { ok:true, lines:[{combo:"1-2", odds:"12.3"}] }
+ */
+function handleOdds(req) {
+  var rid = req.race_id || req.raceId;
+  var type = String(req.type || '1');
+  if (!rid || !/^\d{12}$/.test(String(rid))) return { ok:false, error:'race_idが不正です' };
+  var url = 'https://race.netkeiba.com/api/api_get_jra_odds.html?pid=api_get_jra_odds&race_id=' + rid
+    + '&type=' + type + '&action=init&sort=odds&compress=0&output=json';
+  var res = UrlFetchApp.fetch(url, {
+    headers: { 'User-Agent': UA, 'Referer': 'https://race.netkeiba.com/', 'Accept': 'application/json, text/javascript, */*' },
+    muteHttpExceptions: true
+  });
+  if (res.getResponseCode() !== 200) return { ok:false, error:'オッズAPI ' + res.getResponseCode() };
+  var txt = res.getContentText('UTF-8');
+  var m = txt.match(/^[^(]+\((.+)\)\s*;?\s*$/);
+  if (m) txt = m[1];
+  var json;
+  try { json = JSON.parse(txt); } catch(e){ return { ok:false, error:'JSON解析失敗' }; }
+  if (!json || json.status === 'NG' || !json.data || !json.data.odds) return { ok:false, error:'オッズなし' };
+  var raw = json.data.odds[type] || {};
+
+  if (type === '1') { // 単勝
+    var tanList = [], excluded = [];
+    Object.keys(raw).forEach(function(k){
+      var od = raw[k];
+      var v = (od && od[0] != null) ? od[0] : od;
+      var num = parseInt(k, 10);
+      // 除外・出走取消の馬はオッズが '' / '0' / '---' / '****' などになる
+      var sv = String(v == null ? '' : v).trim();
+      var isOut = (sv === '' || sv === '0' || sv === '0.0' || sv === '-' || sv === '---'
+                   || sv.indexOf('*') === 0 || !isFinite(parseFloat(sv)) || parseFloat(sv) <= 0);
+      if (isOut) { excluded.push(num); }
+      else { tanList.push({ num: num, odds: v }); }
+    });
+    // netkeibaの出馬表側でも取消フラグを拾って補強（オッズが残る場合の保険）
+    try {
+      var extra = fetchScratchedNums(rid);
+      for (var i = 0; i < extra.length; i++) {
+        if (excluded.indexOf(extra[i]) < 0) excluded.push(extra[i]);
+      }
+      // 除外と判明した馬は単勝リストからも落とす
+      tanList = tanList.filter(function(t){ return excluded.indexOf(t.num) < 0; });
+    } catch (e) { /* 取得できなくてもオッズ側の判定だけで動かす */ }
+    excluded.sort(function(a,b){ return a-b; });
+    var total = tanList.length + excluded.length;
+    // 安全弁：オッズが1頭も無い＝未発売。半数以上が「除外」に見えるのも未発売/取得失敗とみなす。
+    if (tanList.length === 0) return { ok:false, error:'オッズがまだ発売されていません（レース当日に更新してください）' };
+    if (excluded.length * 2 >= total) excluded = [];
+    return { ok:true, tanList: tanList, excluded: excluded };
+  }
+  if (type === '2') { // 複勝（min-max）
+    var fukuList = [];
+    Object.keys(raw).forEach(function(k){ var od=raw[k];
+      fukuList.push({ num: parseInt(k,10), minOdds: (od&&od[0]!=null)?od[0]:'-', maxOdds: (od&&od[1]!=null)?od[1]:(od&&od[0]!=null?od[0]:'-') }); });
+    return { ok:true, fukuList: fukuList };
+  }
+  // 連系：馬番の組み合わせ文字列 combo にして返す
+  var ordered = (type === '6' || type === '8'); // 馬単・3連単は順序あり
+  var lines = [];
+  Object.keys(raw).forEach(function(k){
+    var nums=[]; for (var i=0;i<k.length;i+=2) nums.push(parseInt(k.substr(i,2),10));
+    if (!ordered) nums.sort(function(a,b){return a-b;});
+    var od=raw[k]; var v=(od&&od[0]!=null)?od[0]:(typeof od==='string'?od:'');
+    if (v) lines.push({ combo: nums.join('-'), odds: v });
+  });
+  return { ok:true, lines: lines };
+}
+
+/* ========== 出馬表（運営スプレッドシート）==========
+ * 運営が毎週、しまちゃん作成のCSVをスプレッドシートの「出馬表」シートに貼る。
+ * ヘッダ: 発走時間,場所,クラス,トラック,距離,脚質,枠,馬番,馬名,騎手,基礎印,調教,
+ *         基礎勝率,指数,ベストT,テン３Ｆ,上がり３Ｆ,単勝,複勝↓,複勝↑,重馬場,
+ *         点数コメント,好走枠,調教コメント
+ * 事前設定：スクリプトプロパティ CARD_SHEET_ID = スプレッドシートのID
+ *          （未設定なら ENEMY_SHEET_ID と同じブックの「出馬表」シートを見る）
+ * 返却: { ok:true, header:[...], rows:[[...], ...], updatedAt:'...' }
+ *       フロント側が既存の取り込み処理にそのまま流し込む。
+ */
+function handleRaceCard(req) {
+  var props = PropertiesService.getScriptProperties();
+  var sheetId = props.getProperty('CARD_SHEET_ID') || props.getProperty('ENEMY_SHEET_ID');
+  if (!sheetId) return { ok:false, error:'CARD_SHEET_IDが未設定です（運営にご連絡ください）' };
+
+  var cache = CacheService.getScriptCache();
+  var CKEY = 'racecard_v1';
+  if (!(req && req.nocache)) {
+    var hit = cache.get(CKEY);
+    if (hit) {
+      try { var c = JSON.parse(hit); c.cached = true; return c; } catch (e) {}
+    }
+  }
+
+  var ss = SpreadsheetApp.openById(sheetId);
+  // 「出馬表」という名前のシートを優先。無ければ2枚目、それも無ければ1枚目。
+  var sh = ss.getSheetByName('出馬表');
+  if (!sh) return { ok:false, error:'まだ出馬表が登録されていません（運営が管理ページから反映すると表示されます）' };
+  var values = sh.getDataRange().getValues();
+  if (!values || values.length < 2) return { ok:false, error:'出馬表シートが空です' };
+
+  // ヘッダ行を探す（先頭3行以内に「馬番」「馬名」があるはず）
+  var hIdx = -1;
+  for (var i = 0; i < Math.min(3, values.length); i++) {
+    var joined = values[i].join(',');
+    if (joined.indexOf('馬番') >= 0 && joined.indexOf('馬名') >= 0) { hIdx = i; break; }
+  }
+  if (hIdx < 0) return { ok:false, error:'ヘッダ行（馬番・馬名）が見つかりません' };
+
+  var header = values[hIdx].map(function(v){ return String(v == null ? '' : v).trim(); });
+  var rows = [];
+  for (var r = hIdx + 1; r < values.length; r++) {
+    var row = values[r];
+    // 空行はスキップ
+    var nonEmpty = 0;
+    for (var c = 0; c < row.length; c++) { if (String(row[c]).trim() !== '') nonEmpty++; }
+    if (nonEmpty < 3) continue;
+    rows.push(row.map(function(v){
+      if (v instanceof Date) return Utilities.formatDate(v, Session.getScriptTimeZone(), 'H時mm分');
+      return String(v == null ? '' : v).trim();
+    }));
+  }
+
+  var out = { ok:true, header: header, rows: rows, count: rows.length,
+              updatedAt: Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'M/d HH:mm') };
+  try { cache.put(CKEY, JSON.stringify(out), 300); } catch (e) { /* 大きすぎたら諦める */ }
+  return out;
+}
+
+/* ★動作確認用：エディタでこの関数を実行すると、出馬表シートが読めているか分かる。
+ * 初回はスプレッドシートへの承認画面が出るので「許可」する。 */
+function testRaceCard() {
+  try { CacheService.getScriptCache().remove('racecard_v1'); } catch (e) {}
+  var out = handleRaceCard({ nocache: true });
+  Logger.log('ok = ' + out.ok + ' / error = ' + (out.error || 'なし'));
+  if (out.ok) {
+    Logger.log('行数: ' + out.count);
+    Logger.log('ヘッダ: ' + JSON.stringify(out.header));
+    Logger.log('1行目: ' + JSON.stringify(out.rows[0]));
+    var places = {};
+    for (var i = 0; i < out.rows.length; i++) {
+      var p = String(out.rows[i][1] || '').substring(0, 1);
+      places[p] = (places[p] || 0) + 1;
+    }
+    Logger.log('場所ごとの頭数: ' + JSON.stringify(places));
+  }
+}
+
+/* ========== 除外馬の検出 ==========
+ * netkeibaの出馬表ページから、出走取消・競走除外の馬番を拾う。
+ * オッズ側の判定（オッズが空/0）と併用して取りこぼしを防ぐ。
+ */
+function fetchScratchedNums(raceId) {
+  var url = 'https://race.netkeiba.com/race/shutuba.html?race_id=' + encodeURIComponent(raceId);
+  var res = UrlFetchApp.fetch(url, {
+    headers: { 'User-Agent': UA, 'Referer': 'https://race.netkeiba.com/' },
+    muteHttpExceptions: true
+  });
+  if (res.getResponseCode() !== 200) return [];
+  var html = res.getContentText('UTF-8');
+  var nums = [];
+  // 各馬の行（HorseList）ごとに、取消/除外の表記があるか調べる
+  var rowRe = /<tr[^>]*class="[^"]*HorseList[^"]*"[\s\S]*?<\/tr>/g;
+  var m;
+  while ((m = rowRe.exec(html)) !== null) {
+    var row = m[0];
+    if (row.indexOf('取消') < 0 && row.indexOf('除外') < 0) continue;
+    // 馬番セル（Umaban）から番号を取る
+    var nm = row.match(/class="[^"]*Umaban[^"]*"[^>]*>\s*(\d{1,2})\s*</);
+    if (nm) {
+      var n = parseInt(nm[1], 10);
+      if (n && nums.indexOf(n) < 0) nums.push(n);
+    }
+  }
+  return nums;
+}
+
+/* ========== 運営用 管理ページ ==========
+ * ネットに詳しくない運営でも、CSVファイルを選んで「反映」を押すだけで
+ * 出馬表シートが差し替わる。陣営データも同じ手順で差し替えられる。
+ *
+ * セキュリティ：このページと下のadmin〜関数は、スクリプト所有者本人が
+ * Googleにログインした状態でしか動かない（isOwnerRequest）。
+ * 会員向けの公開URL（アクセス：全員）から開いても中身は出ない。
+ *
+ * 運営の設定：「デプロイ → 新しいデプロイ → ウェブアプリ → アクセス：自分のみ」
+ * で作ったURLをブックマークしておく。開くだけで管理ページになる。
+ */
+function isOwnerRequest() {
+  try {
+    var active = Session.getActiveUser().getEmail();
+    var owner  = Session.getEffectiveUser().getEmail();
+    return !!active && !!owner && active.toLowerCase() === owner.toLowerCase();
+  } catch (e) { return false; }
+}
+function assertOwner_() {
+  if (!isOwnerRequest()) throw new Error('この操作は運営専用です');
+}
+
+/* 現在の状態（管理ページの表示用） */
+function adminStatus() {
+  assertOwner_();
+  var props = PropertiesService.getScriptProperties();
+  var out = { ok:true };
+  out.cardUpdatedAt  = props.getProperty('CARD_UPDATED_AT')  || '';
+  out.enemyUpdatedAt = props.getProperty('ENEMY_UPDATED_AT') || '';
+  out.hasKey = !!props.getProperty('GEMINI_KEY');
+  var sheetId = props.getProperty('CARD_SHEET_ID') || props.getProperty('ENEMY_SHEET_ID');
+  out.hasSheet = !!sheetId;
+  if (sheetId) {
+    try {
+      var ss = SpreadsheetApp.openById(sheetId);
+      out.sheetName = ss.getName();
+      out.sheetUrl  = ss.getUrl();
+      var card = ss.getSheetByName('出馬表');
+      if (card) {
+        var sum = summarizeCardRows_(card.getDataRange().getValues());
+        out.card = sum;
+      } else {
+        out.card = { rows:0, races:0, missingSheet:true };
+      }
+      var enemy = ss.getSheets()[0];
+      out.enemyRows = Math.max(0, enemy.getLastRow() - 1);
+    } catch (e) { out.sheetError = '' + e.message; }
+  }
+  return out;
+}
+
+/* 出馬表のCSV/TSV文字列を受け取り、シートを丸ごと差し替える */
+function adminUploadCard(text, viaPass) {
+  if (!viaPass) assertOwner_();
+  var parsed = parseDelimited_(text);
+  if (!parsed.rows.length) throw new Error('データが読み取れませんでした。CSVファイルを選び直してください');
+
+  // ヘッダ検証：必須列
+  var required = ['場所','馬番','馬名'];
+  var header = parsed.header;
+  for (var i = 0; i < required.length; i++) {
+    var found = false;
+    for (var j = 0; j < header.length; j++) if (String(header[j]).indexOf(required[i]) >= 0) found = true;
+    if (!found) throw new Error('列「' + required[i] + '」が見つかりません。1行目に見出しが入っているCSVを選んでください');
+  }
+
+  var sheetId = PropertiesService.getScriptProperties().getProperty('CARD_SHEET_ID')
+             || PropertiesService.getScriptProperties().getProperty('ENEMY_SHEET_ID');
+  if (!sheetId) throw new Error('スプレッドシートが未設定です（ENEMY_SHEET_ID）');
+  var ss = SpreadsheetApp.openById(sheetId);
+  var sh = ss.getSheetByName('出馬表');
+  if (!sh) sh = ss.insertSheet('出馬表');
+
+  var all = [header].concat(parsed.rows);
+  var width = 0;
+  for (var r = 0; r < all.length; r++) if (all[r].length > width) width = all[r].length;
+  for (var r2 = 0; r2 < all.length; r2++) while (all[r2].length < width) all[r2].push('');
+
+  sh.clearContents();
+  sh.getRange(1, 1, all.length, width).setValues(all);
+  // 「9時50分」のような時刻が日付に化けないよう、書式を文字列に固定
+  sh.getRange(1, 1, all.length, width).setNumberFormat('@');
+
+  var stamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'M/d HH:mm');
+  PropertiesService.getScriptProperties().setProperty('CARD_UPDATED_AT', stamp);
+  try { CacheService.getScriptCache().remove('racecard_v1'); } catch (e) {}
+
+  var sum = summarizeCardRows_(all);
+  sum.updatedAt = stamp;
+  sum.ok = true;
+  return sum;
+}
+
+/* 陣営データ（騎手/調教師/種牡馬）のCSVを受け取り、1枚目のシートを差し替える */
+function adminUploadEnemy(text, viaPass) {
+  if (!viaPass) assertOwner_();
+  var parsed = parseDelimited_(text);
+  if (!parsed.rows.length) throw new Error('データが読み取れませんでした');
+  var hasName = false;
+  for (var j = 0; j < parsed.header.length; j++) if (String(parsed.header[j]).indexOf('馬名') >= 0) hasName = true;
+  if (!hasName) throw new Error('列「馬名」が見つかりません。陣営データのCSVを選んでください');
+
+  var sheetId = PropertiesService.getScriptProperties().getProperty('ENEMY_SHEET_ID');
+  if (!sheetId) throw new Error('スプレッドシートが未設定です（ENEMY_SHEET_ID）');
+  var ss = SpreadsheetApp.openById(sheetId);
+  var sh = ss.getSheets()[0];
+
+  var all = [parsed.header].concat(parsed.rows);
+  var width = 0;
+  for (var r = 0; r < all.length; r++) if (all[r].length > width) width = all[r].length;
+  for (var r2 = 0; r2 < all.length; r2++) while (all[r2].length < width) all[r2].push('');
+  sh.clearContents();
+  sh.getRange(1, 1, all.length, width).setValues(all);
+
+  var stamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'M/d HH:mm');
+  PropertiesService.getScriptProperties().setProperty('ENEMY_UPDATED_AT', stamp);
+  try { var cc = CacheService.getScriptCache(); cc.remove('enemy_rows_v1'); cc.remove('enemycard_v1'); } catch (e) {}
+  return { ok:true, rows: parsed.rows.length, updatedAt: stamp };
+}
+
+/* 管理ページの「動作確認」：会員が受け取るのと同じ形で出馬表を読んでみる */
+function adminSelfTest() {
+  assertOwner_();
+  var card = handleRaceCard({ nocache: true });
+  var enemyOk = false, enemyMsg = '';
+  try {
+    var sheetId = PropertiesService.getScriptProperties().getProperty('ENEMY_SHEET_ID');
+    var ss = SpreadsheetApp.openById(sheetId);
+    var v = ss.getSheets()[0].getDataRange().getValues();
+    enemyOk = v.length > 1; enemyMsg = (v.length - 1) + '行';
+  } catch (e) { enemyMsg = e.message; }
+  return { card: card.ok ? { ok:true, count: card.count } : { ok:false, error: card.error },
+           enemy: { ok: enemyOk, msg: enemyMsg },
+           hasKey: !!PropertiesService.getScriptProperties().getProperty('GEMINI_KEY') };
+}
+
+/* CSV/TSV文字列 → {header, rows}。区切りは自動判定。BOM・CRLF対応。 */
+function parseDelimited_(text) {
+  text = String(text || '').replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n');
+  var lines = text.split('\n');
+  // 区切り文字：1行目にタブがあればタブ、なければカンマ
+  var first = '';
+  for (var i = 0; i < lines.length; i++) { if (lines[i].trim()) { first = lines[i]; break; } }
+  var delim = first.indexOf('\t') >= 0 ? '\t' : ',';
+  var rows = [];
+  for (var li = 0; li < lines.length; li++) {
+    var line = lines[li];
+    if (!line.trim()) continue;
+    rows.push(delim === '\t' ? line.split('\t') : splitCsvLine_(line));
+  }
+  if (!rows.length) return { header: [], rows: [] };
+  var header = rows[0].map(function(c){ return String(c).trim(); });
+  var body = rows.slice(1).map(function(r){ return r.map(function(c){ return String(c).trim(); }); })
+                 .filter(function(r){ var n=0; for (var k=0;k<r.length;k++) if (r[k]!=='') n++; return n >= 3; });
+  return { header: header, rows: body };
+}
+function splitCsvLine_(line) {
+  var out = [], cur = '', q = false;
+  for (var i = 0; i < line.length; i++) {
+    var ch = line[i];
+    if (q) {
+      if (ch === '"') { if (line[i+1] === '"') { cur += '"'; i++; } else { q = false; } }
+      else cur += ch;
+    } else {
+      if (ch === '"') q = true;
+      else if (ch === ',') { out.push(cur); cur = ''; }
+      else cur += ch;
+    }
+  }
+  out.push(cur);
+  return out;
+}
+
+/* 出馬表の行から、レース数・場所ごとの頭数・気になる点をまとめる */
+function summarizeCardRows_(values) {
+  if (!values || values.length < 2) return { rows:0, races:0, places:{}, warnings:['データがありません'] };
+  var header = values[0].map(function(v){ return String(v); });
+  var iPlace = -1, iNum = -1, iName = -1;
+  for (var j = 0; j < header.length; j++) {
+    if (iPlace < 0 && header[j].indexOf('場所') >= 0) iPlace = j;
+    if (iNum   < 0 && header[j].indexOf('馬番') >= 0) iNum = j;
+    if (iName  < 0 && header[j].indexOf('馬名') >= 0) iName = j;
+  }
+  var races = {}, places = {}, warnings = [], rows = 0, dup = {};
+  for (var r = 1; r < values.length; r++) {
+    var row = values[r];
+    var place = String(row[iPlace] || '').trim();
+    var num = String(row[iNum] || '').trim();
+    var name = String(row[iName] || '').trim();
+    if (!place && !name) continue;
+    rows++;
+    if (!place) { warnings.push((r+1) + '行目：場所が空です'); continue; }
+    if (!name)  { warnings.push((r+1) + '行目：馬名が空です'); }
+    races[place] = (races[place] || 0) + 1;
+    var pc = place.substring(0, 1);
+    places[pc] = (places[pc] || 0) + 1;
+    var key = place + '#' + num;
+    if (dup[key]) warnings.push(place + ' の馬番' + num + ' が重複しています');
+    dup[key] = true;
+  }
+  var raceList = Object.keys(races).sort();
+  return { rows: rows, races: raceList.length, raceList: raceList, places: places,
+           warnings: warnings.slice(0, 20) };
+}
+
+/* 管理ページのHTML（会員サイトと同じ配色。絵文字は使わない） */
+function adminPageHtml() {
+  return '<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">'
+  + '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=BIZ+UDPGothic:wght@400;700&family=Noto+Sans+JP:wght@700;900&display=swap">'
+  + '<style>'
+  + ':root{--paper:#eceae3;--card:#fff;--ink:#1a1a1a;--soft:#41413c;--mute:#87867e;--line:#e0ded6;--lime:#ccf23f;--bad:#c2410c;--ok:#3f7d3f}'
+  + '*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:"BIZ UDPGothic",-apple-system,"Helvetica Neue",Arial,sans-serif;font-size:14px}'
+  + '.wrap{max-width:720px;margin:0 auto;padding:18px 14px 70px}'
+  + 'header{background:var(--ink);border-radius:16px;padding:20px 18px 16px;margin-bottom:16px}'
+  + 'header .b{font-family:Anton,sans-serif;color:var(--lime);font-size:40px;line-height:.95;letter-spacing:.03em}'
+  + 'header .s{color:var(--lime);font-size:10px;font-weight:800;letter-spacing:.18em;margin-top:8px;font-family:"Noto Sans JP",sans-serif}'
+  + 'header p{color:#cbcac2;margin:8px 0 0;line-height:1.7;font-size:13px}'
+  + '.card{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}'
+  + '.card h2{font-family:"Noto Sans JP",sans-serif;font-weight:900;font-size:16px;margin:0 0 4px;display:flex;align-items:center;gap:8px}'
+  + '.card h2 svg{width:20px;height:20px}'
+  + '.card .d{color:var(--soft);font-size:12.5px;line-height:1.7;margin:0 0 12px}'
+  + '.st{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}'
+  + '.st span{background:#faf9f5;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:12px}'
+  + '.st span b{font-family:"Noto Sans JP",sans-serif;font-weight:900;margin-left:4px}'
+  + '.drop{border:2px dashed #cfcdc4;border-radius:12px;padding:22px 14px;text-align:center;background:#faf9f5;cursor:pointer;transition:.15s}'
+  + '.drop.on{border-color:var(--ink);background:#f3f6e6}'
+  + '.drop b{font-family:"Noto Sans JP",sans-serif;font-weight:900;display:block;margin-bottom:4px}'
+  + '.drop small{color:var(--mute);font-size:11.5px}'
+  + '.drop input{display:none}'
+  + '.file{margin-top:10px;font-size:12.5px;color:var(--soft);min-height:1.4em}'
+  + '.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:2px solid var(--ink);background:var(--ink);color:var(--lime);font-family:"Noto Sans JP",sans-serif;font-weight:900;font-size:14px;padding:11px 18px;border-radius:10px;cursor:pointer;width:100%;margin-top:12px}'
+  + '.btn:disabled{opacity:.35;cursor:default}'
+  + '.btn.sub{background:#fff;color:var(--ink);font-weight:700}'
+  + '.res{margin-top:12px;border-radius:10px;padding:11px 13px;font-size:13px;line-height:1.7;display:none;white-space:pre-line}'
+  + '.res.ok{display:block;background:#eef5e6;border:1px solid #c9dba8}'
+  + '.res.ng{display:block;background:#fdf1ec;border:1px solid #f0c2ae;color:#7a2e12}'
+  + '.res.wait{display:block;background:#faf9f5;border:1px solid var(--line);color:var(--mute)}'
+  + '.res ul{margin:6px 0 0;padding-left:18px}'
+  + '.foot{color:var(--mute);font-size:12px;line-height:1.7;margin-top:8px}'
+  + '.foot a{color:var(--ink)}'
+  + '</style></head><body><div class="wrap">'
+  + '<header><div class="b">K-buddy</div><div class="s">ADMIN</div>'
+  + '<p>週末の出馬表と陣営データを差し替える画面です。CSVファイルを選んで「反映」を押すだけで、会員全員のサイトに反映されます。</p></header>'
+
+  + '<div class="card"><h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>いまの状態</h2>'
+  + '<div class="st" id="status"><span>読み込み中…</span></div>'
+  + '<button class="btn sub" onclick="selfTest()">動作確認をする</button><div class="res" id="test-res"></div></div>'
+
+  + '<div class="card"><h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V3.6"/><path d="M5 4.4h11.2l-1.8 3.4 1.8 3.4H5"/></svg>出馬表を差し替える</h2>'
+  + '<p class="d">毎週前日の夜に、その週の「全36レース_完全版.csv」を選んでください。前の週のデータは自動で消えます。</p>'
+  + fileBlock_('card', '出馬表のCSVを選ぶ', 'または、ここにファイルをドラッグ')
+  + '<button class="btn" id="card-btn" disabled onclick="upload(\'card\')">出馬表を反映する</button><div class="res" id="card-res"></div></div>'
+
+  + '<div class="card"><h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>陣営データを差し替える</h2>'
+  + '<p class="d">騎手・調教師・種牡馬の成績CSVです。AIの相談で使います。こちらは更新があるときだけで構いません。</p>'
+  + fileBlock_('enemy', '陣営データのCSVを選ぶ', 'または、ここにファイルをドラッグ')
+  + '<button class="btn" id="enemy-btn" disabled onclick="upload(\'enemy\')">陣営データを反映する</button><div class="res" id="enemy-res"></div></div>'
+
+  + '<p class="foot">除外や出走取消は、会員がサイトで「オッズ更新」を押した時点で自動反映されます。ここで直す必要はありません。<br>'
+  + 'うまくいかないときは、赤い文の内容をそのまま薗田さんに送ってください。</p>'
+  + '</div>'
+  + '<script>'
+  + 'var files={card:null,enemy:null};'
+  + 'function q(id){return document.getElementById(id)}'
+  + 'function setRes(id,cls,html){var el=q(id);el.className="res "+cls;el.innerHTML=html}'
+  + 'function bind(kind){var drop=q(kind+"-drop"),inp=q(kind+"-input");'
+  + ' drop.onclick=function(){inp.click()};'
+  + ' inp.onchange=function(){pick(kind,inp.files[0])};'
+  + ' ["dragenter","dragover"].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.add("on")})});'
+  + ' ["dragleave","drop"].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.remove("on")})});'
+  + ' drop.addEventListener("drop",function(e){if(e.dataTransfer.files[0])pick(kind,e.dataTransfer.files[0])});}'
+  + 'function pick(kind,f){if(!f)return;files[kind]=f;q(kind+"-file").textContent="選択中："+f.name+"（"+Math.round(f.size/1024)+"KB）";q(kind+"-btn").disabled=false;setRes(kind+"-res","","")}'
+  + 'function readText(f){return new Promise(function(res,rej){var fr=new FileReader();fr.onload=function(){res(fr.result)};fr.onerror=rej;'
+  + ' fr.readAsText(f,"utf-8")})}'
+  + 'function looksBroken(t){return /\\uFFFD/.test(t.slice(0,2000))}'
+  + 'function readSmart(f){return readText(f).then(function(t){if(!looksBroken(t))return t;return new Promise(function(res,rej){var fr=new FileReader();fr.onload=function(){res(fr.result)};fr.onerror=rej;fr.readAsText(f,"shift-jis")})})}'
+  + 'function upload(kind){var f=files[kind];if(!f)return;var btn=q(kind+"-btn");btn.disabled=true;setRes(kind+"-res","wait","反映しています…（10秒ほど）");'
+  + ' readSmart(f).then(function(text){'
+  + '  var fn=kind==="card"?"adminUploadCard":"adminUploadEnemy";'
+  + '  google.script.run.withSuccessHandler(function(r){btn.disabled=false;'
+  + '    if(kind==="card"){var pl=Object.keys(r.places||{}).map(function(k){return k+"："+r.places[k]+"頭"}).join(" ／ ");'
+  + '      var w=(r.warnings&&r.warnings.length)?"<ul>"+r.warnings.map(function(x){return "<li>"+x+"</li>"}).join("")+"</ul>":"";'
+  + '      setRes("card-res",r.warnings&&r.warnings.length?"ng":"ok","反映しました（"+r.updatedAt+"）\\nレース数："+r.races+"　頭数："+r.rows+"\\n"+pl+(w?"\\n気になる点："+w:""));'
+  + '    } else { setRes("enemy-res","ok","反映しました（"+r.updatedAt+"）\\n"+r.rows+"行"); }'
+  + '    loadStatus();'
+  + '  }).withFailureHandler(function(e){btn.disabled=false;setRes(kind+"-res","ng","反映できませんでした。\\n"+(e&&e.message?e.message:e))})[fn](text);'
+  + ' }).catch(function(e){btn.disabled=false;setRes(kind+"-res","ng","ファイルを読めませんでした。"+e)});}'
+  + 'function loadStatus(){google.script.run.withSuccessHandler(function(st){var h="";'
+  + ' if(st.card&&!st.card.missingSheet){h+="<span>出馬表<b>"+st.card.races+"レース／"+st.card.rows+"頭</b></span>";}else{h+="<span>出馬表<b>未登録</b></span>";}'
+  + ' h+="<span>出馬表の更新<b>"+(st.cardUpdatedAt||"—")+"</b></span>";'
+  + ' h+="<span>陣営データ<b>"+(st.enemyRows!=null?st.enemyRows+"行":"—")+"</b></span>";'
+  + ' h+="<span>AIキー<b>"+(st.hasKey?"設定済み":"未設定")+"</b></span>";'
+  + ' if(st.sheetUrl)h+="<span><a href=\\""+st.sheetUrl+"\\" target=\\"_blank\\" style=\\"color:#1a1a1a\\">シートを開く</a></span>";'
+  + ' if(st.sheetError)h+="<span style=\\"color:#c2410c\\">"+st.sheetError+"</span>";'
+  + ' q("status").innerHTML=h;}).withFailureHandler(function(e){q("status").innerHTML="<span style=\\"color:#c2410c\\">"+(e&&e.message?e.message:e)+"</span>"}).adminStatus();}'
+  + 'function selfTest(){setRes("test-res","wait","確認しています…");google.script.run.withSuccessHandler(function(r){'
+  + ' var lines=[];lines.push((r.card.ok?"出馬表：OK（"+r.card.count+"頭を会員に配信できます）":"出馬表：NG　"+r.card.error));'
+  + ' lines.push((r.enemy.ok?"陣営データ：OK（"+r.enemy.msg+"）":"陣営データ：NG　"+r.enemy.msg));'
+  + ' lines.push((r.hasKey?"AIキー：OK":"AIキー：未設定"));'
+  + ' setRes("test-res",(r.card.ok&&r.enemy.ok&&r.hasKey)?"ok":"ng",lines.join("\\n"));'
+  + '}).withFailureHandler(function(e){setRes("test-res","ng",(e&&e.message?e.message:e))}).adminSelfTest();}'
+  + 'bind("card");bind("enemy");loadStatus();'
+  + '</script></body></html>';
+}
+function fileBlock_(kind, main, sub) {
+  return '<div class="drop" id="' + kind + '-drop"><input type="file" id="' + kind + '-input" accept=".csv,.tsv,.txt,text/csv,text/plain">'
+    + '<b>' + main + '</b><small>' + sub + '</small></div><div class="file" id="' + kind + '-file"></div>';
+}
+
+/* ========== 陣営データ（1枚目のシート）をそのままサイトへ配信 ==========
+ * サイト側の「コース・陣営データ」欄に流し込む。AI用の抽出とは別に、表示用。 */
+function handleEnemyCard(req) {
+  var sheetId = PropertiesService.getScriptProperties().getProperty('ENEMY_SHEET_ID');
+  if (!sheetId) return { ok:false, error:'ENEMY_SHEET_IDが未設定です' };
+  var cache = CacheService.getScriptCache();
+  var CKEY = 'enemycard_v1';
+  if (!(req && req.nocache)) {
+    var hit = cache.get(CKEY);
+    if (hit) { try { var c = JSON.parse(hit); c.cached = true; return c; } catch (e) {} }
+  }
+  var ss = SpreadsheetApp.openById(sheetId);
+  var sh = ss.getSheets()[0];
+  var values = sh.getDataRange().getValues();
+  if (!values || values.length < 2) return { ok:false, error:'陣営データが空です' };
+  var header = values[0].map(function(v){ return String(v == null ? '' : v).trim(); });
+  var rows = [];
+  for (var r = 1; r < values.length; r++) {
+    var row = values[r]; var n = 0;
+    for (var c = 0; c < row.length; c++) if (String(row[c]).trim() !== '') n++;
+    if (n < 3) continue;
+    rows.push(row.map(function(v){ return String(v == null ? '' : v).trim(); }));
+  }
+  var out = { ok:true, header: header, rows: rows, count: rows.length,
+              updatedAt: PropertiesService.getScriptProperties().getProperty('ENEMY_UPDATED_AT') || '' };
+  try { cache.put(CKEY, JSON.stringify(out), 300); } catch (e) {}
+  return out;
+}
+
+/* ========== 管理ページ用API（合言葉で保護） ==========
+ * GitHub Pages上の admin.html から呼ばれる。
+ * 事前設定：スクリプトプロパティに ADMIN_PASS = 合言葉 を入れておく。
+ * 未設定のときは書き込みを一切受け付けない（事故防止）。
+ */
+function checkAdminPass_(req) {
+  var want = PropertiesService.getScriptProperties().getProperty('ADMIN_PASS');
+  if (!want) throw new Error('管理用の合言葉が未設定です（運営にご連絡ください）');
+  var got = String((req && req.pass) || '');
+  if (got !== String(want)) throw new Error('合言葉が違います');
+  return true;
+}
+
+function apiAdminStatus(req) {
+  try {
+    checkAdminPass_(req);
+    var props = PropertiesService.getScriptProperties();
+    var out = { ok:true };
+    out.cardUpdatedAt  = props.getProperty('CARD_UPDATED_AT')  || '';
+    out.enemyUpdatedAt = props.getProperty('ENEMY_UPDATED_AT') || '';
+    out.hasKey = !!props.getProperty('GEMINI_KEY');
+    var sheetId = props.getProperty('CARD_SHEET_ID') || props.getProperty('ENEMY_SHEET_ID');
+    if (sheetId) {
+      var ss = SpreadsheetApp.openById(sheetId);
+      out.sheetUrl = ss.getUrl();
+      var card = ss.getSheetByName('出馬表');
+      out.card = card ? summarizeCardRows_(card.getDataRange().getValues())
+                      : { rows:0, races:0, missingSheet:true };
+      out.enemyRows = Math.max(0, ss.getSheets()[0].getLastRow() - 1);
+    }
+    return out;
+  } catch (e) { return { ok:false, error: '' + e.message }; }
+}
+
+function apiAdminUpload(req, kind) {
+  try {
+    checkAdminPass_(req);
+    var text = String((req && req.text) || '');
+    if (!text) return { ok:false, error:'データが空です' };
+    return (kind === 'card') ? adminUploadCard(text, true) : adminUploadEnemy(text, true);
+  } catch (e) { return { ok:false, error: '' + e.message }; }
+}
+
+/* ========== 過去走（出馬表タブ用） ==========
+ * netkeibaの「馬柱」ページから各馬の近走5走を取り出す。
+ * 会員は準備不要。オッズと同じくボタン一つで最新が入る。
+ * 返却: { ok:true, horses:[{num, name, runs:[{...}]}], updatedAt }
+ */
+function handlePastRuns(req) {
+  var rid = String((req && (req.race_id || req.raceId)) || '');
+  if (!/^\d{12}$/.test(rid)) return { ok:false, error:'race_idが不正です' };
+
+  var cache = CacheService.getScriptCache();
+  var CKEY = 'past_' + rid;
+  if (!(req && req.nocache)) {
+    var hit = cache.get(CKEY);
+    if (hit) { try { var c = JSON.parse(hit); c.cached = true; return c; } catch (e) {} }
+  }
+
+  var url = 'https://race.netkeiba.com/race/shutuba_past.html?race_id=' + rid;
+  var res = UrlFetchApp.fetch(url, {
+    headers: { 'User-Agent': UA, 'Referer': 'https://race.netkeiba.com/' },
+    muteHttpExceptions: true
+  });
+  if (res.getResponseCode() !== 200) return { ok:false, error:'馬柱の取得に失敗しました ' + res.getResponseCode() };
+  var html = res.getContentText('UTF-8');
+
+  // 馬ごとの行に分割
+  var rows = html.split(/<tr[^>]*class="[^"]*HorseList/);
+  var horses = [];
+  for (var i = 1; i < rows.length; i++) {
+    var row = rows[i];
+    var num = null, name = '';
+    // 馬柱ページでは 枠=<td class="WakuN">, 馬番=<td class="Waku">N</td>
+    var nm = row.match(/<td class="Waku">\s*(\d{1,2})\s*</);
+    if (nm) num = parseInt(nm[1], 10);
+    // 馬名の前に地方/外国産アイコンの<span>、後ろにブリンカー<span class="Mark">B</span>が付くことがある。
+    // Horse02の中身を丸ごと取り、spanは中身ごと捨ててからタグを剥がす
+    var hn = row.match(/class="Horse02[^"]*"[^>]*>([\s\S]*?)<\/div>/);
+    if (hn) name = stripTags_(hn[1].replace(/<span[^>]*>[^<]*<\/span>/g, ''));
+    if (!num) continue;
+
+    var runs = [];
+    // 着順つきのセルは class="Past Ranking_2" のようになる
+    var cells = row.match(/<td class="Past[^"]*"[\s\S]*?<\/td>/g) || [];
+    for (var c = 0; c < cells.length && runs.length < 5; c++) {
+      var run = parsePastCell_(cells[c]);
+      if (run) runs.push(run);
+    }
+    horses.push({ num: num, name: name, runs: runs });
+  }
+  if (!horses.length) return { ok:false, error:'馬柱を読み取れませんでした（発走前のみ取得できます）' };
+
+  var out = { ok:true, horses: horses,
+              updatedAt: Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'M/d HH:mm') };
+  try { cache.put(CKEY, JSON.stringify(out), 1800); } catch (e) {}
+  return out;
+}
+
+/* 馬柱1マスを、表示に必要な形へ分解する */
+function parsePastCell_(cell) {
+  function pick(cls) {
+    var m = cell.match(new RegExp('class="' + cls + '"[^>]*>([\\s\\S]*?)</div>'));
+    return m ? stripTags_(m[1]) : '';
+  }
+  var d01 = pick('Data01');   // 2026.07.05 函館 / 着順
+  var d02 = pick('Data02');   // レース名
+  var d03 = pick('Data03');   // 12頭 5番 8人 騎手 53.0
+  var d05 = pick('Data05');   // ダ1000 1:00.7 良
+  var d06 = pick('Data06');   // 10-9 (36.5) 404(-12)
+  if (!d01 && !d02) return null;
+
+  var run = { date:'', place:'', rank:'', raceName:'', head:'', draw:'', pop:'',
+              jockey:'', weight:'', course:'', time:'', going:'', pass:'', agari:'',
+              bodyWeight:'', winner:'', margin:'' };
+
+  var dm = d01.match(/(\d{4})\.(\d{2})\.(\d{2})\s*(\S*)/);
+  if (dm) { run.date = dm[2] + '/' + dm[3]; run.place = dm[4] || ''; }
+  var rk = cell.match(/class="Num[^"]*"[^>]*>\s*(\d+)\s*</);
+  if (rk) run.rank = rk[1];
+
+  run.raceName = d02;
+
+  var im = d03.match(/(\d+)頭\s*(\d+)番\s*(\d+)人\s*(\S*)\s*([\d.]+)?/);
+  if (im) { run.head = im[1]; run.draw = im[2]; run.pop = im[3]; run.jockey = im[4] || ''; run.weight = im[5] || ''; }
+
+  var cm = d05.match(/^(\S+?)\s+([\d:.]+)\s*(\S*)/);
+  if (cm) { run.course = cm[1]; run.time = cm[2]; run.going = cm[3] || ''; }
+
+  var pm = d06.match(/^([\d\-]+)\s*\(([\d.]+)\)\s*(.*)$/);
+  if (pm) { run.pass = pm[1]; run.agari = pm[2]; run.bodyWeight = (pm[3] || '').trim(); }
+
+  // 勝ち馬(自身が1着なら2着馬)と着差
+  var wm = cell.match(/class="[^"]*Data04[^"]*"[^>]*>([\s\S]*?)<\/div>/);
+  if (wm) {
+    var w = stripTags_(wm[1]);
+    var mm = w.match(/^(.*?)\s*\(([-\d.]+)\)/);
+    if (mm) { run.winner = mm[1].trim(); run.margin = mm[2]; }
+    else run.winner = w;
+  }
+  return run;
+}
+
+function stripTags_(s) {
+  return String(s || '').replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')
+                        .replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
+}
