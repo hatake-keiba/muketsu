@@ -977,10 +977,10 @@ input[type=number], input[type=text], textarea, select {
     /* 展開想定のアコーディオン */
     .acc-btn{ flex:0 0 auto; display:inline-flex; align-items:center; gap:4px; background:#fff; color:#1a1a1a; border:1.5px solid #1a1a1a; border-radius:999px; padding:6px 10px 6px 12px; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:12px; cursor:pointer; margin-left:8px; }
     .acc-btn .acc-ic{ width:14px; height:14px; transition:transform .18s; }
-    #sim-section.collapsed > *:not(.bc-head){ display:none !important; }
-    #sim-section.collapsed .acc-ic{ transform:rotate(-90deg); }
-    #sim-section.collapsed .bc-head{ padding-bottom:20px !important; }
-    #sim-section.collapsed{ padding-bottom:0 !important; }
+    .acc-row{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 12px 2px; }
+    .acc-ttl{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:12px; color:#41413c; }
+    #pace-track-area.collapsed{ display:none !important; }
+    #pace-acc-row.collapsed .acc-ic{ transform:rotate(-90deg); }
     /* 出馬表のズームバー */
     .zoom-bar{ display:flex; align-items:center; gap:6px; padding:6px 8px 8px; flex-wrap:wrap; }
     .zoom-lbl{ font-size:10px; font-weight:800; letter-spacing:.12em; color:#8a8a82; margin-right:2px; }
@@ -989,8 +989,8 @@ input[type=number], input[type=text], textarea, select {
     .zoom-val{ min-width:44px; text-align:center; font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:12px; font-variant-numeric:tabular-nums; }
     .zoom-fit{ background:#1a1a1a; color:#ccf23f; border:none; border-radius:999px; padding:6px 11px; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:11.5px; cursor:pointer; }
     .zoom-fit + .zoom-fit{ background:#fff; color:#1a1a1a; border:1.5px solid #dcdad3; }
-    .pastwrap{ touch-action:pan-x pan-y pinch-zoom; }
-    #past-table{ transform-origin:0 0; }
+    .pastwrap, .campwrap, .table-scroll{ touch-action:pan-x pan-y pinch-zoom; }
+    .zoom-bar{ padding:0 8px 8px; }
     /* ===== 最終見解レポート：メインと同じ紙色・黒・ライム ===== */
     #reportModal{ background:#eceae3 !important; padding:0 !important; z-index:100000 !important; }
     .report-page{ width:100% !important; max-width:960px !important; margin:0 auto !important; background:#eceae3 !important; border:none !important; box-shadow:none !important; border-radius:0 !important; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; color:#1a1a1a; }
@@ -2052,7 +2052,6 @@ input[type=number], input[type=text], textarea, select {
             <span class="mk-eyebrow">RACE SIMULATOR</span>
             <span class="bc-title" style="display:block;font-size:22px;margin-top:2px;"><span class="mk-mark">展開想定</span></span>
           </div>
-          <button type="button" class="acc-btn" id="sim-acc-btn" onclick="toggleSimSection()" aria-expanded="true"><span class="acc-txt">閉じる</span><svg class="mk-ic acc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
         </div>
        <div class="simulator-wrapper">
         <div class="sub-head" style="display:none;">
@@ -2110,7 +2109,10 @@ input[type=number], input[type=text], textarea, select {
               <button id="toggle-track-btn" style="display:none;" onclick="togglePaceTrack()">▼ 展開図を見る</button>
             </div>
             
-            <!-- ▼ 変更：初期状態では非表示（display:none）にしておく ▼ -->
+            <div class="acc-row" id="pace-acc-row">
+              <span class="acc-ttl">展開ボード（位置取りの図）</span>
+              <button type="button" class="acc-btn" id="sim-acc-btn" onclick="toggleSimSection()" aria-expanded="true"><span class="acc-txt">閉じる</span><svg class="mk-ic acc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+            </div>
             <div id="pace-track-area" style="display:flex; flex-direction: column; padding-top: 4px;">
               <div id="pace-control-bar" style="display:none;">
                 <select id="pace-pred-select" onchange="updateRaceText('pacePred', this.value)">
@@ -2217,6 +2219,14 @@ input[type=number], input[type=text], textarea, select {
           <button class="hd-tab" data-hd="camp" onclick="showHorseData('camp')">コース・陣営</button>
           <button class="pill-btn pill-sm pill-beige" id="past-sync-btn" style="margin-left:auto;display:none;" onclick="loadPastRuns()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.5-5.8"/><path d="M20 4v5h-5"/></svg> 出馬表・オッズ更新</button>
         </div>
+        <div class="zoom-bar" id="hd-zoom-bar">
+          <span class="zoom-lbl">表示</span>
+          <button type="button" class="zoom-btn" onclick="setHdZoom(-0.1)" title="縮小"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg></button>
+          <span class="zoom-val" id="hd-zoom-val">100%</span>
+          <button type="button" class="zoom-btn" onclick="setHdZoom(0.1)" title="拡大"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+          <button type="button" class="zoom-fit" onclick="fitHdZoom()">全体を1画面に</button>
+          <button type="button" class="zoom-fit" onclick="setHdZoom(null)">100%</button>
+        </div>
         <!-- 互換のため非表示で残す -->
         <div id="standard-time-container" style="display:none;"></div>
         <label id="marker-toggle-label" style="display:none;"><input type="checkbox" id="marker-toggle-cb" onchange="toggleMarkers(this.checked)"></label>
@@ -2228,14 +2238,6 @@ input[type=number], input[type=text], textarea, select {
         <!-- 出馬表（過去5走） -->
         <div class="hd-pane" id="hd-pane-past">
           <div class="hd-note" id="past-note"></div>
-          <div class="zoom-bar" id="past-zoom-bar">
-            <span class="zoom-lbl">表示</span>
-            <button type="button" class="zoom-btn" onclick="setPastZoom(-0.1)" title="縮小"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg></button>
-            <span class="zoom-val" id="past-zoom-val">100%</span>
-            <button type="button" class="zoom-btn" onclick="setPastZoom(0.1)" title="拡大"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
-            <button type="button" class="zoom-fit" onclick="fitPastZoom()">5走を1画面に</button>
-            <button type="button" class="zoom-fit" onclick="setPastZoom(null)">100%</button>
-          </div>
           <div class="pastwrap"><table class="data-table past-table" id="past-table"><thead></thead><tbody></tbody></table></div>
         </div>
 
@@ -3642,44 +3644,56 @@ function _unusedAutoAssignMarks(rId = currentRaceId) {
         `;
         tbody.appendChild(tr);
       });
+      try{ _applyHdZoom('eval'); }catch(e){}
       applyStickyColumns();
     }
 
     // 印・番・単勝・複勝・馬名（列0〜4）を左固定。可視列だけで累積leftを計算。
     /* ===== 展開想定のアコーディオン ===== */
     function toggleSimSection(force){
-      const sec = document.getElementById('sim-section'); if(!sec) return;
-      const open = (typeof force === 'boolean') ? force : sec.classList.contains('collapsed');
-      sec.classList.toggle('collapsed', !open);
+      const area = document.getElementById('pace-track-area'); if(!area) return;
+      const open = (typeof force === 'boolean') ? force : area.classList.contains('collapsed');
+      area.classList.toggle('collapsed', !open);
+      const row = document.getElementById('pace-acc-row'); if(row) row.classList.toggle('collapsed', !open);
       const btn = document.getElementById('sim-acc-btn');
       if(btn){ btn.setAttribute('aria-expanded', open ? 'true' : 'false'); const t = btn.querySelector('.acc-txt'); if(t) t.textContent = open ? '閉じる' : '開く'; }
       try{ localStorage.setItem('muketsu_sim_open', open ? '1' : '0'); }catch(e){}
-      if(open){ try{ if(typeof adjustCanvasSize === 'function') adjustCanvasSize(); window.dispatchEvent(new Event('resize')); }catch(e){} }
+      if(open){ try{ if(typeof adjustCanvasSize === 'function') adjustCanvasSize(); if(typeof renderPaceBoard === 'function') renderPaceBoard(); window.dispatchEvent(new Event('resize')); }catch(e){} }
     }
     (function(){ try{ if(localStorage.getItem('muketsu_sim_open') === '0') toggleSimSection(false); }catch(e){} })();
 
-    /* ===== 出馬表の拡大縮小（CSS zoom。固定列もそのまま効く） ===== */
-    let _pastZoom = 1;
-    try{ const z = parseFloat(localStorage.getItem('muketsu_past_zoom')); if(!isNaN(z) && z >= 0.3 && z <= 1.6) _pastZoom = z; }catch(e){}
-    function _applyPastZoom(){
-      const t = document.getElementById('past-table'); if(!t) return;
-      t.style.zoom = String(_pastZoom);
-      const v = document.getElementById('past-zoom-val'); if(v) v.textContent = Math.round(_pastZoom * 100) + '%';
-      try{ localStorage.setItem('muketsu_past_zoom', String(_pastZoom)); }catch(e){}
+    /* ===== 出走馬データ3タブの拡大縮小（CSS zoom。固定列もそのまま効く。倍率はタブごとに記憶） ===== */
+    const _HD_TABLES = { past:'past-table', eval:'main-data-table', camp:'camp-table' };
+    const _hdZoom = { past:1, eval:1, camp:1 };
+    ['past','eval','camp'].forEach(k => { try{ const z = parseFloat(localStorage.getItem('muketsu_zoom_' + k)); if(!isNaN(z) && z >= 0.3 && z <= 1.6) _hdZoom[k] = z; }catch(e){} });
+    function _hdActive(){ const b = document.querySelector('.hd-tab.active'); return (b && b.dataset.hd) || 'eval'; }
+    function _hdScrollWrap(t){ let el = t && t.parentElement; while(el && el !== document.body){ const o = getComputedStyle(el).overflowX; if(o === 'auto' || o === 'scroll') return el; el = el.parentElement; } return t ? t.parentElement : null; }
+    function _applyHdZoom(k){
+      k = k || _hdActive();
+      const t = document.getElementById(_HD_TABLES[k]); if(!t) return;
+      t.style.zoom = String(_hdZoom[k]);
+      if(k === _hdActive()){ const v = document.getElementById('hd-zoom-val'); if(v) v.textContent = Math.round(_hdZoom[k] * 100) + '%'; }
+      try{ localStorage.setItem('muketsu_zoom_' + k, String(_hdZoom[k])); }catch(e){}
       try{ applyStickyColumns(); }catch(e){}
     }
-    function setPastZoom(delta){
-      _pastZoom = (delta === null) ? 1 : Math.min(1.6, Math.max(0.3, Math.round((_pastZoom + delta) * 100) / 100));
-      _applyPastZoom();
+    function setHdZoom(delta){
+      const k = _hdActive();
+      _hdZoom[k] = (delta === null) ? 1 : Math.min(1.6, Math.max(0.3, Math.round((_hdZoom[k] + delta) * 100) / 100));
+      _applyHdZoom(k);
     }
-    // 固定列＋5走が横スクロール無しで収まる倍率にする
-    function fitPastZoom(){
-      const t = document.getElementById('past-table'); const wrap = t && t.closest('.pastwrap'); if(!t || !wrap) return;
+    // 固定列＋右側が横スクロール無しで収まる倍率にする
+    function fitHdZoom(){
+      const k = _hdActive();
+      const t = document.getElementById(_HD_TABLES[k]); const wrap = _hdScrollWrap(t); if(!t || !wrap) return;
       t.style.zoom = '1';
       const need = t.scrollWidth, have = wrap.clientWidth;
-      if(need > 0 && have > 0) _pastZoom = Math.min(1, Math.max(0.3, Math.floor((have / need) * 100) / 100));
-      _applyPastZoom();
+      if(need > 0 && have > 0) _hdZoom[k] = Math.min(1, Math.max(0.3, Math.floor((have / need) * 100) / 100));
+      _applyHdZoom(k);
     }
+    // 互換
+    function setPastZoom(d){ setHdZoom(d); }
+    function fitPastZoom(){ fitHdZoom(); }
+    function _applyPastZoom(){ _applyHdZoom('past'); }
     function applyStickyColumns(){
       // 各馬評価は「印,番,単勝,(複勝),馬名」=4まで、出馬表・コース陣営は「印,番,単勝,馬名」=3まで
       [['main-data-table',4],['past-table',1],['camp-table',1]].forEach(([id,until]) => {
@@ -7030,6 +7044,7 @@ function autoGenerateTickets(mode = 'win') {
         const pane = document.getElementById('hd-pane-' + k);
         if(pane) pane.classList.toggle('active', k === which);
       });
+      try{ const v = document.getElementById('hd-zoom-val'); if(v) v.textContent = Math.round((_hdZoom[which] || 1) * 100) + '%'; }catch(e){}
       document.querySelectorAll('.hd-tab').forEach(b => {
         b.classList.toggle('active', b.dataset.hd === which);
       });
@@ -7350,6 +7365,7 @@ function autoGenerateTickets(mode = 'win') {
         </tr>`;
       });
       tbl.querySelector('tbody').innerHTML = body;
+      try{ _applyHdZoom('camp'); }catch(e){}
       try{ _applyStickyTo(tbl, 1); }catch(e){}
       if(!has && note){
         note.textContent = '陣営データはまだ登録されていません（運営が管理ページから反映すると表示されます）。';
