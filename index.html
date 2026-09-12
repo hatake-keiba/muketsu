@@ -979,7 +979,8 @@ input[type=number], input[type=text], textarea, select {
     .acc-btn .acc-ic{ width:14px; height:14px; transition:transform .18s; }
     #sim-section.collapsed > *:not(.bc-head){ display:none !important; }
     #sim-section.collapsed .acc-ic{ transform:rotate(-90deg); }
-    #sim-section.collapsed .bc-head{ margin-bottom:0 !important; padding-bottom:0 !important; border-bottom:none !important; }
+    #sim-section.collapsed .bc-head{ padding-bottom:20px !important; }
+    #sim-section.collapsed{ padding-bottom:0 !important; }
     /* 出馬表のズームバー */
     .zoom-bar{ display:flex; align-items:center; gap:6px; padding:6px 8px 8px; flex-wrap:wrap; }
     .zoom-lbl{ font-size:10px; font-weight:800; letter-spacing:.12em; color:#8a8a82; margin-right:2px; }
@@ -1485,7 +1486,7 @@ input[type=number], input[type=text], textarea, select {
   .ai-chat-log{ background:#fff; border:1px solid var(--mk-line); border-radius:10px; padding:10px;
     min-height:70px; max-height:320px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; }
   .ai-chat-empty{ font-size:11px; color:#a9b3a0; line-height:1.6; text-align:center; padding:12px 6px; }
-  .ai-summary-bar{ padding:6px 6px 0; }
+  .ai-summary-bar{ padding:12px 0 10px; }
   .ai-summary-btn{ width:100%; display:flex; align-items:center; justify-content:center; gap:6px; background:#1a1a1a; color:#ccf23f;
     border:none; border-radius:10px; padding:9px 10px; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:12px; cursor:pointer; }
   .ai-summary-btn .mk-ic{ width:14px; height:14px; }
