@@ -974,6 +974,44 @@ input[type=number], input[type=text], textarea, select {
     .pt-run .pr-top{ gap:5px; }
     .pr-none{ color:#c9c8c0; text-align:center; }
     #past-note:empty{ display:none; }
+    /* 展開想定のアコーディオン */
+    .acc-btn{ flex:0 0 auto; display:inline-flex; align-items:center; gap:4px; background:#fff; color:#1a1a1a; border:1.5px solid #1a1a1a; border-radius:999px; padding:6px 10px 6px 12px; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:12px; cursor:pointer; margin-left:8px; }
+    .acc-btn .acc-ic{ width:14px; height:14px; transition:transform .18s; }
+    #sim-section.collapsed > *:not(.bc-head){ display:none !important; }
+    #sim-section.collapsed .acc-ic{ transform:rotate(-90deg); }
+    #sim-section.collapsed .bc-head{ margin-bottom:0 !important; padding-bottom:0 !important; border-bottom:none !important; }
+    /* 出馬表のズームバー */
+    .zoom-bar{ display:flex; align-items:center; gap:6px; padding:6px 8px 8px; flex-wrap:wrap; }
+    .zoom-lbl{ font-size:10px; font-weight:800; letter-spacing:.12em; color:#8a8a82; margin-right:2px; }
+    .zoom-btn{ width:30px; height:28px; display:inline-flex; align-items:center; justify-content:center; background:#fff; border:1.5px solid #dcdad3; border-radius:8px; color:#1a1a1a; cursor:pointer; }
+    .zoom-btn .mk-ic{ width:14px; height:14px; }
+    .zoom-val{ min-width:44px; text-align:center; font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:12px; font-variant-numeric:tabular-nums; }
+    .zoom-fit{ background:#1a1a1a; color:#ccf23f; border:none; border-radius:999px; padding:6px 11px; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:11.5px; cursor:pointer; }
+    .zoom-fit + .zoom-fit{ background:#fff; color:#1a1a1a; border:1.5px solid #dcdad3; }
+    .pastwrap{ touch-action:pan-x pan-y pinch-zoom; }
+    #past-table{ transform-origin:0 0; }
+    /* ===== 最終見解レポート：メインと同じ紙色・黒・ライム ===== */
+    #reportModal{ background:#eceae3 !important; padding:0 !important; z-index:100000 !important; }
+    .report-page{ width:100% !important; max-width:960px !important; margin:0 auto !important; background:#eceae3 !important; border:none !important; box-shadow:none !important; border-radius:0 !important; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; color:#1a1a1a; }
+    .rep-header{ background:#1a1a1a !important; color:#fff !important; padding:14px 16px !important; border-radius:0 !important; position:sticky; top:0; z-index:5; }
+    #repHeaderTitle{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:15px; color:#ccf23f; line-height:1.3; }
+    .rep-header-btn{ background:#fff !important; color:#1a1a1a !important; border:1.5px solid #fff !important; border-radius:999px !important; padding:7px 12px !important; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700 !important; font-size:12px !important; display:inline-flex; align-items:center; gap:4px; }
+    .rep-header-btn .mk-ic{ width:14px; height:14px; }
+    .rep-back{ background:#ccf23f !important; color:#1a1a1a !important; border-color:#ccf23f !important; }
+    .rep-content{ background:#eceae3 !important; padding:14px 12px 28px !important; gap:14px !important; }
+    .rep-left, .rep-right{ background:#fff !important; border:2px solid #e0ded6 !important; border-radius:14px !important; padding:16px 14px !important; }
+    .rep-content .rep-eyebrow{ font-size:10px; font-weight:800; letter-spacing:.16em; color:#8a8a82; }
+    .rep-table th{ background:#f4f2ec !important; color:#1a1a1a !important; border:none !important; border-bottom:2px solid #1a1a1a !important; font-family:'Noto Sans JP',sans-serif; font-weight:900; }
+    .rep-table td{ border:none !important; border-bottom:1px solid #e8e6df !important; color:#1a1a1a !important; }
+    .rep-table-orange th{ border-bottom:2px solid #1a1a1a !important; }
+    .rep-box{ background:#faf9f5 !important; border:1.5px solid #e0ded6 !important; border-radius:12px !important; color:#1a1a1a !important; }
+    .rg-b1{ background:#1a1a1a !important; } .rg-b2{ background:#7a7a72 !important; } .rg-b3{ background:#ccf23f !important; }
+    .rg-b3 .rg-val{ color:#1a1a1a !important; }
+    .rep-mode{ display:inline-block; background:#1a1a1a; color:#ccf23f; font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:13px; padding:6px 12px; border-radius:8px; }
+    .rep-foot{ display:flex; justify-content:center; padding:6px 12px 30px; }
+    .rep-foot .rep-back{ border-radius:999px; padding:12px 22px; font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:14px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px; }
+    .rep-foot .rep-back .mk-ic{ width:16px; height:16px; }
+    @media (max-width:480px){ .rep-header{ flex-direction:column; align-items:flex-start !important; gap:8px !important; } }
 
     /* 馬名は内側で幅を切る（tdのmax-widthは表では効かない） */
     .data-table .td-name .nm-clip{ display:block; max-width:104px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
@@ -2007,12 +2045,13 @@ input[type=number], input[type=text], textarea, select {
       <!-- ①レース情報ここまで -->
 
       <!-- レースシミュレーター（RACE INFORMATIONと同じ大項目レイヤーの別カード） -->
-      <section class="big-card">
+      <section class="big-card" id="sim-section">
         <div class="bc-head" style="align-items:flex-start;">
           <div style="flex:1;min-width:0;">
             <span class="mk-eyebrow">RACE SIMULATOR</span>
             <span class="bc-title" style="display:block;font-size:22px;margin-top:2px;"><span class="mk-mark">展開想定</span></span>
           </div>
+          <button type="button" class="acc-btn" id="sim-acc-btn" onclick="toggleSimSection()" aria-expanded="true"><span class="acc-txt">閉じる</span><svg class="mk-ic acc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
         </div>
        <div class="simulator-wrapper">
         <div class="sub-head" style="display:none;">
@@ -2188,6 +2227,14 @@ input[type=number], input[type=text], textarea, select {
         <!-- 出馬表（過去5走） -->
         <div class="hd-pane" id="hd-pane-past">
           <div class="hd-note" id="past-note"></div>
+          <div class="zoom-bar" id="past-zoom-bar">
+            <span class="zoom-lbl">表示</span>
+            <button type="button" class="zoom-btn" onclick="setPastZoom(-0.1)" title="縮小"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg></button>
+            <span class="zoom-val" id="past-zoom-val">100%</span>
+            <button type="button" class="zoom-btn" onclick="setPastZoom(0.1)" title="拡大"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+            <button type="button" class="zoom-fit" onclick="fitPastZoom()">5走を1画面に</button>
+            <button type="button" class="zoom-fit" onclick="setPastZoom(null)">100%</button>
+          </div>
           <div class="pastwrap"><table class="data-table past-table" id="past-table"><thead></thead><tbody></tbody></table></div>
         </div>
 
@@ -2359,7 +2406,8 @@ input[type=number], input[type=text], textarea, select {
         <div class="report-page" id="reportPageArea" style="width: 900px; max-width: none; margin: 0 auto; background: #ffffff; border-radius: 8px;">
             <div class="rep-header" id="repHeader">
                 <div id="repHeaderTitle">プラン概要補足</div>
-                <div style="display: flex; gap: 8px;">
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button class="rep-header-btn rep-back" onclick="closeFinalReport()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg> メインページに戻る</button>
                     <button class="rep-header-btn" style="color:#2c3e50;" onclick="copyReportText()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M9 10h6M9 14h4"/></svg> コピー</button>
                     <button class="rep-header-btn" style="color:#2c3e50;" onclick="window.print()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="4" y="9" width="16" height="7" rx="2"/><path d="M8 16h8v5H8z"/></svg> 印刷/PDF</button>
                     <!-- ▼ 閉じる時に元のスマホサイズに戻す処理を追加 ▼ -->
@@ -2367,6 +2415,7 @@ input[type=number], input[type=text], textarea, select {
                 </div>
             </div>
             <div class="rep-content" id="reportContent"></div>
+            <div class="rep-foot"><button class="rep-back" onclick="closeFinalReport()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg> メインページに戻る</button></div>
         </div>
     </div>
    
@@ -2549,13 +2598,15 @@ input[type=number], input[type=text], textarea, select {
         <div class="report-page" id="reportPageArea">
             <div class="rep-header" id="repHeader">
                 <div id="repHeaderTitle">プラン概要補足</div>
-                <div style="display: flex; gap: 8px;">
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button class="rep-header-btn rep-back" onclick="closeFinalReport()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg> メインページに戻る</button>
                     <button class="rep-header-btn" style="color:#2c3e50;" onclick="copyReportText()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M9 10h6M9 14h4"/></svg> コピー</button>
                     <button class="rep-header-btn" style="color:#2c3e50;" onclick="window.print()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="4" y="9" width="16" height="7" rx="2"/><path d="M8 16h8v5H8z"/></svg> 印刷/PDF</button>
                     <button class="rep-header-btn" style="color:#e74c3c; background:#fff;" onclick="document.getElementById('reportModal').style.display='none'"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg> 閉じる</button>
                 </div>
             </div>
             <div class="rep-content" id="reportContent"></div>
+            <div class="rep-foot"><button class="rep-back" onclick="closeFinalReport()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg> メインページに戻る</button></div>
         </div>
     </div>
     <!-- ▲▲ ここまで ▲▲ -->
@@ -3594,6 +3645,40 @@ function _unusedAutoAssignMarks(rId = currentRaceId) {
     }
 
     // 印・番・単勝・複勝・馬名（列0〜4）を左固定。可視列だけで累積leftを計算。
+    /* ===== 展開想定のアコーディオン ===== */
+    function toggleSimSection(force){
+      const sec = document.getElementById('sim-section'); if(!sec) return;
+      const open = (typeof force === 'boolean') ? force : sec.classList.contains('collapsed');
+      sec.classList.toggle('collapsed', !open);
+      const btn = document.getElementById('sim-acc-btn');
+      if(btn){ btn.setAttribute('aria-expanded', open ? 'true' : 'false'); const t = btn.querySelector('.acc-txt'); if(t) t.textContent = open ? '閉じる' : '開く'; }
+      try{ localStorage.setItem('muketsu_sim_open', open ? '1' : '0'); }catch(e){}
+      if(open){ try{ if(typeof adjustCanvasSize === 'function') adjustCanvasSize(); window.dispatchEvent(new Event('resize')); }catch(e){} }
+    }
+    (function(){ try{ if(localStorage.getItem('muketsu_sim_open') === '0') toggleSimSection(false); }catch(e){} })();
+
+    /* ===== 出馬表の拡大縮小（CSS zoom。固定列もそのまま効く） ===== */
+    let _pastZoom = 1;
+    try{ const z = parseFloat(localStorage.getItem('muketsu_past_zoom')); if(!isNaN(z) && z >= 0.3 && z <= 1.6) _pastZoom = z; }catch(e){}
+    function _applyPastZoom(){
+      const t = document.getElementById('past-table'); if(!t) return;
+      t.style.zoom = String(_pastZoom);
+      const v = document.getElementById('past-zoom-val'); if(v) v.textContent = Math.round(_pastZoom * 100) + '%';
+      try{ localStorage.setItem('muketsu_past_zoom', String(_pastZoom)); }catch(e){}
+      try{ applyStickyColumns(); }catch(e){}
+    }
+    function setPastZoom(delta){
+      _pastZoom = (delta === null) ? 1 : Math.min(1.6, Math.max(0.3, Math.round((_pastZoom + delta) * 100) / 100));
+      _applyPastZoom();
+    }
+    // 固定列＋5走が横スクロール無しで収まる倍率にする
+    function fitPastZoom(){
+      const t = document.getElementById('past-table'); const wrap = t && t.closest('.pastwrap'); if(!t || !wrap) return;
+      t.style.zoom = '1';
+      const need = t.scrollWidth, have = wrap.clientWidth;
+      if(need > 0 && have > 0) _pastZoom = Math.min(1, Math.max(0.3, Math.floor((have / need) * 100) / 100));
+      _applyPastZoom();
+    }
     function applyStickyColumns(){
       // 各馬評価は「印,番,単勝,(複勝),馬名」=4まで、出馬表・コース陣営は「印,番,単勝,馬名」=3まで
       [['main-data-table',4],['past-table',1],['camp-table',1]].forEach(([id,until]) => {
@@ -3618,7 +3703,7 @@ function _unusedAutoAssignMarks(rId = currentRaceId) {
         th.classList.add('sticky-col');
         th.style.left = left + 'px';
         lastStickyColIdx = c;
-        left += th.getBoundingClientRect().width;
+        left += th.offsetWidth;
       }
       // 最後の固定列に区切り線
       headCells.forEach((th,i)=> th.classList.toggle('sticky-last', i===lastStickyColIdx));
@@ -3632,7 +3717,7 @@ function _unusedAutoAssignMarks(rId = currentRaceId) {
           td.classList.add('sticky-col');
           td.style.left = l + 'px';
           td.classList.toggle('sticky-last', c===lastStickyColIdx);
-          l += th.getBoundingClientRect().width;
+          l += th.offsetWidth;
         }
       });
     }
@@ -7194,6 +7279,7 @@ function autoGenerateTickets(mode = 'win') {
         body += `<tr class="${scr.trim()}">${_leftCells(h)}${tds}</tr>`;
       });
       tbl.querySelector('tbody').innerHTML = body;
+      try{ _applyPastZoom(); }catch(e){}
       try{ _applyStickyTo(tbl, 1); }catch(e){}
     }
 
@@ -9016,15 +9102,14 @@ window.applyVenueBiasFromModal = function() {
 // ▼▼ 追加：レポート出力用の処理 ▼▼
 const WAKU_COLORS = { 1:'#ffffff', 2:'#333333', 3:'#e74c3c', 4:'#3498db', 5:'#f1c40f', 6:'#2ecc71', 7:'#e67e22', 8:'#ff9ff3' };
 
+function closeFinalReport(){
+  const m = document.getElementById('reportModal'); if(m) m.style.display = 'none';
+  document.body.style.overflow = '';
+  try{ window.scrollTo({ top: (window._repScrollY || 0), behavior: 'auto' }); }catch(e){}
+}
 function openFinalReport() {
-  // ▼▼ 追加：開いた時だけ画面を900pxにして自動縮小(ズームアウト)させる ▼▼
-    let vp = document.querySelector('meta[name="viewport"]');
-    if(vp) {
-        let screenW = window.innerWidth || window.outerWidth || 375;
-        let scale = screenW / 900; 
-        vp.setAttribute('content', 'width=900, initial-scale=' + scale + ', minimum-scale=' + scale + ', maximum-scale=3.0, user-scalable=yes');
-    }
-    // ▲▲ 追加ここまで ▲▲
+    // メインと同じ幅・配色で表示する（拡大縮小のハックはしない）
+    window._repScrollY = window.scrollY || 0;
     if (!currentRaceId) return;
 
     // ▼▼ 追加：レポートを開く直前に「確定(連/複)」の計算を自動で実行する ▼▼
@@ -9070,9 +9155,9 @@ function openFinalReport() {
         // ★期待値に応じた印を設定
         let markHtml = '-';
         if (ev >= 1.5) {
-            markHtml = '<span style="color:#e53935; font-size:18px;">◎</span>'; // 赤
+            markHtml = '<span style="color:#1a1a1a; font-size:18px; font-weight:900;">◎</span>';
         } else if (ev >= 1.2) {
-            markHtml = '<span style="color:#fb8c00; font-size:18px;">○</span>'; // オレンジ
+            markHtml = '<span style="color:#41413c; font-size:18px; font-weight:900;">○</span>';
         } else if (ev >= 1.0) {
             markHtml = '<span style="color:#1a1a1a; font-size:18px;">△</span>'; // 緑
         } else if (isLowEv) {
@@ -9112,7 +9197,7 @@ function openFinalReport() {
                 <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${h.name}</span>
             </div>
             <div class="rep-g-bars">
-                <div class="rg-bar rg-b1" style="width:${Math.min(h.winRate||0, 100)}%;"><span class="rg-val" style="color:#fff; left:4px;">${(h.winRate||0).toFixed(1)}%</span></div>
+                <div class="rg-bar rg-b1" style="width:${Math.min(h.winRate||0, 100)}%;"><span class="rg-val" style="color:#1a1a1a; right:-30px;">${(h.winRate||0).toFixed(1)}%</span></div>
                 <div class="rg-bar rg-b2" style="width:${Math.min(rentai, 100)}%;"><span class="rg-val" style="color:#333; right:-30px;">${rentai.toFixed(1)}%</span></div>
                 <div class="rg-bar rg-b3" style="width:${Math.min(fukusho, 100)}%;"><span class="rg-val" style="color:#333; right:-30px;">${fukusho.toFixed(1)}%</span></div>
             </div>
@@ -9198,7 +9283,7 @@ function openFinalReport() {
             </div>
             
             <!-- ▼▼ 変更箇所：青色のバッジ風マーカーで合成値を強調 ▼▼ -->
-            <div style="font-size:15px; font-weight:bold; margin-bottom:15px; background: #3b82f6; color: #ffffff; padding: 8px 14px; border-radius: 4px; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+            <div style="font-size:15px; font-weight:bold; margin-bottom:15px; background: #1a1a1a; color: #ccf23f; padding: 8px 14px; border-radius: 8px; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
                 合成的中率: ${(tProb*100).toFixed(1)}% 
                 <span style="margin: 0 6px; opacity: 0.6;">|</span> 
                 合成オッズ: ${gOdds>0?gOdds.toFixed(1):'-'}倍 
