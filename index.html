@@ -10507,6 +10507,18 @@ window.closeDetailedData2Modal = function() {
     if(saved && (!day || saved.sig === sig)){
       racesData = saved.races; window._mkCardSig = saved.sig || sig; window._mkCurDay = date;
       currentRaceId = (saved.currentRaceId && racesData[saved.currentRaceId]) ? saved.currentRaceId : Object.keys(racesData)[0];
+      // 端末保存に近走(_pastRuns)が無いレースがあれば、日付ファイルの近走で埋める
+      try{
+        if(day && Array.isArray(day.races)){
+          day.races.forEach(r => {
+            const race = racesData[r.id]; if(!race) return;
+            if(!(race._pastRuns && race._pastRuns.byName && Object.keys(race._pastRuns.byName).length)){
+              race._pastRuns = _buildPastStore(r.horses, (day.builtAt||'') + ' netkeiba');
+            }
+            if(!race.nkRaceName && r.cls) race.nkRaceName = r.cls;
+          });
+        }
+      }catch(e){}
       // 端末保存が陣営データ(campData)を持たない版のことがあるので、埋め込みを馬名で重ね直す（同名以外には付かない）
       try{
         const lack = Object.values(racesData).some(r => (r.horses||[]).length && !(r.horses||[]).some(h => h.campData));
@@ -10531,7 +10543,7 @@ window.closeDetailedData2Modal = function() {
       if(!Object.keys(racesData||{}).length){ if(!opts.silent) mkToast('その日の出走馬データはまだありません。'); return false; }
     }
     try{ localStorage.setItem(MK_DAY_KEY, date); }catch(e){}
-    _pastAutoTried = false;
+    _pastAutoTried = false; _pastGasMissing = false;
     try{ if(typeof mkRevealTool === 'function') mkRevealTool(); }catch(e){}
     try{ mkUpdateDayBar(); renderDateList(); }catch(e){}
     return true;
