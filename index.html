@@ -436,6 +436,10 @@
     
     .oa-textarea-memo { width: 100%; height: 45px; font-size: 11px; padding: 6px; border: 1px solid #4a4a8a; border-radius: 4px; background: #0d0d1e; color: #fff; resize: vertical; font-family: inherit; }
     .bar-ev-high { background: linear-gradient(90deg, #b8a06a, #cbb583) !important; box-shadow: none !important; }
+    /* 確定後：単勝期待値1.0以上は蛍光マーカー（馬名・単勝・期待値） */
+    .ev-val.ev-hot{ background:#ccf23f; color:#1a1a1a !important; font-weight:900 !important; padding:0 5px; border-radius:4px; }
+    .horse-row.ev-hot-row .hr-name-label{ background:linear-gradient(transparent 50%, #ccf23f 50%); padding:0 3px; }
+    .horse-row.ev-hot-row .hr-odds{ background:#ccf23f; color:#1a1a1a !important; padding:0 4px; border-radius:4px; display:inline-block; }
     .koso-match { background-color: #fff9c4 !important; border: 1px solid #fbc02d !important; border-radius: 3px; }
     .koso-starred { background-color: #ffcc80 !important; box-shadow: inset 0 0 0 2px #ff9800 !important; }
     
@@ -967,7 +971,8 @@ input[type=number], input[type=text], textarea, select {
     #hd-pane-eval .data-table tbody tr, .past-table tbody tr, .camp-table tbody tr{ height:var(--hd-row); max-height:var(--hd-row); }
     #hd-pane-eval .data-table tbody td, .camp-table tbody td{ vertical-align:middle !important; }
     .past-table td{ vertical-align:middle; }
-    .past-table .pt-run{ padding:0 !important; height:var(--hd-row); overflow:hidden; }
+    .past-table .pt-run{ padding:0 !important; height:var(--hd-row); overflow:hidden; vertical-align:top !important; }
+    .past-table td.pt-run .pr{ height:100%; }
     .pt-run .pr{ line-height:1.12; gap:1px; padding:0 9px 4px; }
     .pt-run .pr-rank{ font-size:12px; min-width:22px; padding:0 3px; }
     .pt-run .pr-when, .pt-run .pr-vs{ font-size:9.5px; }
@@ -6152,6 +6157,9 @@ window.drawOaChartModal = function() {
         let barWidthPct, barStyle;
         let tOdds = parseFloat(h.odds);
         let isHighEv = false;
+        // 単勝期待値 = 勝率(%)/100 × 単勝オッズ。確定後に1.0以上なら蛍光マーカー
+        let _ev = (!isNaN(tOdds) && tOdds > 0 && (h.winRate || 0) > 0) ? (tOdds * h.winRate / 100) : 0;
+        if(isHarvilleCalculated && _ev >= 1.0 && !h.isScratched) isHighEv = true;
 
         if(isHarvilleCalculated) {
           barWidthPct = Math.min((h.winRate / _barDenom) * 100, 100);
@@ -6189,12 +6197,12 @@ window.drawOaChartModal = function() {
           const renritsu = h.top2Prob !== undefined ? h.top2Prob.toFixed(0) : '-';
           const fukuR = h.top3Prob !== undefined ? h.top3Prob.toFixed(0) : '-';
           const oL = !isNaN(parseFloat(h.odds)) ? parseFloat(h.odds).toFixed(1) : '--';
-          let evColor = isHighEv ? '#d32f2f' : '#1a1a1a';
+          let evColor = '#1a1a1a';
           
           // ★変更点1: バーの右側に配置するため、flex-shrink:0 を付けて潰れないようにし、テキストを少しコンパクト化
                   confirmHtml = `<div style="display:flex; align-items:center; gap:5px; margin-left:18px; font-size:10px; background:#f4f2ec; border:1px solid #e8e6df; border-radius:8px; padding:3px 8px; white-space:nowrap; flex-shrink:0;">
             <span style="color:#3d3d3a;">単${oL}</span>
-            <span style="color:${evColor}; font-weight:bold;">期${evValue||'-'}</span>
+            <span class="ev-val${isHighEv ? ' ev-hot' : ''}" style="color:${evColor}; font-weight:bold;">期${evValue||'-'}</span>
             <span style="color:#94a3b8; font-size:9px; border-left:1px solid #dcdad3; padding-left:4px;">勝${winR.toFixed(0)} 連${renritsu} 複${fukuR}</span>
           </div>`;
         }
@@ -6225,7 +6233,7 @@ window.drawOaChartModal = function() {
         }
 
      const rowEl = document.createElement('div');
-        rowEl.className = 'horse-row' + (h.isScratched ? ' row-scratched' : '');
+        rowEl.className = 'horse-row' + (h.isScratched ? ' row-scratched' : '') + (isHighEv ? ' ev-hot-row' : '');
         if(isHarvilleCalculated) {
           // ★変更点2: [印・馬番] ＋ [バーグラフ] ＋ [情報テキスト] の順番に入れ替え
           rowEl.innerHTML = leftPart + barAndTrack + confirmHtml;
