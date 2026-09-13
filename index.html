@@ -983,6 +983,24 @@ input[type=number], input[type=text], textarea, select {
     .acc-btn{ flex:0 0 auto; display:inline-flex; align-items:center; gap:4px; background:#fff; color:#1a1a1a; border:1.5px solid #1a1a1a; border-radius:999px; padding:6px 10px 6px 12px; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:12px; cursor:pointer; margin-left:8px; }
     .acc-btn .acc-ic{ width:14px; height:14px; transition:transform .18s; }
     .acc-row{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 12px 2px; }
+    #memo-card.collapsed #memo-body{ display:none !important; }
+    #memo-card.collapsed .acc-ic{ transform:rotate(-90deg); }
+    #memo-card.collapsed .sub-head{ margin-bottom:0 !important; }
+    /* 固定セルの騎手 */
+    .hm-jk{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:10px; color:#41413c; line-height:1.15; margin-top:1px; white-space:nowrap; }
+    /* 確定後の3本線（勝率・連対率・複勝率） */
+    .tri-col{ flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:2px; margin-left:4px; padding:2px 26px 2px 0; }
+    .ev-badge{ flex:0 0 auto; margin-left:4px; font-size:11px; font-weight:800; color:#1a1a1a; font-variant-numeric:tabular-nums; }
+    .ev-badge .ev-val{ display:inline-block; padding:2px 6px; border-radius:6px; background:#f4f2ec; border:1px solid #e8e6df; }
+    .ev-badge .ev-val.ev-hot{ background:#ccf23f; border-color:#ccf23f; }
+    .tri-bar{ position:relative; height:8px; border-radius:2px; min-width:2px; }
+    .tri-bar span{ position:absolute; left:calc(100% + 4px); top:-2px; font-size:9px; font-weight:800; color:#41413c; line-height:1; white-space:nowrap; font-variant-numeric:tabular-nums; }
+    .tri-1{ background:#1a1a1a; } .tri-2{ background:#7a7a72; } .tri-3{ background:#ccf23f; }
+    .graph-head .lg{ display:inline-block; width:10px; height:6px; border-radius:2px; vertical-align:middle; margin:0 2px 0 4px; }
+    .graph-head .lg1{ background:#1a1a1a; } .graph-head .lg2{ background:#7a7a72; } .graph-head .lg3{ background:#ccf23f; }
+    .graph-head .gh-bar{ white-space:nowrap; font-size:10px; }
+    .tri-1 span{ color:#1a1a1a; font-weight:900; }
+    .horse-row.ev-hot-row .tri-1{ background:#1a1a1a; box-shadow:0 0 0 2px #ccf23f; }
     .acc-ttl{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:12px; color:#41413c; }
     #pace-track-area.collapsed{ display:none !important; }
     #pace-acc-row.collapsed .acc-ic{ transform:rotate(-90deg); }
@@ -2159,14 +2177,17 @@ input[type=number], input[type=text], textarea, select {
           </div>
         </div>
       <!-- ▼ メモ（localStorage永続化・リロードで消えない） ▼ -->
-      <div class="memo-card">
-        <div class="sub-head">
+      <div class="memo-card" id="memo-card">
+        <div class="sub-head" style="justify-content:space-between;">
           <span class="sub-head-ttl">メモ</span>
           <button id="ai-mic-btn" style="display:none;" onclick="toggleAIMic()"></button>
+          <button type="button" class="acc-btn" id="memo-acc-btn" onclick="toggleMemoCard()" aria-expanded="true"><span class="acc-txt">閉じる</span><svg class="mk-ic acc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
         </div>
+        <div id="memo-body">
         <textarea id="ai-pace-comment" class="memo-card-textarea"
           placeholder="自由記入（自動保存）"
           oninput="saveAIComment(this.value)"></textarea>
+        </div>
       </div>
       <!-- ▼ AI相談（壁打ち）スロット：課金者のみアクティベート・未課金はグレーアウト ▼ -->
       <div class="ai-talk-slot" id="ai-talk-slot">
@@ -3666,6 +3687,15 @@ function _unusedAutoAssignMarks(rId = currentRaceId) {
       if(open){ try{ if(typeof adjustCanvasSize === 'function') adjustCanvasSize(); if(typeof renderPaceBoard === 'function') renderPaceBoard(); window.dispatchEvent(new Event('resize')); }catch(e){} }
     }
     (function(){ try{ if(localStorage.getItem('muketsu_sim_open') === '0') toggleSimSection(false); }catch(e){} })();
+    function toggleMemoCard(force){
+      const card = document.getElementById('memo-card'); if(!card) return;
+      const open = (typeof force === 'boolean') ? force : card.classList.contains('collapsed');
+      card.classList.toggle('collapsed', !open);
+      const btn = document.getElementById('memo-acc-btn');
+      if(btn){ btn.setAttribute('aria-expanded', open ? 'true' : 'false'); const t = btn.querySelector('.acc-txt'); if(t) t.textContent = open ? '閉じる' : '開く'; }
+      try{ localStorage.setItem('muketsu_memo_open', open ? '1' : '0'); }catch(e){}
+    }
+    (function(){ try{ if(localStorage.getItem('muketsu_memo_open') === '0') toggleMemoCard(false); }catch(e){} })();
 
     /* ===== 出走馬データ3タブの拡大縮小（CSS zoom。固定列もそのまま効く。倍率はタブごとに記憶） ===== */
     const _HD_TABLES = { past:'past-table', eval:'main-data-table', camp:'camp-table' };
@@ -6093,6 +6123,8 @@ window.drawOaChartModal = function() {
       // バーの最大値＝レース内の最高勝率（少し余白）。馬毎の差が見えるよう相対スケール化
       const _maxWinRate = Math.max(1, ...race.horses.map(h => h.winRate || 0));
       const _barDenom = Math.max(_maxWinRate * 1.08, 5); // 最上位が約93%まで伸びる
+      // 確定後の3本線用：複勝率の最大値を列幅いっぱいにする
+      const _tripleDenom = Math.max(5, ...((racesData[currentRaceId] || {}).horses || []).map(x => Math.max(x.top3Prob || 0, x.top2Prob || 0, x.winRate || 0))) * 1.06;
 
       let realCoreMap = {};
       const validOddsHorses = [...race.horses]
@@ -6202,11 +6234,7 @@ window.drawOaChartModal = function() {
           let evColor = '#1a1a1a';
           
           // ★変更点1: バーの右側に配置するため、flex-shrink:0 を付けて潰れないようにし、テキストを少しコンパクト化
-                  confirmHtml = `<div style="display:flex; align-items:center; gap:5px; margin-left:18px; font-size:10px; background:#f4f2ec; border:1px solid #e8e6df; border-radius:8px; padding:3px 8px; white-space:nowrap; flex-shrink:0;">
-            <span style="color:#3d3d3a;">単${oL}</span>
-            <span class="ev-val${isHighEv ? ' ev-hot' : ''}" style="color:${evColor}; font-weight:bold;">期${evValue||'-'}</span>
-            <span style="color:#94a3b8; font-size:9px; border-left:1px solid #dcdad3; padding-left:4px;">勝${winR.toFixed(0)} 連${renritsu} 複${fukuR}</span>
-          </div>`;
+                  confirmHtml = `<div class="ev-badge"><span class="ev-val${isHighEv ? ' ev-hot' : ''}">期${evValue||'-'}</span></div>`;
         }
 
         // バー本体のドラッグ操作は無効化（誤操作防止）。勝率変更は右の◀▶・数値入力のみ。
@@ -6237,8 +6265,13 @@ window.drawOaChartModal = function() {
      const rowEl = document.createElement('div');
         rowEl.className = 'horse-row' + (h.isScratched ? ' row-scratched' : '') + (isHighEv ? ' ev-hot-row' : '');
         if(isHarvilleCalculated) {
-          // ★変更点2: [印・馬番] ＋ [バーグラフ] ＋ [情報テキスト] の順番に入れ替え
-          rowEl.innerHTML = leftPart + barAndTrack + confirmHtml;
+          // 確定後：勝率バーは残し、その下に連対率・複勝率を重ねた3本線。右に期待値バッジ
+          const _p1 = Math.max(0, Math.min(100, h.winRate || 0));
+          const _p2 = Math.max(0, Math.min(100, h.top2Prob || 0));
+          const _p3 = Math.max(0, Math.min(100, h.top3Prob || 0));
+          const _den = Math.max(1, _tripleDenom || 100);
+          const tri = `<div class="tri-col"><div class="tri-bar tri-1" style="width:${(_p1/_den*100).toFixed(1)}%"><span>${_p1.toFixed(1)}</span></div><div class="tri-bar tri-2" style="width:${(_p2/_den*100).toFixed(1)}%"><span>${_p2.toFixed(0)}</span></div><div class="tri-bar tri-3" style="width:${(_p3/_den*100).toFixed(1)}%"><span>${_p3.toFixed(0)}</span></div></div>`;
+          rowEl.innerHTML = leftPart + tri + confirmHtml;
         } else {
           // ▼▼ 変更箇所：「勝」や「%」の文字を外し、数値の左右に◀▶ボタンを配置 ▼▼
           // ▼▼ 変更箇所：「勝」の文字を外し、数値と%の左右に◀▶ボタンを配置 ▼▼
@@ -6250,6 +6283,12 @@ window.drawOaChartModal = function() {
 
       const tEl = document.getElementById('total-val');
       if(tEl) tEl.textContent = totalRate.toFixed(1);
+      // 見出し：確定後は3本線の凡例と期待値に切り替える
+      try{
+        const gb = document.querySelector('.graph-head .gh-bar'), gv = document.querySelector('.graph-head .gh-val');
+        if(gb) gb.innerHTML = isHarvilleCalculated ? '<span class="lg lg1"></span>勝率 <span class="lg lg2"></span>連対率 <span class="lg lg3"></span>複勝率' : '勝率（バー）';
+        if(gv) gv.textContent = isHarvilleCalculated ? '単勝期待値' : '勝率%';
+      }catch(e){}
     }
 
     // ▼▼ ここから追加：グラフの勝率を◀▶ボタンで1%ずつ微調整する関数 ▼▼
@@ -7239,10 +7278,12 @@ function autoGenerateTickets(mode = 'win') {
       const odTxt = isNaN(od) ? '-' : od.toFixed(1);
       const fav = (!isNaN(od) && od >= 1.0 && od <= 9.9) ? ' fav' : '';
       const star = h.isStarred ? ' name-starred' : '';
+      const jk = (h.jockey && h.jockey !== '除外') ? _escapeHtml(String(h.jockey).replace(/\s+/g,'')) : '';
       return `<td class="td-name hm-cell${star}" onclick="openHorseModal(${h.num})">`
         + `<div class="hm-top"><span class="waku-box waku-${h.waku}">${h.num}</span></div>`
         + `<div class="hm-nm">${_escapeHtml(h.name||'')}</div>`
-        + `<div class="hm-odds${fav}">${odTxt}</div></td>`;
+        + `<div class="hm-odds${fav}">${odTxt === '-' ? '-' : odTxt + '倍'}</div>`
+        + (jk ? `<div class="hm-jk">${jk}</div>` : '') + `</td>`;
     }
     function _leftCells(h){
       return `<td>${markSelectHtml(h)}</td>` + _horseCellHtml(h);
