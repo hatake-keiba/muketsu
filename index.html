@@ -4826,14 +4826,16 @@ function buildNavigation() {
       const titleEl = document.getElementById('race-title-text');
 
       const timeDisp = r.departureTime ? ` [${fmtPostTime(r.departureTime)}]` : '';
-      if(titleEl) titleEl.textContent = raceId + timeDisp + (r.info ? ` ${r.info}` : '') + (r.raceName ? ` ${r.raceName}` : '');
+      // レース名があるレース（重賞・特別）はnetkeibaのレース名を出す。条件戦はクラス表記のまま
+      const _rn = (r.nkRaceName && !/(未勝利|新馬|[1-3]勝クラス|^OP$|オープン$)/.test(r.nkRaceName)) ? r.nkRaceName : (r.raceName || '');
+      if(titleEl) titleEl.textContent = raceId + timeDisp + (r.info ? ` ${r.info}` : '') + (_rn ? ` ${_rn}` : '');
       // レース情報ヘッダ（別枠）にも反映
       var _rit=document.getElementById('race-info-title');
       if(_rit){
         const _esc = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');
         // 1行目：会場＋R（例 新潟1R） / 2行目：距離＋レース名にマーカー（例 芝1600m 未勝利）
         const _line1 = (r.basho||'') + raceId.replace(/\D/g,'') + 'R';
-        const _line2 = ((r.info||'') + (r.raceName?(' '+r.raceName):'')).trim();
+        const _line2 = ((r.info||'') + (_rn?(' '+_rn):'')).trim();
         _rit.innerHTML = '<span style="display:block;">'+_esc(_line1)+'</span>'
           + (_line2 ? '<span class="mk-mark" style="display:inline-block;font-size:20px;font-weight:800;margin-top:4px;">'+_esc(_line2)+'</span>' : '');
       }
@@ -7149,6 +7151,7 @@ function autoGenerateTickets(mode = 'win') {
     }
     async function loadPastRuns(silent){
       if(!currentRaceId){ if(!silent) mkToast('レースを選択してください'); return; }
+      const rid0 = currentRaceId;   // 取得中に別レースへ切り替えても、結果は開始時のレースに入れる
       const note = document.getElementById('past-note');
       const btn = document.getElementById('past-sync-btn');
       const bak = btn ? btn.innerHTML : '';
@@ -7158,18 +7161,20 @@ function autoGenerateTickets(mode = 'win') {
       if(note) note.innerHTML = '<span class="mk-spin"></span> 近走と最新オッズを取得しています…';
       try{
         // レースIDを特定（オッズ更新と同じ探索）
-        const raceId12 = await _resolveNetkeibaRaceId();
+        const raceId12 = await _resolveNetkeibaRaceId(rid0);
         if(!raceId12) throw new Error('直近の開催日にこのレースが見つかりません。\n（近走・オッズは前日〜当日に取得できます）');
         let data = await callGAS(`${gasUrl}?action=pastruns&race_id=${raceId12}`);
         // GASが古いと「不明なアクション」。ブラウザから直接netkeibaは読めない(CORS)ので、
         // 埋め込みの近走（試験用）があればそれを使う。
         if(!data || !data.ok){
-          const emb = (window._mkPastEmbed && window._mkPastEmbed[currentRaceId]) || null;
+          const emb = (window._mkPastEmbed && window._mkPastEmbed[rid0]) || null;
           if(emb){ data = { ok:true, horses: emb.horses, updatedAt: emb.updatedAt || '' }; }
         }
         if(!data || !data.ok) throw new Error((data && data.error) || '近走を取得できませんでした');
-        racesData[currentRaceId]._pastRuns = _buildPastStore(data.horses, data.updatedAt);
+        if(!racesData[rid0]) return;
+        racesData[rid0]._pastRuns = _buildPastStore(data.horses, data.updatedAt);
         try{ persistRacesNow(); }catch(e){}
+        if(currentRaceId !== rid0) return;   // 別レースを見ているなら画面は触らない
         renderPastTable();
         if(note) note.textContent = `近走を更新しました（netkeiba ${data.updatedAt||''}）。続けてオッズも取り込みます。`;
         // 同じ流れでオッズも最新にする
@@ -7194,9 +7199,9 @@ function autoGenerateTickets(mode = 'win') {
     }
 
     /* オッズ更新と同じ手順で netkeiba のレースIDを求める */
-    async function _resolveNetkeibaRaceId(){
+    async function _resolveNetkeibaRaceId(raceKey){
       let gasUrl = (typeof MUKETSU_GAS_URL !== 'undefined' ? MUKETSU_GAS_URL : '').trim();
-      const idMatch = currentRaceId.match(/^(.)(\d+)$/);
+      const idMatch = String(raceKey || currentRaceId).match(/^(.)(\d+)$/);
       if(!idMatch) return null;
       const placeChar = idMatch[1], raceNo = parseInt(idMatch[2]);
       const PLACE_CHAR_TO_CODE = {'札':'01','函':'02','福':'03','新':'04','東':'05','中':'06','名':'07','京':'08','阪':'09','小':'10'};
@@ -7467,15 +7472,16 @@ function autoGenerateTickets(mode = 'win') {
     }
 
     async function syncOddsFromGAS() {
+      const _ridOdds = currentRaceId;   // 取得中に別レースへ切り替えても、結果は開始時のレースに入れる
       // GAS URL：埋め込み定数を最優先。次に入力欄→localStorage（管理者上書き用）
       let gasUrl = (typeof MUKETSU_GAS_URL !== 'undefined' ? MUKETSU_GAS_URL : '').trim();
       if(!gasUrl){ gasUrl = (document.getElementById('api-url-input')?.value || '').trim(); }
       if(!gasUrl){ try{ gasUrl = (localStorage.getItem('keiba_gas_url')||'').trim(); }catch(e){} }
       const statusEl = document.getElementById('sync-status');
       if(!gasUrl || !gasUrl.includes('script.google.com')) { alert('GAS URLが未設定です。\n（管理者：ブラウザのコンソールで setGasUrl(\'あなたのGAS URL\') を実行してください）'); return; }
-      if(!currentRaceId) { alert('レースを選択してください'); return; }
-      const idMatch = currentRaceId.match(/^(.)(\d+)$/);
-      if(!idMatch) { alert('レースIDの形式が正しくありません: ' + currentRaceId); return; }
+      if(!_ridOdds) { alert('レースを選択してください'); return; }
+      const idMatch = _ridOdds.match(/^(.)(\d+)$/);
+      if(!idMatch) { alert('レースIDの形式が正しくありません: ' + _ridOdds); return; }
       
       const placeChar = idMatch[1], raceNo = parseInt(idMatch[2]);
       if(statusEl) { statusEl.innerHTML = '<span class="mk-spin"></span>取得中…'; statusEl.style.color = '#e65100'; }
@@ -7516,14 +7522,14 @@ function autoGenerateTickets(mode = 'win') {
           }
           if(found){ raceId12 = found; usedDate = dateStr; break; }
         }
-        if(!raceId12) throw new Error(`直近の開催日に ${currentRaceId} が見つかりません。\n（枠順・オッズはレース当日〜前日にnetkeibaへ掲載されます）`);
+        if(!raceId12) throw new Error(`直近の開催日に ${_ridOdds} が見つかりません。\n（枠順・オッズはレース当日〜前日にnetkeibaへ掲載されます）`);
         
         const oddsData = await callGAS(`${gasUrl}?action=odds&race_id=${raceId12}&type=1`);
         if(!oddsData.ok) throw new Error(oddsData.error || 'オッズ取得失敗');
         
         if(oddsData.tanList && Array.isArray(oddsData.tanList)) {
           oddsData.tanList.forEach(item => {
-            const h = racesData[currentRaceId].horses.find(x => x.num === item.num);
+            const h = racesData[_ridOdds].horses.find(x => x.num === item.num);
             if(h) {
               h.odds = parseFloat(item.odds) || h.odds;
               // 一度除外扱いになった馬が復活した場合は元に戻す
@@ -7534,10 +7540,10 @@ function autoGenerateTickets(mode = 'win') {
         // ▼ 除外馬の自動反映：オッズが出ない馬＝出走取消/競走除外
         let scratchedNow = [];
         if(oddsData.excluded && Array.isArray(oddsData.excluded)
-           && oddsData.excluded.length * 2 < racesData[currentRaceId].horses.length) {
+           && oddsData.excluded.length * 2 < racesData[_ridOdds].horses.length) {
           scratchedNow = oddsData.excluded.slice();
           oddsData.excluded.forEach(num => {
-            const h = racesData[currentRaceId].horses.find(x => x.num === num);
+            const h = racesData[_ridOdds].horses.find(x => x.num === num);
             if(h && !h.isScratched) {
               h._jockeyBak = h.jockey;   // 復活したとき戻せるよう控えておく
               h.isScratched = true;
@@ -7548,11 +7554,11 @@ function autoGenerateTickets(mode = 'win') {
           });
           // 除外が出たら、残りの馬で勝率を100%に振り直す
           if(oddsData.excluded.length > 0) {
-            const alive = racesData[currentRaceId].horses.filter(h => !h.isScratched);
+            const alive = racesData[_ridOdds].horses.filter(h => !h.isScratched);
             const sum = alive.reduce((t,h) => t + (parseFloat(h.winRate)||0), 0);
             if(sum > 0) alive.forEach(h => { h.winRate = parseFloat(((h.winRate / sum) * 100).toFixed(1)); });
             // 除外馬を含む買い目は自動で外す
-            const bb = racesData[currentRaceId].builder;
+            const bb = racesData[_ridOdds].builder;
             if(bb && Array.isArray(bb.tickets)) {
               const before = bb.tickets.length;
               bb.tickets = bb.tickets.filter(t => {
@@ -7565,7 +7571,7 @@ function autoGenerateTickets(mode = 'win') {
         }
         if(oddsData.fukuList && Array.isArray(oddsData.fukuList)) {
           oddsData.fukuList.forEach(item => {
-            const h = racesData[currentRaceId].horses.find(x => x.num === item.num);
+            const h = racesData[_ridOdds].horses.find(x => x.num === item.num);
             if(h) {
               if(item.minOdds && item.maxOdds && item.minOdds !== item.maxOdds) h.fukuOdds = item.minOdds + '-' + item.maxOdds;
               else if(item.minOdds) h.fukuOdds = String(item.minOdds);
@@ -7573,7 +7579,7 @@ function autoGenerateTickets(mode = 'win') {
           });
         }
         
-        const b = racesData[currentRaceId].builder;
+        const b = racesData[_ridOdds].builder;
         if(b && b.tickets.length > 0 && b.type !== '単勝' && b.type !== '複勝') {
           const typeMap = {'馬連':'4','ワイド':'5','馬単':'6','3連複':'7','3連単':'8','枠連':'3'};
           const gasType = typeMap[b.type];
@@ -7596,7 +7602,7 @@ function autoGenerateTickets(mode = 'win') {
         _restoreOddsBtns();
         const exNums = scratchedNow.filter(v => typeof v === 'number');
         if(statusEl) {
-          statusEl.textContent = exNums.length ? `${currentRaceId} 取得完了（除外 ${exNums.join('・')}番）` : `${currentRaceId} 取得完了`;
+          statusEl.textContent = exNums.length ? `${_ridOdds} 取得完了（除外 ${exNums.join('・')}番）` : `${_ridOdds} 取得完了`;
           statusEl.style.color = '#1a1a1a';
         }
         renderAll();
@@ -7753,7 +7759,7 @@ function autoGenerateTickets(mode = 'win') {
   }
   
   racesData = newRaces;
-  currentRaceId = null;
+  _ridOdds = null;
   Object.keys(racesData).forEach(rId => {
     const horses = racesData[rId].horses;
     if(horses.length === 0) return;
