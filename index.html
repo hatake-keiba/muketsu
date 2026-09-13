@@ -1999,7 +1999,7 @@ input[type=number], input[type=text], textarea, select {
       <!-- ①レース情報＋シミュレーター -->
       <section class="big-card">
         <div class="bc-head" style="align-items:flex-start;">
-          <div style="flex:1;min-width:0;">
+          <div style="flex:1 1 auto;min-width:min(100%,250px);">
             <span class="mk-eyebrow">RACE INFORMATION</span>
             <div id="race-info-title" style="font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif;font-weight:900;color:#1a1a1a;font-size:28px;letter-spacing:.005em;line-height:1.08;">—</div>
             <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
@@ -4837,7 +4837,7 @@ function buildNavigation() {
         const _line1 = (r.basho||'') + raceId.replace(/\D/g,'') + 'R';
         const _line2 = ((r.info||'') + (_rn?(' '+_rn):'')).trim();
         _rit.innerHTML = '<span style="display:block;">'+_esc(_line1)+'</span>'
-          + (_line2 ? '<span class="mk-mark" style="display:inline-block;font-size:20px;font-weight:800;margin-top:4px;">'+_esc(_line2)+'</span>' : '');
+          + (_line2 ? '<span class="mk-mark" style="display:inline-block;font-size:20px;font-weight:800;margin-top:4px;white-space:nowrap;">'+_esc(_line2)+'</span>' : '');
       }
       if(typeof updateBabaBar==='function') updateBabaBar(r.basho);
 
@@ -9373,15 +9373,6 @@ function openFinalReport() {
         <div class="rep-right">
             <div style="text-align:center; font-size:15px; font-weight:bold; margin-bottom:20px; color:#333333;">馬番別 勝率・連対率・複勝率</div>
             ${graphHtml}
-            <div class="chart-container">
-                <div class="donut-chart" style="background: conic-gradient(${conicGradients.join(', ')});">
-                    ${labelsHtml}
-                    <div class="donut-inner">
-                        <div style="font-size:14px; font-weight:bold; color:#1a1a1a;">勝率分布</div>
-                        <div style="font-size:11px; color:#9b9a92;">(正規枠色)</div>
-                    </div>
-                </div>
-            </div>
         </div>
     `;
     reportModal.style.display = 'block';
