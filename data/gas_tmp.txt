@@ -449,6 +449,7 @@ function prefetchOdds() {
   var mm = parseInt(Utilities.formatDate(now, tz, 'm'), 10);
   var today = Utilities.formatDate(now, tz, 'yyyyMMdd');
   var did = 0, target = '';
+  if (mm % 3 !== 0 && !(arguments[0] && arguments[0].force)) return 0;   // 3分ごとだけ動く（テストは force）
   var sched = null;
   try { sched = handleSchedule({ date: today }); } catch (e) { sched = null; }
   var hasToday = !!(sched && sched.ok && sched.raceIds && sched.raceIds.length);
@@ -486,12 +487,13 @@ function setupOddsTrigger() {
   for (var i = 0; i < ts.length; i++) {
     if (ts[i].getHandlerFunction() === 'prefetchOdds') ScriptApp.deleteTrigger(ts[i]);
   }
-  ScriptApp.newTrigger('prefetchOdds').timeBased().everyMinutes(3).create();
-  Logger.log('prefetchOdds のトリガーを3分ごとに登録しました');
+  // 時間トリガーは 1/5/10/15/30分刻みしか選べないので、1分で回して prefetchOdds 側で3分ごとに絞る
+  ScriptApp.newTrigger('prefetchOdds').timeBased().everyMinutes(1).create();
+  Logger.log('prefetchOdds のトリガーを登録しました（1分ごとに起動、3分ごとに実行）');
 }
 /* 動作確認：今すぐ1回先回りして、貯めた件数をログに出す */
 function testPrefetch() {
-  var n = prefetchOdds();
+  var n = prefetchOdds({ force: true });
   Logger.log('先回り件数: ' + n + ' / 最終: ' + PropertiesService.getScriptProperties().getProperty('PREFETCH_LAST'));
 }
 
