@@ -7602,7 +7602,8 @@ function autoGenerateTickets(mode = 'win') {
         _restoreOddsBtns();
         const exNums = scratchedNow.filter(v => typeof v === 'number');
         if(statusEl) {
-          statusEl.textContent = exNums.length ? `${_ridOdds} 取得完了（除外 ${exNums.join('・')}番）` : `${_ridOdds} 取得完了`;
+          const _at = (oddsData && oddsData.cachedAt) ? `（${oddsData.cachedAt}時点）` : '';
+          statusEl.textContent = (exNums.length ? `${_ridOdds} 取得完了（除外 ${exNums.join('・')}番）` : `${_ridOdds} 取得完了`) + _at;
           statusEl.style.color = '#1a1a1a';
         }
         renderAll();
