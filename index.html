@@ -730,13 +730,24 @@ input[type=number], input[type=text], textarea, select {
 
 /* グラフ関連 */
 .rep-g-row { display: flex; align-items: center; margin-bottom: 8px; font-size: 13px; color: #333333; }
+.rep-sum { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; }
+.rs-item { flex: 1 1 96px; background: #f4f2ec; border: 1px solid #e8e6df; border-radius: 10px; padding: 8px 12px; display: flex; flex-direction: column; gap: 2px; }
+.rs-k { font-size: 10px; font-weight: 700; color: #87867e; letter-spacing: .04em; }
+.rs-v { font-family: 'Noto Sans JP', sans-serif; font-size: 17px; font-weight: 900; color: #1a1a1a; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.rs-v small { font-size: 10px; font-weight: 700; margin-left: 2px; }
+.rs-ev { background: #1a1a1a; border-color: #1a1a1a; flex-basis: 120px; }
+.rs-ev .rs-k { color: #c9c8c0; }
+.rs-ev .rs-v { color: #ccf23f; font-size: 22px; }
 .rep-g-name { width: 170px; text-align: left; padding-right: 10px; font-family: inherit; display: flex; align-items: center; gap: 8px; font-weight: 500; }
 .rep-g-bars { flex-grow: 1; position: relative; height: 26px; }
-.rg-bar { position: absolute; left: 0; height: 8px; border-radius: 4px; }
-.rg-b1 { top: 0px; background: #1a1a1a; z-index: 3; } /* 勝率：濃い青緑 */
-.rg-b2 { top: 9px; background: #1a1a1a; z-index: 2; } /* 連対率：標準のティール */
-.rg-b3 { top: 18px; background: #94a3b8; z-index: 1; } /* 複勝率：スレートグレーに変更 */
-
+.rg-bar { position: absolute; left: 0; height: 7px; border-radius: 2px; min-width: 2px; }
+.rg-b1 { top: 1px; background: #1a1a1a; }   /* 勝率 */
+.rg-b2 { top: 10px; background: #7a7a72; }  /* 連対率 */
+.rg-b3 { top: 19px; background: #ccf23f; }  /* 複勝率 */
+.rep-g-vals { width: 108px; flex: 0 0 auto; display: flex; flex-direction: column; justify-content: center; gap: 1px; font-size: 10px; font-weight: 800; color: #1a1a1a; line-height: 1.15; font-variant-numeric: tabular-nums; padding-left: 8px; }
+.rep-g-vals span { display: flex; align-items: center; gap: 4px; }
+.rg-dot { display: inline-block; width: 8px; height: 5px; border-radius: 2px; }
+.rg-d1 { background: #1a1a1a; } .rg-d2 { background: #7a7a72; } .rg-d3 { background: #ccf23f; }
 .rg-val { position: absolute; font-size: 10px; font-weight: bold; line-height: 8px; }
 
 /* ドーナツチャート */
@@ -1026,7 +1037,8 @@ input[type=number], input[type=text], textarea, select {
     .tri-bar{ position:relative; height:8px; border-radius:2px; min-width:2px; }
     .tri-bar span{ position:absolute; left:calc(100% + 4px); top:-2px; font-size:9px; font-weight:800; color:#41413c; line-height:1; white-space:nowrap; font-variant-numeric:tabular-nums; }
     .tri-1{ background:#1a1a1a; } .tri-2{ background:#7a7a72; } .tri-3{ background:#ccf23f; }
-    .graph-head .lg{ display:inline-block; width:10px; height:6px; border-radius:2px; vertical-align:middle; margin:0 2px 0 4px; }
+    .graph-head .lg{ display:inline-block; width:10px; height:6px; border-radius:2px; vertical-align:middle; margin:0 3px 0 0; }
+    .graph-head .lg-col{ display:inline-flex; flex-direction:column; gap:1px; font-size:9px; line-height:1.25; text-align:left; }
     .graph-head .lg1{ background:#1a1a1a; } .graph-head .lg2{ background:#7a7a72; } .graph-head .lg3{ background:#ccf23f; }
     .graph-head .gh-bar{ white-space:nowrap; font-size:10px; }
     .tri-1 span{ color:#1a1a1a; font-weight:900; }
@@ -6386,7 +6398,7 @@ window.drawOaChartModal = function() {
           const _p2 = Math.max(0, Math.min(100, h.top2Prob || 0));
           const _p3 = Math.max(0, Math.min(100, h.top3Prob || 0));
           const _den = Math.max(1, _tripleDenom || 100);
-          const tri = `<div class="tri-col"><div class="tri-bar tri-1" style="width:${(_p1/_den*100).toFixed(1)}%"><span>${_p1.toFixed(1)}</span></div><div class="tri-bar tri-2" style="width:${(_p2/_den*100).toFixed(1)}%"><span>${_p2.toFixed(0)}</span></div><div class="tri-bar tri-3" style="width:${(_p3/_den*100).toFixed(1)}%"><span>${_p3.toFixed(0)}</span></div></div>`;
+          const tri = `<div class="tri-col"><div class="tri-bar tri-1" style="width:${(_p1/_den*100).toFixed(1)}%"><span>${_p1.toFixed(1)}%</span></div><div class="tri-bar tri-2" style="width:${(_p2/_den*100).toFixed(1)}%"><span>${_p2.toFixed(0)}%</span></div><div class="tri-bar tri-3" style="width:${(_p3/_den*100).toFixed(1)}%"><span>${_p3.toFixed(0)}%</span></div></div>`;
           rowEl.innerHTML = leftPart + tri + confirmHtml;
         } else {
           // ▼▼ 変更箇所：「勝」や「%」の文字を外し、数値の左右に◀▶ボタンを配置 ▼▼
@@ -6402,8 +6414,8 @@ window.drawOaChartModal = function() {
       // 見出し：確定後は3本線の凡例と期待値に切り替える
       try{
         const gb = document.querySelector('.graph-head .gh-bar'), gv = document.querySelector('.graph-head .gh-val');
-        if(gb) gb.innerHTML = isHarvilleCalculated ? '<span class="lg lg1"></span>勝率 <span class="lg lg2"></span>連対率 <span class="lg lg3"></span>複勝率' : '勝率（バー）';
-        if(gv) gv.textContent = isHarvilleCalculated ? '単期待値' : '勝率%';
+        if(gb) gb.innerHTML = isHarvilleCalculated ? '<span class="lg-col"><span><i class="lg lg1"></i>勝率</span><span><i class="lg lg2"></i>連対率</span><span><i class="lg lg3"></i>複勝率</span></span>' : '勝率（バー）';
+        if(gv) gv.textContent = isHarvilleCalculated ? '単勝期待値' : '勝率%';
         const hb = document.getElementById('btn-harville'); if(hb) hb.textContent = isHarvilleCalculated ? '編集' : '確定';
       }catch(e){}
     }
@@ -9439,9 +9451,14 @@ function openFinalReport() {
                 <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${h.name}</span>
             </div>
             <div class="rep-g-bars">
-                <div class="rg-bar rg-b1" style="width:${Math.min(h.winRate||0, 100)}%;"><span class="rg-val" style="color:#1a1a1a; right:-30px;">${(h.winRate||0).toFixed(1)}%</span></div>
-                <div class="rg-bar rg-b2" style="width:${Math.min(rentai, 100)}%;"><span class="rg-val" style="color:#333; right:-30px;">${rentai.toFixed(1)}%</span></div>
-                <div class="rg-bar rg-b3" style="width:${Math.min(fukusho, 100)}%;"><span class="rg-val" style="color:#333; right:-30px;">${fukusho.toFixed(1)}%</span></div>
+                <div class="rg-bar rg-b1" style="width:${Math.min(h.winRate||0, 100)}%;"></div>
+                <div class="rg-bar rg-b2" style="width:${Math.min(rentai, 100)}%;"></div>
+                <div class="rg-bar rg-b3" style="width:${Math.min(fukusho, 100)}%;"></div>
+            </div>
+            <div class="rep-g-vals">
+                <span><i class="rg-dot rg-d1"></i>${(h.winRate||0).toFixed(1)}%</span>
+                <span><i class="rg-dot rg-d2"></i>${rentai.toFixed(0)}%</span>
+                <span><i class="rg-dot rg-d3"></i>${fukusho.toFixed(0)}%</span>
             </div>
         </div>`;
     });
@@ -9525,12 +9542,10 @@ function openFinalReport() {
             </div>
             
             <!-- ▼▼ 変更箇所：青色のバッジ風マーカーで合成値を強調 ▼▼ -->
-            <div style="font-size:15px; font-weight:bold; margin-bottom:15px; background: #1a1a1a; color: #ccf23f; padding: 8px 14px; border-radius: 8px; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-                合成的中率: ${(tProb*100).toFixed(1)}% 
-                <span style="margin: 0 6px; opacity: 0.6;">|</span> 
-                合成オッズ: ${gOdds>0?gOdds.toFixed(1):'-'}倍 
-                <span style="margin: 0 6px; opacity: 0.6;">|</span> 
-                合成期待値: ${pEv>0?pEv.toFixed(2):'-'}
+            <div class="rep-sum">
+                <div class="rs-item"><span class="rs-k">合成的中率</span><span class="rs-v">${(tProb*100).toFixed(1)}<small>%</small></span></div>
+                <div class="rs-item"><span class="rs-k">合成オッズ</span><span class="rs-v">${gOdds>0?gOdds.toFixed(1):'-'}<small>倍</small></span></div>
+                <div class="rs-item rs-ev"><span class="rs-k">合成期待値</span><span class="rs-v">${pEv>0?pEv.toFixed(2):'-'}</span></div>
             </div>
             <!-- ▲▲ 変更箇所ここまで ▲▲ -->
 
