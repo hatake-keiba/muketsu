@@ -985,9 +985,8 @@ input[type=number], input[type=text], textarea, select {
     /* 展開想定：スライダーと展開図は使わない（トラックバイアス5段階＋展開表） */
     #sim-section .sim-content{ display:none !important; }   /* スライダーだけ非表示。展開図はアコーディオンで残す */
     .tb-wrap{ padding:0 12px 6px; }
-    .tb-head{ display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:6px; }
-    .tb-ttl{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:13px; color:#1a1a1a; }
-    .tb-status{ font-size:10.5px; color:#87867e; font-weight:700; }
+    .sub-head.tb-head{ padding:6px 0 8px !important; }
+    .tb-status{ font-size:10.5px; color:#87867e; font-weight:700; margin-left:auto; }
     .seg{ display:flex; background:#f0eee8; border-radius:9px; padding:3px; gap:2px; }
     .seg button{ flex:1; border:none; background:transparent; padding:8px 0; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:11px; font-weight:700; color:#87867e; border-radius:7px; cursor:pointer; }
     .seg button.active{ background:#1a1a1a; color:#ccf23f; }
@@ -2150,7 +2149,7 @@ input[type=number], input[type=text], textarea, select {
 
 
          <div class="tb-wrap">
-           <div class="tb-head"><span class="tb-ttl">トラックバイアス</span><span class="tb-status" id="tb-status">フラット（自由に設定できます）</span></div>
+           <div class="sub-head tb-head"><span class="sub-head-ttl">トラックバイアス</span><span class="tb-status" id="tb-status">フラット（自由に設定できます）</span></div>
            <div class="seg" id="tb-seg">
              <button type="button" data-i="0" onclick="setTrackBias(0)">内前</button>
              <button type="button" data-i="1" onclick="setTrackBias(1)">やや内前</button>
@@ -2158,7 +2157,7 @@ input[type=number], input[type=text], textarea, select {
              <button type="button" data-i="3" onclick="setTrackBias(3)">やや外差し</button>
              <button type="button" data-i="4" onclick="setTrackBias(4)">外差し</button>
            </div>
-           <div class="tb-note">馬番をタップすると個別に「展◎／展○／不利」を付けられます。ドラッグで脚質の行を移せます。</div>
+           <div class="tb-note">馬番をタップすると個別に「展◎／展○／不利」を付けられます。<br>ドラッグで脚質の行を移せます。</div>
          </div>
          <div class="pace-board" id="pace-board">
           <div style="display:flex; flex-direction:column; gap:6px;">
@@ -2220,10 +2219,10 @@ input[type=number], input[type=text], textarea, select {
         </div>
       <!-- ▼ メモ（localStorage永続化・リロードで消えない） ▼ -->
       <div class="memo-card" id="memo-card">
-        <div class="sub-head" style="justify-content:space-between;">
+        <div class="sub-head">
           <span class="sub-head-ttl">メモ</span>
           <button id="ai-mic-btn" style="display:none;" onclick="toggleAIMic()"></button>
-          <button type="button" class="acc-btn" id="memo-acc-btn" onclick="toggleMemoCard()" aria-expanded="true"><span class="acc-txt">閉じる</span><svg class="mk-ic acc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+          <button type="button" class="acc-btn" id="memo-acc-btn" style="margin-left:auto;" onclick="toggleMemoCard()" aria-expanded="true"><span class="acc-txt">閉じる</span><svg class="mk-ic acc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
         </div>
         <div id="memo-body">
         <textarea id="ai-pace-comment" class="memo-card-textarea"
