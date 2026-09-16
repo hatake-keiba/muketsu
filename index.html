@@ -982,6 +982,38 @@ input[type=number], input[type=text], textarea, select {
     .acc-btn{ flex:0 0 auto; display:inline-flex; align-items:center; gap:4px; background:#fff; color:#1a1a1a; border:1.5px solid #1a1a1a; border-radius:999px; padding:6px 10px 6px 12px; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:12px; cursor:pointer; margin-left:8px; }
     .acc-btn .acc-ic{ width:14px; height:14px; transition:transform .18s; }
     .acc-row{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 12px 2px; }
+    /* 展開想定：スライダーと展開図は使わない（トラックバイアス5段階＋展開表） */
+    #sim-section .sim-content, #pace-acc-row, #pace-track-area{ display:none !important; }
+    .tb-wrap{ padding:0 12px 6px; }
+    .tb-head{ display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:6px; }
+    .tb-ttl{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:13px; color:#1a1a1a; }
+    .tb-status{ font-size:10.5px; color:#87867e; font-weight:700; }
+    .seg{ display:flex; background:#f0eee8; border-radius:9px; padding:3px; gap:2px; }
+    .seg button{ flex:1; border:none; background:transparent; padding:8px 0; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:11px; font-weight:700; color:#87867e; border-radius:7px; cursor:pointer; }
+    .seg button.active{ background:#1a1a1a; color:#ccf23f; }
+    .tb-note{ font-size:10px; color:#9b9a92; margin-top:6px; line-height:1.5; }
+    .pb-wrap{ position:relative; }
+    .pb-badge{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:8px; font-weight:800; padding:1px 4px; border-radius:6px; line-height:1.2; white-space:nowrap; margin-top:1px; }
+    .pb-pop{ position:absolute; top:-30px; left:50%; transform:translateX(-50%); background:#1a1a1a; color:#fff; border-radius:14px; display:none; align-items:center; gap:2px; padding:2px 4px; z-index:60; white-space:nowrap; box-shadow:0 4px 10px rgba(0,0,0,.2); }
+    .pb-pop button{ border:none; background:transparent; color:#fff; font-size:11px; font-weight:800; padding:3px 6px; cursor:pointer; }
+    .pb-val{ font-size:10px; font-weight:800; min-width:34px; text-align:center; color:#ccf23f; cursor:pointer; }
+    .pb-wrap.open .pb-pop{ display:flex; }
+    /* バッジ（K-buddyの配色：黒・ライム・ベージュ・グレー） */
+    .fb{ display:inline-block; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:8.5px; font-weight:800; padding:1px 4px; border-radius:3px; line-height:1.25; white-space:nowrap; }
+    .fb-t2{ background:#1a1a1a; color:#ccf23f; } .fb-t1{ background:#ccf23f; color:#1a1a1a; }
+    .fb-m1{ background:#e8e6df; color:#41413c; } .fb-m2{ background:#7a7a72; color:#fff; }
+    .fb-deki{ background:#1a1a1a; color:#fff; } .fb-shisu{ background:#fff; color:#1a1a1a; border:1px solid #1a1a1a; } .fb-course{ background:#d8ccae; color:#41413c; }
+    .hr-badges{ display:flex; flex-wrap:wrap; gap:2px; margin-top:2px; }
+    /* ファクター操作バー */
+    .fx-bar{ display:flex; gap:6px; align-items:center; padding:0 18px 8px; }
+    .fx-dd{ position:relative; }
+    .fx-btn{ display:inline-flex; align-items:center; gap:4px; background:#fff; color:#1a1a1a; border:2px solid #1a1a1a; border-radius:8px; padding:6px 10px; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:11px; font-weight:700; cursor:pointer; }
+    .fx-btn .mk-ic{ width:12px; height:12px; }
+    .fx-apply{ background:#1a1a1a; color:#ccf23f; margin-left:auto; }
+    .fx-menu{ position:absolute; top:calc(100% + 4px); left:0; background:#fff; width:260px; border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,.15); border:1px solid #e0ded6; display:none; flex-direction:column; z-index:80; }
+    .fx-menu.show{ display:flex; }
+    .fx-menu label{ padding:10px 12px; font-size:12px; font-weight:700; color:#1a1a1a; border-bottom:1px solid #f0eee8; display:flex; align-items:center; gap:8px; line-height:1.4; }
+    .fx-menu label:last-child{ border-bottom:none; }
     #memo-card.collapsed #memo-body{ display:none !important; }
     #memo-card.collapsed .acc-ic{ transform:rotate(-90deg); }
     #memo-card.collapsed .sub-head{ margin-bottom:0 !important; }
@@ -2117,6 +2149,17 @@ input[type=number], input[type=text], textarea, select {
         </div>
 
 
+         <div class="tb-wrap">
+           <div class="tb-head"><span class="tb-ttl">トラックバイアス</span><span class="tb-status" id="tb-status">フラット（自由に設定できます）</span></div>
+           <div class="seg" id="tb-seg">
+             <button type="button" data-i="0" onclick="setTrackBias(0)">内前</button>
+             <button type="button" data-i="1" onclick="setTrackBias(1)">やや内前</button>
+             <button type="button" data-i="2" class="active" onclick="setTrackBias(2)">フラット</button>
+             <button type="button" data-i="3" onclick="setTrackBias(3)">やや外差し</button>
+             <button type="button" data-i="4" onclick="setTrackBias(4)">外差し</button>
+           </div>
+           <div class="tb-note">馬番をタップすると個別に「展◎／展○／不利」を付けられます。ドラッグで脚質の行を移せます。</div>
+         </div>
          <div class="pace-board" id="pace-board">
           <div style="display:flex; flex-direction:column; gap:6px;">
             <div style="display: flex; flex-direction: column; gap: 4px;" id="pace-list-area">
@@ -2309,11 +2352,23 @@ input[type=number], input[type=text], textarea, select {
         <span class="sub-head-ttl">勝率グラフ</span>
         <span id="haran-badge-2" style="display:none;"></span>
       </div>
+      <div class="fx-bar">
+        <div class="fx-dd">
+          <button type="button" class="fx-btn" onclick="toggleFactorMenu(event)">ファクターを選ぶ<svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="fx-menu" id="factor-menu">
+            <label><input type="checkbox" id="chk-tenkai" checked onchange="renderGraph()"> 展開の印</label>
+            <label><input type="checkbox" id="chk-deki" checked onchange="renderGraph()"> デキ（A・B）</label>
+            <label><input type="checkbox" id="chk-shisu" checked onchange="renderGraph()"> 指数トップ3</label>
+            <label><input type="checkbox" id="chk-course" checked onchange="renderGraph()"> コースデータ（勝率10%以上か回収100%以上の騎手・厩舎・種牡馬）</label>
+          </div>
+        </div>
+        <button type="button" class="fx-btn fx-apply" onclick="applyFactorMultiplier()">ファクターを反映</button>
+      </div>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:0 18px 10px;">
         <span style="font-size:11px;font-weight:700;color:#9b9a92;margin-right:auto;">合計 <span id="total-val" style="color:var(--mk-dark);font-weight:800;">0.0</span>%</span>
         <button class="pill-btn pill-sm" onclick="normalizeTo100(true)">100%</button>
         <button class="pill-btn pill-sm pill-ghost" onclick="resetGraph()">リセット</button>
-        <button class="pill-btn pill-sm pill-accent" onclick="calculateHarville()">確定</button>
+        <button class="pill-btn pill-sm pill-accent" id="btn-harville" onclick="toggleConfirmMode()">確定</button>
       </div>
 
       
@@ -5837,10 +5892,56 @@ window.drawOaChartModal = function() {
       }
     }
 
+    /* ===== 展開の印（トラックバイアス） ===== */
+    const _TB_TEXT = ['内前有利', 'やや内前有利', 'フラット（自由に設定できます）', 'やや外差し有利', '外差し有利'];
+    function _tenkaiLabel(v){ return ({'-2':'不利大','-1':'不利','0':'なし','1':'展○','2':'展◎'})[String(v||0)] || 'なし'; }
+    function _tenkaiCls(v){ return v === 2 ? 'fb-t2' : v === 1 ? 'fb-t1' : v === -1 ? 'fb-m1' : v === -2 ? 'fb-m2' : ''; }
+    function _tenkaiMult(v){ return v === 2 ? 1.2 : v === 1 ? 1.1 : v === -1 ? 0.9 : v === -2 ? 0.8 : 1; }
+    function _syncBiasSeg(idx){
+      document.querySelectorAll('#tb-seg button').forEach(b => b.classList.toggle('active', parseInt(b.dataset.i, 10) === idx));
+      const st = document.getElementById('tb-status'); if(st) st.textContent = _TB_TEXT[idx] || _TB_TEXT[2];
+    }
+    // タブを切り替えたら、内枠×前・外枠×後に自動で印を付ける（勝率は動かさない）
+    window.setTrackBias = function(idx){
+      if(!currentRaceId || !racesData[currentRaceId]) return;
+      const race = racesData[currentRaceId];
+      race.biasIdx = idx;
+      race.horses.forEach(h => {
+        const front = /^[逃先]/.test(h.style || ''), rear = /^[差追]/.test(h.style || '');
+        const inner = (h.waku || 0) <= 3, outer = (h.waku || 0) >= 6;
+        let v = 0;
+        if(idx === 0 && inner && front) v = 2;
+        if(idx === 1 && inner && front) v = 1;
+        if(idx === 3 && outer && rear) v = 1;
+        if(idx === 4 && outer && rear) v = 2;
+        h.tenkai = v;
+      });
+      _syncBiasSeg(idx);
+      renderPaceBoard(); renderGraph();
+      try{ persistRaces(); }catch(e){}
+    };
+    window.tweakTenkai = function(num, delta, ev){
+      if(ev) ev.stopPropagation();
+      if(!currentRaceId) return;
+      const h = racesData[currentRaceId].horses.find(x => x.num === num); if(!h) return;
+      let v = delta === 0 ? 0 : Math.max(-2, Math.min(2, (parseInt(h.tenkai || 0, 10) + delta)));
+      h.tenkai = v;
+      const wrap = document.querySelector(`.pb-wrap[data-num="${num}"]`);
+      if(wrap){
+        let bd = wrap.querySelector('.pb-badge');
+        if(v){ if(!bd){ bd = document.createElement('span'); wrap.insertBefore(bd, wrap.querySelector('.pb-pop')); } bd.className = 'pb-badge ' + _tenkaiCls(v); bd.textContent = _tenkaiLabel(v); }
+        else if(bd) bd.remove();
+        const pv = wrap.querySelector('.pb-val'); if(pv) pv.textContent = _tenkaiLabel(v);
+      }
+      renderGraph();
+      try{ persistRaces(); }catch(e){}
+    };
+    document.addEventListener('click', () => { document.querySelectorAll('.pb-wrap.open').forEach(x => x.classList.remove('open')); });
     function renderPaceBoard() {
       if(!currentRaceId) return;
       const capturedRaceId = currentRaceId;
       const race = racesData[currentRaceId];
+      try{ _syncBiasSeg(race.biasIdx === undefined ? 2 : race.biasIdx); }catch(e){}
       const horses = race.horses;
       const step = race.paceStep || 0;
       const isLeft = currentCourseDir === 'right' || currentCourseDir === 'straight';
@@ -5890,6 +5991,14 @@ window.drawOaChartModal = function() {
           nm.textContent = (kn||h.name||'').substring(0,3);
           nm.style.cssText = "font-family:'BIZ UDPGothic','BIZ UDGothic',sans-serif;font-size:8px;font-weight:700;color:#4b5a48;line-height:1;max-width:26px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;";
           wrap.appendChild(box); wrap.appendChild(nm);
+          // 展開の印（展◎/展○/不利）とタップで開く調整ポップアップ
+          wrap.classList.add('pb-wrap'); wrap.dataset.num = h.num;
+          const tv = parseInt(h.tenkai || 0, 10);
+          if(tv){ const bd = document.createElement('span'); bd.className = 'pb-badge ' + _tenkaiCls(tv); bd.textContent = _tenkaiLabel(tv); wrap.appendChild(bd); }
+          const pop = document.createElement('span'); pop.className = 'pb-pop';
+          pop.innerHTML = `<button type="button" onclick="tweakTenkai(${h.num},-1,event)">◀</button><span class="pb-val" onclick="tweakTenkai(${h.num},0,event)">${_tenkaiLabel(tv)}</span><button type="button" onclick="tweakTenkai(${h.num},1,event)">▶</button>`;
+          wrap.appendChild(pop);
+          wrap.onclick = (e) => { e.stopPropagation(); const was = wrap.classList.contains('open'); document.querySelectorAll('.pb-wrap.open').forEach(x => x.classList.remove('open')); if(!was) wrap.classList.add('open'); };
           el.appendChild(wrap);
         }
       });
@@ -6124,6 +6233,12 @@ window.drawOaChartModal = function() {
       // バーの最大値＝レース内の最高勝率（少し余白）。馬毎の差が見えるよう相対スケール化
       const _maxWinRate = Math.max(1, ...race.horses.map(h => h.winRate || 0));
       const _barDenom = Math.max(_maxWinRate * 1.08, 5); // 最上位が約93%まで伸びる
+      // 指数トップ3（同点は同順位）
+      const _fxShisuRank = {};
+      try{
+        const vals = [...new Set(((racesData[currentRaceId]||{}).horses||[]).filter(x => !x.isScratched && parseFloat(x.shisu) > 0).map(x => parseFloat(x.shisu)))].sort((a,b)=>b-a).slice(0,3);
+        ((racesData[currentRaceId]||{}).horses||[]).forEach(x => { const k = vals.indexOf(parseFloat(x.shisu)); if(k >= 0) _fxShisuRank[x.num] = k + 1; });
+      }catch(e){}
       // 確定後の3本線用：複勝率の最大値を列幅いっぱいにする
       const _tripleDenom = Math.max(5, ...((racesData[currentRaceId] || {}).horses || []).map(x => Math.max(x.top3Prob || 0, x.top2Prob || 0, x.winRate || 0))) * 1.06;
 
@@ -6249,7 +6364,8 @@ window.drawOaChartModal = function() {
         const _od = parseFloat(h.odds);
         const _odTxt = isNaN(_od) ? '-' : _od.toFixed(1);
         const _odFav = (!isNaN(_od) && _od >= 1.0 && _od <= 9.9) ? ' fav' : '';
-        const leftPart = `<div style="display:flex;align-items:center;flex-shrink:0;gap:4px;">${markSelectHtml(h)}<div class="waku-box waku-${h.waku}" style="margin-left:4px;margin-right:6px;">${h.num}</div><div class="hr-nm-wrap"><div class="hr-name-label">${h.name}</div><div class="hr-odds${_odFav}">${_odTxt}${supportHtml}</div></div></div>`;
+        const _bd = _badgesHtml(h, _fxShisuRank);
+        const leftPart = `<div style="display:flex;align-items:center;flex-shrink:0;gap:4px;">${markSelectHtml(h)}<div class="waku-box waku-${h.waku}" style="margin-left:4px;margin-right:6px;">${h.num}</div><div class="hr-nm-wrap"><div class="hr-name-label">${h.name}</div><div class="hr-odds${_odFav}">${_odTxt}${supportHtml}</div>${_bd ? `<div class="hr-badges" id="hr-badges-${h.num}">${_bd}</div>` : ''}</div></div>`;
         
         let extraBarClass = isHighEv ? 'bar-ev-high' : '';
         const barAndTrack = `<div class="bar-col" style="flex-grow:1;position:relative;height:20px;margin-left:4px;"><div class="visual-bar ${extraBarClass}" id="bar-fill-${graphIdx}" style="width:${barWidthPct}%;background:${barStyle};"></div><div class="graph-track-overlay" id="track-${graphIdx}" ${dragAttrs}></div></div>`;
@@ -6276,7 +6392,7 @@ window.drawOaChartModal = function() {
         } else {
           // ▼▼ 変更箇所：「勝」や「%」の文字を外し、数値の左右に◀▶ボタンを配置 ▼▼
           // ▼▼ 変更箇所：「勝」の文字を外し、数値と%の左右に◀▶ボタンを配置 ▼▼
-          rowEl.innerHTML = leftPart + barAndTrack + `<div class="val-col-wrapper">${coreHtml}<div class="val-col-inner" style="display:flex; align-items:center; padding:1px 2px;"><button style="border:none;background:transparent;color:#94a3b8;font-size:10px;padding:2px 4px;cursor:pointer;" onclick="adjustHorseWinRate(${h.num}, -1)">◀</button><input type="number" class="val-col" id="val-input-${graphIdx}" value="${h.winRate.toFixed(1)}" onchange="updateHorseByNum(${h.num},'winRate',this.value);renderGraph()" style="width:36px;text-align:center;"><span style="font-size:9px;color:#aaa;margin-right:2px;margin-left:1px;">%</span><button style="border:none;background:transparent;color:#94a3b8;font-size:10px;padding:2px 4px;cursor:pointer;" onclick="adjustHorseWinRate(${h.num}, 1)">▶</button></div></div>`;
+          rowEl.innerHTML = leftPart + barAndTrack + `<div class="val-col-wrapper">${coreHtml}<div class="val-col-inner" style="display:flex; align-items:center; padding:1px 2px;"><button style="border:none;background:transparent;color:#94a3b8;font-size:10px;padding:2px 4px;cursor:pointer;" onclick="adjustHorseWinRate(${h.num}, -0.5)">◀</button><input type="number" class="val-col" id="val-input-${graphIdx}" value="${h.winRate.toFixed(1)}" onchange="updateHorseByNum(${h.num},'winRate',this.value);renderGraph()" style="width:36px;text-align:center;"><span style="font-size:9px;color:#aaa;margin-right:2px;margin-left:1px;">%</span><button style="border:none;background:transparent;color:#94a3b8;font-size:10px;padding:2px 4px;cursor:pointer;" onclick="adjustHorseWinRate(${h.num}, 0.5)">▶</button></div></div>`;
           // ▲▲ 変更箇所ここまで ▲▲
         }
        chartRows.appendChild(rowEl);
@@ -6289,10 +6405,61 @@ window.drawOaChartModal = function() {
         const gb = document.querySelector('.graph-head .gh-bar'), gv = document.querySelector('.graph-head .gh-val');
         if(gb) gb.innerHTML = isHarvilleCalculated ? '<span class="lg lg1"></span>勝率 <span class="lg lg2"></span>連対率 <span class="lg lg3"></span>複勝率' : '勝率（バー）';
         if(gv) gv.textContent = isHarvilleCalculated ? '単期待値' : '勝率%';
+        const hb = document.getElementById('btn-harville'); if(hb) hb.textContent = isHarvilleCalculated ? '編集' : '確定';
       }catch(e){}
     }
 
     // ▼▼ ここから追加：グラフの勝率を◀▶ボタンで1%ずつ微調整する関数 ▼▼
+    /* ===== ファクターのバッジと自動補正 ===== */
+    function _fxOn(id){ const el = document.getElementById(id); return !el || el.checked; }
+    function _badgesHtml(h, shisuRank){
+      let html = '';
+      const tv = parseInt(h.tenkai || 0, 10);
+      if(_fxOn('chk-tenkai') && tv){ html += `<span class="fb ${_tenkaiCls(tv)}" data-mult="${_tenkaiMult(tv)}">${_tenkaiLabel(tv)}</span>`; }
+      if(_fxOn('chk-deki')){
+        const d = String(h.deki || '').trim().toUpperCase();
+        if(d === 'S' || d === 'A') html += `<span class="fb fb-deki" data-mult="1.2">デキ${d}</span>`;
+        else if(d === 'B') html += `<span class="fb fb-deki" data-mult="1.1">デキB</span>`;
+      }
+      if(_fxOn('chk-shisu') && shisuRank && shisuRank[h.num]){
+        const r = shisuRank[h.num]; const m = r === 1 ? 1.2 : r === 2 ? 1.1 : 1.05;
+        html += `<span class="fb fb-shisu" data-mult="${m}">指${r}位</span>`;
+      }
+      if(_fxOn('chk-course') && h.campData){
+        const c = h.campData, ok = (w, r) => (parseFloat(w) >= 10) || (parseFloat(r) >= 100);
+        if(ok(c.jWin, c.jRet)) html += `<span class="fb fb-course" data-mult="1.1">騎</span>`;
+        if(ok(c.tWin, c.tRet)) html += `<span class="fb fb-course" data-mult="1.1">厩</span>`;
+        if(ok(c.sWin, c.sRet)) html += `<span class="fb fb-course" data-mult="1.1">種</span>`;
+      }
+      return html;
+    }
+    window.toggleFactorMenu = function(ev){ if(ev) ev.stopPropagation(); const m = document.getElementById('factor-menu'); if(m) m.classList.toggle('show'); };
+    document.addEventListener('click', (e) => { if(!e.target.closest || !e.target.closest('.fx-dd')) { const m = document.getElementById('factor-menu'); if(m) m.classList.remove('show'); } });
+    // 「ファクターを反映」：基準勝率 × 付いているバッジの倍率。合計は動くので、必要なら100%ボタンで整える
+    window.applyFactorMultiplier = function(){
+      if(!currentRaceId) return;
+      const race = racesData[currentRaceId];
+      race.horses.forEach(h => {
+        if(h.isScratched) return;
+        const box = document.getElementById('hr-badges-' + h.num);
+        let mult = 1;
+        if(box) box.querySelectorAll('.fb').forEach(b => { mult *= parseFloat(b.getAttribute('data-mult')) || 1; });
+        let base = parseFloat(h.baseWinRate); if(isNaN(base)) base = parseFloat(h.winRate) || 0;
+        if(base === 0 && mult > 1) base = 1;
+        h.winRate = Math.round(base * mult * 10) / 10;
+      });
+      renderGraph();
+      try{ persistRaces(); }catch(e){}
+      if(typeof mkToast === 'function') mkToast('バッジの倍率を基準勝率に掛けました。合計を整えるなら「100%」を押してください。');
+    };
+    // 確定 ⇄ 編集
+    window.toggleConfirmMode = function(){
+      if(!currentRaceId) return;
+      const race = racesData[currentRaceId];
+      const confirmed = race.horses.some(h => h.top2Prob !== undefined || h.top3Prob !== undefined);
+      if(confirmed){ race.horses.forEach(h => { delete h.top2Prob; delete h.top3Prob; }); renderGraph(); try{ persistRaces(); }catch(e){} }
+      else { calculateHarville(); }
+    };
     window.adjustHorseWinRate = function(num, delta) {
       if(!currentRaceId) return;
       const race = racesData[currentRaceId];
@@ -6953,6 +7120,7 @@ function autoGenerateTickets(mode = 'win') {
         if(or.tenkaiVal !== undefined) fr.tenkaiVal = or.tenkaiVal;
         if(or.biasVal !== undefined) fr.biasVal = or.biasVal;
         if(or.baba) fr.baba = or.baba;
+        if(or.biasIdx !== undefined) fr.biasIdx = or.biasIdx;
         // 馬単位：馬名で突き合わせ（馬番が変わっても追える）
         const byName = {}; (or.horses||[]).forEach(h => { if(h.name) byName[h.name] = h; });
         (fr.horses||[]).forEach(h => {
@@ -6963,6 +7131,7 @@ function autoGenerateTickets(mode = 'win') {
           if(oh.isKosoStarred) h.isKosoStarred = true;
           if(oh.memoEdited && oh.memo){ h.memo = oh.memo; h.memoEdited = true; }
           if(oh.hl && Object.keys(oh.hl).length) h.hl = oh.hl;
+          if(oh.tenkai) h.tenkai = oh.tenkai;
           moved++;
         });
       });
