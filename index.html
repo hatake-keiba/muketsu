@@ -983,7 +983,7 @@ input[type=number], input[type=text], textarea, select {
     .acc-btn .acc-ic{ width:14px; height:14px; transition:transform .18s; }
     .acc-row{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 12px 2px; }
     /* 展開想定：スライダーと展開図は使わない（トラックバイアス5段階＋展開表） */
-    #sim-section .sim-content, #pace-acc-row, #pace-track-area{ display:none !important; }
+    #sim-section .sim-content{ display:none !important; }   /* スライダーだけ非表示。展開図はアコーディオンで残す */
     .tb-wrap{ padding:0 12px 6px; }
     .tb-head{ display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:6px; }
     .tb-ttl{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:13px; color:#1a1a1a; }
@@ -3740,7 +3740,7 @@ function _unusedAutoAssignMarks(rId = currentRaceId) {
       try{ localStorage.setItem('muketsu_sim_open', open ? '1' : '0'); }catch(e){}
       if(open){ try{ if(typeof adjustCanvasSize === 'function') adjustCanvasSize(); if(typeof renderPaceBoard === 'function') renderPaceBoard(); window.dispatchEvent(new Event('resize')); }catch(e){} }
     }
-    (function(){ try{ if(localStorage.getItem('muketsu_sim_open') === '0') toggleSimSection(false); }catch(e){} })();
+    (function(){ try{ const v = localStorage.getItem('muketsu_sim_open'); if(v === '0' || v === null) toggleSimSection(false); }catch(e){} })();   // 初期は閉じておく（開いたら記憶）
     function toggleMemoCard(force){
       const card = document.getElementById('memo-card'); if(!card) return;
       const open = (typeof force === 'boolean') ? force : card.classList.contains('collapsed');
