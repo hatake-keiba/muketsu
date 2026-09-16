@@ -748,7 +748,7 @@ input[type=number], input[type=text], textarea, select {
 .rep-g-vals span { display: flex; align-items: center; gap: 4px; }
 .rg-dot { display: inline-block; width: 8px; height: 5px; border-radius: 2px; }
 .rg-d1 { background: #1a1a1a; } .rg-d2 { background: #7a7a72; } .rg-d3 { background: #ccf23f; }
-.rg-val { position: absolute; font-size: 10px; font-weight: bold; line-height: 8px; }
+.rg-val { position: absolute; left: calc(100% + 5px); top: -2px; font-size: 9.5px; font-weight: 800; line-height: 11px; color: #1a1a1a; white-space: nowrap; font-variant-numeric: tabular-nums; }
 
 /* ドーナツチャート */
 .chart-container { display: flex; justify-content: center; align-items: center; margin-top: 20px; }
@@ -1038,7 +1038,7 @@ input[type=number], input[type=text], textarea, select {
     .tri-bar span{ position:absolute; left:calc(100% + 4px); top:-2px; font-size:9px; font-weight:800; color:#41413c; line-height:1; white-space:nowrap; font-variant-numeric:tabular-nums; }
     .tri-1{ background:#1a1a1a; } .tri-2{ background:#7a7a72; } .tri-3{ background:#ccf23f; }
     .graph-head .lg{ display:inline-block; width:10px; height:6px; border-radius:2px; vertical-align:middle; margin:0 3px 0 0; }
-    .graph-head .lg-col{ display:inline-flex; flex-direction:column; gap:1px; font-size:9px; line-height:1.25; text-align:left; }
+    .graph-head .lg-col{ display:inline-flex; flex-direction:column; gap:1px; font-size:9px; line-height:1.25; text-align:left; margin-left:10px; }
     .graph-head .lg1{ background:#1a1a1a; } .graph-head .lg2{ background:#7a7a72; } .graph-head .lg3{ background:#ccf23f; }
     .graph-head .gh-bar{ white-space:nowrap; font-size:10px; }
     .tri-1 span{ color:#1a1a1a; font-weight:900; }
@@ -9451,14 +9451,9 @@ function openFinalReport() {
                 <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${h.name}</span>
             </div>
             <div class="rep-g-bars">
-                <div class="rg-bar rg-b1" style="width:${Math.min(h.winRate||0, 100)}%;"></div>
-                <div class="rg-bar rg-b2" style="width:${Math.min(rentai, 100)}%;"></div>
-                <div class="rg-bar rg-b3" style="width:${Math.min(fukusho, 100)}%;"></div>
-            </div>
-            <div class="rep-g-vals">
-                <span><i class="rg-dot rg-d1"></i>${(h.winRate||0).toFixed(1)}%</span>
-                <span><i class="rg-dot rg-d2"></i>${rentai.toFixed(0)}%</span>
-                <span><i class="rg-dot rg-d3"></i>${fukusho.toFixed(0)}%</span>
+                <div class="rg-bar rg-b1" style="width:${(Math.min(h.winRate||0, 100)*0.78).toFixed(1)}%;"><span class="rg-val">${(h.winRate||0).toFixed(1)}%</span></div>
+                <div class="rg-bar rg-b2" style="width:${(Math.min(rentai, 100)*0.78).toFixed(1)}%;"><span class="rg-val">${rentai.toFixed(0)}%</span></div>
+                <div class="rg-bar rg-b3" style="width:${(Math.min(fukusho, 100)*0.78).toFixed(1)}%;"><span class="rg-val">${fukusho.toFixed(0)}%</span></div>
             </div>
         </div>`;
     });
