@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=BIZ+UDPGothic:wght@400;700&family=Noto+Sans+JP:wght@700;900&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
   :root{
     --paper:#eceae3; --card:#fff; --ink:#1a1a1a; --soft:#41413c; --mute:#87867e;
@@ -48,7 +49,7 @@
   .btn:disabled{ opacity:.32; cursor:default; }
   .btn.sub{ background:#fff; color:var(--ink); font-weight:700; font-size:14px; }
 
-  .res{ margin-top:12px; border-radius:10px; padding:11px 13px; font-size:13px; display:none; white-space:pre-line; }
+  .res{ white-space:pre-line; margin-top:12px; border-radius:10px; padding:11px 13px; font-size:13px; display:none; white-space:pre-line; }
   .res.ok{ display:block; background:#eef5e6; border:1px solid #c9dba8; }
   .res.ng{ display:block; background:#fdf1ec; border:1px solid #f0c2ae; color:#7a2e12; }
   .res.wait{ display:block; background:#faf9f5; border:1px solid var(--line); color:var(--mute); }
@@ -73,7 +74,7 @@
   <header>
     <div class="b" style="font-size:clamp(30px,9vw,42px);letter-spacing:.01em;">K-buddy</div>
     <div class="s">ADMIN</div>
-    <p>週末の出馬表と陣営データを差し替える画面です。CSVファイルを選んで「反映」を押すだけで、会員全員のサイトに反映されます。</p>
+    <p>週末の出馬表と陣営データを差し替える画面です。Excelファイルを選んで「反映」を押すだけで、会員全員のサイトに反映されます。</p>
   </header>
 
   <!-- 合言葉 -->
@@ -97,10 +98,27 @@
       <div class="foot"><button class="logout" onclick="forget()">この端末の合言葉を消す</button></div>
     </div>
 
-    <!-- 出馬表 -->
+    <!-- Excel（2シート） -->
     <div class="card">
+      <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg>Excelで一括反映</h2>
+      <p class="d">毎週前日の夜に、その週のExcel（「出馬表」と「陣営」の2シート入り）を選んでください。前の週のデータは自動で消えます。</p>
+      <div class="drop" id="xlsx-drop">
+        <input type="file" id="xlsx-input" accept=".xlsx,.xlsm,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+        <b>Excelファイルを選ぶ</b><small>または、ここにファイルをドラッグ</small>
+      </div>
+      <div class="file" id="xlsx-file"></div>
+      <div class="st" id="xlsx-sum" style="display:none;"></div>
+      <button class="btn" id="xlsx-btn" disabled onclick="uploadXlsx()">出馬表と陣営を反映する</button>
+      <div class="res" id="xlsx-res"></div>
+    </div>
+
+    <details class="card" style="padding-top:12px;">
+      <summary style="cursor:pointer;font-weight:700;color:var(--soft);">CSVで片方ずつ反映する（予備）</summary>
+
+    <!-- 出馬表 -->
+    <div class="card" style="margin-top:12px;box-shadow:none;border:1px solid var(--line);">
       <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V3.6"/><path d="M5 4.4h11.2l-1.8 3.4 1.8 3.4H5"/></svg>出馬表を差し替える</h2>
-      <p class="d">毎週前日の夜に、その週の「全36レース_完全版.csv」を選んでください。前の週のデータは自動で消えます。</p>
+      <p class="d">出馬表シートをCSVで書き出したものを選びます。</p>
       <div class="drop" id="card-drop">
         <input type="file" id="card-input" accept=".csv,.tsv,.txt,text/csv,text/plain">
         <b>出馬表のCSVを選ぶ</b><small>または、ここにファイルをドラッグ</small>
@@ -111,9 +129,9 @@
     </div>
 
     <!-- 陣営データ -->
-    <div class="card">
+    <div class="card" style="box-shadow:none;border:1px solid var(--line);">
       <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>陣営データを差し替える</h2>
-      <p class="d">騎手・調教師・種牡馬の成績CSVです。AI相談で使います。更新があるときだけで構いません。</p>
+      <p class="d">陣営シートをCSVで書き出したものを選びます。</p>
       <div class="drop" id="enemy-drop">
         <input type="file" id="enemy-input" accept=".csv,.tsv,.txt,text/csv,text/plain">
         <b>陣営データのCSVを選ぶ</b><small>または、ここにファイルをドラッグ</small>
@@ -122,6 +140,7 @@
       <button class="btn" id="enemy-btn" disabled onclick="upload('enemy')">陣営データを反映する</button>
       <div class="res" id="enemy-res"></div>
     </div>
+    </details>
 
     <p class="foot">
       除外や出走取消は、会員が「オッズ更新」を押した時点で自動反映されます。ここで直す必要はありません。<br>
@@ -253,6 +272,99 @@ async function upload(kind){
   }
 }
 
+/* ===== Excel（出馬表・陣営の2シート） ===== */
+const xl = { card:null, enemy:null, name:'' };
+function bindXlsx(){
+  const drop = q('xlsx-drop'), inp = q('xlsx-input');
+  drop.onclick = () => inp.click();
+  inp.onchange = () => pickXlsx(inp.files[0]);
+  ['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('on'); }));
+  ['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('on'); }));
+  drop.addEventListener('drop', e => { if (e.dataTransfer.files[0]) pickXlsx(e.dataTransfer.files[0]); });
+}
+const _cellStr = v => (v == null) ? '' : (typeof v === 'number' && Number.isInteger(v) ? String(v) : String(v).trim());
+// 出馬表：発走時間がExcelの時刻（0.41のような小数）なら「9時50分」に
+function convCard(v, col){
+  if (v == null) return '';
+  if (col === '発走時間'){
+    if (typeof v === 'number'){ const m = Math.round(v * 24 * 60); return Math.floor(m / 60) + '時' + String(m % 60).padStart(2, '0') + '分'; }
+    if (v instanceof Date){ return v.getHours() + '時' + String(v.getMinutes()).padStart(2, '0') + '分'; }
+  }
+  return _cellStr(v);
+}
+// 陣営：勝率・単回が 0.096 のような小数なら「9.6%」に
+function convCamp(v, col){
+  if (v == null) return '';
+  if (/勝率|単回/.test(col) && typeof v === 'number') return (v * 100).toFixed(1) + '%';
+  return _cellStr(v);
+}
+function sheetToTsv(ws, conv, nameCol){
+  const rows = XLSX.utils.sheet_to_json(ws, { header:1, raw:true, defval:null });
+  if (!rows.length) throw new Error('シートが空です');
+  const hdr = rows[0].map(c => (c == null ? '' : String(c).trim()));
+  const iname = hdr.indexOf(nameCol);
+  if (iname < 0) throw new Error('1行目に「' + nameCol + '」の見出しがありません');
+  const body = rows.slice(1).filter(r => r && r[iname] != null && String(r[iname]).trim() !== '');
+  const lines = [hdr.join('\t')].concat(body.map(r => hdr.map((h, i) => conv(r[i], h).replace(/[\t\r\n]+/g, ' ')).join('\t')));
+  return { tsv: lines.join('\n'), rows: body.length, cols: hdr.length };
+}
+function findSheet(wb, key){
+  const n = wb.SheetNames.find(x => x.replace(/[\s　]/g, '') === key) || wb.SheetNames.find(x => x.indexOf(key) >= 0);
+  return n ? wb.Sheets[n] : null;
+}
+async function pickXlsx(f){
+  if (!f) return;
+  xl.card = xl.enemy = null; xl.name = f.name;
+  q('xlsx-file').textContent = '選択中：' + f.name + '（' + Math.round(f.size/1024) + 'KB）';
+  q('xlsx-btn').disabled = true;
+  setRes('xlsx-res', '', '');
+  const sum = q('xlsx-sum'); sum.style.display = 'none'; sum.innerHTML = '';
+  try {
+    if (typeof XLSX === 'undefined') throw new Error('Excelの読み込み部品が読み込めていません。ページを再読み込みしてください');
+    const buf = await f.arrayBuffer();
+    const wb = XLSX.read(buf, { type:'array', cellDates:false });
+    const wsCard = findSheet(wb, '出馬表'), wsCamp = findSheet(wb, '陣営');
+    if (!wsCard) throw new Error('「出馬表」という名前のシートがありません（あるシート：' + wb.SheetNames.join('、') + '）');
+    xl.card = sheetToTsv(wsCard, convCard, '馬名');
+    if (wsCamp) xl.enemy = sheetToTsv(wsCamp, convCamp, '馬名');
+    // 場所ごとの頭数
+    const lines = xl.card.tsv.split('\n'); const hdr = lines[0].split('\t'); const ip = hdr.indexOf('場所');
+    const places = {}, raceSet = {};
+    if (ip >= 0) lines.slice(1).forEach(l => { const v = l.split('\t')[ip] || '?'; raceSet[v] = 1; const k = v.replace(/[0-9０-９]+/g, '') || '?'; places[k] = (places[k] || 0) + 1; });
+    let h = '<span>出馬表<b>' + Object.keys(raceSet).length + 'レース／' + xl.card.rows + '頭</b></span>';
+    Object.keys(places).forEach(k => { h += '<span>' + k + '<b>' + places[k] + '頭</b></span>'; });
+    h += '<span>陣営<b>' + (xl.enemy ? xl.enemy.rows + '行' : 'シートなし') + '</b></span>';
+    sum.innerHTML = h; sum.style.display = '';
+    q('xlsx-btn').disabled = false;
+  } catch(e) {
+    setRes('xlsx-res', 'ng', '読み取れませんでした。\n' + e.message);
+  }
+}
+async function uploadXlsx(){
+  if (!xl.card) return;
+  const btn = q('xlsx-btn'); btn.disabled = true;
+  setRes('xlsx-res', 'wait', '反映しています…（20秒ほどかかります）');
+  const out = [];
+  try {
+    const r = await callGas({ action:'admin_upload_card', text: xl.card.tsv });
+    const pl = Object.keys(r.places || {}).map(k => k + '：' + r.places[k] + '頭').join(' ／ ');
+    out.push('出馬表：反映しました（' + r.updatedAt + '）　レース数：' + r.races + '　頭数：' + r.rows + (pl ? '\n' + pl : ''));
+    if (r.warnings && r.warnings.length) out.push('気になる点：' + r.warnings.join(' ／ '));
+    if (xl.enemy){
+      const r2 = await callGas({ action:'admin_upload_enemy', text: xl.enemy.tsv });
+      out.push('陣営：反映しました（' + r2.updatedAt + '）　' + r2.rows + '行');
+    } else {
+      out.push('陣営：シートが無かったので前回のままです');
+    }
+    setRes('xlsx-res', 'ok', out.join('\n'));
+    loadStatus();
+  } catch(e) {
+    setRes('xlsx-res', 'ng', (out.length ? out.join('\n') + '\n' : '') + '反映できませんでした。\n' + e.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
+bindXlsx();
 bind('card'); bind('enemy');
 q('pass').addEventListener('keydown', e => { if (e.key === 'Enter') unlock(); });
 if (getPass()) { q('gate').classList.add('hide'); q('main').classList.remove('hide'); loadStatus(); }
