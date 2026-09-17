@@ -60,7 +60,7 @@
     .mk-placeholder h2{ font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif; font-weight:900; font-size:30px; color:var(--p-ink); margin:0 0 6px; }
     .mk-placeholder h2 .mk-mk{ background:linear-gradient(transparent 55%, var(--p-acc) 55%); padding:0 4px; }
     .mk-placeholder p{ color:var(--p-mute3); font-size:13px; line-height:1.8; margin:14px 0 0; }
-    .mk-placeholder .ph-box{ margin-top:28px; border:2px dashed #cfcdc4; border-radius:14px; padding:44px 20px; color:#b0aea6; font-size:13px; background:var(--p-tint2); }
+    .mk-placeholder .ph-box{ margin-top:28px; border:2px dashed var(--p-line2); border-radius:14px; padding:44px 20px; color:#b0aea6; font-size:13px; background:var(--p-tint2); }
     /* データ部屋・使い方：目次＋セクション */
     .mk-room{ max-width:1000px; margin:0 auto; padding:20px 14px 60px; }
     .mk-room-hd{ padding:14px 6px 6px; }
@@ -82,7 +82,7 @@
     .mk-sec h3{ display:flex; align-items:center; gap:10px; font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif;
       font-weight:900; font-size:18px; color:var(--p-ink); margin:0 0 12px; padding-bottom:10px; border-bottom:2px solid var(--p-ink); }
     .mk-sec h3 .ic{ font-size:20px; }
-    .mk-sec .ph-box{ border:2px dashed #cfcdc4; border-radius:12px; padding:32px 16px; color:#b0aea6; font-size:13px; text-align:center; background:var(--p-tint2); }
+    .mk-sec .ph-box{ border:2px dashed var(--p-line2); border-radius:12px; padding:32px 16px; color:#b0aea6; font-size:13px; text-align:center; background:var(--p-tint2); }
 
     /* 各馬評価テーブルの行・セル・棒グラフをタップしても変色させない */
     .data-table tr, .data-table td, .stat-card .bar-col, .stat-card .visual-bar,
@@ -110,7 +110,7 @@
     .race-btn[class*="status-"].active { background: var(--p-ink); color: var(--p-tint); border-color: var(--p-ink); }
     .race-btn.has-star { border-top: 2px solid #ff9800; }
    .tab-venue { font-size: 13px; font-weight: bold; }
-    .tab-time { font-size: 10px; color: #94a3b8; margin-top: 1px; }
+    .tab-time { font-size: 10px; color: var(--p-mute); margin-top: 1px; }
     .race-btn.active .tab-time { color: var(--p-ink); }
     .race-card { background: #fff; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,.2); overflow: hidden; margin-bottom: 10px; }
     .section-title { background: #f0f0f0; padding: 6px 8px; font-size: 12px; font-weight: bold; color: #555; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; display: flex; align-items: center; flex-wrap: wrap; }
@@ -320,13 +320,13 @@
     .graph-title-sort-btn:hover { opacity: 0.85; }
     
   .graph-mode-bar { background: var(--p-tint); color: var(--p-soft2); font-size: 10px; font-weight: bold; padding: 3px 8px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--p-line); }
-   .graph-mode-badge { background: #94a3b8; border: 1px solid #718096; border-radius: 3px; padding: 1px 6px; font-size: 10px; color: #fff; }
+   .graph-mode-badge { background: var(--p-mute); border: 1px solid var(--p-mute3); border-radius: 3px; padding: 1px 6px; font-size: 10px; color: #fff; }
    .graph-mode-bar span[onclick] { color: var(--p-mute) !important; }
    
    .core-panel { background: #ffffff; border: 1px solid var(--p-line); border-radius: 4px; padding: 6px 10px; margin: 4px; font-size: 10px; line-height: 1.8; color: #333; }
    .core-panel .core-title { color:var(--p-ink); font-weight: bold; font-size: 11px; margin-bottom: 4px; }
    .core-badge-1 { color: var(--p-bar1a); font-weight: bold; }
-   .core-badge-2 { color: #94a3b8; font-weight: bold; }
+   .core-badge-2 { color: var(--p-mute); font-weight: bold; }
    .core-badge-3 { color: var(--p-line2); font-weight: bold; }
    
    .odds-analysis-horse-row { display: flex; align-items: center; gap: 6px; padding: 3px 6px; border-bottom: 1px solid var(--p-tint); }
@@ -444,31 +444,31 @@
     
     .nav-race-btn.dimmed { opacity: 0.35; filter: grayscale(35%); transition: opacity .35s ease, filter .35s ease; }
     @keyframes muketsuGlow {
-      0%,100% { box-shadow: 0 0 0 1px rgba(0,0,0,.28), 0 0 10px rgba(195,236,63,.28), 0 0 20px rgba(195,236,63,.14); }
-      50%     { box-shadow: 0 0 0 1px rgba(195,236,63,.65), 0 0 16px rgba(0,0,0,.28), 0 0 30px rgba(195,236,63,.22); }
+      0%,100% { box-shadow: 0 0 0 1px rgba(0,0,0,.28), 0 0 10px rgba(var(--p-acc-rgb), .28), 0 0 20px rgba(var(--p-acc-rgb), .14); }
+      50%     { box-shadow: 0 0 0 1px rgba(var(--p-acc-rgb), .65), 0 0 16px rgba(0,0,0,.28), 0 0 30px rgba(var(--p-acc-rgb), .22); }
     }
     .nav-race-btn.highlight {
       background:#ffffff !important;
-      border-color: rgba(195,236,63,.55) !important;
-      color:#0f5c53 !important;
+      border-color: rgba(var(--p-acc-rgb), .55) !important;
+      color:var(--p-ink) !important;
       z-index: 5;
       animation: muketsuGlow 2.4s ease-in-out infinite;
       transition: all .3s ease;
     }
-    @media (prefers-reduced-motion: reduce){ .nav-race-btn.highlight{ animation:none; box-shadow:0 0 0 1px rgba(0,0,0,.35),0 0 14px rgba(195,236,63,.3);} }
+    @media (prefers-reduced-motion: reduce){ .nav-race-btn.highlight{ animation:none; box-shadow:0 0 0 1px rgba(0,0,0,.35),0 0 14px rgba(var(--p-acc-rgb), .3);} }
   /* ▼▼ 追加：ナビゲーションボタンが光るエフェクト ▼▼ */
   .nav-race-btn { transition: all 0.2s ease; }
   .nav-race-btn.active.is-turf,
   .nav-race-btn.active.is-dirt {
     background: var(--p-ink) !important;
     border: 2px solid var(--p-acc) !important;
-    box-shadow: 0 0 0 3px rgba(166,194,46,.35) !important;
+    box-shadow: 0 0 0 3px rgba(var(--p-acc-rgb), .35) !important;
     transform: scale(1.05);
     z-index: 10;
     position: relative;
   }
   .nav-race-btn.active .r-num { color: var(--p-acc) !important; }
-  .nav-race-btn.active .r-time { color: #e6f5a0 !important; }
+  .nav-race-btn.active .r-time { color: var(--p-acc2) !important; }
   /* ▲▲ ここまで ▲▲ */
 
     
@@ -574,7 +574,7 @@ button { box-shadow: none !important; }
 #toggle-detail-btn {
   background: var(--p-sub) !important;
   color: var(--p-subink) !important;
-  border: 1px solid #c9bb96 !important;
+  border: 1px solid var(--p-sub) !important;
   font-weight: 800 !important;
 }
 
@@ -583,21 +583,21 @@ button { box-shadow: none !important; }
 #btn-draw-mode[style*="d32f2f"] {
   background: var(--p-bar1a) !important;
   color: #fff !important;
-  border: 1px solid #a08850 !important;
+  border: 1px solid var(--p-subink) !important;
 }
 
 /* ③ サブ・リセット（スレートグレー）: 削除、クリア、アレンジの隠しボタンなど */
 .btn-danger, .graph-title-sort-btn, .ai-mic-btn {
-  background: #94a3b8 !important;
+  background: var(--p-mute) !important;
   color: #fff !important;
-  border: 1px solid #718096 !important;
+  border: 1px solid var(--p-mute3) !important;
 }
 .ai-mic-btn.recording { background: var(--p-bar1a) !important; } /* 録音中 */
 
 /* ▼ 買い目ビルダーの馬番選択ボタンも3色に統一 ▼ */
-.tb-num-btn.sel-1 { background: var(--p-bar1a) !important; color: #fff !important; border: 1px solid #a08850 !important; } /* 軸/1着: キャメル */
+.tb-num-btn.sel-1 { background: var(--p-bar1a) !important; color: #fff !important; border: 1px solid var(--p-subink) !important; } /* 軸/1着: キャメル */
 .tb-num-btn.sel-2 { background: var(--p-ink) !important; color: #fff !important; border: 1px solid var(--p-ink) !important; } /* 相手/2着: 青緑 */
-.tb-num-btn.sel-3 { background: #94a3b8 !important; color: #fff !important; border: 1px solid #718096 !important; } /* 3着: グレー */
+.tb-num-btn.sel-3 { background: var(--p-mute) !important; color: #fff !important; border: 1px solid var(--p-mute3) !important; } /* 3着: グレー */
 
 /* 8. 入力フォームの枠線を柔らかく */
 input[type=number], input[type=text], textarea, select {
@@ -725,14 +725,14 @@ input[type=number], input[type=text], textarea, select {
 .rep-box { background: var(--p-tint); border-radius: 6px; padding: 16px; margin-bottom: 20px; font-size: 13px; line-height: 1.6; border: 1px solid var(--p-line); color: #333333; }
 
 /* 資金配分用テーブル（グレー基調に統合） */
-.rep-table-orange th { background: var(--p-tint); color: var(--p-soft2); border: 1px solid var(--p-line); border-bottom: 2px solid #94a3b8; }
+.rep-table-orange th { background: var(--p-tint); color: var(--p-soft2); border: 1px solid var(--p-line); border-bottom: 2px solid var(--p-mute); }
 .rep-table-orange td { background: #ffffff; border: 1px solid var(--p-line); font-weight: bold; }
 
 /* グラフ関連 */
 .rep-g-row { display: flex; align-items: center; margin-bottom: 8px; font-size: 13px; color: #333333; }
 .rep-sum { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; }
 .rs-item { flex: 1 1 96px; background: var(--p-tint); border: 1px solid var(--p-line); border-radius: 10px; padding: 8px 12px; display: flex; flex-direction: column; gap: 2px; }
-.rs-k { font-size: 10px; font-weight: 700; color: #87867e; letter-spacing: .04em; }
+.rs-k { font-size: 10px; font-weight: 700; color: var(--p-mute); letter-spacing: .04em; }
 .rs-v { font-family: 'Noto Sans JP', sans-serif; font-size: 17px; font-weight: 900; color: var(--p-ink); line-height: 1.1; font-variant-numeric: tabular-nums; }
 .rs-v small { font-size: 10px; font-weight: 700; margin-left: 2px; }
 .rs-ev { background: var(--p-ink); border-color: var(--p-ink); flex-basis: 120px; }
@@ -784,23 +784,23 @@ input[type=number], input[type=text], textarea, select {
 .ticket-builder { background: #ffffff !important; border: 1px solid var(--p-line) !important; border-radius: 8px; box-shadow: none !important; }
 .ticket-builder-header { background: #ffffff !important; color:var(--p-ink) !important; border-bottom: 1px solid var(--p-line) !important; border-radius: 8px 8px 0 0; }
 .tb-points-badge { background: var(--p-tint) !important; color: var(--p-ink) !important; border: 1px solid var(--p-ink) !important; }
-.ticket-builder-header .btn-success { background: var(--p-bar1a) !important; border: 1px solid #a08850 !important; color: #ffffff !important; box-shadow: none !important; }
+.ticket-builder-header .btn-success { background: var(--p-bar1a) !important; border: 1px solid var(--p-subink) !important; color: #ffffff !important; box-shadow: none !important; }
 .tb-mark-label { color: var(--p-bar1a) !important; }
 .tb-mark-label.aite { color: var(--p-ink) !important; }
 .tb-num-btn { border: 1px solid var(--p-line2) !important; color: var(--p-soft2) !important; background: #ffffff !important; }
-.tb-num-btn.sel-1 { background: var(--p-bar1a) !important; border-color: #a08850 !important; color: #ffffff !important; }
+.tb-num-btn.sel-1 { background: var(--p-bar1a) !important; border-color: var(--p-subink) !important; color: #ffffff !important; }
 .tb-num-btn.sel-2 { background: var(--p-ink) !important; border-color: var(--p-ink) !important; color: #ffffff !important; }
-.tb-num-btn.sel-3 { background: #94a3b8 !important; border-color: #718096 !important; color: #ffffff !important; }
+.tb-num-btn.sel-3 { background: var(--p-mute) !important; border-color: var(--p-mute3) !important; color: #ffffff !important; }
 .tb-stats-panel { background: #ffffff !important; border-bottom: 1px solid var(--p-line) !important; }
 .tb-stat-block { border-right: 1px solid var(--p-line) !important; }
-.tb-stat-label, .tb-stat-sub, .tb-total-label { color: #94a3b8 !important; }
+.tb-stat-label, .tb-stat-sub, .tb-total-label { color: var(--p-mute) !important; }
 .tb-stat-value { color:var(--p-ink) !important; }
 .tb-stat-value.warn { color: var(--p-bar1a) !important; }
 .tb-total-block { background: var(--p-tint) !important; }
 .tb-total-value { color: var(--p-ink) !important; }
 .tb-budget-row { background: var(--p-tint) !important; border-bottom: 1px solid var(--p-line) !important; }
 .tb-budget-row .btn-primary { background: var(--p-ink) !important; border-color: var(--p-ink) !important; }
-.tb-budget-row .btn-danger { background: #94a3b8 !important; border-color: #718096 !important; }
+.tb-budget-row .btn-danger { background: var(--p-mute) !important; border-color: var(--p-mute3) !important; }
 .tb-ticket-item { border-bottom: 1px solid var(--p-tint) !important; }
 .tb-ev-badge.good { background: var(--p-tint) !important; color: var(--p-ink) !important; }
 .tb-ev-badge.bad { background: #fff5f5 !important; color: #ef4444 !important; }
@@ -863,7 +863,7 @@ input[type=number], input[type=text], textarea, select {
     .plan-tag.rec{ background:var(--p-acc); color:#3d4a10; }
     .plan-price{ margin-left:auto; font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:19px;
                  font-variant-numeric:tabular-nums; white-space:nowrap; }
-    .plan-price small{ font-size:11px; font-weight:700; color:#87867e; margin-left:2px; }
+    .plan-price small{ font-size:11px; font-weight:700; color:var(--p-mute); margin-left:2px; }
     .plan-card ul{ margin:11px 0 0; padding:0; list-style:none; display:grid; gap:6px; }
     .plan-card li{ display:flex; gap:8px; align-items:flex-start; font-size:13px; line-height:1.65; }
     .plan-card li svg{ width:15px; height:15px; flex:none; margin-top:3px; }
@@ -873,8 +873,8 @@ input[type=number], input[type=text], textarea, select {
                font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:14.5px;
                padding:12px 16px; cursor:pointer; }
     .plan-btn.ghost{ background:#fff; color:var(--p-ink); }
-    .plan-btn.done{ background:var(--p-tint); color:#87867e; border-color:var(--p-line3); cursor:default; }
-    .plan-foot{ padding:0 18px 20px; color:#87867e; font-size:11.5px; line-height:1.75; }
+    .plan-btn.done{ background:var(--p-tint); color:var(--p-mute); border-color:var(--p-line3); cursor:default; }
+    .plan-foot{ padding:0 18px 20px; color:var(--p-mute); font-size:11.5px; line-height:1.75; }
 
     /* 風トラック非表示（HATAKE資産のため）。MK_SHOW_WIND=true で復帰 */
     .bb-track-wrap.wind-off #bb-track,
@@ -968,7 +968,7 @@ input[type=number], input[type=text], textarea, select {
     .mk-day .m{ margin-top:8px; display:flex; gap:6px; flex-wrap:wrap; }
     .mk-day .m span{ font-size:11px; font-weight:700; background:var(--p-tint2); border:1px solid var(--p-line); border-radius:6px; padding:2px 8px; color:var(--p-subink); }
     .mk-day .m span.on{ background:#f5fadf; border-color:var(--p-acc); color:#3d4a10; }
-    .mk-day-empty{ border:2px dashed #cfcdc4; border-radius:14px; padding:26px 16px; text-align:center; color:#b0aea6; font-size:13px; background:var(--p-tint2); }
+    .mk-day-empty{ border:2px dashed var(--p-line2); border-radius:14px; padding:26px 16px; text-align:center; color:#b0aea6; font-size:13px; background:var(--p-tint2); }
     /* レースページ上部：いま見ている日付 */
     #mk-daybar{ display:flex; align-items:center; gap:10px; margin:12px 12px 0; padding:10px 14px; background:#fff; border:2px solid var(--p-line); border-radius:12px; }
     #mk-daybar .lbl{ font-size:10px; font-weight:800; letter-spacing:.14em; color:var(--p-mute3); }
@@ -997,9 +997,9 @@ input[type=number], input[type=text], textarea, select {
     #sim-section .sim-content{ display:none !important; }   /* スライダーだけ非表示。展開図はアコーディオンで残す */
     .tb-wrap{ padding:0 12px 6px; }
     .sub-head.tb-head{ padding:6px 0 8px !important; }
-    .tb-status{ font-size:10.5px; color:#87867e; font-weight:700; margin-left:auto; }
+    .tb-status{ font-size:10.5px; color:var(--p-mute); font-weight:700; margin-left:auto; }
     .seg{ display:flex; background:var(--p-tint4); border-radius:9px; padding:3px; gap:2px; }
-    .seg button{ flex:1; border:none; background:transparent; padding:8px 0; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:11px; font-weight:700; color:#87867e; border-radius:7px; cursor:pointer; }
+    .seg button{ flex:1; border:none; background:transparent; padding:8px 0; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:11px; font-weight:700; color:var(--p-mute); border-radius:7px; cursor:pointer; }
     .seg button.active{ background:var(--p-ink); color:var(--p-acc); }
     .tb-note{ font-size:10px; color:var(--p-mute); margin-top:6px; line-height:1.5; }
     .pb-wrap{ position:relative; }
@@ -1138,7 +1138,7 @@ input[type=number], input[type=text], textarea, select {
     .hd-tab{ font-family:'Noto Sans JP','BIZ UDPGothic',sans-serif; font-weight:900; font-size:12.5px;
              background:#fff; color:var(--p-subink); border:2px solid var(--p-line3); border-radius:20px;
              padding:7px 15px; cursor:pointer; white-space:nowrap; transition:.15s; }
-    .hd-tab:hover{ border-color:#c9bb96; }
+    .hd-tab:hover{ border-color:var(--p-sub); }
     .hd-tab.active{ background:var(--p-ink); color:var(--p-acc); border-color:var(--p-ink); }
     .hd-pane{ display:none; }
     .hd-pane.active{ display:block; }
@@ -1216,7 +1216,7 @@ input[type=number], input[type=text], textarea, select {
     .past-table td.pt-run{ padding:0 !important; }
     .camp-table td{ white-space:nowrap; }
     /* 騎手／調教師／種牡馬の境目に薄い縦の点線 */
-    .data-table.camp-table th.cm-sep, .data-table.camp-table td.cm-sep, .camp-table th.cm-sep, .camp-table td.cm-sep{ border-left:1px dotted #cfcdc4 !important; }
+    .data-table.camp-table th.cm-sep, .data-table.camp-table td.cm-sep, .camp-table th.cm-sep, .camp-table td.cm-sep{ border-left:1px dotted var(--p-line2) !important; }
     #camp-note:empty{ display:none; }
     .past-table th, .camp-table th{ position:sticky; top:0; }
     /* ===== 読み込み中のくるくる（オッズ取得など） ===== */
@@ -1363,7 +1363,7 @@ input[type=number], input[type=text], textarea, select {
   .pill-ghost{ background:#fff !important; color:#8a9483 !important; }
   .pill-ghost:hover{ background:var(--p-tint) !important; color:var(--mk-dark) !important; }
   /* ベージュ系ボタン（オッズ更新・リセット・買い目コピー・詳細データ） */
-  .pill-beige{ background:var(--p-sub) !important; color:var(--p-subink) !important; border-color:#c9bb96 !important; font-weight:700 !important; }
+  .pill-beige{ background:var(--p-sub) !important; color:var(--p-subink) !important; border-color:var(--p-sub) !important; font-weight:700 !important; }
   .pill-beige:hover{ background:#ccbf9b !important; color:#4a4234 !important; border-color:#bcac82 !important; }
   /* 主要アクション（確定・買い目を作る）＝黒地に蛍光文字でハイライト */
   .pill-accent{ background:var(--p-ink) !important; color:var(--p-acc) !important; border-color:var(--p-ink) !important; font-weight:800 !important; }
@@ -1662,8 +1662,8 @@ input[type=number], input[type=text], textarea, select {
   .data-table.detail-open .waku-box{ width:18px !important; height:18px !important; font-size:10px !important; }
   .data-table.detail-open .user-mark-btn{ width:16px !important; height:16px !important; font-size:9px !important; }
   /* マーカー上位のハイライトは淡緑系に統一（ゼブラより優先） */
-  .data-table tbody tr td.rank-1, .rank-1{ background:#e7f1dd !important; }
-  .data-table tbody tr td.rank-2, .rank-2{ background:#f0f6ea !important; }
+  .data-table tbody tr td.rank-1, .rank-1{ background:var(--p-acc3) !important; }
+  .data-table tbody tr td.rank-2, .rank-2{ background:var(--p-acc4) !important; }
 
   /* ボタン群をダーク緑ピル/セージに（機能色は個別維持されるものは後段で調整可） */
   .btn-primary{ background:var(--mk-dark) !important; color:var(--p-tint) !important; border:none !important; border-radius:20px !important; }
@@ -1674,7 +1674,7 @@ input[type=number], input[type=text], textarea, select {
   .baba-btn.active{ background:var(--p-ink) !important; border-color:var(--p-ink) !important; color:var(--p-tint) !important; }
 
   /* レース選択ボタン：白＋淡緑、選択は淡緑 */
-  .nav-race-btn{ background:#f3f8ee !important; border:1px solid var(--mk-line) !important; color:#3f4a3d !important; border-radius:10px !important;
+  .nav-race-btn{ background:var(--p-tile) !important; border:1px solid var(--mk-line) !important; color:var(--p-soft) !important; border-radius:10px !important;
     min-height:42px !important; box-sizing:border-box !important; display:flex !important; flex-direction:column !important; align-items:center !important; justify-content:center !important; border-bottom-width:1px !important; }
   .nav-race-btn.active{ background:var(--mk-dark) !important; color:var(--p-tint) !important; border-color:var(--mk-dark) !important; }
 
@@ -1909,7 +1909,7 @@ input[type=number], input[type=text], textarea, select {
         <div style="display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap;">
           <div style="font-size: 12px; color: var(--p-soft2); background: var(--p-tint); padding: 4px 10px; border: 1px solid var(--p-line2); border-radius: 4px; cursor: pointer; display:flex; align-items:center; gap:4px;" onclick="window.openAiSetupModal()" title="クリックでAIを変更">
             <svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 5v3"/><circle cx="9" cy="13" r="1.2" fill="currentColor"/><circle cx="15" cy="13" r="1.2" fill="currentColor"/></svg> AI: <span id="ai-partner-name" style="font-size: 13px; font-weight: bold; color:var(--p-ink);"></span>
-            <span style="font-size: 9px; color:#94a3b8;">(変更)</span>
+            <span style="font-size: 9px; color:var(--p-mute);">(変更)</span>
           </div>
           <button class="btn-primary" style="background:var(--p-ink) !important; border:1px solid var(--p-ink) !important; color:#ffffff !important; font-size:11px; padding:5px 12px; border-radius:4px; box-shadow:none; cursor:pointer;" onclick="showOddsAnalysisModal()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg> 10分前オッズ解析</button>
         </div>
@@ -2730,7 +2730,7 @@ input[type=number], input[type=text], textarea, select {
           <div id="preset-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-height: 400px; overflow-y: auto; margin-bottom: 15px;">
             <!-- JSで自動生成 -->
           </div>
-          <div style="text-align: left;"><button class="btn-danger" style="background:#94a3b8; border:none; box-shadow:none;" onclick="backToModeSelection()">◀ 戻る</button></div>
+          <div style="text-align: left;"><button class="btn-danger" style="background:var(--p-mute); border:none; box-shadow:none;" onclick="backToModeSelection()">◀ 戻る</button></div>
         </div>
 
         <!-- チャット診断画面 -->
@@ -2744,7 +2744,7 @@ input[type=number], input[type=text], textarea, select {
             <input type="text" id="chat-input" placeholder="テキストを入力..." style="flex-grow: 1; padding: 8px; border: 1px solid var(--p-line2); border-radius: 4px; font-size: 12px;" onkeypress="if(event.key==='Enter') sendChatMessage()">
             <button class="btn-primary" style="padding: 8px 16px; border-radius: 4px; box-shadow:none; background:var(--p-ink); border-color:var(--p-ink); color:var(--p-acc); font-weight:800;" onclick="sendChatMessage()">送信</button>
           </div>
-          <div style="text-align: left; margin-top:8px;"><button class="btn-danger" style="background:#94a3b8; border:none; box-shadow:none;" onclick="backToModeSelection()">◀ 中止して戻る</button></div>
+          <div style="text-align: left; margin-top:8px;"><button class="btn-danger" style="background:var(--p-mute); border:none; box-shadow:none;" onclick="backToModeSelection()">◀ 中止して戻る</button></div>
         </div>
 
         <!-- レーダーチャート＆微調整画面 (ポイント上限あり) -->
@@ -2765,7 +2765,7 @@ input[type=number], input[type=text], textarea, select {
                 <line x1="50" y1="50" x2="74" y2="82" stroke="var(--p-line)" stroke-width="1" />
                 <line x1="50" y1="50" x2="26" y2="82" stroke="var(--p-line)" stroke-width="1" />
                 <line x1="50" y1="50" x2="12" y2="38" stroke="var(--p-line)" stroke-width="1" />
-                <polygon id="radar-polygon" points="50,50 50,50 50,50 50,50 50,50" fill="rgba(195,236,63, 0.4)" stroke="var(--p-ink)" stroke-width="2" />
+                <polygon id="radar-polygon" points="50,50 50,50 50,50 50,50 50,50" fill="rgba(var(--p-acc-rgb), 0.4)" stroke="var(--p-ink)" stroke-width="2" />
               </svg>
               <div style="position: absolute; top: -5px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: bold; color: var(--p-ink);">能力</div>
               <div style="position: absolute; top: 35%; right: -15px; font-size: 10px; font-weight: bold; color: var(--p-ink);">状態</div>
@@ -2814,13 +2814,13 @@ input[type=number], input[type=text], textarea, select {
           </div>
           
           <div style="display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid var(--p-line); padding-top: 10px;">
-            <button class="btn-danger" style="background:#94a3b8; border:none; box-shadow:none;" onclick="backToModeSelection()">◀ 戻る</button>
+            <button class="btn-danger" style="background:var(--p-mute); border:none; box-shadow:none;" onclick="backToModeSelection()">◀ 戻る</button>
             <button class="btn-success" style="background:var(--p-ink); border-color:var(--p-ink); color:var(--p-acc); font-weight:800; font-size:13px; padding:6px 20px; box-shadow:none;" onclick="saveTuningAI()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg> この設定で確定</button>
           </div>
         </div>
 
         <div id="ai-modal-close-btn" style="margin-top: 15px; text-align: right; border-top: 1px solid var(--p-line); padding-top: 10px;">
-          <button class="btn-danger" style="background:#94a3b8; border-color:#718096; border-radius:4px; box-shadow:none;" onclick="document.getElementById('ai-setup-modal').classList.remove('open')">閉じる</button>
+          <button class="btn-danger" style="background:var(--p-mute); border-color:var(--p-mute3); border-radius:4px; box-shadow:none;" onclick="document.getElementById('ai-setup-modal').classList.remove('open')">閉じる</button>
         </div>
       </div>
     </div>
@@ -4299,14 +4299,14 @@ function buildNavigation() {
           <option value="custom" ${sType==='custom'?'selected':''}>${sType==='custom' ? fmtCustom(sBias, sTenkai) : '細かく設定...'}</option>
         </select>
         
-        <div style="color:#8a7340; text-align:right;">ダ</div>
-        <select style="font-size:10px; padding:0 2px; border:1px solid var(--p-line2); border-radius:3px; background:#fff; color:#8a7340; outline:none;" onchange="updateVenueBaba('${basho}', 'ダ', this.value)">
+        <div style="color:var(--p-dirt); text-align:right;">ダ</div>
+        <select style="font-size:10px; padding:0 2px; border:1px solid var(--p-line2); border-radius:3px; background:#fff; color:var(--p-dirt); outline:none;" onchange="updateVenueBaba('${basho}', 'ダ', this.value)">
           <option value="良" ${dStr==='良'?'selected':''}>良</option>
           <option value="稍" ${dStr==='稍'?'selected':''}>稍</option>
           <option value="重" ${dStr==='重'?'selected':''}>重</option>
           <option value="不" ${dStr==='不'?'selected':''}>不</option>
         </select>
-        <select style="font-size:10px; padding:0 2px; border:1px solid var(--p-line2); border-radius:3px; background:${dType==='custom'?'#fdf8ed':'#fff'}; color:#8a7340; outline:none; font-weight:bold;" onchange="handleVenueBiasSelect('${basho}', 'ダ', this.value)">
+        <select style="font-size:10px; padding:0 2px; border:1px solid var(--p-line2); border-radius:3px; background:${dType==='custom'?'#fdf8ed':'#fff'}; color:var(--p-dirt); outline:none; font-weight:bold;" onchange="handleVenueBiasSelect('${basho}', 'ダ', this.value)">
           <option value="フラット" ${dType==='フラット'?'selected':''}>フラット</option>
           <option value="内前" ${dType==='内前'?'selected':''}>内前</option>
           <option value="外差し" ${dType==='外差し'?'selected':''}>外差し</option>
@@ -4337,7 +4337,7 @@ function buildNavigation() {
 
         const timeStr = r.departureTime || '';
         const isDirt = (r.info && r.info.includes('ダ')) || (r.surface && r.surface.includes('ダ'));
-        const timeColor = isDirt ? '#8a7340' : 'var(--p-ink)';
+        const timeColor = isDirt ? 'var(--p-dirt)' : 'var(--p-ink)';
         const bottomBorder = isDirt ? 'border-bottom: 2px solid #eaddd5;' : 'border-bottom: 2px solid var(--p-line2);';
 
         const btn = document.createElement('div');
@@ -4882,7 +4882,7 @@ function buildNavigation() {
 
       // 1. 詳細データを隠す
       const detailBtn = document.getElementById('toggle-detail-btn');
-      if(detailBtn) { detailBtn.innerHTML = '▶ 詳細データを開く'; detailBtn.style.background = 'var(--p-sub)'; detailBtn.style.color = 'var(--p-subink)'; detailBtn.style.borderColor = '#c9bb96'; }
+      if(detailBtn) { detailBtn.innerHTML = '▶ 詳細データを開く'; detailBtn.style.background = 'var(--p-sub)'; detailBtn.style.color = 'var(--p-subink)'; detailBtn.style.borderColor = 'var(--p-sub)'; }
       const markerLabel = document.getElementById('marker-toggle-label');
       if(markerLabel) markerLabel.style.display = 'none';
       const markerCb = document.getElementById('marker-toggle-cb');
@@ -5426,8 +5426,8 @@ window.showOddsAnalysisModal = function() {
                              coreHtml + 
                              '</div>';
 
-        let pRates = '<span style="color:#94a3b8; font-size:12px;">データなし</span>';
-        let pReturns = '<span style="color:#94a3b8; font-size:12px;">-</span>';
+        let pRates = '<span style="color:var(--p-mute); font-size:12px;">データなし</span>';
+        let pReturns = '<span style="color:var(--p-mute); font-size:12px;">-</span>';
 
         if(h.hist) {
             pRates = '<span style="font-size:14px;">' + h.hist.win + '</span> <span style="color:var(--p-line2);">/</span> <span style="font-size:14px;">' + h.hist.fukuRate + '</span>';
@@ -5436,7 +5436,7 @@ window.showOddsAnalysisModal = function() {
             pReturns = '<span style="font-size:14px; ' + tanCls + '">' + h.hist.tan + '円</span> <span style="color:var(--p-line2);">/</span> <span style="font-size:14px; ' + fukCls + '">' + h.hist.fuku + '円</span>';
         }
 
-        let rowClass = (h.rank > 11) ? 'style="background:var(--p-tint); color:#94a3b8;"' : '';
+        let rowClass = (h.rank > 11) ? 'style="background:var(--p-tint); color:var(--p-mute);"' : '';
         let fStr = (h.fukuOdds && h.fukuOdds !== '-') ? h.fukuOdds : '-';
 
         // ▼ 全体的にフォントサイズとパディングを拡大して見やすく
@@ -6419,7 +6419,7 @@ window.drawOaChartModal = function() {
         } else {
           // ▼▼ 変更箇所：「勝」や「%」の文字を外し、数値の左右に◀▶ボタンを配置 ▼▼
           // ▼▼ 変更箇所：「勝」の文字を外し、数値と%の左右に◀▶ボタンを配置 ▼▼
-          rowEl.innerHTML = leftPart + barAndTrack + `<div class="val-col-wrapper">${coreHtml}<div class="val-col-inner" style="display:flex; align-items:center; padding:1px 2px;"><button style="border:none;background:transparent;color:#94a3b8;font-size:10px;padding:2px 4px;cursor:pointer;" onclick="adjustHorseWinRate(${h.num}, -0.5)">◀</button><input type="number" class="val-col" id="val-input-${graphIdx}" value="${h.winRate.toFixed(1)}" onchange="updateHorseByNum(${h.num},'winRate',this.value);renderGraph()" style="width:36px;text-align:center;"><span style="font-size:9px;color:#aaa;margin-right:2px;margin-left:1px;">%</span><button style="border:none;background:transparent;color:#94a3b8;font-size:10px;padding:2px 4px;cursor:pointer;" onclick="adjustHorseWinRate(${h.num}, 0.5)">▶</button></div></div>`;
+          rowEl.innerHTML = leftPart + barAndTrack + `<div class="val-col-wrapper">${coreHtml}<div class="val-col-inner" style="display:flex; align-items:center; padding:1px 2px;"><button style="border:none;background:transparent;color:var(--p-mute);font-size:10px;padding:2px 4px;cursor:pointer;" onclick="adjustHorseWinRate(${h.num}, -0.5)">◀</button><input type="number" class="val-col" id="val-input-${graphIdx}" value="${h.winRate.toFixed(1)}" onchange="updateHorseByNum(${h.num},'winRate',this.value);renderGraph()" style="width:36px;text-align:center;"><span style="font-size:9px;color:#aaa;margin-right:2px;margin-left:1px;">%</span><button style="border:none;background:transparent;color:var(--p-mute);font-size:10px;padding:2px 4px;cursor:pointer;" onclick="adjustHorseWinRate(${h.num}, 0.5)">▶</button></div></div>`;
           // ▲▲ 変更箇所ここまで ▲▲
         }
        chartRows.appendChild(rowEl);
@@ -8852,7 +8852,7 @@ document.querySelectorAll('.nav-race-btn').forEach(btn => {
         else el.classList.add('hidden');
       });
       const btn = document.getElementById('toggle-detail-btn');
-      if(btn) { btn.innerHTML = isDetailOpen ? '− 詳細' : '＋ 詳細'; btn.style.background = 'var(--p-sub)'; btn.style.color = 'var(--p-subink)'; btn.style.borderColor = '#c9bb96'; }
+      if(btn) { btn.innerHTML = isDetailOpen ? '− 詳細' : '＋ 詳細'; btn.style.background = 'var(--p-sub)'; btn.style.color = 'var(--p-subink)'; btn.style.borderColor = 'var(--p-sub)'; }
       // 詳細を開いたら表全体をコンパクト化（横スクロールを極力なくす）
       const tbl = document.getElementById('main-data-table');
       if(tbl) tbl.classList.toggle('detail-open', isDetailOpen);
@@ -9312,7 +9312,7 @@ let vbCurrentBasho = '', vbCurrentType = '';
 window.openVenueBiasModal = function(basho, type) {
   vbCurrentBasho = basho; vbCurrentType = type;
   const titleEl = document.getElementById('vb-modal-title');
-  if(titleEl) { titleEl.textContent = `${basho} ${type} - 一括設定`; titleEl.style.color = type === '芝' ? 'var(--p-ink)' : '#8a7340'; }
+  if(titleEl) { titleEl.textContent = `${basho} ${type} - 一括設定`; titleEl.style.color = type === '芝' ? 'var(--p-ink)' : 'var(--p-dirt)'; }
   let startB = 0, startT = 0, found = false;
   Object.keys(racesData).forEach(rId => {
     if(found) return; const r = racesData[rId];
@@ -9417,8 +9417,8 @@ function openFinalReport() {
         const isLowEv = ev > 0 && ev < 1.0; // 期待値1.0未満を判定
         
         // 期待値が低い行は背景を少し暗くし、左端にグレーのラインとインナーシャドウをつける
-        const rowStyle = isLowEv ? 'background-color: var(--p-tint); box-shadow: inset 4px 0 0 #94a3b8, inset 0 2px 5px rgba(0,0,0,0.03);' : '';
-        const evColor = isLowEv ? '#94a3b8' : 'var(--p-ink)'; // 低い場合はグレーに
+        const rowStyle = isLowEv ? 'background-color: var(--p-tint); box-shadow: inset 4px 0 0 var(--p-mute), inset 0 2px 5px rgba(0,0,0,0.03);' : '';
+        const evColor = isLowEv ? 'var(--p-mute)' : 'var(--p-ink)'; // 低い場合はグレーに
         const combColor = isLowEv ? 'var(--p-soft2)' : '';
         const opc = isLowEv ? 'opacity: 0.7;' : '';
 
@@ -9706,13 +9706,13 @@ window.showPresetAI = function() {
           <line x1="50" y1="50" x2="74" y2="82" stroke="var(--p-line)" stroke-width="1" />
           <line x1="50" y1="50" x2="26" y2="82" stroke="var(--p-line)" stroke-width="1" />
           <line x1="50" y1="50" x2="12" y2="38" stroke="var(--p-line)" stroke-width="1" />
-          <polygon points="${pointsStr.trim()}" fill="rgba(195,236,63, 0.4)" stroke="var(--p-ink)" stroke-width="1.5" />
+          <polygon points="${pointsStr.trim()}" fill="rgba(var(--p-acc-rgb), 0.4)" stroke="var(--p-ink)" stroke-width="1.5" />
         </svg>
-        <div style="position:absolute; top:-4px; left:50%; transform:translateX(-50%); font-size:7px; color:#94a3b8; font-weight:bold;">能</div>
-        <div style="position:absolute; top:35%; right:-3px; font-size:7px; color:#94a3b8; font-weight:bold;">状</div>
-        <div style="position:absolute; bottom:-1px; right:5px; font-size:7px; color:#94a3b8; font-weight:bold;">展</div>
-        <div style="position:absolute; bottom:-1px; left:5px; font-size:7px; color:#94a3b8; font-weight:bold;">適</div>
-        <div style="position:absolute; top:35%; left:-3px; font-size:7px; color:#94a3b8; font-weight:bold;">妙</div>
+        <div style="position:absolute; top:-4px; left:50%; transform:translateX(-50%); font-size:7px; color:var(--p-mute); font-weight:bold;">能</div>
+        <div style="position:absolute; top:35%; right:-3px; font-size:7px; color:var(--p-mute); font-weight:bold;">状</div>
+        <div style="position:absolute; bottom:-1px; right:5px; font-size:7px; color:var(--p-mute); font-weight:bold;">展</div>
+        <div style="position:absolute; bottom:-1px; left:5px; font-size:7px; color:var(--p-mute); font-weight:bold;">適</div>
+        <div style="position:absolute; top:35%; left:-3px; font-size:7px; color:var(--p-mute); font-weight:bold;">妙</div>
       </div>
     `;
 
@@ -11017,7 +11017,7 @@ window.closeDetailedData2Modal = function() {
 :root{ --p-ink:#1a1a1a; --p-ink2:#55554e; --p-soft:#41413c; --p-soft2:#3d3d3a; --p-acc:#ccf23f; --p-acc1:#d4f54a; --p-acc2:#e9f9a3; --p-acc3:#f5fbd6;
  --p-sub:#d8ccae; --p-subink:#5c5341; --p-bar1a:#b8a06a; --p-bar1b:#cbb583; --p-bar2a:#cdbb92; --p-bar2b:#ddceac; --p-bar3a:#e2dcc9; --p-bar3b:#ece7d8;
  --p-bg:#eceae3; --p-tint:#f4f2ec; --p-tint2:#faf9f5; --p-tint3:#f7f6f1; --p-tint4:#f0eee8; --p-tint5:#fffcf0; --p-line:#e8e6df; --p-line2:#dcdad3; --p-line3:#e0ded6;
- --p-mute:#9b9a92; --p-mute2:#c9c8c0; --p-mute3:#8a8a82; --p-mute4:#7a7a72; }
+ --p-mute:#9b9a92; --p-mute2:#c9c8c0; --p-mute3:#8a8a82; --p-mute4:#7a7a72; --p-tile:#f3f8ee; --p-acc4:#f0f6ea; --p-dirt:#8a7340; --p-acc-rgb:204,242,63; }
 html.pal-grad #mk-topbar, html.pal-grad #site-title{ background:linear-gradient(135deg, var(--p-ink) 0%, var(--p-grad2) 100%) !important; }
 #pal{ position:fixed; right:10px; bottom:10px; z-index:2147483000; font-family:"BIZ UDPGothic",sans-serif; font-size:12px; color:#1a1a1a; }
 #pal .pal-tab{ display:flex; align-items:center; gap:6px; margin-left:auto; background:#1a1a1a; color:#fff; border:0; border-radius:999px; padding:9px 14px; font-weight:700; font-size:12px; box-shadow:0 4px 14px rgba(0,0,0,.25); cursor:pointer; }
@@ -11085,7 +11085,9 @@ html.pal-grad #mk-topbar, html.pal-grad #site-title{ background:linear-gradient(
       line: mix(bg, ink, .03), line2: mix(bg, ink, .08), line3: mix(bg, ink, .06),
       mute: mix(ink, bg, .55), mute2: mix(ink, bg, .7), mute3: mix(ink, bg, .5), mute4: mix(ink, bg, .45),
       grad2: st.g2,
+      tile: mix(acc, W, .92), acc4: mix(acc, W, .9), dirt: mix(sub, ink, .5),
     };
+    const A = hex(acc); r.setProperty('--p-acc-rgb', A.join(','));
     Object.keys(v).forEach(k => r.setProperty('--p-' + k, v[k]));
     document.documentElement.classList.toggle('pal-grad', !!st.grad);
     $('pal-ink').value = st.ink; $('pal-acc').value = st.acc; $('pal-bg').value = st.bg; $('pal-sub').value = st.sub;
