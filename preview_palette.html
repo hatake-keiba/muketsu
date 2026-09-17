@@ -6135,10 +6135,10 @@ window.drawOaChartModal = function() {
           // 有利馬は「蛍光リング＋発光＋有利タグ」で明確化
           const isFav = favScore > 0;
           const favGlow = isFav
-            ? 'box-shadow:0 0 0 2px var(--p-ink),0 0 0 4px var(--mk-lime),0 0 10px 2px rgba(204,242,63,.9),0 0 18px 4px rgba(204,242,63,.5);'
+            ? 'box-shadow:0 0 0 2px var(--p-ink),0 0 0 4px var(--mk-lime),0 0 10px 2px rgba(var(--p-acc-rgb), .9),0 0 18px 4px rgba(var(--p-acc-rgb), .5);'
             : 'box-shadow:0 2px 4px rgba(0,0,0,0.3);';
           const favTag = isFav
-            ? `<span style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--mk-lime);color:var(--p-ink);font-size:7.5px;font-weight:900;line-height:1;padding:2px 5px;border-radius:6px;letter-spacing:.04em;white-space:nowrap;box-shadow:0 0 6px rgba(204,242,63,.8),0 1px 2px rgba(0,0,0,.3);z-index:5;">有利</span>`
+            ? `<span style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--mk-lime);color:var(--p-ink);font-size:7.5px;font-weight:900;line-height:1;padding:2px 5px;border-radius:6px;letter-spacing:.04em;white-space:nowrap;box-shadow:0 0 6px rgba(var(--p-acc-rgb), .8),0 1px 2px rgba(0,0,0,.3);z-index:5;">有利</span>`
             : '';
           const phF1 = pixelHorseSvg(h.waku, 0), phF2 = pixelHorseSvg(h.waku, 1);
           const favWrap = isFav ? `border-radius:6px;${favGlow}` : '';
@@ -11029,6 +11029,8 @@ html.pal-grad #mk-topbar, html.pal-grad #site-title{ background:linear-gradient(
 #pal .row small{ display:block; font-weight:400; color:#888; font-size:10px; }
 #pal input[type=color]{ width:44px; height:30px; border:1px solid #ccc; border-radius:6px; padding:0; background:none; }
 #pal input[type=range]{ width:130px; }
+#pal select{ font-size:11px; padding:5px 6px; border:1px solid #ccc; border-radius:6px; background:#fff; }
+#pal input[type=color]:disabled{ opacity:.35; }
 #pal .pre{ display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 10px; }
 #pal .pre button{ border:1px solid #ddd; background:#fff; border-radius:999px; padding:5px 9px; font-size:11px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:5px; }
 #pal .pre i{ width:12px; height:12px; border-radius:50%; display:inline-block; border:1px solid rgba(0,0,0,.15); }
@@ -11047,6 +11049,8 @@ html.pal-grad #mk-topbar, html.pal-grad #site-title{ background:linear-gradient(
     <div class="row"><label>背景<small>ページ地の色味</small></label><input type="color" id="pal-bg"></div>
     <div class="row"><label>サブ<small>勝率バー・淡い面</small></label><input type="color" id="pal-sub"></div>
     <div class="row"><label>アクセントのやわらかさ<small>右ほど白に寄せて主張を抑える</small></label><input type="range" id="pal-soft" min="0" max="100" value="0"></div>
+    <div class="row"><label>ハイライト<small>押した所・順位の帯・選択中の光り</small></label><input type="checkbox" id="pal-hlsync" checked title="アクセントに連動"><input type="color" id="pal-hl"></div>
+    <div class="row"><label>レース目次の地色<small>未選択タイル</small></label><select id="pal-tile"><option value="neutral">無彩色（背景なじみ）</option><option value="white">白</option><option value="hl">ハイライトの淡色</option></select></div>
     <div class="row"><label>グラデーション<small>ヘッダーとロゴ面</small></label><input type="checkbox" id="pal-grad"><input type="color" id="pal-g2"></div>
     <div class="act"><button id="pal-copy">この配色のURLをコピー</button><button class="sub" id="pal-reset">現行に戻す</button></div>
     <div class="code" id="pal-code"></div>
@@ -11060,7 +11064,7 @@ html.pal-grad #mk-topbar, html.pal-grad #site-title{ background:linear-gradient(
   const toHex = a => '#' + a.map(v => Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('');
   const mix = (a, b, t) => { const A = hex(a), B = hex(b); return toHex([0,1,2].map(i => A[i] + (B[i]-A[i]) * t)); };
   const W = '#ffffff';
-  const DEF = { ink:'#1a1a1a', acc:'#ccf23f', bg:'#eceae3', sub:'#d8ccae', soft:0, grad:0, g2:'#3d3d3a' };
+  const DEF = { ink:'#1a1a1a', acc:'#ccf23f', bg:'#eceae3', sub:'#d8ccae', soft:0, grad:0, g2:'#3d3d3a', hl:'#ccf23f', hlsync:1, tile:'neutral' };
   const PRESETS = [
     { n:'現行（黒×ライム）', ink:'#1a1a1a', acc:'#ccf23f', bg:'#eceae3', sub:'#d8ccae', soft:0, grad:0, g2:'#3d3d3a' },
     { n:'紺×赤', ink:'#14286b', acc:'#ff4b4b', bg:'#e9eef7', sub:'#c5d3ee', soft:0, grad:0, g2:'#2f4a8f' },
@@ -11076,23 +11080,27 @@ html.pal-grad #mk-topbar, html.pal-grad #site-title{ background:linear-gradient(
     const r = document.documentElement.style;
     const ink = st.ink, bg = st.bg, sub = st.sub;
     const acc = mix(st.acc, W, (st.soft/100) * 0.45);
+    if (st.hlsync) st.hl = st.acc;
+    const hl = mix(st.hl, W, (st.soft/100) * 0.45);
+    const tile = st.tile === 'white' ? W : st.tile === 'hl' ? mix(hl, W, .9) : mix(bg, W, .5);
     const v = {
       ink, ink2: mix(ink, bg, .25), soft: mix(ink, bg, .2), soft2: mix(ink, bg, .15),
-      acc, acc1: mix(acc, W, .25), acc2: mix(acc, W, .55), acc3: mix(acc, W, .82),
+      acc, acc1: mix(hl, W, .25), acc2: mix(hl, W, .55), acc3: mix(hl, W, .82),
       sub, subink: mix(sub, ink, .6),
       bar1a: sub, bar1b: mix(sub, W, .25), bar2a: mix(sub, W, .45), bar2b: mix(sub, W, .6), bar3a: mix(sub, W, .75), bar3b: mix(sub, W, .85),
       bg, tint: mix(bg, W, .45), tint2: mix(bg, W, .8), tint3: mix(bg, W, .65), tint4: mix(bg, W, .3), tint5: mix(bg, W, .85),
       line: mix(bg, ink, .03), line2: mix(bg, ink, .08), line3: mix(bg, ink, .06),
       mute: mix(ink, bg, .55), mute2: mix(ink, bg, .7), mute3: mix(ink, bg, .5), mute4: mix(ink, bg, .45),
       grad2: st.g2,
-      tile: mix(acc, W, .92), acc4: mix(acc, W, .9), dirt: mix(sub, ink, .5),
+      tile, acc4: mix(hl, W, .9), dirt: mix(sub, ink, .5),
     };
-    const A = hex(acc); r.setProperty('--p-acc-rgb', A.join(','));
+    const A = hex(hl); r.setProperty('--p-acc-rgb', A.join(','));
     Object.keys(v).forEach(k => r.setProperty('--p-' + k, v[k]));
     document.documentElement.classList.toggle('pal-grad', !!st.grad);
     $('pal-ink').value = st.ink; $('pal-acc').value = st.acc; $('pal-bg').value = st.bg; $('pal-sub').value = st.sub;
     $('pal-soft').value = st.soft; $('pal-grad').checked = !!st.grad; $('pal-g2').value = st.g2;
-    const h = 'ink=' + st.ink.slice(1) + '&acc=' + st.acc.slice(1) + '&bg=' + st.bg.slice(1) + '&sub=' + st.sub.slice(1) + '&soft=' + st.soft + '&grad=' + (st.grad?1:0) + '&g2=' + st.g2.slice(1);
+    $('pal-hl').value = st.hl; $('pal-hlsync').checked = !!st.hlsync; $('pal-hl').disabled = !!st.hlsync; $('pal-tile').value = st.tile;
+    const h = 'ink=' + st.ink.slice(1) + '&acc=' + st.acc.slice(1) + '&bg=' + st.bg.slice(1) + '&sub=' + st.sub.slice(1) + '&soft=' + st.soft + '&grad=' + (st.grad?1:0) + '&g2=' + st.g2.slice(1) + '&hl=' + st.hl.slice(1) + '&hlsync=' + (st.hlsync?1:0) + '&tile=' + st.tile;
     try { history.replaceState(null, '', '#' + h); } catch(e) {}
     $('pal-code').textContent = h;
   }
@@ -11100,11 +11108,14 @@ html.pal-grad #mk-topbar, html.pal-grad #site-title{ background:linear-gradient(
     const h = location.hash.replace('#','');
     if(!h || h.indexOf('ink=') < 0) return;
     h.split('&').forEach(kv => { const [k, val] = kv.split('='); if(!(k in st)) return;
-      if(k === 'soft' || k === 'grad') st[k] = parseInt(val, 10) || 0; else st[k] = '#' + val; });
+      if(k === 'soft' || k === 'grad' || k === 'hlsync') st[k] = parseInt(val, 10) || 0; else if(k === 'tile') st[k] = val; else st[k] = '#' + val; });
   }
   PRESETS.forEach(p => { const b = document.createElement('button'); b.innerHTML = '<i style="background:' + p.ink + '"></i><i style="background:' + p.acc + '"></i>' + p.n;
-    b.onclick = () => { st = Object.assign({}, p); delete st.n; apply(); }; $('pal-pre').appendChild(b); });
+    b.onclick = () => { st = Object.assign({}, DEF, p); delete st.n; st.hlsync = 1; apply(); }; $('pal-pre').appendChild(b); });
   ['ink','acc','bg','sub','g2'].forEach(k => $('pal-' + k).addEventListener('input', e => { st[k] = e.target.value; apply(); }));
+  $('pal-hl').addEventListener('input', e => { st.hl = e.target.value; st.hlsync = 0; apply(); });
+  $('pal-hlsync').addEventListener('change', e => { st.hlsync = e.target.checked ? 1 : 0; apply(); });
+  $('pal-tile').addEventListener('change', e => { st.tile = e.target.value; apply(); });
   $('pal-soft').addEventListener('input', e => { st.soft = parseInt(e.target.value, 10); apply(); });
   $('pal-grad').addEventListener('change', e => { st.grad = e.target.checked ? 1 : 0; apply(); });
   $('pal-reset').onclick = () => { st = Object.assign({}, DEF); apply(); };
