@@ -1736,6 +1736,8 @@ button.active{color:#ffffff !important;}
 .stat-card .horse-row .val-col-inner span{ margin:0 1px 0 0 !important; }
 /* データ部屋は使わない */
 #page-data, .mk-menu-item[data-page="data"]{ display:none !important; }
+/* 期待値1以上は淡いハイライト（地は薄い赤、文字はメイン色、細い枠） */
+.ev-val.ev-hot, .ev-badge .ev-val.ev-hot{ background:var(--p-acc3) !important; border-color:var(--p-acc2) !important; color:var(--p-ink) !important; font-weight:900 !important; }
 /* ラベルは途中で折らない。日付バーと小見出しは要素ごとに改行 */
 #mk-daybar{ }
 #mk-daybar b, #mk-daybar .v, #mk-daybar .lbl, #mk-daybar button, .sub-head-ttl, .tb-status, .hd-tab, .pill-btn, .acc-btn, .metric-lbl, .rs-k, .lg-col span,
@@ -6320,7 +6322,9 @@ window.drawOaChartModal = function() {
       const sortedHorses = getSortedHorsesForGraph();
       // バーの最大値＝レース内の最高勝率（少し余白）。馬毎の差が見えるよう相対スケール化
       const _maxWinRate = Math.max(1, ...race.horses.map(h => h.winRate || 0));
-      const _barDenom = Math.max(_maxWinRate * 1.08, 5); // 最上位が約93%まで伸びる
+      // 物差し：最上位の勝率を4の倍数に切り上げた値を右端にする（目盛り4本が切りのいい％になる）。勝率が何％でも右端は自動で伸びる
+      const _scaleMax = Math.max(4, Math.ceil((_maxWinRate + 0.01) / 4) * 4);
+      const _barDenom = _scaleMax;
       // 指数トップ3（同点は同順位）
       const _fxShisuRank = {};
       try{
@@ -6431,14 +6435,14 @@ window.drawOaChartModal = function() {
         if(isHarvilleCalculated) {
           const winR = h.winRate;
           let evValue = ''; 
-          if(!isNaN(tOdds) && winR > 0) evValue = parseFloat((tOdds * winR / 100).toFixed(2)).toString();
+          if(!isNaN(tOdds) && winR > 0) evValue = (Math.round(tOdds * winR) / 100).toFixed(2);   // 小数第2位まで（第3位を四捨五入）
           const renritsu = h.top2Prob !== undefined ? h.top2Prob.toFixed(0) : '-';
           const fukuR = h.top3Prob !== undefined ? h.top3Prob.toFixed(0) : '-';
           const oL = !isNaN(parseFloat(h.odds)) ? parseFloat(h.odds).toFixed(1) : '--';
           let evColor = 'var(--p-ink)';
           
           // ★変更点1: バーの右側に配置するため、flex-shrink:0 を付けて潰れないようにし、テキストを少しコンパクト化
-                  confirmHtml = `<div class="ev-badge"><span class="ev-val${isHighEv ? ' ev-hot' : ''}">期${evValue||'-'}</span></div>`;
+                  confirmHtml = `<div class="ev-badge"><span class="ev-val${isHighEv ? ' ev-hot' : ''}">${evValue||'-'}</span></div>`;
         }
 
         // バー本体のドラッグ操作は無効化（誤操作防止）。勝率変更は右の◀▶・数値入力のみ。
@@ -6491,7 +6495,7 @@ window.drawOaChartModal = function() {
       // 見出し：確定後は3本線の凡例と期待値に切り替える
       try{
         const gb = document.querySelector('.graph-head .gh-bar'), gv = document.querySelector('.graph-head .gh-val');
-        if(gb) gb.innerHTML = isHarvilleCalculated ? '<span class="lg-col"><span><i class="lg lg1"></i>勝率</span><span><i class="lg lg2"></i>連対率</span><span><i class="lg lg3"></i>複勝率</span></span>' : '勝率（バー）';
+        if(gb) gb.innerHTML = isHarvilleCalculated ? '<span class="lg-col"><span><i class="lg lg1"></i>勝率</span><span><i class="lg lg2"></i>連対率</span><span><i class="lg lg3"></i>複勝率</span></span>' : ('勝率（1目盛り ' + (_scaleMax / 4) + '%）');
         if(gv) gv.textContent = isHarvilleCalculated ? '単勝期待値' : '勝率%';
         const hb = document.getElementById('btn-harville'); if(hb) hb.textContent = isHarvilleCalculated ? '編集' : '確定';
       }catch(e){}
