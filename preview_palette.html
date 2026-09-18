@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIyIiBmaWxsPSIjMmU0ZGIwIi8+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNiw2KSBzY2FsZSgwLjg4KSI+PHJlY3QgeD0iMTQiIHk9IjgiIHdpZHRoPSIxNiIgaGVpZ2h0PSI4NCIgcng9IjMiIGZpbGw9IiNmZmYiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSI1IiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBvbHlnb24gcG9pbnRzPSIzMC4wLDQ3LjUgNTYuMCwyMi43IDU3LjAsMjAuNyA2Mi4wLDEwLjcgNjYuMCwxOC43IDcyLjAsMTcuNyA4OC4wLDI2LjcgODYuMCwzNS43IDcxLjAsMzcuNyA2NC4wLDM1LjcgNjQuMCwzNC43IDMwLjAsNjAuNSIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cG9seWdvbiBwb2ludHM9IjMwLjAsNDguMCA0Mi4wLDQ4LjAgODIuMCw5Mi4wIDY2LjAsOTIuMCAzMC4wLDYyLjAiIGZpbGw9IiNmZmYiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSI1IiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PGNpcmNsZSBjeD0iNzMuMCIgY3k9IjI0LjciIHI9IjIuNCIgZmlsbD0iIzJlNGRiMCIvPjwvZz48L3N2Zz4=">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>[配色プレビュー] K-buddy</title>
@@ -40,14 +41,14 @@
       transform:translateX(-105%); transition:transform .28s cubic-bezier(.4,0,.2,1);
       display:flex; flex-direction:column; overflow-y:auto; }
     #mk-menu-panel.open{ transform:translateX(0); }
-    .mk-menu-hd{ background:var(--p-ink); color:var(--p-acc); font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif;
+    .mk-menu-hd{ background:var(--p-ink); color:#fff; font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif;
       font-weight:900; font-size:26px; letter-spacing:.06em; padding:64px 22px 20px; line-height:1; }
-    .mk-menu-hd small{ display:block; font-size:9px; color:#8a9a3a; letter-spacing:.24em; font-weight:800; margin-bottom:8px; }
+    .mk-menu-hd small{ display:block; font-size:9px; color:#fff; opacity:.75; letter-spacing:.24em; font-weight:800; margin-bottom:8px; }
     .mk-menu-item{ display:flex; align-items:center; gap:14px; padding:18px 22px; cursor:pointer;
       font-family:'BIZ UDPGothic','BIZ UDGothic',sans-serif; font-weight:700; font-size:16px; color:var(--p-ink);
       border:none; border-bottom:1px solid #e4e2d9; background:none; text-align:left; width:100%; transition:background .15s; }
     .mk-menu-item:hover, .mk-menu-item:active{ background:var(--p-bg); }
-    .mk-menu-item.active{ background:var(--p-ink); color:var(--p-acc); }
+    .mk-menu-item.active{ background:var(--p-ink); color:#fff; }
     .mk-menu-item .ic{ font-size:22px; width:28px; text-align:center; }
     .mk-menu-item .ar{ margin-left:auto; color:var(--p-mute2); font-size:15px; }
     .mk-menu-item.active .ar{ color:var(--p-acc); }
@@ -107,7 +108,7 @@
     .race-btn.active { background: var(--p-ink); color: #fff; border-color: #1557b0; }
     /* レース質タグ：モノ＋ライムで統一（非アクティブ=ペーパー / アクティブ=黒＋ライム縁） */
     .race-btn[class*="status-"] { background: var(--p-tint); border-color: var(--p-line); color: var(--p-soft2); }
-    .race-btn[class*="status-"].active { background: var(--p-ink); color: var(--p-tint); border-color: var(--p-ink); }
+    .race-btn[class*="status-"].active { background: var(--p-ink); color:#fff; border-color: var(--p-ink); }
     .race-btn.has-star { border-top: 2px solid #ff9800; }
    .tab-venue { font-size: 13px; font-weight: bold; }
     .tab-time { font-size: 10px; color: var(--p-mute); margin-top: 1px; }
@@ -869,7 +870,7 @@ input[type=number], input[type=text], textarea, select {
     .plan-card li svg{ width:15px; height:15px; flex:none; margin-top:3px; }
     .plan-card li.no{ color:#a8a69e; }
     .plan-btn{ display:block; width:100%; margin-top:13px; text-align:center; text-decoration:none;
-               border:2px solid var(--p-ink); background:var(--p-ink); color:var(--p-acc); border-radius:10px;
+               border:2px solid var(--p-ink); background:var(--p-ink); color:#fff; border-radius:10px;
                font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:14.5px;
                padding:12px 16px; cursor:pointer; }
     .plan-btn.ghost{ background:#fff; color:var(--p-ink); }
@@ -939,7 +940,7 @@ input[type=number], input[type=text], textarea, select {
                 color:var(--p-ink); text-align:center; text-align-last:center; cursor:pointer;
                 -webkit-appearance:none; appearance:none; padding:0; margin:auto; display:block; }
     .mark-pick:focus{ outline:none; border-color:var(--p-ink); box-shadow:0 0 0 2px rgba(26,26,26,.12); }
-    .mark-pick.on{ background:var(--p-ink); color:var(--p-acc); border-color:var(--p-ink); }
+    .mark-pick.on{ background:var(--p-ink); color:#fff; border-color:var(--p-ink); }
     .mark-pick.honmei{ background:var(--p-acc); color:var(--p-ink); border-color:var(--p-ink); }
 
     /* ===== 日付一覧ページ ===== */
@@ -961,7 +962,7 @@ input[type=number], input[type=text], textarea, select {
     .mk-day.sel{ border-color:var(--p-ink); }
     .mk-day .d{ display:flex; align-items:baseline; gap:8px; }
     .mk-day .d b{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:26px; color:var(--p-ink); letter-spacing:-.01em; font-variant-numeric:tabular-nums; }
-    .mk-day .d .dow{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:13px; padding:2px 8px; border-radius:6px; background:var(--p-ink); color:var(--p-acc); }
+    .mk-day .d .dow{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:13px; padding:2px 8px; border-radius:6px; background:var(--p-ink); color:#fff; }
     .mk-day .d .dow.sun{ background:#c2410c; color:#fff; }
     .mk-day .d .tag{ margin-left:auto; font-size:10px; font-weight:800; letter-spacing:.12em; color:var(--p-mute3); }
     .mk-day .v{ margin-top:6px; font-size:13px; color:var(--p-soft); }
@@ -970,11 +971,20 @@ input[type=number], input[type=text], textarea, select {
     .mk-day .m span.on{ background:#f5fadf; border-color:var(--p-acc); color:#3d4a10; }
     .mk-day-empty{ border:2px dashed var(--p-line2); border-radius:14px; padding:26px 16px; text-align:center; color:#b0aea6; font-size:13px; background:var(--p-tint2); }
     /* レースページ上部：いま見ている日付 */
-    #mk-daybar{ display:flex; align-items:center; gap:10px; margin:12px 12px 0; padding:10px 14px; background:#fff; border:2px solid var(--p-line); border-radius:12px; }
+    #mk-daybar{ display:grid; grid-template-columns:auto auto 1fr auto; column-gap:8px; align-items:center; margin:12px 12px 0; padding:9px 12px; background:#fff; border:2px solid var(--p-line); border-radius:12px; }
+    #mk-daybar .lbl{ grid-column:1; font-size:9px; }
+    #mk-daybar b{ grid-column:2; font-size:15px; }
+    #mk-daybar .v{ grid-column:3; font-size:11.5px; min-width:0; }
+    #mk-daybar button{ grid-column:4; padding:6px 10px; font-size:11.5px; }
+    @media (max-width:359px){
+      #mk-daybar{ grid-template-columns:auto 1fr auto; row-gap:1px; }
+      #mk-daybar .lbl{ grid-column:1; grid-row:1; } #mk-daybar b{ grid-column:2; grid-row:1; }
+      #mk-daybar .v{ grid-column:1 / 3; grid-row:2; } #mk-daybar button{ grid-column:3; grid-row:1 / 3; }
+    }
     #mk-daybar .lbl{ font-size:10px; font-weight:800; letter-spacing:.14em; color:var(--p-mute3); }
     #mk-daybar b{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:16px; color:var(--p-ink); }
     #mk-daybar .v{ font-size:12px; color:var(--p-soft); }
-    #mk-daybar button{ margin-left:auto; background:var(--p-ink); color:var(--p-acc); border:none; border-radius:8px; padding:7px 12px; font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:12px; cursor:pointer; white-space:nowrap; }
+    #mk-daybar button{ margin-left:auto; background:var(--p-ink); color:#fff; border:none; border-radius:8px; padding:7px 12px; font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:12px; cursor:pointer; white-space:nowrap; }
 
     /* 3タブとも行の高さを同じにする（タブを切り替えても左の固定列の厚みが変わらない） */
     :root{ --hd-row:70px; }
@@ -1000,7 +1010,7 @@ input[type=number], input[type=text], textarea, select {
     .tb-status{ font-size:10.5px; color:var(--p-mute); font-weight:700; margin-left:auto; }
     .seg{ display:flex; background:var(--p-tint4); border-radius:9px; padding:3px; gap:2px; }
     .seg button{ flex:1; border:none; background:transparent; padding:8px 0; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:11px; font-weight:700; color:var(--p-mute); border-radius:7px; cursor:pointer; }
-    .seg button.active{ background:var(--p-ink); color:var(--p-acc); }
+    .seg button.active{ background:var(--p-ink); color:#fff; }
     .tb-note{ font-size:10px; color:var(--p-mute); margin-top:6px; line-height:1.5; }
     .pb-wrap{ position:relative; }
     .pb-badge{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:8px; font-weight:800; padding:1px 4px; border-radius:6px; line-height:1.2; white-space:nowrap; margin-top:1px; }
@@ -1010,7 +1020,7 @@ input[type=number], input[type=text], textarea, select {
     .pb-wrap.open .pb-pop{ display:flex; }
     /* バッジ（K-buddyの配色：黒・ライム・ベージュ・グレー） */
     .fb{ display:inline-block; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:8.5px; font-weight:800; padding:1px 4px; border-radius:3px; line-height:1.25; white-space:nowrap; }
-    .fb-t2{ background:var(--p-ink); color:var(--p-acc); } .fb-t1{ background:var(--p-acc); color:var(--p-ink); }
+    .fb-t2{ background:var(--p-ink); color:#fff; } .fb-t1{ background:var(--p-acc); color:var(--p-ink); }
     .fb-m1{ background:var(--p-line); color:var(--p-soft); } .fb-m2{ background:var(--p-mute4); color:#fff; }
     .fb-deki{ background:var(--p-ink); color:#fff; } .fb-shisu{ background:#fff; color:var(--p-ink); border:1px solid var(--p-ink); } .fb-course{ background:var(--p-sub); color:var(--p-soft); }
     .hr-badges{ display:flex; flex-wrap:wrap; gap:2px; margin-top:2px; }
@@ -1019,7 +1029,7 @@ input[type=number], input[type=text], textarea, select {
     .fx-dd{ position:relative; }
     .fx-btn{ display:inline-flex; align-items:center; gap:4px; background:#fff; color:var(--p-ink); border:2px solid var(--p-ink); border-radius:8px; padding:6px 10px; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:11px; font-weight:700; cursor:pointer; }
     .fx-btn .mk-ic{ width:12px; height:12px; }
-    .fx-apply{ background:var(--p-ink); color:var(--p-acc); margin-left:auto; }
+    .fx-apply{ background:var(--p-ink); color:#fff; margin-left:auto; }
     .fx-menu{ position:absolute; top:calc(100% + 4px); left:0; background:#fff; width:260px; border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,.15); border:1px solid var(--p-line3); display:none; flex-direction:column; z-index:80; }
     .fx-menu.show{ display:flex; }
     .fx-menu label{ padding:10px 12px; font-size:12px; font-weight:700; color:var(--p-ink); border-bottom:1px solid var(--p-tint4); display:flex; align-items:center; gap:8px; line-height:1.4; }
@@ -1052,7 +1062,7 @@ input[type=number], input[type=text], textarea, select {
     .zoom-btn{ width:30px; height:28px; display:inline-flex; align-items:center; justify-content:center; background:#fff; border:1.5px solid var(--p-line2); border-radius:8px; color:var(--p-ink); cursor:pointer; }
     .zoom-btn .mk-ic{ width:14px; height:14px; }
     .zoom-val{ min-width:44px; text-align:center; font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:12px; font-variant-numeric:tabular-nums; }
-    .zoom-fit{ background:var(--p-ink); color:var(--p-acc); border:none; border-radius:999px; padding:6px 11px; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:11.5px; cursor:pointer; }
+    .zoom-fit{ background:var(--p-ink); color:#fff; border:none; border-radius:999px; padding:6px 11px; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:11.5px; cursor:pointer; }
     .zoom-fit + .zoom-fit{ background:#fff; color:var(--p-ink); border:1.5px solid var(--p-line2); }
     .pastwrap, .campwrap, .table-scroll{ touch-action:pan-x pan-y pinch-zoom; }
     .zoom-bar{ padding:0 8px 8px; }
@@ -1060,7 +1070,7 @@ input[type=number], input[type=text], textarea, select {
     #reportModal{ background:var(--p-bg) !important; padding:0 !important; z-index:100000 !important; }
     .report-page{ width:100% !important; max-width:960px !important; margin:0 auto !important; background:var(--p-bg) !important; border:none !important; box-shadow:none !important; border-radius:0 !important; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; color:var(--p-ink); }
     .rep-header{ background:var(--p-ink) !important; color:#fff !important; padding:14px 16px !important; border-radius:0 !important; position:sticky; top:0; z-index:5; }
-    #repHeaderTitle{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:15px; color:var(--p-acc); line-height:1.3; }
+    #repHeaderTitle{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:15px; color:#fff; line-height:1.3; }
     .rep-header-btn{ background:#fff !important; color:var(--p-ink) !important; border:1.5px solid #fff !important; border-radius:999px !important; padding:7px 12px !important; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700 !important; font-size:12px !important; display:inline-flex; align-items:center; gap:4px; }
     .rep-header-btn .mk-ic{ width:14px; height:14px; }
     .rep-back{ background:var(--p-acc) !important; color:var(--p-ink) !important; border-color:var(--p-acc) !important; }
@@ -1073,7 +1083,7 @@ input[type=number], input[type=text], textarea, select {
     .rep-box{ background:var(--p-tint2) !important; border:1.5px solid var(--p-line3) !important; border-radius:12px !important; color:var(--p-ink) !important; }
     .rg-b1{ background:var(--p-ink) !important; } .rg-b2{ background:var(--p-mute4) !important; } .rg-b3{ background:var(--p-acc) !important; }
     .rg-b3 .rg-val{ color:var(--p-ink) !important; }
-    .rep-mode{ display:inline-block; background:var(--p-ink); color:var(--p-acc); font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:13px; padding:6px 12px; border-radius:8px; }
+    .rep-mode{ display:inline-block; background:var(--p-ink); color:#fff; font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:13px; padding:6px 12px; border-radius:8px; }
     .rep-foot{ display:flex; justify-content:center; padding:6px 12px 30px; }
     .rep-foot .rep-back{ border-radius:999px; padding:12px 22px; font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:14px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px; }
     .rep-foot .rep-back .mk-ic{ width:16px; height:16px; }
@@ -1084,7 +1094,7 @@ input[type=number], input[type=text], textarea, select {
     @media (max-width:480px){ .data-table .td-name .nm-clip{ max-width:54px; } .data-table td.td-name{ padding-right:1px !important; padding-left:2px !important; } }
     /* 印プルダウンの色：.data-table select の白背景指定に負けないようにする */
     .data-table .mark-pick, .horse-row .mark-pick{ padding:0 !important; font-size:12px !important; line-height:1 !important; }
-    .data-table .mark-pick.on, .horse-row .mark-pick.on{ background:var(--p-ink) !important; color:var(--p-acc) !important; border-color:var(--p-ink) !important; }
+    .data-table .mark-pick.on, .horse-row .mark-pick.on{ background:var(--p-ink) !important; color:#fff !important; border-color:var(--p-ink) !important; }
     .data-table .mark-pick.honmei, .horse-row .mark-pick.honmei{ background:var(--p-acc) !important; color:var(--p-ink) !important; border-color:var(--p-ink) !important; }
 
     /* ===== 固定列：印 ＋ 馬（上段：枠番・単勝／下段：馬名）。馬名は全文表示 ===== */
@@ -1139,7 +1149,7 @@ input[type=number], input[type=text], textarea, select {
              background:#fff; color:var(--p-subink); border:2px solid var(--p-line3); border-radius:20px;
              padding:7px 15px; cursor:pointer; white-space:nowrap; transition:.15s; }
     .hd-tab:hover{ border-color:var(--p-sub); }
-    .hd-tab.active{ background:var(--p-ink); color:var(--p-acc); border-color:var(--p-ink); }
+    .hd-tab.active{ background:var(--p-ink); color:#fff; border-color:var(--p-ink); }
     .hd-pane{ display:none; }
     .hd-pane.active{ display:block; }
     .hd-note{ font-size:11px; color:var(--p-mute3); padding:0 10px 6px; line-height:1.6; }
@@ -1241,12 +1251,12 @@ input[type=number], input[type=text], textarea, select {
     .mk-guide .lead{ font-size:14px; font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif; font-weight:800; color:var(--p-ink); margin-bottom:12px; }
     .mk-guide ol.steps{ list-style:none; counter-reset:st; margin:6px 0 14px; padding:0; display:flex; flex-direction:column; gap:8px; }
     .mk-guide ol.steps li{ counter-increment:st; position:relative; padding:10px 12px 10px 46px; background:var(--p-tint2); border:1px solid var(--p-line); border-radius:10px; }
-    .mk-guide ol.steps li::before{ content:counter(st); position:absolute; left:12px; top:10px; width:24px; height:24px; border-radius:50%; background:var(--p-ink); color:var(--p-acc); font-weight:900; font-size:12px; display:flex; align-items:center; justify-content:center; font-family:'BIZ UDPGothic','BIZ UDGothic',sans-serif; }
+    .mk-guide ol.steps li::before{ content:counter(st); position:absolute; left:12px; top:10px; width:24px; height:24px; border-radius:50%; background:var(--p-ink); color:#fff; font-weight:900; font-size:12px; display:flex; align-items:center; justify-content:center; font-family:'BIZ UDPGothic','BIZ UDGothic',sans-serif; }
     .mk-guide ol.steps b{ display:block; font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif; font-weight:900; color:var(--p-ink); margin-bottom:2px; }
     .mk-guide ul.pts{ margin:4px 0 12px; padding-left:18px; }
     .mk-guide ul.pts li{ margin:3px 0; }
     .mk-guide .kw{ display:inline-block; background:var(--p-sub); color:var(--p-subink); border-radius:4px; padding:0 6px; font-size:12px; font-weight:800; line-height:1.7; margin:0 1px; }
-    .mk-guide .kw.dark{ background:var(--p-ink); color:var(--p-acc); }
+    .mk-guide .kw.dark{ background:var(--p-ink); color:#fff; }
     .mk-guide .tip{ display:flex; gap:10px; align-items:flex-start; background:#fff; border:2px solid var(--p-ink); border-radius:10px; padding:10px 12px; margin:10px 0 4px; font-size:12.5px; }
     .mk-guide .tip .ic{ flex:none; width:22px; height:22px; border-radius:50%; background:var(--p-acc); display:flex; align-items:center; justify-content:center; }
     .mk-guide .tip .ic .mk-ic{ width:14px; height:14px; }
@@ -1303,7 +1313,7 @@ input[type=number], input[type=text], textarea, select {
 
   /* 大カードの丸番号 */
   .bc-num{ display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px;
-    border-radius:50%; background:var(--mk-dark); color:var(--p-tint); font-size:11px; font-weight:800;
+    border-radius:50%; background:var(--mk-dark); color:#fff; font-size:11px; font-weight:800;
     flex:0 0 auto; }
 
   /* #main-tool は透明コンテナ（大カードを束ねるだけ・自身はカードにしない） */
@@ -1348,7 +1358,7 @@ input[type=number], input[type=text], textarea, select {
   .odds-update-title{ font-size:12px; font-weight:700; color:var(--mk-dark); letter-spacing:.03em; }
   .odds-update-note{ font-size:10px; color:var(--p-mute); }
   .odds-update-btn{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:12.5px; font-weight:700;
-    color:var(--p-tint); background:var(--mk-dark); border:none; border-radius:999px; padding:9px 20px;
+    color:#fff; background:var(--mk-dark); border:none; border-radius:999px; padding:9px 20px;
     cursor:pointer; box-shadow:none; transition:opacity .2s; white-space:nowrap; }
   .odds-update-btn:hover{ opacity:.88; }
 
@@ -1357,7 +1367,7 @@ input[type=number], input[type=text], textarea, select {
     color:var(--mk-dark); background:var(--p-tint); border:1px solid var(--mk-line) !important;
     border-radius:999px !important; padding:6px 14px !important; cursor:pointer;
     box-shadow:none !important; transition:background .2s,border-color .2s,color .2s; }
-  .pill-btn:hover{ background:var(--mk-dark); color:var(--p-tint); border-color:var(--mk-dark) !important; }
+  .pill-btn:hover{ background:var(--mk-dark); color:#fff; border-color:var(--mk-dark) !important; }
   /* 小ピル・バリエーション（買い目/勝率設定の操作用） */
   .pill-sm{ font-size:10.5px !important; padding:5px 12px !important; }
   .pill-ghost{ background:#fff !important; color:#8a9483 !important; }
@@ -1366,8 +1376,8 @@ input[type=number], input[type=text], textarea, select {
   .pill-beige{ background:var(--p-sub) !important; color:var(--p-subink) !important; border-color:var(--p-sub) !important; font-weight:700 !important; }
   .pill-beige:hover{ background:#ccbf9b !important; color:#4a4234 !important; border-color:#bcac82 !important; }
   /* 主要アクション（確定・買い目を作る）＝黒地に蛍光文字でハイライト */
-  .pill-accent{ background:var(--p-ink) !important; color:var(--p-acc) !important; border-color:var(--p-ink) !important; font-weight:800 !important; }
-  .pill-accent:hover{ opacity:.92; background:var(--p-ink) !important; color:var(--p-acc) !important; }
+  .pill-accent{ background:var(--p-ink) !important; color:#fff !important; border-color:var(--p-ink) !important; font-weight:800 !important; }
+  .pill-accent:hover{ opacity:.92; background:var(--p-ink) !important; color:#fff !important; }
 
   /* 中タイトル：線を引かず、頭に短い蛍光バー＋太字（おしゃれな見出し感） */
   .sub-head{ display:flex; align-items:center; gap:9px; padding:18px 18px 8px !important;
@@ -1378,7 +1388,7 @@ input[type=number], input[type=text], textarea, select {
     color:var(--mk-dark); letter-spacing:.04em; }
   .sub-head-btn{ margin-left:auto; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:10.5px; font-weight:700;
     color:var(--p-mute); background:var(--p-tint); border:1px solid var(--mk-line); border-radius:999px; padding:5px 12px; cursor:pointer; }
-  .sub-head-btn:hover{ background:var(--mk-dark); color:var(--p-tint); }
+  .sub-head-btn:hover{ background:var(--mk-dark); color:#fff; }
 
   /* レース情報のデータリンク行（シミュレーター下） */
   .race-data-links{ display:flex; gap:8px; flex-wrap:wrap; padding:2px 14px 14px; }
@@ -1404,7 +1414,7 @@ input[type=number], input[type=text], textarea, select {
     transition:background .2s, border-color .2s, color .2s; }
   .race-quality-tab:hover{ border-color:var(--mk-accent2); background-color:#e6efe0; }
   /* 何か選択された状態＝アクセントで“タブが立っている”見た目に */
-  .race-quality-tab.is-active{ background-color:var(--mk-dark); color:var(--p-acc); border-color:var(--mk-dark);
+  .race-quality-tab.is-active{ background-color:var(--mk-dark); color:#fff; border-color:var(--mk-dark);
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'><path d='M1 1l4 4 4-4' fill='none' stroke='%23ccf23f' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>"); }
 
   /* 大カードの中の“旧カード”は装飾を解除して素の帯にする（＝二重カード禁止） */
@@ -1538,7 +1548,7 @@ input[type=number], input[type=text], textarea, select {
     box-shadow:0 0 0 3px rgba(0,0,0,.28); flex:0 0 auto; }
   .ai-talk-body{ padding:0 14px 12px; }
   .ai-talk-lead{ font-size:11.5px; color:var(--p-mute); line-height:1.6; margin:0 0 9px; }
-  .ai-talk-btn{ background:var(--p-ink) !important; color:var(--p-acc) !important; border:none !important;
+  .ai-talk-btn{ background:var(--p-ink) !important; color:#fff !important; border:none !important;
     border-radius:20px !important; padding:8px 18px !important; font-size:12px; font-weight:800;
     cursor:pointer; box-shadow:none !important; }
   .ai-talk-note{ font-size:9.5px; color:#a9b3a0; margin:8px 0 0; }
@@ -1552,12 +1562,12 @@ input[type=number], input[type=text], textarea, select {
     min-height:70px; max-height:320px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; }
   .ai-chat-empty{ font-size:11px; color:#a9b3a0; line-height:1.6; text-align:center; padding:12px 6px; }
   .ai-summary-bar{ padding:12px 0 10px; }
-  .ai-summary-btn{ width:100%; display:flex; align-items:center; justify-content:center; gap:6px; background:var(--p-ink); color:var(--p-acc);
+  .ai-summary-btn{ width:100%; display:flex; align-items:center; justify-content:center; gap:6px; background:var(--p-ink); color:#fff;
     border:none; border-radius:10px; padding:9px 10px; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:12px; cursor:pointer; }
   .ai-summary-btn .mk-ic{ width:14px; height:14px; }
   .ai-summary-btn:active{ opacity:.85; }
   .ai-msg{ font-family:"BIZ UDPGothic","BIZ UDGothic",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif; font-size:13px; line-height:1.7; padding:8px 11px; border-radius:12px; max-width:88%; white-space:pre-wrap; word-break:break-word; letter-spacing:.01em; }
-  .ai-msg.user{ align-self:flex-end; background:var(--mk-dark); color:var(--p-tint); border-bottom-right-radius:4px; }
+  .ai-msg.user{ align-self:flex-end; background:var(--mk-dark); color:#fff; border-bottom-right-radius:4px; }
   .ai-msg.bot{ align-self:flex-start; background:var(--p-tint); color:#243021; border-bottom-left-radius:4px;
     font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; }
   .ai-msg.bot.loading{ color:var(--p-mute); font-style:italic; }
@@ -1575,7 +1585,7 @@ input[type=number], input[type=text], textarea, select {
     display:flex; align-items:center; justify-content:center; color:var(--p-ink); }
   .ai-mic-chat-btn svg{ display:block; }
   .ai-mic-chat-btn:hover{ background:var(--p-tint); }
-  .ai-mic-chat-btn.recording{ background:var(--p-ink); border-color:var(--p-ink); color:var(--p-acc); animation:mic-pulse 1.2s infinite; }
+  .ai-mic-chat-btn.recording{ background:var(--p-ink); border-color:var(--p-ink); color:#fff; animation:mic-pulse 1.2s infinite; }
   @keyframes mic-pulse{ 0%,100%{ box-shadow:0 0 0 0 rgba(0,0,0,.25);} 50%{ box-shadow:0 0 0 5px rgba(0,0,0,0);} }
 
   /* AI課金ロック：未課金はグレーアウト＋オーバーレイ、課金者はアクティベート */
@@ -1590,7 +1600,7 @@ input[type=number], input[type=text], textarea, select {
   .ai-lock-ttl{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:15px; color:var(--mk-dark); letter-spacing:.04em; }
   .ai-lock-desc{ font-size:11px; color:var(--p-mute); line-height:1.6; margin:6px 0 12px; }
   .ai-lock-btn{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:12.5px; font-weight:700;
-    color:var(--p-tint); background:var(--mk-dark); border:none; border-radius:999px; padding:9px 22px; cursor:pointer; }
+    color:#fff; background:var(--mk-dark); border:none; border-radius:999px; padding:9px 22px; cursor:pointer; }
   .ai-lock-btn:hover{ opacity:.9; }
   /* ロック中は中身を触れなくする＋褪せさせる */
   .ai-talk-slot.locked .ai-talk-inner{ filter:grayscale(1) opacity(.5); pointer-events:none; user-select:none; }
@@ -1666,17 +1676,17 @@ input[type=number], input[type=text], textarea, select {
   .data-table tbody tr td.rank-2, .rank-2{ background:var(--p-acc4) !important; }
 
   /* ボタン群をダーク緑ピル/セージに（機能色は個別維持されるものは後段で調整可） */
-  .btn-primary{ background:var(--mk-dark) !important; color:var(--p-tint) !important; border:none !important; border-radius:20px !important; }
-  .btn-success{ background:var(--p-ink) !important; color:var(--p-tint) !important; border:none !important; border-radius:20px !important; font-weight:700 !important; }
+  .btn-primary{ background:var(--mk-dark) !important; color:#fff !important; border:none !important; border-radius:20px !important; }
+  .btn-success{ background:var(--p-ink) !important; color:#fff !important; border:none !important; border-radius:20px !important; font-weight:700 !important; }
   .btn-danger{ background:#b06a5e !important; color:#fff !important; border:none !important; border-radius:20px !important; }
   .sync-btn{ background:var(--mk-dark) !important; border-radius:16px !important; }
   .baba-btn{ border-radius:16px !important; border-color:var(--mk-line) !important; }
-  .baba-btn.active{ background:var(--p-ink) !important; border-color:var(--p-ink) !important; color:var(--p-tint) !important; }
+  .baba-btn.active{ background:var(--p-ink) !important; border-color:var(--p-ink) !important; color:#fff !important; }
 
   /* レース選択ボタン：白＋淡緑、選択は淡緑 */
   .nav-race-btn{ background:var(--p-tile) !important; border:1px solid var(--mk-line) !important; color:var(--p-soft) !important; border-radius:10px !important;
     min-height:42px !important; box-sizing:border-box !important; display:flex !important; flex-direction:column !important; align-items:center !important; justify-content:center !important; border-bottom-width:1px !important; }
-  .nav-race-btn.active{ background:var(--mk-dark) !important; color:var(--p-tint) !important; border-color:var(--mk-dark) !important; }
+  .nav-race-btn.active{ background:var(--mk-dark) !important; color:#fff !important; border-color:var(--mk-dark) !important; }
 
   /* AIツールバー（レース分析上部）を緑基調に */
   #race-toolbar{ background:#fff !important; border:1px solid var(--mk-line) !important; border-radius:16px !important; }
@@ -1693,6 +1703,53 @@ input[type=number], input[type=text], textarea, select {
 #bb-moist-v{color:#ffffff !important;}
 button.active{color:#ffffff !important;}
 #ai-lock-overlay{background:#f0f4ff !important;}
+/* 青（メイン色）の上の文字は白 */
+.mk-menu-item.active, .mk-menu-item.active .ar, .mark-pick.on, .horse-row .mark-pick.on, .mk-day .d .dow, .seg button.active,
+.fb-t2, .fx-apply, .zoom-fit, .rep-mode, .hd-tab.active, .mk-guide ol.steps li::before, .mk-guide .kw.dark,
+.pill-accent, .pill-accent:hover, .ai-mic-chat-btn.recording, .nav-race-btn.active, .nav-race-btn.active .r-num, .nav-race-btn.active .r-time,
+.rs-ev .rs-v, .rs-ev .rs-k, #mk-daybar button, .metric-card.dark .metric-val, .metric-card.dark .metric-lbl, .race-quality-tab.is-active,
+.btn-primary, .btn-success, .baba-btn.active, .ai-msg.user, .fb-deki, #mk-topbar .mk-brand, #site-title > div:nth-child(2){ color:#ffffff !important; }
+#site-title > div:nth-child(2), .rs-ev .rs-k, .metric-card.dark .metric-lbl{ opacity:.85; }
+/* 改行：バッジは折らない。説明文は短い最終行を避ける（対応ブラウザのみ） */
+.ai-lock-badge, .rep-mode, .fb, .pb-badge{ white-space:nowrap !important; }
+.mk-guide p, .mk-guide td, .hm-note, .ai-lock-desc, .mk-day-empty, .note, .sub-note{ text-wrap:pretty; }
+/* 出走馬データ：タブは等幅で1行、操作行は左に拡大縮小・右に更新 */
+.hd-tabs{ flex-wrap:nowrap !important; gap:6px !important; padding:0 8px 6px !important; }
+.hd-tabs .hd-tab{ flex:1 1 0; min-width:0; text-align:center; padding-left:4px !important; padding-right:4px !important; }
+#hd-zoom-bar{ display:flex; align-items:center; gap:6px; row-gap:6px; padding:0 8px 8px !important; flex-wrap:wrap !important; }
+#hd-zoom-bar .zoom-lbl{ display:none; }
+#hd-zoom-bar .zoom-val{ min-width:40px; cursor:pointer; }
+#hd-zoom-bar .zoom-fit{ padding:6px 9px; font-size:11px; }
+#hd-zoom-bar #past-sync-btn{ margin-left:auto !important; }
+.zoom-fit + .zoom-fit{ color:var(--p-ink) !important; }
+/* 勝率グラフ：幅は比例のまま。土台（4分割の目盛り）＋太め＋濃さで差を読みやすく。バー領域も広げる */
+.stat-card .horse-row .bar-col{ height:16px !important; margin-left:6px !important; margin-right:4px !important; border-radius:4px !important; overflow:hidden !important;
+  background-color:var(--p-tint4) !important;
+  background-image:linear-gradient(to right, var(--p-line2) 1px, transparent 1px) !important; background-size:25% 100% !important; background-repeat:repeat-x !important; }
+.stat-card .horse-row .visual-bar{ height:16px !important; top:0 !important; border-radius:0 4px 4px 0 !important; }
+.stat-card .horse-row .visual-bar:not(.bar-ev-high){ background:var(--p-ink) !important; background:color-mix(in srgb, var(--p-ink) calc(var(--wr, 1) * 100%), #ffffff) !important; }
+/* 勝率の入力ピルを細くして、バーに幅を回す */
+.stat-card .horse-row .val-col-wrapper{ margin-left:4px !important; padding-left:0 !important; min-width:0 !important; }
+.stat-card .horse-row .val-col-inner{ padding:2px 2px !important; border-radius:8px !important; }
+.stat-card .horse-row .val-col-inner button{ padding:2px 2px !important; font-size:9px !important; }
+.stat-card .horse-row .val-col{ width:30px !important; font-size:11.5px !important; }
+.stat-card .horse-row .val-col-inner span{ margin:0 1px 0 0 !important; }
+/* データ部屋は使わない */
+#page-data, .mk-menu-item[data-page="data"]{ display:none !important; }
+/* 赤（アクセント）の上の文字も白 */
+.rep-back, .rep-foot .rep-back, .rep-header-btn.rep-back, .mark-pick.honmei, .data-table .mark-pick.honmei, .horse-row .mark-pick.honmei, .fb-t1{ color:#ffffff !important; }
+.rep-back .mk-ic{ stroke:#ffffff; }
+/* 期待値1以上は淡いハイライト（地は薄い赤、文字はメイン色、細い枠） */
+.ev-val.ev-hot, .ev-badge .ev-val.ev-hot{ background:var(--p-acc3) !important; border-color:var(--p-acc2) !important; color:var(--p-ink) !important; font-weight:900 !important; }
+/* ラベルは途中で折らない。日付バーと小見出しは要素ごとに改行 */
+#mk-daybar{ }
+#mk-daybar b, #mk-daybar .v, #mk-daybar .lbl, #mk-daybar button, .sub-head-ttl, .tb-status, .hd-tab, .pill-btn, .acc-btn, .metric-lbl, .rs-k, .lg-col span,
+.mk-eyebrow, .tab-time, .r-time, .r-num, .pb-val, .fx-btn, .ai-summary-btn, .ai-talk-btn, .mark-pick, .fb, .pb-badge, .rep-mode, .zoom-fit, .baba-btn, .race-quality-tab,
+.mk-day .d, .mk-day .m span, .btn-primary, .btn-success, .btn-danger{ white-space:nowrap !important; }
+.sub-head{ flex-wrap:wrap; row-gap:2px; }
+.sub-head .tb-status{ white-space:normal !important; }
+/* 見出しのマーカーは薄い蛍光ピンク */
+.mk-mk, .mk-mark, .mk-placeholder h2 .mk-mk, .mk-room-hd h2 .mk-mk{ background:linear-gradient(transparent 55%, #ffb0ab 55%) !important; }
 </style>
 </head>
 <body>
@@ -1703,9 +1760,8 @@ button.active{color:#ffffff !important;}
 </header>
 <div id="mk-menu-overlay" onclick="closeMkMenu()"></div>
 <nav id="mk-menu-panel" aria-label="メインメニュー">
-  <div class="mk-menu-hd"><small>MENU</small>K-buddy</div>
+  <div class="mk-menu-hd"><small>MENU</small><svg class="" viewBox="0 0 600 150" width="170" style="width:170px;height:auto;display:block;" role="img" aria-label="K-buddy"><g transform="translate(0,10) scale(1.3)"><rect x="14" y="8" width="16" height="84" rx="3" fill="#fff" stroke="#fff" stroke-width="5" stroke-linejoin="round"/><polygon points="30.0,47.5 56.0,22.7 57.0,20.7 62.0,10.7 66.0,18.7 72.0,17.7 88.0,26.7 86.0,35.7 71.0,37.7 64.0,35.7 64.0,34.7 30.0,60.5" fill="#fff" stroke="#fff" stroke-width="5" stroke-linejoin="round"/><polygon points="30.0,48.0 42.0,48.0 82.0,92.0 66.0,92.0 30.0,62.0" fill="#fff" stroke="#fff" stroke-width="5" stroke-linejoin="round"/><circle cx="73.0" cy="24.7" r="2.4" fill="#2e4db0"/></g><g transform="translate(176,80) scale(1.25)"><g transform="translate(-180,-62)"><path d="M148 62 L160 62 L168 42 L178 82 L188 46 L196 74 L202 62 L212 62" fill="none" stroke="#e5312b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></g></g><text x="418" y="134" text-anchor="middle" textLength="356" lengthAdjust="spacingAndGlyphs" font-family="'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif" font-weight="900" font-size="140" fill="#ffffff">buddy</text></svg></div>
   <button class="mk-menu-item active" data-page="race"  onclick="showMkPage('dates')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 22V15c0-5-2.5-7.5-6-8.8L16.4 2.5l-2.2 3.1-2.4-2.8-.8 3.6C9.2 7.2 7.8 8.6 6.6 10.4L3.4 14.2c-.8 1-.4 2.2.8 2.6l3.2.8c.8.2 1.4-.1 1.8-.8l.7-1.2c1.7.8 3.3 2 4.3 3.8.6 1 .8 1.8.8 2.6z"/><circle cx="13.4" cy="10.4" r="1.1" fill="#fff"/><circle cx="5.2" cy="15.2" r=".7" fill="#fff"/></svg></span>レース<span class="ar">›</span></button>
-  <button class="mk-menu-item"        data-page="data"  onclick="showMkPage('data')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>データ部屋<span class="ar">›</span></button>
   <button class="mk-menu-item"        data-page="usage" onclick="showMkPage('usage')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h6a4 4 0 0 1 4 3 4 4 0 0 1 4-3h6v14h-6a4 4 0 0 0-4 3 4 4 0 0 0-4-3H2z"/><path d="M12 8v14"/></svg></span>使い方<span class="ar">›</span></button>
   <button class="mk-menu-item"        data-page="contact" onclick="showMkPage('contact')"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>お問い合わせ<span class="ar">›</span></button>
 </nav>
@@ -1716,7 +1772,7 @@ button.active{color:#ffffff !important;}
     <div class="mk-room-hd">
       <span class="ph-eyebrow">SELECT DATE</span>
       <h2><span class="mk-mk">レース</span></h2>
-      <p>開催日を選ぶと、その日の出馬表と、あなたが付けた印・メモが開きます。</p>
+      <p>開催日を選ぶと、その日の出馬表と、<br>あなたが付けた印・メモが開きます。</p>
     </div>
     <section class="mk-sec" id="dates-current">
       <h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>今週の開催</h3>
@@ -1788,8 +1844,8 @@ button.active{color:#ffffff !important;}
       <table class="mk-legend">
         <tr><th>脚質バッジ</th><td><span class="st nige">逃</span> 逃げ　<span class="st senko">先</span> 先行　<span class="st sashi">差</span> 差し　<span class="st oikomi">追</span> 追込。各馬評価の脚質を変えると展開図に即反映されます。</td></tr>
         <tr><th>馬の位置</th><td>横軸が隊列（右が先頭）、縦軸が内外の位置取り。枠番の色で馬を見分けられます。</td></tr>
-        <tr><th>光っている馬</th><td>いまの馬場バイアスと展開設定で「有利」と判定された馬。蛍光色で発光します。</td></tr>
-        <tr><th>ターフの色</th><td>芝は蛍光グリーン、ダートは砂色。馬場が悪化すると芝の色が少しくすみます。</td></tr>
+        <tr><th>光っている馬</th><td>いまの馬場バイアスと展開設定で「有利」と判定された馬。</td></tr>
+        <tr><th>ターフの色</th><td>芝は薄い緑、ダートは薄い茶色。馬場が悪化すると芝の色が少しくすみます。</td></tr>
       </table>
       <ol class="steps">
         <li><b>バイアスを決める</b>◀▶で「内有利 〜 外有利」を動かします。前開催の傾向やJRA馬場情報のメモを参考にしてください。</li>
@@ -1799,7 +1855,7 @@ button.active{color:#ffffff !important;}
       <div class="tip"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="var(--p-ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.7.6 1 1.3 1 2.1h5c0-.8.3-1.5 1-2.1A6 6 0 0 0 12 3z"/></svg></span><div><b>脚質を疑うところから。</b>登録されている脚質は近走ベースです。乗り替わりや距離短縮で位置取りが変わりそうなら、各馬評価で脚質を変えてから展開図を見直すと精度が上がります。</div></div>
     </div></section>
     <section class="mk-sec" id="use-winrate"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6.5h13M3.5 12h9M3.5 17.5h15"/><circle cx="18.5" cy="6.5" r="2.2"/><circle cx="14.5" cy="12" r="2.2"/></svg></span>勝率設定</h3><div class="mk-guide">
-      <p class="lead">勝率は「あなたがその馬を何%で勝つと見るか」です。ここが買い目の期待値の土台になります。</p>
+      <p class="lead">勝率は「あなたがその馬を何%で勝つと見るか」です。買い目の期待値はここが土台です。</p>
       <ol class="steps">
         <li><b>◀▶で動かす</b>勝率グラフの数値の左右にある◀▶で1%ずつ増減します。数値を直接入力しても構いません。バー本体をタップしても変わらないので、スクロール中の誤操作は起きません。</li>
         <li><b>合計を確認する</b>全馬の合計がグラフの下に表示されます。100%前後を目安に整えてください。「絶対に来ない」と思う馬は0%まで下げて構いません。</li>
@@ -1815,7 +1871,7 @@ button.active{color:#ffffff !important;}
       <div class="tip"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="var(--p-ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.7.6 1 1.3 1 2.1h5c0-.8.3-1.5 1-2.1A6 6 0 0 0 12 3z"/></svg></span><div><b>目安：勝率×単勝オッズ。</b>あなたの勝率が20%で単勝が6.0倍なら、20%×6.0＝1.2で期待値プラス。これが1.0を切る馬は、どれだけ強く見えても「買いすぎ」です。</div></div>
     </div></section>
     <section class="mk-sec" id="use-ticket"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 7h19v3.2a1.9 1.9 0 0 0 0 3.6V17h-19v-3.2a1.9 1.9 0 0 0 0-3.6z"/><path d="M9 9.2v1.4M9 13.4v1.4"/><path d="M12.8 12h5"/></svg></span>買い目ビルダー</h3><div class="mk-guide">
-      <p class="lead">買い目ビルダーは、勝率をもとに券種ごとの的中率と期待値（EV）を出し、予算を配分します。</p>
+      <p class="lead">勝率をもとに、券種ごとの的中率と期待値（EV）を出して予算を配分します。</p>
       <ol class="steps">
         <li><b>予算を入れる</b>1レースに使う金額を入力します。右の<span class="kw">オッズ更新</span>で最新オッズを取得します（発走が近いほど正確です）。</li>
         <li><b>券種と軸を選ぶ</b>単勝・複勝・馬連・ワイド・馬単・3連複・3連単から券種を選び、軸馬・相手馬を馬番で指定します。</li>
@@ -1824,9 +1880,9 @@ button.active{color:#ffffff !important;}
         <li><b>最終見解レポート</b>画面下の<span class="kw dark">最終見解レポートを出力</span>で、馬場・展開・勝率・買い目をひとつのレポートにまとめてコピーできます。</li>
       </ol>
       <table class="mk-legend">
-        <tr><th>リセット</th><td>このレースの買い目だけを消します。勝率や印はそのまま残ります。</td></tr>
+        <tr><th>リセット</th><td>このレースの買い目だけを消します。勝率や印は残ります。</td></tr>
         <tr><th>オッズが取れない</th><td>出走前のレースで、発売中のオッズだけ取得できます。前日夜など発売前は「見つかりません」になります。</td></tr>
-        <tr><th>EVが全部1.0未満</th><td>あなたの勝率が市場（オッズ）とほぼ同じ見方だということ。無理に買わず「見送り」も選択肢です。</td></tr>
+        <tr><th>EVが全部1.0未満</th><td>あなたの勝率が市場（オッズ）とほぼ同じ見方だということ。無理に買わず見送るのも手です。</td></tr>
       </table>
       <div class="tip"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="var(--p-ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.7.6 1 1.3 1 2.1h5c0-.8.3-1.5 1-2.1A6 6 0 0 0 12 3z"/></svg></span><div><b>点数より期待値。</b>EVの高い順に3〜6点に絞るのが基本。的中率を上げるために点数を増やすと、EVの低い買い目が混ざって回収率が下がります。</div></div>
     </div></section>
@@ -1841,7 +1897,7 @@ button.active{color:#ffffff !important;}
       <dl class="mk-faq">
         <dt>Q. どんな質問が向いていますか？</dt>
         <dd>「自分の勝率で見落としはないか」「この展開なら誰が浮上するか」「陣営データで気になる数字は」など、自分の考えを検証する質問。買い目の断定は求めても返しません。</dd>
-        <dt>Q. 「そのデータは渡されていません」と言われた</dt>
+        <dt>Q. 「そのデータは渡されていません」<br>と言われた</dt>
         <dd>その馬の陣営データが今週分に含まれていない状態です。AIは持っていない数字を作りません。別の切り口で聞くか、運営のデータ更新をお待ちください。</dd>
         <dt>Q. 音声が途中で止まる</dt>
         <dd>Chrome推奨です。読み上げ中にマイクを押すと停止し、もう一度押すと会話が再開します。マイク権限を求められたら「許可」を選んでください。</dd>
@@ -1857,7 +1913,7 @@ button.active{color:#ffffff !important;}
     <div class="mk-room-hd">
       <span class="ph-eyebrow">CONTACT</span>
       <h2><span class="mk-mk">お問い合わせ</span></h2>
-      <p>ご質問・ご要望はこちらから。（フォームは準備中）</p>
+      <p>ご質問・ご要望はこちらから。<br>（フォームは準備中）</p>
     </div>
     <section class="mk-sec" id="contact-form"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>お問い合わせフォーム</h3><div class="ph-box">準備中</div></section>
     <section class="mk-sec" id="contact-info"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span>運営情報</h3><div class="ph-box">準備中</div></section>
@@ -1896,10 +1952,7 @@ button.active{color:#ffffff !important;}
 </div>
 
 <div class="app-container mk-page active" id="page-race">
-  <div id="site-title" style="text-align:center;padding:40px 18px 32px;background:var(--p-ink);border-radius:22px;margin:12px;position:relative;">
-    <div style="font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif;font-weight:900;color:var(--p-acc);font-size:clamp(46px,13vw,92px);letter-spacing:.04em;line-height:1;white-space:nowrap;">K-buddy</div>
-    <div style="color:var(--p-mute2);font-size:13px;letter-spacing:.1em;font-weight:700;margin-top:20px;">新しい競馬の楽しみ方を</div>
-  </div>
+  <div id="site-title" style="text-align:center;padding:14px 12px 12px;background:var(--p-ink);border-radius:22px;margin:12px;position:relative;"><svg class="kb-logo" viewBox="0 0 600 150" width="100%" style="display:block;" role="img" aria-label="K-buddy"><g transform="translate(0,10) scale(1.3)"><rect x="14" y="8" width="16" height="84" rx="3" fill="#fff" stroke="#fff" stroke-width="5" stroke-linejoin="round"/><polygon points="30.0,47.5 56.0,22.7 57.0,20.7 62.0,10.7 66.0,18.7 72.0,17.7 88.0,26.7 86.0,35.7 71.0,37.7 64.0,35.7 64.0,34.7 30.0,60.5" fill="#fff" stroke="#fff" stroke-width="5" stroke-linejoin="round"/><polygon points="30.0,48.0 42.0,48.0 82.0,92.0 66.0,92.0 30.0,62.0" fill="#fff" stroke="#fff" stroke-width="5" stroke-linejoin="round"/><circle cx="73.0" cy="24.7" r="2.4" fill="#2e4db0"/></g><g transform="translate(176,80) scale(1.25)"><g transform="translate(-180,-62)"><path d="M148 62 L160 62 L168 42 L178 82 L188 46 L196 74 L202 62 L212 62" fill="none" stroke="#e5312b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></g></g><text x="418" y="134" text-anchor="middle" textLength="356" lengthAdjust="spacingAndGlyphs" font-family="'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif" font-weight="900" font-size="140" fill="#ffffff">buddy</text></svg></div>
   <div id="mk-daybar" style="display:none;">
     <span class="lbl">DATE</span><b id="mk-daybar-date">—</b><span class="v" id="mk-daybar-venues"></span>
     <button onclick="showMkPage('dates')">日付を変える</button>
@@ -1978,7 +2031,7 @@ button.active{color:#ffffff !important;}
           <div style="font-size:11px;font-weight:bold;margin-bottom:2px;">出馬表データの新規取り込み</div>
           <textarea id="data-input" placeholder="出馬表データ(TARGET形式など)を貼り付け..."></textarea>
           <button class="btn-primary" style="width:100%;margin-top:4px;" onclick="importData()">データを読み込んでツールを作成</button>
-          <button class="btn-primary" style="width:100%;margin-top:6px;background:var(--p-ink);color:var(--p-acc);border-color:var(--p-ink);" onclick="loadRaceCardFromGAS()">スプレッドシートから出馬表を取得</button>
+          <button class="btn-primary" style="width:100%;margin-top:6px;background:var(--p-ink);color:#fff;border-color:var(--p-ink);" onclick="loadRaceCardFromGAS()">スプレッドシートから出馬表を取得</button>
           <div id="racecard-status" style="font-size:10px;color:var(--p-mute3);margin-top:4px;text-align:center;"></div>
         </div>
         <div style="border-top:1px dashed #ccc;padding-top:8px;margin-bottom:8px;">
@@ -2174,7 +2227,7 @@ button.active{color:#ffffff !important;}
 
 
          <div class="tb-wrap">
-           <div class="sub-head tb-head"><span class="sub-head-ttl">トラックバイアス</span><span class="tb-status" id="tb-status">フラット（自由に設定できます）</span></div>
+           <div class="sub-head tb-head"><span class="sub-head-ttl">トラックバイアス</span><span class="tb-status" id="tb-status">フラット（変更できます）</span></div>
            <div class="seg" id="tb-seg">
              <button type="button" data-i="0" onclick="setTrackBias(0)">内前</button>
              <button type="button" data-i="1" onclick="setTrackBias(1)">やや内前</button>
@@ -2258,7 +2311,7 @@ button.active{color:#ffffff !important;}
       <!-- ▼ AI相談（壁打ち）スロット：課金者のみアクティベート・未課金はグレーアウト ▼ -->
       <div class="ai-talk-slot" id="ai-talk-slot">
         <div class="sub-head ai-talk-head">
-          <span class="ai-talk-dot"></span><span class="sub-head-ttl">AI相談（壁打ち）</span><span id="ai-rally-counter" title="1日に相談できる回数です">本日 0 / 100 回</span>
+          <span class="ai-talk-dot"></span><span class="sub-head-ttl" style="white-space:nowrap;">AI相談</span><span id="ai-rally-counter" title="1日に相談できる回数です">本日 0 / 100 回</span>
           <span class="ai-lock-badge" id="ai-lock-badge"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> 有料機能</span>
         </div>
         <!-- 中身（グレーアウト対象） -->
@@ -2282,7 +2335,7 @@ button.active{color:#ffffff !important;}
           <div class="ai-lock-card">
             <div class="ai-lock-ico"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
             <div class="ai-lock-ttl">AI相談は上位プラン限定</div>
-            <div class="ai-lock-desc" id="ai-lock-desc">出馬表・あなたのメモ・陣営データを踏まえて、AIと壁打ちできます。</div>
+            <div class="ai-lock-desc" id="ai-lock-desc">出馬表・あなたのメモ・陣営データを踏まえて、<br>AIと壁打ちできます。</div>
             <button class="ai-lock-btn" onclick="openAiUnlock()">プランを見る</button>
           </div>
         </div>
@@ -2309,15 +2362,14 @@ button.active{color:#ffffff !important;}
           <button class="hd-tab" data-hd="past" onclick="showHorseData('past')">出馬表</button>
           <button class="hd-tab active" data-hd="eval" onclick="showHorseData('eval')">各馬評価</button>
           <button class="hd-tab" data-hd="camp" onclick="showHorseData('camp')">コース・陣営</button>
-          <button class="pill-btn pill-sm pill-beige" id="past-sync-btn" style="margin-left:auto;display:none;" onclick="loadPastRuns()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.5-5.8"/><path d="M20 4v5h-5"/></svg> 出馬表・オッズ更新</button>
+          <button class="pill-btn pill-sm pill-beige" id="past-sync-btn" style="margin-left:auto;display:none;" data-move-to-zoom="1" onclick="loadPastRuns()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.5-5.8"/><path d="M20 4v5h-5"/></svg> オッズ更新</button>
         </div>
         <div class="zoom-bar" id="hd-zoom-bar">
           <span class="zoom-lbl">表示</span>
           <button type="button" class="zoom-btn" onclick="setHdZoom(-0.1)" title="縮小"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg></button>
-          <span class="zoom-val" id="hd-zoom-val">100%</span>
+          <span class="zoom-val" id="hd-zoom-val" onclick="setHdZoom(null)" title="タップで100%に戻す">100%</span>
           <button type="button" class="zoom-btn" onclick="setHdZoom(0.1)" title="拡大"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
-          <button type="button" class="zoom-fit" onclick="fitHdZoom()">全体を1画面に</button>
-          <button type="button" class="zoom-fit" onclick="setHdZoom(null)">100%</button>
+          <button type="button" class="zoom-fit" onclick="fitHdZoom()">全体表示</button>
         </div>
         <!-- 互換のため非表示で残す -->
         <div id="standard-time-container" style="display:none;"></div>
@@ -2499,7 +2551,7 @@ button.active{color:#ffffff !important;}
 
        <!-- ▼▼ 追加：レポート出力ボタン ▼▼ -->
           <div style="text-align: center; margin-top: 15px; margin-bottom: 10px;">
-              <button style="background:var(--p-ink); color:var(--p-acc); font-weight:800; width: 100%; max-width: 400px; font-size: 14px; padding: 10px; border-radius: 6px; border:1px solid var(--p-ink); box-shadow: none; cursor:pointer;" id="btn-final-report" onclick="openFinalReport()">最終見解レポートを出力</button>
+              <button style="background:var(--p-ink); color:#fff; font-weight:800; width: 100%; max-width: 400px; font-size: 14px; padding: 10px; border-radius: 6px; border:1px solid var(--p-ink); box-shadow: none; cursor:pointer;" id="btn-final-report" onclick="openFinalReport()">最終見解レポートを出力</button>
           </div>
           <!-- ▲▲ ここまで ▲▲ -->
 
@@ -2755,7 +2807,7 @@ button.active{color:#ffffff !important;}
           <div id="chat-messages" style="background: var(--p-tint); border: 1px solid var(--p-line2); border-radius: 4px; padding: 10px; height: 320px; overflow-y: auto; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px;"></div>
           <div style="display: flex; gap: 5px;">
             <input type="text" id="chat-input" placeholder="テキストを入力..." style="flex-grow: 1; padding: 8px; border: 1px solid var(--p-line2); border-radius: 4px; font-size: 12px;" onkeypress="if(event.key==='Enter') sendChatMessage()">
-            <button class="btn-primary" style="padding: 8px 16px; border-radius: 4px; box-shadow:none; background:var(--p-ink); border-color:var(--p-ink); color:var(--p-acc); font-weight:800;" onclick="sendChatMessage()">送信</button>
+            <button class="btn-primary" style="padding: 8px 16px; border-radius: 4px; box-shadow:none; background:var(--p-ink); border-color:var(--p-ink); color:#fff; font-weight:800;" onclick="sendChatMessage()">送信</button>
           </div>
           <div style="text-align: left; margin-top:8px;"><button class="btn-danger" style="background:var(--p-mute); border:none; box-shadow:none;" onclick="backToModeSelection()">◀ 中止して戻る</button></div>
         </div>
@@ -2828,7 +2880,7 @@ button.active{color:#ffffff !important;}
           
           <div style="display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid var(--p-line); padding-top: 10px;">
             <button class="btn-danger" style="background:var(--p-mute); border:none; box-shadow:none;" onclick="backToModeSelection()">◀ 戻る</button>
-            <button class="btn-success" style="background:var(--p-ink); border-color:var(--p-ink); color:var(--p-acc); font-weight:800; font-size:13px; padding:6px 20px; box-shadow:none;" onclick="saveTuningAI()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg> この設定で確定</button>
+            <button class="btn-success" style="background:var(--p-ink); border-color:var(--p-ink); color:#fff; font-weight:800; font-size:13px; padding:6px 20px; box-shadow:none;" onclick="saveTuningAI()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg> この設定で確定</button>
           </div>
         </div>
 
@@ -3765,6 +3817,7 @@ function _unusedAutoAssignMarks(rId = currentRaceId) {
       if(open){ try{ if(typeof adjustCanvasSize === 'function') adjustCanvasSize(); if(typeof renderPaceBoard === 'function') renderPaceBoard(); window.dispatchEvent(new Event('resize')); }catch(e){} }
     }
     (function(){ try{ const v = localStorage.getItem('muketsu_sim_open'); if(v === '0' || v === null) toggleSimSection(false); }catch(e){} })();   // 初期は閉じておく（開いたら記憶）
+    (function(){ try{ const b = document.getElementById('past-sync-btn'), z = document.getElementById('hd-zoom-bar'); if(b && z && b.parentNode !== z){ z.appendChild(b); } }catch(e){} })();
     function toggleMemoCard(force){
       const card = document.getElementById('memo-card'); if(!card) return;
       const open = (typeof force === 'boolean') ? force : card.classList.contains('collapsed');
@@ -4474,8 +4527,8 @@ function buildNavigation() {
       const desc = document.getElementById('ai-lock-desc');
       if(desc){
         desc.textContent = (MK_PLAN.get() === 'basic')
-          ? '出馬表・あなたのメモ・陣営データを踏まえて、AIと壁打ちできます。上位プランでご利用いただけます。'
-          : '出馬表・あなたのメモ・陣営データを踏まえて、AIと壁打ちできます。';
+          ? '出馬表・あなたのメモ・陣営データを踏まえて、<br>AIと壁打ちできます。<br>上位プランでご利用いただけます。'
+          : '出馬表・あなたのメモ・陣営データを踏まえて、<br>AIと壁打ちできます。';
       }
     }
     /* ===== プラン案内の中身 =====
@@ -5933,7 +5986,7 @@ window.drawOaChartModal = function() {
     }
 
     /* ===== 展開の印（トラックバイアス） ===== */
-    const _TB_TEXT = ['内前有利', 'やや内前有利', 'フラット（自由に設定できます）', 'やや外差し有利', '外差し有利'];
+    const _TB_TEXT = ['内前有利', 'やや内前有利', 'フラット（変更できます）', 'やや外差し有利', '外差し有利'];
     function _tenkaiLabel(v){ return ({'-2':'不利大','-1':'不利','0':'なし','1':'展○','2':'展◎'})[String(v||0)] || 'なし'; }
     function _tenkaiCls(v){ return v === 2 ? 'fb-t2' : v === 1 ? 'fb-t1' : v === -1 ? 'fb-m1' : v === -2 ? 'fb-m2' : ''; }
     function _tenkaiMult(v){ return v === 2 ? 1.2 : v === 1 ? 1.1 : v === -1 ? 0.9 : v === -2 ? 0.8 : 1; }
@@ -6048,12 +6101,12 @@ window.drawOaChartModal = function() {
         const isDirt = race.info && race.info.includes('ダ') && !isStraight;
         const baba = race.baba || '良';
         // 展開図フィールド：芝＝蛍光グリーン / ダート＝薄茶（芝は蛍光、ダートは従来）
-        let baseColor = isDirt ? '#e9dcc6' : '#eef7cf', trackColor = isDirt ? '#c9ab7e' : 'var(--p-acc)';
+        let baseColor = isDirt ? '#efe3d0' : '#e6f4e2', trackColor = isDirt ? '#c9ab7e' : '#a6d497';
         if(!isDirt) {
-          // 芝の馬場悪化＝蛍光を少しくすませる（それでも蛍光寄り）
-          if(baba === '稍') { trackColor = '#c2e63a'; }
-          else if(baba === '重') { trackColor = '#b3d637'; }
-          else if(baba === '不') { trackColor = '#a3c433'; }
+          // 芝の馬場悪化＝緑を少しくすませる
+          if(baba === '稍') { trackColor = '#9cc98e'; }
+          else if(baba === '重') { trackColor = '#8fbb82'; }
+          else if(baba === '不') { trackColor = '#82ab76'; }
         } else {
           if(baba === '稍') { trackColor = '#c2a271'; }
           else if(baba === '重') { trackColor = '#b8975f'; }
@@ -6151,7 +6204,7 @@ window.drawOaChartModal = function() {
             ? 'box-shadow:0 0 0 2px var(--p-ink),0 0 0 4px var(--mk-lime),0 0 10px 2px rgba(var(--p-acc-rgb), .9),0 0 18px 4px rgba(var(--p-acc-rgb), .5);'
             : 'box-shadow:0 2px 4px rgba(0,0,0,0.3);';
           const favTag = isFav
-            ? `<span style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--mk-lime);color:var(--p-ink);font-size:7.5px;font-weight:900;line-height:1;padding:2px 5px;border-radius:6px;letter-spacing:.04em;white-space:nowrap;box-shadow:0 0 6px rgba(var(--p-acc-rgb), .8),0 1px 2px rgba(0,0,0,.3);z-index:5;">有利</span>`
+            ? `<span style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--mk-lime);color:#fff;font-size:7.5px;font-weight:900;line-height:1;padding:2px 5px;border-radius:6px;letter-spacing:.04em;white-space:nowrap;box-shadow:0 0 6px rgba(var(--p-acc-rgb), .8),0 1px 2px rgba(0,0,0,.3);z-index:5;">有利</span>`
             : '';
           const phF1 = pixelHorseSvg(h.waku, 0), phF2 = pixelHorseSvg(h.waku, 1);
           const favWrap = isFav ? `border-radius:6px;${favGlow}` : '';
@@ -6272,7 +6325,9 @@ window.drawOaChartModal = function() {
       const sortedHorses = getSortedHorsesForGraph();
       // バーの最大値＝レース内の最高勝率（少し余白）。馬毎の差が見えるよう相対スケール化
       const _maxWinRate = Math.max(1, ...race.horses.map(h => h.winRate || 0));
-      const _barDenom = Math.max(_maxWinRate * 1.08, 5); // 最上位が約93%まで伸びる
+      // 物差し：最上位の勝率を4の倍数に切り上げた値を右端にする（目盛り4本が切りのいい％になる）。勝率が何％でも右端は自動で伸びる
+      const _scaleMax = Math.max(4, Math.ceil((_maxWinRate + 0.01) / 4) * 4);
+      const _barDenom = _scaleMax;
       // 指数トップ3（同点は同順位）
       const _fxShisuRank = {};
       try{
@@ -6383,14 +6438,14 @@ window.drawOaChartModal = function() {
         if(isHarvilleCalculated) {
           const winR = h.winRate;
           let evValue = ''; 
-          if(!isNaN(tOdds) && winR > 0) evValue = parseFloat((tOdds * winR / 100).toFixed(2)).toString();
+          if(!isNaN(tOdds) && winR > 0) evValue = (Math.round(tOdds * winR) / 100).toFixed(2);   // 小数第2位まで（第3位を四捨五入）
           const renritsu = h.top2Prob !== undefined ? h.top2Prob.toFixed(0) : '-';
           const fukuR = h.top3Prob !== undefined ? h.top3Prob.toFixed(0) : '-';
           const oL = !isNaN(parseFloat(h.odds)) ? parseFloat(h.odds).toFixed(1) : '--';
           let evColor = 'var(--p-ink)';
           
           // ★変更点1: バーの右側に配置するため、flex-shrink:0 を付けて潰れないようにし、テキストを少しコンパクト化
-                  confirmHtml = `<div class="ev-badge"><span class="ev-val${isHighEv ? ' ev-hot' : ''}">期${evValue||'-'}</span></div>`;
+                  confirmHtml = `<div class="ev-badge"><span class="ev-val${isHighEv ? ' ev-hot' : ''}">${evValue||'-'}</span></div>`;
         }
 
         // バー本体のドラッグ操作は無効化（誤操作防止）。勝率変更は右の◀▶・数値入力のみ。
@@ -6408,7 +6463,7 @@ window.drawOaChartModal = function() {
         const leftPart = `<div style="display:flex;align-items:center;flex-shrink:0;gap:4px;">${markSelectHtml(h)}<div class="waku-box waku-${h.waku}" style="margin-left:4px;margin-right:6px;">${h.num}</div><div class="hr-nm-wrap"><div class="hr-name-label">${h.name}</div><div class="hr-odds${_odFav}">${_odTxt}${supportHtml}</div>${_bd ? `<div class="hr-badges" id="hr-badges-${h.num}">${_bd}</div>` : ''}</div></div>`;
         
         let extraBarClass = isHighEv ? 'bar-ev-high' : '';
-        const barAndTrack = `<div class="bar-col" style="flex-grow:1;position:relative;height:20px;margin-left:4px;"><div class="visual-bar ${extraBarClass}" id="bar-fill-${graphIdx}" style="width:${barWidthPct}%;background:${barStyle};"></div><div class="graph-track-overlay" id="track-${graphIdx}" ${dragAttrs}></div></div>`;
+        const barAndTrack = `<div class="bar-col" style="flex-grow:1;position:relative;height:20px;margin-left:4px;"><div class="visual-bar ${extraBarClass}" id="bar-fill-${graphIdx}" style="width:${barWidthPct}%;background:${barStyle};--wr:${(0.30 + 0.70 * Math.min(1, (h.winRate || 0) / _maxWinRate)).toFixed(2)};"></div><div class="graph-track-overlay" id="track-${graphIdx}" ${dragAttrs}></div></div>`;
         
         let coreHtml = '';
         if(graphSortKey === 'odds' && realCoreMap[h.num]) {
@@ -6443,7 +6498,7 @@ window.drawOaChartModal = function() {
       // 見出し：確定後は3本線の凡例と期待値に切り替える
       try{
         const gb = document.querySelector('.graph-head .gh-bar'), gv = document.querySelector('.graph-head .gh-val');
-        if(gb) gb.innerHTML = isHarvilleCalculated ? '<span class="lg-col"><span><i class="lg lg1"></i>勝率</span><span><i class="lg lg2"></i>連対率</span><span><i class="lg lg3"></i>複勝率</span></span>' : '勝率（バー）';
+        if(gb) gb.innerHTML = isHarvilleCalculated ? '<span class="lg-col"><span><i class="lg lg1"></i>勝率</span><span><i class="lg lg2"></i>連対率</span><span><i class="lg lg3"></i>複勝率</span></span>' : ('勝率（1目盛り ' + (_scaleMax / 4) + '%）');
         if(gv) gv.textContent = isHarvilleCalculated ? '単勝期待値' : '勝率%';
         const hb = document.getElementById('btn-harville'); if(hb) hb.textContent = isHarvilleCalculated ? '編集' : '確定';
       }catch(e){}
@@ -9449,7 +9504,7 @@ function openFinalReport() {
 
         rankHtml += `<tr style="${rowStyle}">
             <td style="font-weight:bold; color:var(--p-mute);">[${i+1}]</td>
-            <td style="font-weight:bold; font-size:15px; ${combColor ? `color:${combColor};` : ''}">${t.comb}</td>
+            <td style="font-weight:bold; font-size:15px; white-space:nowrap; ${combColor ? `color:${combColor};` : ''}">${t.comb}</td>
             <td style="${opc}">${((t.prob||0)*100).toFixed(1)}%</td>
             <td style="font-weight:bold; color:var(--p-ink); ${opc}">${t.odds>0?t.odds.toFixed(1):'-'}</td>
             <td style="font-weight:bold; color:${evColor};">${ev>0?ev.toFixed(2):'-'}</td>
@@ -10861,7 +10916,7 @@ window.closeDetailedData2Modal = function() {
     const ymd = d => '' + d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0');
     const weekStart = ymd(monday);
     const curDays = days.filter(d => d.date >= weekStart).sort((a,b)=> a.date < b.date ? -1 : 1), pastDays = days.filter(d => d.date < weekStart);
-    cur.innerHTML = curDays.length ? curDays.map(card).join('') : '<div class="mk-day-empty">今週の出走馬データはまだありません。</div>';
+    cur.innerHTML = curDays.length ? curDays.map(card).join('') : '<div class="mk-day-empty">今週の分は<br>まだありません。</div>';
     past.innerHTML = pastDays.length ? pastDays.map(card).join('') : '<div class="mk-day-empty">過去の開催はここに並びます。</div>';
   }
   async function mkOpenDay(date){
@@ -10880,10 +10935,11 @@ window.closeDetailedData2Modal = function() {
     const dy = days.find(d => d.date === window._mkCurDay) || days[0];
     document.getElementById('mk-daybar-date').textContent = `${dy.mo}/${dy.d}（${mkDow(dy.y,dy.mo,dy.d)}）`;
     document.getElementById('mk-daybar-venues').textContent = dy.venues.join('・');
-    bar.style.display = 'flex';
+    bar.style.display='grid';
   }
 
   function showMkPage(name){
+    if(name === 'data') name = 'dates';   // データ部屋は廃止
     document.querySelectorAll('.mk-page').forEach(p=>p.classList.remove('active'));
     const pg = document.getElementById('page-'+name);
     if(pg) pg.classList.add('active');
@@ -11042,7 +11098,8 @@ html.pal-grad #mk-topbar, html.pal-grad #site-title{ background:linear-gradient(
 #pal .row small{ display:block; font-weight:400; color:#888; font-size:10px; }
 #pal input[type=color]{ width:44px; height:30px; border:1px solid #ccc; border-radius:6px; padding:0; background:none; }
 #pal input[type=range]{ width:130px; }
-#pal select{ font-size:11px; padding:5px 6px; border:1px solid #ccc; border-radius:6px; background:#fff; }
+#pal select{ font-size:11px; padding:5px 6px; border:1px solid #ccc; border-radius:6px; background:#fff; max-width:170px; }
+#pal .row label{ min-width:110px; }
 #pal input[type=color]:disabled{ opacity:.35; }
 #pal .pre{ display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 10px; }
 #pal .pre button{ border:1px solid #ddd; background:#fff; border-radius:999px; padding:5px 9px; font-size:11px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:5px; }
@@ -11092,6 +11149,9 @@ html.pal-picking, html.pal-picking *{ cursor:crosshair !important; }
     <div class="row"><label>ハイライト<small>押した所・順位の帯・選択中の光り</small></label><input type="checkbox" id="pal-hlsync" checked title="アクセントに連動"><input type="color" id="pal-hl"></div>
     <div class="row"><label>レース目次の地色<small>未選択タイル</small></label><select id="pal-tile"><option value="neutral">無彩色（背景なじみ）</option><option value="white">白</option><option value="hl">ハイライトの淡色</option></select></div>
     <div class="row"><label>グラデーション<small>ヘッダーとロゴ面</small></label><input type="checkbox" id="pal-grad"><input type="color" id="pal-g2"></div>
+    <h4>文字</h4>
+    <div class="row"><label>フォント<small>本文と見出し（ロゴは除く）</small></label><select id="pal-font"></select></div>
+    <div class="row"><label>基本の太さ<small>太字の指定がない文字に効く</small></label><select id="pal-fw"><option value="0">そのまま</option><option value="300">細い</option><option value="400">ふつう</option><option value="500">やや太い</option></select></div>
     <h4>部品ごとの上書き<small style="display:block;font-weight:400;letter-spacing:0;">テーマから外して個別に決める。「戻」でテーマ追従に戻る</small></h4>
     <div id="pal-fine"></div>
     <div class="act" style="margin-top:6px;"><button class="sub" id="pal-clear-fine">部品の上書きを全部消す</button></div>
@@ -11113,12 +11173,36 @@ html.pal-picking, html.pal-picking *{ cursor:crosshair !important; }
 <script>
 (function(){
   const $ = id => document.getElementById(id);
+  // パネルはどのページでも出るよう body 直下へ移す（元の位置は #page-race の中で、日付一覧では隠れていた）
+  document.body.appendChild($('pal')); document.body.appendChild($('pick'));
   const hex = c => { c = c.replace('#',''); return [parseInt(c.slice(0,2),16), parseInt(c.slice(2,4),16), parseInt(c.slice(4,6),16)]; };
   const toHex = a => '#' + a.map(v => Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('');
   const mix = (a, b, t) => { const A = hex(a), B = hex(b); return toHex([0,1,2].map(i => A[i] + (B[i]-A[i]) * t)); };
   const W = '#ffffff';
   // 現行の本番配色（2026-09-18 青×赤）。「現行に戻す」はここに戻る
-  const DEF = { ink:'#2e4db0', acc:'#e5312b', bg:'#eef1f8', sub:'#c7d2ea', soft:0, grad:0, g2:'#4a6fd0', hl:'#e5312b', hlsync:1, tile:'neutral' };
+  const DEF = { ink:'#2e4db0', acc:'#e5312b', bg:'#eef1f8', sub:'#c7d2ea', soft:0, grad:0, g2:'#4a6fd0', hl:'#e5312b', hlsync:1, tile:'neutral', font:'cur', fw:0 };
+  const FONTS = {
+    cur:     { n:'現行（BIZ UDPゴシック）' },
+    zenmaru: { n:'Zen Maru Gothic（丸ゴ・すっきり）', css:"'Zen Maru Gothic'", g:'Zen+Maru+Gothic:wght@300;400;500;700;900' },
+    mplusr:  { n:'M PLUS Rounded 1c（丸ゴ・やわらか）', css:"'M PLUS Rounded 1c'", g:'M+PLUS+Rounded+1c:wght@300;400;500;700;800' },
+    hiramaru:{ n:'ヒラギノ丸ゴ（iPhone/Mac）＋他はZen Maru', css:"'Hiragino Maru Gothic ProN','ヒラギノ丸ゴ ProN W4','Zen Maru Gothic'", g:'Zen+Maru+Gothic:wght@300;400;500;700;900' },
+    kosugi:  { n:'Kosugi Maru（丸ゴ・細め1ウェイト）', css:"'Kosugi Maru'", g:'Kosugi+Maru' },
+    kiwi:    { n:'Kiwi Maru（丸明朝寄り・手書き感）', css:"'Kiwi Maru'", g:'Kiwi+Maru:wght@300;400;500' },
+  };
+  function applyFont(){
+    const f = FONTS[st.font] || FONTS.cur;
+    let lk = $('pal-font-link'); if(!lk){ lk = document.createElement('link'); lk.id = 'pal-font-link'; lk.rel = 'stylesheet'; document.head.appendChild(lk); }
+    lk.href = f.g ? 'https://fonts.googleapis.com/css2?family=' + f.g + '&display=swap' : '';
+    let el = $('pal-font-style'); if(!el){ el = document.createElement('style'); el.id = 'pal-font-style'; document.head.appendChild(el); }
+    let css = '';
+    if(f.css){ css += 'body, body *:not(svg):not(svg *){ font-family:' + f.css + ',"BIZ UDPGothic","BIZ UDGothic",sans-serif !important; }\n'
+      + '#mk-topbar .mk-brand, #site-title > div:first-child{ font-family:\'Anton\',\'Fraunces\',sans-serif !important; }\n'
+      + '#pal, #pal *, #pick, #pick *{ font-family:"BIZ UDPGothic",sans-serif !important; }\n'; }
+    if(st.fw){ css += 'body{ font-weight:' + st.fw + '; }\n'; }
+    el.textContent = css;
+    $('pal-font').value = st.font; $('pal-fw').value = String(st.fw);
+  }
+
   const PRESETS = [
     { n:'現行（青×赤）', ink:'#2e4db0', acc:'#e5312b', bg:'#eef1f8', sub:'#c7d2ea', soft:0, grad:0, g2:'#4a6fd0' },
     { n:'旧（黒×ライム）', ink:'#1a1a1a', acc:'#ccf23f', bg:'#eceae3', sub:'#d8ccae', soft:0, grad:0, g2:'#3d3d3a' },
@@ -11251,10 +11335,10 @@ html.pal-picking, html.pal-picking *{ cursor:crosshair !important; }
     $('pal-ink').value = st.ink; $('pal-acc').value = st.acc; $('pal-bg').value = st.bg; $('pal-sub').value = st.sub;
     $('pal-soft').value = st.soft; $('pal-grad').checked = !!st.grad; $('pal-g2').value = st.g2;
     $('pal-hl').value = st.hl; $('pal-hlsync').checked = !!st.hlsync; $('pal-hl').disabled = !!st.hlsync; $('pal-tile').value = st.tile;
-    applyFine(); applyPick();
+    applyFine(); applyPick(); applyFont();
     const ph = Object.keys(st.p).map(sel => encodeURIComponent(sel) + '~' + ['bg','fg','bd'].filter(k => st.p[sel][k]).map(k => k + ':' + st.p[sel][k].slice(1)).join('|')).join(',');
     const oh = Object.keys(st.o).map(k => k + ':' + String(st.o[k]).slice(1)).join(',') + '&p=' + ph;
-    const h = 'ink=' + st.ink.slice(1) + '&acc=' + st.acc.slice(1) + '&bg=' + st.bg.slice(1) + '&sub=' + st.sub.slice(1) + '&soft=' + st.soft + '&grad=' + (st.grad?1:0) + '&g2=' + st.g2.slice(1) + '&hl=' + st.hl.slice(1) + '&hlsync=' + (st.hlsync?1:0) + '&tile=' + st.tile + '&o=' + oh;
+    const h = 'ink=' + st.ink.slice(1) + '&acc=' + st.acc.slice(1) + '&bg=' + st.bg.slice(1) + '&sub=' + st.sub.slice(1) + '&soft=' + st.soft + '&grad=' + (st.grad?1:0) + '&g2=' + st.g2.slice(1) + '&hl=' + st.hl.slice(1) + '&hlsync=' + (st.hlsync?1:0) + '&tile=' + st.tile + '&font=' + st.font + '&fw=' + st.fw + '&o=' + oh;
     try { history.replaceState(null, '', '#' + h); } catch(e) {}
     $('pal-code').textContent = h;
   }
@@ -11265,14 +11349,17 @@ html.pal-picking, html.pal-picking *{ cursor:crosshair !important; }
       if(k === 'o'){ st.o = {}; (val || '').split(',').filter(Boolean).forEach(e => { const [kk, vv] = e.split(':'); if(kk && vv) st.o[kk] = '#' + vv; }); return; }
       if(k === 'p'){ st.p = {}; (val || '').split(',').filter(Boolean).forEach(e => { const [se, rest] = e.split('~'); const sel = decodeURIComponent(se); const o = {}; (rest || '').split('|').filter(Boolean).forEach(x => { const [kk, vv] = x.split(':'); if(kk && vv) o[kk] = '#' + vv; }); if(Object.keys(o).length) st.p[sel] = o; }); return; }
       if(!(k in st)) return;
-      if(k === 'soft' || k === 'grad' || k === 'hlsync') st[k] = parseInt(val, 10) || 0; else if(k === 'tile') st[k] = val; else st[k] = '#' + val; });
+      if(k === 'soft' || k === 'grad' || k === 'hlsync' || k === 'fw') st[k] = parseInt(val, 10) || 0; else if(k === 'tile' || k === 'font') st[k] = val; else st[k] = '#' + val; });
   }
   PRESETS.forEach(p => { const b = document.createElement('button'); b.innerHTML = '<i style="background:' + p.ink + '"></i><i style="background:' + p.acc + '"></i>' + p.n;
-    b.onclick = () => { const o = st.o, pp = st.p; st = Object.assign({}, DEF, p); delete st.n; st.hlsync = 1; st.o = o; st.p = pp; apply(); }; $('pal-pre').appendChild(b); });
+    b.onclick = () => { const o = st.o, pp = st.p, ft = st.font, fw = st.fw; st = Object.assign({}, DEF, p); delete st.n; st.hlsync = 1; st.o = o; st.p = pp; st.font = ft; st.fw = fw; apply(); }; $('pal-pre').appendChild(b); });
   ['ink','acc','bg','sub','g2'].forEach(k => $('pal-' + k).addEventListener('input', e => { st[k] = e.target.value; apply(); }));
   $('pal-hl').addEventListener('input', e => { st.hl = e.target.value; st.hlsync = 0; apply(); });
   $('pal-hlsync').addEventListener('change', e => { st.hlsync = e.target.checked ? 1 : 0; apply(); });
   $('pal-tile').addEventListener('change', e => { st.tile = e.target.value; apply(); });
+  Object.keys(FONTS).forEach(k => { const o = document.createElement('option'); o.value = k; o.textContent = FONTS[k].n; $('pal-font').appendChild(o); });
+  $('pal-font').addEventListener('change', e => { st.font = e.target.value; apply(); });
+  $('pal-fw').addEventListener('change', e => { st.fw = parseInt(e.target.value, 10) || 0; apply(); });
   $('pal-soft').addEventListener('input', e => { st.soft = parseInt(e.target.value, 10); apply(); });
   $('pal-grad').addEventListener('change', e => { st.grad = e.target.checked ? 1 : 0; apply(); });
   $('pal-reset').onclick = () => { st = Object.assign({}, DEF, { o: Object.assign({}, FINE_DEF), p: {} }); apply(); };
