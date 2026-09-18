@@ -2486,7 +2486,7 @@ input[type=number], input[type=text], textarea, select {
 
        <!-- ▼▼ 追加：レポート出力ボタン ▼▼ -->
           <div style="text-align: center; margin-top: 15px; margin-bottom: 10px;">
-              <button style="background:var(--p-ink); color:var(--p-acc); font-weight:800; width: 100%; max-width: 400px; font-size: 14px; padding: 10px; border-radius: 6px; border:1px solid var(--p-ink); box-shadow: none; cursor:pointer;" onclick="openFinalReport()">最終見解レポートを出力</button>
+              <button style="background:var(--p-ink); color:var(--p-acc); font-weight:800; width: 100%; max-width: 400px; font-size: 14px; padding: 10px; border-radius: 6px; border:1px solid var(--p-ink); box-shadow: none; cursor:pointer;" id="btn-final-report" onclick="openFinalReport()">最終見解レポートを出力</button>
           </div>
           <!-- ▲▲ ここまで ▲▲ -->
 
@@ -11038,6 +11038,16 @@ html.pal-grad #mk-topbar, html.pal-grad #site-title{ background:linear-gradient(
 #pal .act button{ flex:1; border:1px solid #1a1a1a; background:#1a1a1a; color:#fff; border-radius:8px; padding:8px; font-weight:700; cursor:pointer; }
 #pal .act button.sub{ background:#fff; color:#1a1a1a; }
 #pal .code{ font-family:monospace; font-size:10px; color:#666; word-break:break-all; margin-top:6px; }
+#pal details.grp{ border:1px solid #eee; border-radius:8px; padding:4px 8px; margin:4px 0; }
+#pal details.grp summary{ cursor:pointer; font-weight:700; font-size:11px; padding:3px 0; }
+#pal .frow{ display:flex; align-items:center; gap:6px; padding:3px 0; border-top:1px dashed #f0f0f0; }
+#pal .frow .fl{ flex:1; font-size:11px; }
+#pal .fp{ display:flex; align-items:center; gap:2px; }
+#pal .fp small{ font-size:9px; color:#888; }
+#pal .fp input[type=color]{ width:28px; height:22px; opacity:.45; }
+#pal .fp.is-set input[type=color]{ opacity:1; box-shadow:0 0 0 2px #1a1a1a; }
+#pal .fp button{ border:1px solid #ccc; background:#fff; border-radius:4px; font-size:9px; padding:1px 4px; cursor:pointer; }
+#pal .fp:not(.is-set) button{ visibility:hidden; }
 </style>
 <div id="pal">
   <div class="pal-body">
@@ -11052,6 +11062,9 @@ html.pal-grad #mk-topbar, html.pal-grad #site-title{ background:linear-gradient(
     <div class="row"><label>ハイライト<small>押した所・順位の帯・選択中の光り</small></label><input type="checkbox" id="pal-hlsync" checked title="アクセントに連動"><input type="color" id="pal-hl"></div>
     <div class="row"><label>レース目次の地色<small>未選択タイル</small></label><select id="pal-tile"><option value="neutral">無彩色（背景なじみ）</option><option value="white">白</option><option value="hl">ハイライトの淡色</option></select></div>
     <div class="row"><label>グラデーション<small>ヘッダーとロゴ面</small></label><input type="checkbox" id="pal-grad"><input type="color" id="pal-g2"></div>
+    <h4>部品ごとの上書き<small style="display:block;font-weight:400;letter-spacing:0;">テーマから外して個別に決める。「戻」でテーマ追従に戻る</small></h4>
+    <div id="pal-fine"></div>
+    <div class="act" style="margin-top:6px;"><button class="sub" id="pal-clear-fine">部品の上書きを全部消す</button></div>
     <div class="act"><button id="pal-copy">この配色のURLをコピー</button><button class="sub" id="pal-reset">現行に戻す</button></div>
     <div class="code" id="pal-code"></div>
   </div>
@@ -11077,7 +11090,101 @@ html.pal-grad #mk-topbar, html.pal-grad #site-title{ background:linear-gradient(
     { n:'深緑×オレンジ', ink:'#1d3b2f', acc:'#ff9a3c', bg:'#edf1ee', sub:'#c8d8cc', soft:10, grad:0, g2:'#2f5c48' },
     { n:'黒×金', ink:'#1a1a1a', acc:'#e3b94a', bg:'#eceae3', sub:'#d8ccae', soft:10, grad:0, g2:'#444' },
   ];
-  let st = Object.assign({}, DEF);
+  // 部品の仕様： key, 表示名, 属性[{k:'bg'|'fg'|'bd'|'mk', sel, css}]
+  const FINE = [
+    { g:'ロゴ・ヘッダー', items:[
+      { key:'logo', n:'ロゴ文字（K-buddy）', p:[{k:'fg', sel:'#site-title > div:first-child', css:'color'}] },
+      { key:'logobg', n:'ロゴ面', p:[{k:'bg', sel:'#site-title', css:'background'}] },
+      { key:'tagline', n:'タグライン', p:[{k:'fg', sel:'#site-title > div:nth-child(2)', css:'color'}] },
+      { key:'topbar', n:'上部バー', p:[{k:'bg', sel:'#mk-topbar', css:'background'}] },
+      { key:'menubtn', n:'メニューボタン', p:[{k:'bd', sel:'#mk-menu-btn', css:'border-color'}, {k:'bg', sel:'#mk-menu-btn span', css:'background'}] },
+      { key:'menuact', n:'メニュー選択中', p:[{k:'bg', sel:'.mk-menu-item.active', css:'background'}, {k:'fg', sel:'.mk-menu-item.active, .mk-menu-item.active .ar', css:'color'}] },
+    ]},
+    { g:'見出し', items:[
+      { key:'h2mk', n:'見出しのマーカー', p:[{k:'mk', sel:'.mk-mk, .mk-mark', css:'background'}] },
+      { key:'subline', n:'小見出しの横線', p:[{k:'bg', sel:'.sub-head::before', css:'background'}] },
+      { key:'daybtn', n:'「日付を変える」', p:[{k:'bg', sel:'#mk-daybar button', css:'background'}, {k:'fg', sel:'#mk-daybar button', css:'color'}] },
+    ]},
+    { g:'レース目次', items:[
+      { key:'tile', n:'タイル（未選択）', p:[{k:'bg', sel:'.nav-race-btn', css:'background'}, {k:'fg', sel:'.nav-race-btn', css:'color'}, {k:'bd', sel:'.nav-race-btn', css:'border-color'}] },
+      { key:'tileon', n:'タイル（選択中）', p:[{k:'bg', sel:'.nav-race-btn.active', css:'background'}, {k:'fg', sel:'.nav-race-btn.active .r-num', css:'color'}, {k:'bd', sel:'.nav-race-btn.active', css:'border-color'}] },
+      { key:'tileont', n:'選択中の時刻', p:[{k:'fg', sel:'.nav-race-btn.active .r-time', css:'color'}] },
+    ]},
+    { g:'ボタン', items:[
+      { key:'pill', n:'丸ボタン（100%・勝率で など）', p:[{k:'bg', sel:'.pill-btn', css:'background'}, {k:'fg', sel:'.pill-btn', css:'color'}, {k:'bd', sel:'.pill-btn', css:'border-color'}] },
+      { key:'pillacc', n:'確定ボタン', p:[{k:'bg', sel:'.pill-accent', css:'background'}, {k:'fg', sel:'.pill-accent', css:'color'}] },
+      { key:'primary', n:'黒ボタン（主要）', p:[{k:'bg', sel:'.btn-primary', css:'background'}, {k:'fg', sel:'.btn-primary', css:'color'}] },
+      { key:'success', n:'黒ボタン（実行系）', p:[{k:'bg', sel:'.btn-success', css:'background'}, {k:'fg', sel:'.btn-success', css:'color'}] },
+      { key:'danger', n:'取消ボタン', p:[{k:'bg', sel:'.btn-danger', css:'background'}, {k:'fg', sel:'.btn-danger', css:'color'}] },
+      { key:'repbtn', n:'レポート出力ボタン', p:[{k:'bg', sel:'#btn-final-report', css:'background'}, {k:'fg', sel:'#btn-final-report', css:'color'}, {k:'bd', sel:'#btn-final-report', css:'border-color'}] },
+      { key:'accbtn', n:'開く／閉じる', p:[{k:'bg', sel:'.acc-btn', css:'background'}, {k:'fg', sel:'.acc-btn', css:'color'}, {k:'bd', sel:'.acc-btn', css:'border-color'}] },
+      { key:'zoom', n:'拡大縮小', p:[{k:'bg', sel:'.zoom-btn', css:'background'}, {k:'fg', sel:'.zoom-btn', css:'color'}] },
+      { key:'rq', n:'レース質（選択中）', p:[{k:'bg', sel:'.race-quality-tab.is-active', css:'background'}, {k:'fg', sel:'.race-quality-tab.is-active', css:'color'}] },
+      { key:'baba', n:'馬場状態（選択中）', p:[{k:'bg', sel:'.baba-btn.active', css:'background'}, {k:'fg', sel:'.baba-btn.active', css:'color'}] },
+    ]},
+    { g:'バッジ・印', items:[
+      { key:'evhot', n:'EVバッジ（期待値1以上）', p:[{k:'bg', sel:'.ev-val.ev-hot', css:'background'}, {k:'fg', sel:'.ev-val.ev-hot', css:'color'}] },
+      { key:'markon', n:'印（選択中）', p:[{k:'bg', sel:'.mark-pick.on', css:'background'}, {k:'fg', sel:'.mark-pick.on', css:'color'}] },
+      { key:'honmei', n:'印（本命）', p:[{k:'bg', sel:'.mark-pick.honmei', css:'background'}, {k:'fg', sel:'.mark-pick.honmei', css:'color'}] },
+      { key:'fbt1', n:'ファクター強', p:[{k:'bg', sel:'.fb-t1', css:'background'}, {k:'fg', sel:'.fb-t1', css:'color'}] },
+      { key:'fbt2', n:'ファクター中', p:[{k:'bg', sel:'.fb-t2', css:'background'}, {k:'fg', sel:'.fb-t2', css:'color'}] },
+      { key:'fbcourse', n:'コース適性', p:[{k:'bg', sel:'.fb-course', css:'background'}, {k:'fg', sel:'.fb-course', css:'color'}] },
+    ]},
+    { g:'グラフ・帯', items:[
+      { key:'tri1', n:'勝率の線', p:[{k:'bg', sel:'.tri-1', css:'background'}] },
+      { key:'tri2', n:'連対率の線', p:[{k:'bg', sel:'.tri-2', css:'background'}] },
+      { key:'tri3', n:'複勝率の線', p:[{k:'bg', sel:'.tri-3', css:'background'}] },
+      { key:'rg1', n:'レポート棒 勝率', p:[{k:'bg', sel:'.rg-b1', css:'background'}] },
+      { key:'rg2', n:'レポート棒 連対率', p:[{k:'bg', sel:'.rg-b2', css:'background'}] },
+      { key:'rg3', n:'レポート棒 複勝率', p:[{k:'bg', sel:'.rg-b3', css:'background'}] },
+      { key:'rsev', n:'合成期待値タイル', p:[{k:'bg', sel:'.rs-ev', css:'background'}, {k:'fg', sel:'.rs-ev .rs-v', css:'color'}] },
+      { key:'band1', n:'順位帯 1位', p:[{k:'bg', sel:'.pr-band.r1, .pr-ag.ag1', css:'background'}] },
+      { key:'band2', n:'順位帯 2位', p:[{k:'bg', sel:'.pr-band.r2, .pr-ag.ag2', css:'background'}] },
+      { key:'band3', n:'順位帯 3位', p:[{k:'bg', sel:'.pr-band.r3, .pr-ag.ag3', css:'background'}] },
+    ]},
+    { g:'表', items:[
+      { key:'th', n:'表の見出し行', p:[{k:'bg', sel:'.data-table th', css:'background'}, {k:'fg', sel:'.data-table th', css:'color'}] },
+      { key:'sticky', n:'固定セル（馬名）', p:[{k:'bg', sel:'.hm-cell', css:'background'}] },
+    ]},
+  ];
+  const FINE_DEF = { 'logo.fg':'#ffffff', 'repbtn.fg':'#ffffff' };
+  let st = Object.assign({}, DEF, { o: Object.assign({}, FINE_DEF) });
+  function applyFine(){
+    let css = '';
+    FINE.forEach(g => g.items.forEach(it => it.p.forEach(pp => {
+      const v = st.o[it.key + '.' + pp.k]; if(!v) return;
+      const val = pp.k === 'mk' ? 'linear-gradient(transparent 55%, ' + v + ' 55%)' : v;
+      css += pp.sel + '{' + pp.css + ':' + val + ' !important;}\n';
+    })));
+    let el = $('pal-ovr'); if(!el){ el = document.createElement('style'); el.id = 'pal-ovr'; document.head.appendChild(el); }
+    el.textContent = css;
+    // パネルの表示
+    FINE.forEach(g => g.items.forEach(it => it.p.forEach(pp => {
+      const id = 'pf-' + it.key + '-' + pp.k; const inp = $(id); if(!inp) return;
+      const v = st.o[it.key + '.' + pp.k];
+      inp.parentNode.classList.toggle('is-set', !!v);
+      if(v){ inp.value = v; }
+      else { try{ const node = document.querySelector(pp.sel.split(',')[0].replace('::before','')); if(node){ const c = getComputedStyle(node)[pp.css === 'background' ? 'backgroundColor' : pp.css === 'color' ? 'color' : 'borderTopColor']; const m = c.match(/\d+/g); if(m && m.length >= 3) inp.value = toHex(m.slice(0,3).map(Number)); } }catch(e){} }
+    })));
+  }
+  function buildFine(){
+    const root = $('pal-fine'); root.innerHTML = '';
+    FINE.forEach(g => {
+      const d = document.createElement('details'); d.className = 'grp'; d.innerHTML = '<summary>' + g.g + '</summary>';
+      g.items.forEach(it => {
+        const row = document.createElement('div'); row.className = 'frow';
+        row.innerHTML = '<div class="fl">' + it.n + '</div>' + it.p.map(pp => '<span class="fp"><small>' + ({bg:'地',fg:'字',bd:'枠',mk:'色'})[pp.k] + '</small><input type="color" id="pf-' + it.key + '-' + pp.k + '"><button type="button" data-k="' + it.key + '.' + pp.k + '">戻</button></span>').join('');
+        d.appendChild(row);
+        it.p.forEach(pp => {
+          const inp = row.querySelector('#pf-' + it.key + '-' + pp.k);
+          inp.addEventListener('input', e => { st.o[it.key + '.' + pp.k] = e.target.value; apply(); });
+          row.querySelector('button[data-k="' + it.key + '.' + pp.k + '"]').onclick = () => { delete st.o[it.key + '.' + pp.k]; apply(); };
+        });
+      });
+      root.appendChild(d);
+    });
+    $('pal-clear-fine').onclick = () => { st.o = {}; apply(); };
+  }
   function apply(){
     const r = document.documentElement.style;
     const ink = st.ink, bg = st.bg, sub = st.sub;
@@ -11102,28 +11209,34 @@ html.pal-grad #mk-topbar, html.pal-grad #site-title{ background:linear-gradient(
     $('pal-ink').value = st.ink; $('pal-acc').value = st.acc; $('pal-bg').value = st.bg; $('pal-sub').value = st.sub;
     $('pal-soft').value = st.soft; $('pal-grad').checked = !!st.grad; $('pal-g2').value = st.g2;
     $('pal-hl').value = st.hl; $('pal-hlsync').checked = !!st.hlsync; $('pal-hl').disabled = !!st.hlsync; $('pal-tile').value = st.tile;
-    const h = 'ink=' + st.ink.slice(1) + '&acc=' + st.acc.slice(1) + '&bg=' + st.bg.slice(1) + '&sub=' + st.sub.slice(1) + '&soft=' + st.soft + '&grad=' + (st.grad?1:0) + '&g2=' + st.g2.slice(1) + '&hl=' + st.hl.slice(1) + '&hlsync=' + (st.hlsync?1:0) + '&tile=' + st.tile;
+    applyFine();
+    const oh = Object.keys(st.o).map(k => k + ':' + String(st.o[k]).slice(1)).join(',');
+    const h = 'ink=' + st.ink.slice(1) + '&acc=' + st.acc.slice(1) + '&bg=' + st.bg.slice(1) + '&sub=' + st.sub.slice(1) + '&soft=' + st.soft + '&grad=' + (st.grad?1:0) + '&g2=' + st.g2.slice(1) + '&hl=' + st.hl.slice(1) + '&hlsync=' + (st.hlsync?1:0) + '&tile=' + st.tile + '&o=' + oh;
     try { history.replaceState(null, '', '#' + h); } catch(e) {}
     $('pal-code').textContent = h;
   }
   function fromHash(){
     const h = location.hash.replace('#','');
     if(!h || h.indexOf('ink=') < 0) return;
-    h.split('&').forEach(kv => { const [k, val] = kv.split('='); if(!(k in st)) return;
+    h.split('&').forEach(kv => { const [k, val] = kv.split('=');
+      if(k === 'o'){ st.o = {}; (val || '').split(',').filter(Boolean).forEach(e => { const [kk, vv] = e.split(':'); if(kk && vv) st.o[kk] = '#' + vv; }); return; }
+      if(!(k in st)) return;
       if(k === 'soft' || k === 'grad' || k === 'hlsync') st[k] = parseInt(val, 10) || 0; else if(k === 'tile') st[k] = val; else st[k] = '#' + val; });
   }
   PRESETS.forEach(p => { const b = document.createElement('button'); b.innerHTML = '<i style="background:' + p.ink + '"></i><i style="background:' + p.acc + '"></i>' + p.n;
-    b.onclick = () => { st = Object.assign({}, DEF, p); delete st.n; st.hlsync = 1; apply(); }; $('pal-pre').appendChild(b); });
+    b.onclick = () => { const o = st.o; st = Object.assign({}, DEF, p); delete st.n; st.hlsync = 1; st.o = o; apply(); }; $('pal-pre').appendChild(b); });
   ['ink','acc','bg','sub','g2'].forEach(k => $('pal-' + k).addEventListener('input', e => { st[k] = e.target.value; apply(); }));
   $('pal-hl').addEventListener('input', e => { st.hl = e.target.value; st.hlsync = 0; apply(); });
   $('pal-hlsync').addEventListener('change', e => { st.hlsync = e.target.checked ? 1 : 0; apply(); });
   $('pal-tile').addEventListener('change', e => { st.tile = e.target.value; apply(); });
   $('pal-soft').addEventListener('input', e => { st.soft = parseInt(e.target.value, 10); apply(); });
   $('pal-grad').addEventListener('change', e => { st.grad = e.target.checked ? 1 : 0; apply(); });
-  $('pal-reset').onclick = () => { st = Object.assign({}, DEF); apply(); };
+  $('pal-reset').onclick = () => { st = Object.assign({}, DEF, { o: Object.assign({}, FINE_DEF) }); apply(); };
   $('pal-copy').onclick = () => { const u = location.href; (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(() => { $('pal-copy').textContent = 'コピーしました'; setTimeout(() => $('pal-copy').textContent = 'この配色のURLをコピー', 1500); }).catch(() => { prompt('このURLをコピーしてください', u); }); };
   $('pal-tab').onclick = () => $('pal').classList.toggle('open');
-  fromHash(); apply();
+  buildFine(); fromHash(); apply();
+  // レース画面が描画された後にも部品の現在色を読み直す
+  document.addEventListener('click', () => setTimeout(applyFine, 400), true);
 })();
 </script>
 </body>
