@@ -11048,6 +11048,23 @@ html.pal-grad #mk-topbar, html.pal-grad #site-title{ background:linear-gradient(
 #pal .fp.is-set input[type=color]{ opacity:1; box-shadow:0 0 0 2px #1a1a1a; }
 #pal .fp button{ border:1px solid #ccc; background:#fff; border-radius:4px; font-size:9px; padding:1px 4px; cursor:pointer; }
 #pal .fp:not(.is-set) button{ visibility:hidden; }
+#pal .tabs{ display:flex; gap:6px; justify-content:flex-end; }
+#pal .pal-tab.pick{ background:#fff; color:#1a1a1a; border:2px solid #1a1a1a; }
+html.pal-picking, html.pal-picking *{ cursor:crosshair !important; }
+.pal-hover{ outline:2px dashed #1a1a1a !important; outline-offset:1px; }
+.pal-picked{ outline:3px solid #ff3b3b !important; outline-offset:1px; }
+#pick{ position:fixed; left:10px; right:10px; bottom:10px; z-index:2147483001; background:#fff; border:2px solid #1a1a1a; border-radius:14px; padding:10px 12px; box-shadow:0 8px 28px rgba(0,0,0,.25); font-family:"BIZ UDPGothic",sans-serif; font-size:12px; color:#1a1a1a; display:none; max-width:480px; margin:0 auto; }
+#pick.on{ display:block; }
+#pick .pk-hd{ display:flex; align-items:center; gap:6px; margin-bottom:6px; }
+#pick .pk-desc{ flex:1; font-family:monospace; font-size:10px; color:#555; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#pick .pk-hd button, #pick .pk-ft button{ border:1px solid #1a1a1a; background:#fff; border-radius:999px; padding:4px 9px; font-size:11px; font-weight:700; cursor:pointer; }
+#pick .pk-row{ display:flex; align-items:center; gap:10px; padding:5px 0; border-top:1px solid #eee; }
+#pick .pk-row label{ display:flex; align-items:center; gap:4px; font-weight:700; }
+#pick .pk-row input[type=color]{ width:40px; height:28px; border:1px solid #ccc; border-radius:6px; padding:0; }
+#pick .pk-row .rv{ border:1px solid #ccc; background:#fff; border-radius:4px; font-size:9px; padding:1px 5px; cursor:pointer; }
+#pick .pk-scope{ display:flex; gap:10px; font-size:11px; padding:5px 0; border-top:1px solid #eee; }
+#pick .pk-ft{ display:flex; gap:6px; justify-content:space-between; margin-top:4px; }
+#pick .pk-hint{ font-size:10px; color:#777; margin-top:4px; }
 </style>
 <div id="pal">
   <div class="pal-body">
@@ -11068,7 +11085,17 @@ html.pal-grad #mk-topbar, html.pal-grad #site-title{ background:linear-gradient(
     <div class="act"><button id="pal-copy">この配色のURLをコピー</button><button class="sub" id="pal-reset">現行に戻す</button></div>
     <div class="code" id="pal-code"></div>
   </div>
-  <button class="pal-tab" id="pal-tab"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18c-2 0-2-2-1-3s1-2-1-2-3-1-3-3a9 9 0 0 1 5-10z"/></svg>配色を変える</button>
+  <div class="tabs">
+    <button class="pal-tab pick" id="pick-tab"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l7 16 2-7 7-2z"/></svg>タップして選ぶ</button>
+    <button class="pal-tab" id="pal-tab"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18c-2 0-2-2-1-3s1-2-1-2-3-1-3-3a9 9 0 0 1 5-10z"/></svg>配色を変える</button>
+  </div>
+</div>
+<div id="pick">
+  <div class="pk-hd"><span class="pk-desc" id="pk-desc">要素をタップしてください</span><button id="pk-up">親へ</button><button id="pk-down">子へ</button></div>
+  <div class="pk-row"><label>地<input type="color" id="pk-bg"><button class="rv" data-k="bg">戻</button></label><label>字<input type="color" id="pk-fg"><button class="rv" data-k="fg">戻</button></label><label>枠<input type="color" id="pk-bd"><button class="rv" data-k="bd">戻</button></label></div>
+  <div class="pk-scope"><label><input type="radio" name="pk-scope" value="all" checked>この種類すべて</label><label><input type="radio" name="pk-scope" value="one">この要素だけ</label></div>
+  <div class="pk-ft"><button id="pk-next">別の要素を選ぶ</button><button id="pk-close">選択を終了</button></div>
+  <div class="pk-hint">押しても動作しません（色の確認用）。点線＝いま指している要素、赤枠＝選択中。</div>
 </div>
 <script>
 (function(){
@@ -11148,7 +11175,7 @@ html.pal-grad #mk-topbar, html.pal-grad #site-title{ background:linear-gradient(
     ]},
   ];
   const FINE_DEF = { 'logo.fg':'#ffffff', 'repbtn.fg':'#ffffff' };
-  let st = Object.assign({}, DEF, { o: Object.assign({}, FINE_DEF) });
+  let st = Object.assign({}, DEF, { o: Object.assign({}, FINE_DEF), p: {} });
   function applyFine(){
     let css = '';
     FINE.forEach(g => g.items.forEach(it => it.p.forEach(pp => {
@@ -11183,7 +11210,7 @@ html.pal-grad #mk-topbar, html.pal-grad #site-title{ background:linear-gradient(
       });
       root.appendChild(d);
     });
-    $('pal-clear-fine').onclick = () => { st.o = {}; apply(); };
+    $('pal-clear-fine').onclick = () => { st.o = {}; st.p = {}; apply(); };
   }
   function apply(){
     const r = document.documentElement.style;
@@ -11209,8 +11236,9 @@ html.pal-grad #mk-topbar, html.pal-grad #site-title{ background:linear-gradient(
     $('pal-ink').value = st.ink; $('pal-acc').value = st.acc; $('pal-bg').value = st.bg; $('pal-sub').value = st.sub;
     $('pal-soft').value = st.soft; $('pal-grad').checked = !!st.grad; $('pal-g2').value = st.g2;
     $('pal-hl').value = st.hl; $('pal-hlsync').checked = !!st.hlsync; $('pal-hl').disabled = !!st.hlsync; $('pal-tile').value = st.tile;
-    applyFine();
-    const oh = Object.keys(st.o).map(k => k + ':' + String(st.o[k]).slice(1)).join(',');
+    applyFine(); applyPick();
+    const ph = Object.keys(st.p).map(sel => encodeURIComponent(sel) + '~' + ['bg','fg','bd'].filter(k => st.p[sel][k]).map(k => k + ':' + st.p[sel][k].slice(1)).join('|')).join(',');
+    const oh = Object.keys(st.o).map(k => k + ':' + String(st.o[k]).slice(1)).join(',') + '&p=' + ph;
     const h = 'ink=' + st.ink.slice(1) + '&acc=' + st.acc.slice(1) + '&bg=' + st.bg.slice(1) + '&sub=' + st.sub.slice(1) + '&soft=' + st.soft + '&grad=' + (st.grad?1:0) + '&g2=' + st.g2.slice(1) + '&hl=' + st.hl.slice(1) + '&hlsync=' + (st.hlsync?1:0) + '&tile=' + st.tile + '&o=' + oh;
     try { history.replaceState(null, '', '#' + h); } catch(e) {}
     $('pal-code').textContent = h;
@@ -11220,20 +11248,82 @@ html.pal-grad #mk-topbar, html.pal-grad #site-title{ background:linear-gradient(
     if(!h || h.indexOf('ink=') < 0) return;
     h.split('&').forEach(kv => { const [k, val] = kv.split('=');
       if(k === 'o'){ st.o = {}; (val || '').split(',').filter(Boolean).forEach(e => { const [kk, vv] = e.split(':'); if(kk && vv) st.o[kk] = '#' + vv; }); return; }
+      if(k === 'p'){ st.p = {}; (val || '').split(',').filter(Boolean).forEach(e => { const [se, rest] = e.split('~'); const sel = decodeURIComponent(se); const o = {}; (rest || '').split('|').filter(Boolean).forEach(x => { const [kk, vv] = x.split(':'); if(kk && vv) o[kk] = '#' + vv; }); if(Object.keys(o).length) st.p[sel] = o; }); return; }
       if(!(k in st)) return;
       if(k === 'soft' || k === 'grad' || k === 'hlsync') st[k] = parseInt(val, 10) || 0; else if(k === 'tile') st[k] = val; else st[k] = '#' + val; });
   }
   PRESETS.forEach(p => { const b = document.createElement('button'); b.innerHTML = '<i style="background:' + p.ink + '"></i><i style="background:' + p.acc + '"></i>' + p.n;
-    b.onclick = () => { const o = st.o; st = Object.assign({}, DEF, p); delete st.n; st.hlsync = 1; st.o = o; apply(); }; $('pal-pre').appendChild(b); });
+    b.onclick = () => { const o = st.o, pp = st.p; st = Object.assign({}, DEF, p); delete st.n; st.hlsync = 1; st.o = o; st.p = pp; apply(); }; $('pal-pre').appendChild(b); });
   ['ink','acc','bg','sub','g2'].forEach(k => $('pal-' + k).addEventListener('input', e => { st[k] = e.target.value; apply(); }));
   $('pal-hl').addEventListener('input', e => { st.hl = e.target.value; st.hlsync = 0; apply(); });
   $('pal-hlsync').addEventListener('change', e => { st.hlsync = e.target.checked ? 1 : 0; apply(); });
   $('pal-tile').addEventListener('change', e => { st.tile = e.target.value; apply(); });
   $('pal-soft').addEventListener('input', e => { st.soft = parseInt(e.target.value, 10); apply(); });
   $('pal-grad').addEventListener('change', e => { st.grad = e.target.checked ? 1 : 0; apply(); });
-  $('pal-reset').onclick = () => { st = Object.assign({}, DEF, { o: Object.assign({}, FINE_DEF) }); apply(); };
+  $('pal-reset').onclick = () => { st = Object.assign({}, DEF, { o: Object.assign({}, FINE_DEF), p: {} }); apply(); };
   $('pal-copy').onclick = () => { const u = location.href; (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(() => { $('pal-copy').textContent = 'コピーしました'; setTimeout(() => $('pal-copy').textContent = 'この配色のURLをコピー', 1500); }).catch(() => { prompt('このURLをコピーしてください', u); }); };
   $('pal-tab').onclick = () => $('pal').classList.toggle('open');
+  /* ===== タップして選ぶ ===== */
+  let picking = false, picked = null, hoverEl = null, uid = 0;
+  const PK = { on: () => $('pick').classList.add('on'), off: () => $('pick').classList.remove('on') };
+  const SKIP = 'html,body,script,style';
+  function descOf(el){ let d = el.tagName.toLowerCase(); if(el.id) d += '#' + el.id; const c = [...el.classList].filter(x => !/^pal-/.test(x)); if(c.length) d += '.' + c.join('.'); const t = (el.innerText || '').trim().replace(/\s+/g,' ').slice(0, 14); return d + (t ? '  「' + t + '」' : ''); }
+  function selOf(el, one){
+    if(one){ if(!el.dataset.palId){ el.dataset.palId = 'p' + (++uid); } return '[data-pal-id="' + el.dataset.palId + '"]'; }
+    if(el.id) return '#' + CSS.escape(el.id);
+    const c = [...el.classList].filter(x => !/^pal-/.test(x));
+    if(c.length) return el.tagName.toLowerCase() + '.' + c.map(x => CSS.escape(x)).join('.');
+    // クラスが無い：一番近い id か クラス付きの親からの相対
+    let cur = el, path = [];
+    while(cur && cur !== document.body){
+      const cc = [...cur.classList].filter(x => !/^pal-/.test(x));
+      if(cur.id){ path.unshift('#' + CSS.escape(cur.id)); break; }
+      if(cc.length && cur !== el){ path.unshift(cur.tagName.toLowerCase() + '.' + cc.map(x => CSS.escape(x)).join('.')); break; }
+      const par = cur.parentElement; const idx = par ? [...par.children].filter(x => x.tagName === cur.tagName).indexOf(cur) + 1 : 1;
+      path.unshift(cur.tagName.toLowerCase() + ':nth-of-type(' + idx + ')');
+      cur = par;
+    }
+    return path.join(' > ');
+  }
+  function pickTarget(t){ if(!t || t.closest('#pal, #pick')) return null; let el = t.closest('button, a, td, th, li, label, input, select, textarea, span, div, section, p, h1, h2, h3, h4, i, b, strong, em, small, svg') || t; if(el.tagName === 'svg' || el.closest('svg')) el = el.closest('svg').parentElement || el; if(el.matches(SKIP)) return null; return el; }
+  function setPicked(el){
+    if(picked) picked.classList.remove('pal-picked');
+    picked = el; if(!picked){ $('pk-desc').textContent = '要素をタップしてください'; return; }
+    picked.classList.add('pal-picked');
+    $('pk-desc').textContent = descOf(picked);
+    refreshPick();
+  }
+  function scope(){ return document.querySelector('input[name="pk-scope"]:checked').value; }
+  function curSel(){ return picked ? selOf(picked, scope() === 'one') : null; }
+  function refreshPick(){
+    if(!picked) return; const sel = curSel(); const o = st.p[sel] || {}; const cs = getComputedStyle(picked);
+    const toH = c => { const m = String(c).match(/\d+/g); return (m && m.length >= 3 && !(m.length === 4 && m[3] === '0')) ? toHex(m.slice(0,3).map(Number)) : ''; };
+    [['bg','backgroundColor'],['fg','color'],['bd','borderTopColor']].forEach(([k, cp]) => { const inp = $('pk-' + k); const v = o[k] || toH(cs[cp]); if(v) inp.value = v; inp.parentNode.style.opacity = o[k] ? 1 : .6; });
+  }
+  function applyPick(){
+    let css = '';
+    Object.keys(st.p).forEach(sel => { const o = st.p[sel]; ['bg','fg','bd'].forEach(k => { if(o[k]) css += sel + '{' + ({bg:'background',fg:'color',bd:'border-color'})[k] + ':' + o[k] + ' !important;}\n'; }); });
+    let el = $('pal-pick-style'); if(!el){ el = document.createElement('style'); el.id = 'pal-pick-style'; document.head.appendChild(el); }
+    el.textContent = css;
+  }
+  function onMove(e){ if(!picking) return; const el = pickTarget(e.target); if(hoverEl && hoverEl !== el) hoverEl.classList.remove('pal-hover'); hoverEl = el; if(el && el !== picked) el.classList.add('pal-hover'); }
+  function onClick(e){ if(!picking) return; if(e.target.closest('#pal, #pick')) return; e.preventDefault(); e.stopPropagation(); const el = pickTarget(e.target); if(!el) return; if(hoverEl) hoverEl.classList.remove('pal-hover'); setPicked(el); PK.on(); }
+  function startPick(){ picking = true; document.documentElement.classList.add('pal-picking'); $('pal').classList.remove('open'); PK.on(); setPicked(null); }
+  function stopPick(){ picking = false; document.documentElement.classList.remove('pal-picking'); if(hoverEl) hoverEl.classList.remove('pal-hover'); setPicked(null); PK.off(); }
+  document.addEventListener('mousemove', onMove, true);
+  document.addEventListener('click', onClick, true);
+  document.addEventListener('touchstart', e => { if(picking && !e.target.closest('#pal, #pick')) { const el = pickTarget(e.target); if(el){ e.preventDefault(); setPicked(el); PK.on(); } } }, { capture:true, passive:false });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && picking) stopPick(); });
+  $('pick-tab').onclick = () => picking ? stopPick() : startPick();
+  $('pk-close').onclick = stopPick;
+  $('pk-next').onclick = () => { setPicked(null); };
+  $('pk-up').onclick = () => { if(picked && picked.parentElement && picked.parentElement !== document.body) setPicked(picked.parentElement); };
+  $('pk-down').onclick = () => { if(picked && picked.firstElementChild) setPicked(picked.firstElementChild); };
+  document.querySelectorAll('input[name="pk-scope"]').forEach(r => r.addEventListener('change', refreshPick));
+  ['bg','fg','bd'].forEach(k => {
+    $('pk-' + k).addEventListener('input', e => { if(!picked) return; const sel = curSel(); st.p[sel] = st.p[sel] || {}; st.p[sel][k] = e.target.value; apply(); refreshPick(); });
+  });
+  document.querySelectorAll('#pick .rv').forEach(b => b.onclick = () => { if(!picked) return; const sel = curSel(); if(st.p[sel]){ delete st.p[sel][b.dataset.k]; if(!Object.keys(st.p[sel]).length) delete st.p[sel]; } apply(); refreshPick(); });
   buildFine(); fromHash(); apply();
   // レース画面が描画された後にも部品の現在色を読み直す
   document.addEventListener('click', () => setTimeout(applyFine, 400), true);
