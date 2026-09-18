@@ -1736,6 +1736,9 @@ button.active{color:#ffffff !important;}
 .stat-card .horse-row .val-col-inner span{ margin:0 1px 0 0 !important; }
 /* データ部屋は使わない */
 #page-data, .mk-menu-item[data-page="data"]{ display:none !important; }
+/* 赤（アクセント）の上の文字も白 */
+.rep-back, .rep-foot .rep-back, .rep-header-btn.rep-back, .mark-pick.honmei, .data-table .mark-pick.honmei, .horse-row .mark-pick.honmei, .fb-t1{ color:#ffffff !important; }
+.rep-back .mk-ic{ stroke:#ffffff; }
 /* 期待値1以上は淡いハイライト（地は薄い赤、文字はメイン色、細い枠） */
 .ev-val.ev-hot, .ev-badge .ev-val.ev-hot{ background:var(--p-acc3) !important; border-color:var(--p-acc2) !important; color:var(--p-ink) !important; font-weight:900 !important; }
 /* ラベルは途中で折らない。日付バーと小見出しは要素ごとに改行 */
@@ -6201,7 +6204,7 @@ window.drawOaChartModal = function() {
             ? 'box-shadow:0 0 0 2px var(--p-ink),0 0 0 4px var(--mk-lime),0 0 10px 2px rgba(var(--p-acc-rgb), .9),0 0 18px 4px rgba(var(--p-acc-rgb), .5);'
             : 'box-shadow:0 2px 4px rgba(0,0,0,0.3);';
           const favTag = isFav
-            ? `<span style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--mk-lime);color:var(--p-ink);font-size:7.5px;font-weight:900;line-height:1;padding:2px 5px;border-radius:6px;letter-spacing:.04em;white-space:nowrap;box-shadow:0 0 6px rgba(var(--p-acc-rgb), .8),0 1px 2px rgba(0,0,0,.3);z-index:5;">有利</span>`
+            ? `<span style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--mk-lime);color:#fff;font-size:7.5px;font-weight:900;line-height:1;padding:2px 5px;border-radius:6px;letter-spacing:.04em;white-space:nowrap;box-shadow:0 0 6px rgba(var(--p-acc-rgb), .8),0 1px 2px rgba(0,0,0,.3);z-index:5;">有利</span>`
             : '';
           const phF1 = pixelHorseSvg(h.waku, 0), phF2 = pixelHorseSvg(h.waku, 1);
           const favWrap = isFav ? `border-radius:6px;${favGlow}` : '';
