@@ -1693,6 +1693,18 @@ input[type=number], input[type=text], textarea, select {
 #bb-moist-v{color:#ffffff !important;}
 button.active{color:#ffffff !important;}
 #ai-lock-overlay{background:#f0f4ff !important;}
+/* 青（メイン色）の上の文字は白 */
+.mk-menu-item.active, .mk-menu-item.active .ar, .mark-pick.on, .horse-row .mark-pick.on, .mk-day .d .dow, .seg button.active,
+.fb-t2, .fx-apply, .zoom-fit, .rep-mode, .hd-tab.active, .mk-guide ol.steps li::before, .mk-guide .kw.dark,
+.pill-accent, .pill-accent:hover, .ai-mic-chat-btn.recording, .nav-race-btn.active, .nav-race-btn.active .r-num, .nav-race-btn.active .r-time,
+.rs-ev .rs-v, .rs-ev .rs-k, #mk-daybar button, .metric-card.dark .metric-val, .metric-card.dark .metric-lbl, .race-quality-tab.is-active,
+.btn-primary, .btn-success, .baba-btn.active, .ai-msg.user, .fb-deki, #mk-topbar .mk-brand, #site-title > div:nth-child(2){ color:#ffffff !important; }
+#site-title > div:nth-child(2), .rs-ev .rs-k, .metric-card.dark .metric-lbl{ opacity:.85; }
+/* 改行：バッジは折らない。説明文は短い最終行を避ける（対応ブラウザのみ） */
+.ai-lock-badge, .rep-mode, .fb, .pb-badge{ white-space:nowrap !important; }
+.mk-guide p, .mk-guide td, .hm-note, .ai-lock-desc, .mk-day-empty, .note, .sub-note{ text-wrap:pretty; }
+/* 見出しのマーカーは薄い蛍光ピンク */
+.mk-mk, .mk-mark, .mk-placeholder h2 .mk-mk, .mk-room-hd h2 .mk-mk{ background:linear-gradient(transparent 55%, #ffb0ab 55%) !important; }
 </style>
 </head>
 <body>
@@ -1716,7 +1728,7 @@ button.active{color:#ffffff !important;}
     <div class="mk-room-hd">
       <span class="ph-eyebrow">SELECT DATE</span>
       <h2><span class="mk-mk">レース</span></h2>
-      <p>開催日を選ぶと、その日の出馬表と、あなたが付けた印・メモが開きます。</p>
+      <p>開催日を選ぶと、その日の出馬表と、<br>あなたが付けた印・メモが開きます。</p>
     </div>
     <section class="mk-sec" id="dates-current">
       <h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>今週の開催</h3>
@@ -1788,8 +1800,8 @@ button.active{color:#ffffff !important;}
       <table class="mk-legend">
         <tr><th>脚質バッジ</th><td><span class="st nige">逃</span> 逃げ　<span class="st senko">先</span> 先行　<span class="st sashi">差</span> 差し　<span class="st oikomi">追</span> 追込。各馬評価の脚質を変えると展開図に即反映されます。</td></tr>
         <tr><th>馬の位置</th><td>横軸が隊列（右が先頭）、縦軸が内外の位置取り。枠番の色で馬を見分けられます。</td></tr>
-        <tr><th>光っている馬</th><td>いまの馬場バイアスと展開設定で「有利」と判定された馬。蛍光色で発光します。</td></tr>
-        <tr><th>ターフの色</th><td>芝は蛍光グリーン、ダートは砂色。馬場が悪化すると芝の色が少しくすみます。</td></tr>
+        <tr><th>光っている馬</th><td>いまの馬場バイアスと展開設定で「有利」と判定された馬。</td></tr>
+        <tr><th>ターフの色</th><td>芝は薄い緑、ダートは薄い茶色。馬場が悪化すると芝の色が少しくすみます。</td></tr>
       </table>
       <ol class="steps">
         <li><b>バイアスを決める</b>◀▶で「内有利 〜 外有利」を動かします。前開催の傾向やJRA馬場情報のメモを参考にしてください。</li>
@@ -1799,7 +1811,7 @@ button.active{color:#ffffff !important;}
       <div class="tip"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="var(--p-ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.7.6 1 1.3 1 2.1h5c0-.8.3-1.5 1-2.1A6 6 0 0 0 12 3z"/></svg></span><div><b>脚質を疑うところから。</b>登録されている脚質は近走ベースです。乗り替わりや距離短縮で位置取りが変わりそうなら、各馬評価で脚質を変えてから展開図を見直すと精度が上がります。</div></div>
     </div></section>
     <section class="mk-sec" id="use-winrate"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6.5h13M3.5 12h9M3.5 17.5h15"/><circle cx="18.5" cy="6.5" r="2.2"/><circle cx="14.5" cy="12" r="2.2"/></svg></span>勝率設定</h3><div class="mk-guide">
-      <p class="lead">勝率は「あなたがその馬を何%で勝つと見るか」です。ここが買い目の期待値の土台になります。</p>
+      <p class="lead">勝率は「あなたがその馬を何%で勝つと見るか」です。買い目の期待値はここが土台です。</p>
       <ol class="steps">
         <li><b>◀▶で動かす</b>勝率グラフの数値の左右にある◀▶で1%ずつ増減します。数値を直接入力しても構いません。バー本体をタップしても変わらないので、スクロール中の誤操作は起きません。</li>
         <li><b>合計を確認する</b>全馬の合計がグラフの下に表示されます。100%前後を目安に整えてください。「絶対に来ない」と思う馬は0%まで下げて構いません。</li>
@@ -1815,7 +1827,7 @@ button.active{color:#ffffff !important;}
       <div class="tip"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="var(--p-ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.7.6 1 1.3 1 2.1h5c0-.8.3-1.5 1-2.1A6 6 0 0 0 12 3z"/></svg></span><div><b>目安：勝率×単勝オッズ。</b>あなたの勝率が20%で単勝が6.0倍なら、20%×6.0＝1.2で期待値プラス。これが1.0を切る馬は、どれだけ強く見えても「買いすぎ」です。</div></div>
     </div></section>
     <section class="mk-sec" id="use-ticket"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 7h19v3.2a1.9 1.9 0 0 0 0 3.6V17h-19v-3.2a1.9 1.9 0 0 0 0-3.6z"/><path d="M9 9.2v1.4M9 13.4v1.4"/><path d="M12.8 12h5"/></svg></span>買い目ビルダー</h3><div class="mk-guide">
-      <p class="lead">買い目ビルダーは、勝率をもとに券種ごとの的中率と期待値（EV）を出し、予算を配分します。</p>
+      <p class="lead">勝率をもとに、券種ごとの的中率と期待値（EV）を出して予算を配分します。</p>
       <ol class="steps">
         <li><b>予算を入れる</b>1レースに使う金額を入力します。右の<span class="kw">オッズ更新</span>で最新オッズを取得します（発走が近いほど正確です）。</li>
         <li><b>券種と軸を選ぶ</b>単勝・複勝・馬連・ワイド・馬単・3連複・3連単から券種を選び、軸馬・相手馬を馬番で指定します。</li>
@@ -1824,9 +1836,9 @@ button.active{color:#ffffff !important;}
         <li><b>最終見解レポート</b>画面下の<span class="kw dark">最終見解レポートを出力</span>で、馬場・展開・勝率・買い目をひとつのレポートにまとめてコピーできます。</li>
       </ol>
       <table class="mk-legend">
-        <tr><th>リセット</th><td>このレースの買い目だけを消します。勝率や印はそのまま残ります。</td></tr>
+        <tr><th>リセット</th><td>このレースの買い目だけを消します。勝率や印は残ります。</td></tr>
         <tr><th>オッズが取れない</th><td>出走前のレースで、発売中のオッズだけ取得できます。前日夜など発売前は「見つかりません」になります。</td></tr>
-        <tr><th>EVが全部1.0未満</th><td>あなたの勝率が市場（オッズ）とほぼ同じ見方だということ。無理に買わず「見送り」も選択肢です。</td></tr>
+        <tr><th>EVが全部1.0未満</th><td>あなたの勝率が市場（オッズ）とほぼ同じ見方だということ。無理に買わず見送るのも手です。</td></tr>
       </table>
       <div class="tip"><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="var(--p-ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.7.6 1 1.3 1 2.1h5c0-.8.3-1.5 1-2.1A6 6 0 0 0 12 3z"/></svg></span><div><b>点数より期待値。</b>EVの高い順に3〜6点に絞るのが基本。的中率を上げるために点数を増やすと、EVの低い買い目が混ざって回収率が下がります。</div></div>
     </div></section>
@@ -2258,7 +2270,7 @@ button.active{color:#ffffff !important;}
       <!-- ▼ AI相談（壁打ち）スロット：課金者のみアクティベート・未課金はグレーアウト ▼ -->
       <div class="ai-talk-slot" id="ai-talk-slot">
         <div class="sub-head ai-talk-head">
-          <span class="ai-talk-dot"></span><span class="sub-head-ttl">AI相談（壁打ち）</span><span id="ai-rally-counter" title="1日に相談できる回数です">本日 0 / 100 回</span>
+          <span class="ai-talk-dot"></span><span class="sub-head-ttl" style="white-space:nowrap;">AI相談</span><span id="ai-rally-counter" title="1日に相談できる回数です">本日 0 / 100 回</span>
           <span class="ai-lock-badge" id="ai-lock-badge"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> 有料機能</span>
         </div>
         <!-- 中身（グレーアウト対象） -->
@@ -2282,7 +2294,7 @@ button.active{color:#ffffff !important;}
           <div class="ai-lock-card">
             <div class="ai-lock-ico"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
             <div class="ai-lock-ttl">AI相談は上位プラン限定</div>
-            <div class="ai-lock-desc" id="ai-lock-desc">出馬表・あなたのメモ・陣営データを踏まえて、AIと壁打ちできます。</div>
+            <div class="ai-lock-desc" id="ai-lock-desc">出馬表・あなたのメモ・陣営データを踏まえて、<br>AIと壁打ちできます。</div>
             <button class="ai-lock-btn" onclick="openAiUnlock()">プランを見る</button>
           </div>
         </div>
@@ -4474,8 +4486,8 @@ function buildNavigation() {
       const desc = document.getElementById('ai-lock-desc');
       if(desc){
         desc.textContent = (MK_PLAN.get() === 'basic')
-          ? '出馬表・あなたのメモ・陣営データを踏まえて、AIと壁打ちできます。上位プランでご利用いただけます。'
-          : '出馬表・あなたのメモ・陣営データを踏まえて、AIと壁打ちできます。';
+          ? '出馬表・あなたのメモ・陣営データを踏まえて、<br>AIと壁打ちできます。<br>上位プランでご利用いただけます。'
+          : '出馬表・あなたのメモ・陣営データを踏まえて、<br>AIと壁打ちできます。';
       }
     }
     /* ===== プラン案内の中身 =====
@@ -6048,12 +6060,12 @@ window.drawOaChartModal = function() {
         const isDirt = race.info && race.info.includes('ダ') && !isStraight;
         const baba = race.baba || '良';
         // 展開図フィールド：芝＝蛍光グリーン / ダート＝薄茶（芝は蛍光、ダートは従来）
-        let baseColor = isDirt ? '#e9dcc6' : '#eef7cf', trackColor = isDirt ? '#c9ab7e' : 'var(--p-acc)';
+        let baseColor = isDirt ? '#efe3d0' : '#e6f4e2', trackColor = isDirt ? '#c9ab7e' : '#a6d497';
         if(!isDirt) {
-          // 芝の馬場悪化＝蛍光を少しくすませる（それでも蛍光寄り）
-          if(baba === '稍') { trackColor = '#c2e63a'; }
-          else if(baba === '重') { trackColor = '#b3d637'; }
-          else if(baba === '不') { trackColor = '#a3c433'; }
+          // 芝の馬場悪化＝緑を少しくすませる
+          if(baba === '稍') { trackColor = '#9cc98e'; }
+          else if(baba === '重') { trackColor = '#8fbb82'; }
+          else if(baba === '不') { trackColor = '#82ab76'; }
         } else {
           if(baba === '稍') { trackColor = '#c2a271'; }
           else if(baba === '重') { trackColor = '#b8975f'; }
@@ -9449,7 +9461,7 @@ function openFinalReport() {
 
         rankHtml += `<tr style="${rowStyle}">
             <td style="font-weight:bold; color:var(--p-mute);">[${i+1}]</td>
-            <td style="font-weight:bold; font-size:15px; ${combColor ? `color:${combColor};` : ''}">${t.comb}</td>
+            <td style="font-weight:bold; font-size:15px; white-space:nowrap; ${combColor ? `color:${combColor};` : ''}">${t.comb}</td>
             <td style="${opc}">${((t.prob||0)*100).toFixed(1)}%</td>
             <td style="font-weight:bold; color:var(--p-ink); ${opc}">${t.odds>0?t.odds.toFixed(1):'-'}</td>
             <td style="font-weight:bold; color:${evColor};">${ev>0?ev.toFixed(2):'-'}</td>
@@ -10861,7 +10873,7 @@ window.closeDetailedData2Modal = function() {
     const ymd = d => '' + d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0');
     const weekStart = ymd(monday);
     const curDays = days.filter(d => d.date >= weekStart).sort((a,b)=> a.date < b.date ? -1 : 1), pastDays = days.filter(d => d.date < weekStart);
-    cur.innerHTML = curDays.length ? curDays.map(card).join('') : '<div class="mk-day-empty">今週の出走馬データはまだありません。</div>';
+    cur.innerHTML = curDays.length ? curDays.map(card).join('') : '<div class="mk-day-empty">今週の出走馬データは<br>まだありません。</div>';
     past.innerHTML = pastDays.length ? pastDays.map(card).join('') : '<div class="mk-day-empty">過去の開催はここに並びます。</div>';
   }
   async function mkOpenDay(date){
