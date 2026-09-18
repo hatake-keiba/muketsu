@@ -970,11 +970,16 @@ input[type=number], input[type=text], textarea, select {
     .mk-day .m span.on{ background:#f5fadf; border-color:var(--p-acc); color:#3d4a10; }
     .mk-day-empty{ border:2px dashed var(--p-line2); border-radius:14px; padding:26px 16px; text-align:center; color:#b0aea6; font-size:13px; background:var(--p-tint2); }
     /* レースページ上部：いま見ている日付 */
-    #mk-daybar{ display:grid; grid-template-columns:auto 1fr auto; grid-template-rows:auto auto; column-gap:8px; row-gap:1px; align-items:center; margin:12px 12px 0; padding:10px 14px; background:#fff; border:2px solid var(--p-line); border-radius:12px; }
-    #mk-daybar .lbl{ grid-column:1; grid-row:1; }
-    #mk-daybar b{ grid-column:2; grid-row:1; }
-    #mk-daybar .v{ grid-column:1 / 3; grid-row:2; }
-    #mk-daybar button{ grid-column:3; grid-row:1 / 3; align-self:center; }
+    #mk-daybar{ display:grid; grid-template-columns:auto auto 1fr auto; column-gap:8px; align-items:center; margin:12px 12px 0; padding:9px 12px; background:#fff; border:2px solid var(--p-line); border-radius:12px; }
+    #mk-daybar .lbl{ grid-column:1; font-size:9px; }
+    #mk-daybar b{ grid-column:2; font-size:15px; }
+    #mk-daybar .v{ grid-column:3; font-size:11.5px; min-width:0; }
+    #mk-daybar button{ grid-column:4; padding:6px 10px; font-size:11.5px; }
+    @media (max-width:359px){
+      #mk-daybar{ grid-template-columns:auto 1fr auto; row-gap:1px; }
+      #mk-daybar .lbl{ grid-column:1; grid-row:1; } #mk-daybar b{ grid-column:2; grid-row:1; }
+      #mk-daybar .v{ grid-column:1 / 3; grid-row:2; } #mk-daybar button{ grid-column:3; grid-row:1 / 3; }
+    }
     #mk-daybar .lbl{ font-size:10px; font-weight:800; letter-spacing:.14em; color:var(--p-mute3); }
     #mk-daybar b{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:16px; color:var(--p-ink); }
     #mk-daybar .v{ font-size:12px; color:var(--p-soft); }
