@@ -1681,6 +1681,19 @@ input[type=number], input[type=text], textarea, select {
   /* AIツールバー（レース分析上部）を緑基調に */
   #race-toolbar{ background:#fff !important; border:1px solid var(--mk-line) !important; border-radius:16px !important; }
 </style>
+<style id="mk-palette">
+/* 配色（tools/apply_palette.py で生成。元URL: https://hatake-keiba.github.io/muketsu/preview_palette.html#... ） */
+:root{--p-ink:#2e4db0; --p-ink2:#5e76c2; --p-soft:#546ebe; --p-soft2:#4b66bb; --p-acc:#e5312b; --p-acc1:#ec6460; --p-acc2:#f3a2a0; --p-acc3:#fadad9; --p-acc4:#fceaea; --p-sub:#c7d2ea; --p-subink:#6b82c7; --p-bar1a:#c7d2ea; --p-bar1b:#d5ddef; --p-bar2a:#e0e6f3; --p-bar2b:#e9edf7; --p-bar3a:#f1f4fa; --p-bar3b:#f7f8fc; --p-bg:#eef1f8; --p-tint:#f6f7fb; --p-tint2:#fcfcfe; --p-tint3:#f9fafd; --p-tint4:#f3f5fa; --p-tint5:#fcfdfe; --p-line:#e8ecf6; --p-line2:#dfe4f2; --p-line3:#e2e7f4; --p-mute:#98a7d8; --p-mute2:#b4c0e2; --p-mute3:#8e9fd4; --p-mute4:#8497d0; --p-tile:#f6f8fc; --p-dirt:#7a90cd; --p-grad2:#4a6fd0; --p-acc-rgb:229,49,43;}
+#site-title > div:first-child{color:#ffffff !important;}
+#btn-final-report{color:#ffffff !important;}
+#mk-menu-btn{border-color:#ffffff !important;}
+#mk-menu-btn > span:nth-of-type(1){background:#ffffff !important;}
+#mk-menu-btn > span:nth-of-type(2){background:#ffffff !important;}
+#mk-menu-btn > span:nth-of-type(3){background:#ffffff !important;}
+#bb-moist-v{color:#ffffff !important;}
+button.active{color:#ffffff !important;}
+#ai-lock-overlay{background:#f0f4ff !important;}
+</style>
 </head>
 <body>
 
@@ -10484,7 +10497,7 @@ window.closeDetailedData2Modal = function() {
     if(seg) seg.querySelectorAll('span').forEach(sp=>{
       const on = sp.dataset.g===going;
       sp.style.background = on ? 'var(--p-ink)' : 'transparent';
-      sp.style.color = on ? 'var(--p-acc)' : 'var(--p-mute)';  // 選択中の馬場＝蛍光文字でハイライト
+      sp.style.color = on ? '#fff' : 'var(--p-mute)';  // 選択中の馬場＝蛍光文字でハイライト
       sp.style.boxShadow = on ? 'inset 0 -3px 0 var(--p-acc)' : 'none';
     });
     // 芝/ダート判定（現在レースのトラック）
@@ -10560,21 +10573,21 @@ window.closeDetailedData2Modal = function() {
       const br=+cv.dataset.br,sp=+cv.dataset.sp,di=+cv.dataset.di,tn=cv.dataset.turn==='1'?1:-1;
       const S=Math.min(W,H),cx=W/2,cy=H/2,th=rad(br),cs=Math.cos(th),sn=Math.sin(th),L=S*0.30,Wd=S*0.135;
       const toS=(lx,ly)=>[cx+lx*cs-ly*sn,cy+lx*sn+ly*cs];
-      g.fillStyle="var(--p-mute)";g.font="bold 10px sans-serif";g.textAlign="center";g.textBaseline="middle";
+      g.fillStyle="#98a7d8";g.font="bold 10px sans-serif";g.textAlign="center";g.textBaseline="middle";
       [["北",0],["東",90],["南",180],["西",270]].forEach(([t,a])=>{const rr=rad(a);g.fillText(t,cx+Math.sin(rr)*S*0.45,cy-Math.cos(rr)*S*0.45);});
       g.save();g.translate(cx,cy);g.rotate(th);g.scale(tn,1);
-      g.fillStyle="rgba(0,134,110,.06)";g.strokeStyle="var(--p-mute)";g.lineWidth=1.5;
+      g.fillStyle="rgba(0,134,110,.06)";g.strokeStyle="#98a7d8";g.lineWidth=1.5;
       g.beginPath();g.roundRect(-Wd,-L,2*Wd,2*L,Wd);g.fill();g.stroke();
       g.strokeStyle="#dfe6ec";g.lineWidth=1;g.beginPath();g.roundRect(-Wd*.46,-L+Wd*.55,Wd*.92,2*L-Wd*1.1,Wd*.46);g.stroke();
       const chev=(x,y,dir,s,col,lw)=>{g.strokeStyle=col;g.lineWidth=lw;g.lineCap="round";g.lineJoin="round";g.beginPath();g.moveTo(x-s,y);g.lineTo(x,y+dir*s);g.lineTo(x+s,y);g.stroke();};
-      g.strokeStyle="var(--p-ink)";g.lineWidth=2;g.beginPath();g.moveTo(Wd,L-Wd*.7);g.lineTo(Wd,-L+Wd*.7);g.stroke();
+      g.strokeStyle="#2e4db0";g.lineWidth=2;g.beginPath();g.moveTo(Wd,L-Wd*.7);g.lineTo(Wd,-L+Wd*.7);g.stroke();
       g.beginPath();g.moveTo(Wd-6,-L+Wd*.7);g.lineTo(Wd+6,-L+Wd*.7);g.stroke();
       [-L*.4,-L*.05,L*.3].forEach(y=>chev(Wd,y,-1,5.5,"var(--p-ink)",3));
-      g.strokeStyle="var(--p-mute)";g.lineWidth=1.4;g.beginPath();g.moveTo(-Wd,-L+Wd*.7);g.lineTo(-Wd,L-Wd*.7);g.stroke();
+      g.strokeStyle="#98a7d8";g.lineWidth=1.4;g.beginPath();g.moveTo(-Wd,-L+Wd*.7);g.lineTo(-Wd,L-Wd*.7);g.stroke();
       [-L*.3,L*.05,L*.4].forEach(y=>chev(-Wd,y,1,4.5,"var(--p-mute)",2.4));
       g.restore();
-      g.font="bold 10px sans-serif";let p=toS(tn*(Wd+14),0);g.fillStyle="var(--p-ink)";g.fillText("直線",p[0],p[1]);
-      p=toS(tn*(-Wd-16),0);g.fillStyle="var(--p-mute)";g.fillText("向正面",p[0],p[1]);
+      g.font="bold 10px sans-serif";let p=toS(tn*(Wd+14),0);g.fillStyle="#2e4db0";g.fillText("直線",p[0],p[1]);
+      p=toS(tn*(-Wd-16),0);g.fillStyle="#98a7d8";g.fillText("向正面",p[0],p[1]);
       if(sp>0){const to=rad((di+180)%360),wx=Math.sin(to),wy=-Math.cos(to),qx=-wy,qy=wx;
         const base=0.32+0.4*Math.min(sp/9,1),lw=2.4+Math.min(sp/6,1.8),alen=S*0.24,spacing=S*0.12,spd=0.13+sp*0.008,hL=8,hW=4.2;
         for(let i=0;i<3;i++){const phase=((el*spd)+i/3)%1,lon=-W*0.44+phase*W*0.88;
@@ -11104,9 +11117,11 @@ html.pal-picking, html.pal-picking *{ cursor:crosshair !important; }
   const toHex = a => '#' + a.map(v => Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('');
   const mix = (a, b, t) => { const A = hex(a), B = hex(b); return toHex([0,1,2].map(i => A[i] + (B[i]-A[i]) * t)); };
   const W = '#ffffff';
-  const DEF = { ink:'#1a1a1a', acc:'#ccf23f', bg:'#eceae3', sub:'#d8ccae', soft:0, grad:0, g2:'#3d3d3a', hl:'#ccf23f', hlsync:1, tile:'neutral' };
+  // 現行の本番配色（2026-09-18 青×赤）。「現行に戻す」はここに戻る
+  const DEF = { ink:'#2e4db0', acc:'#e5312b', bg:'#eef1f8', sub:'#c7d2ea', soft:0, grad:0, g2:'#4a6fd0', hl:'#e5312b', hlsync:1, tile:'neutral' };
   const PRESETS = [
-    { n:'現行（黒×ライム）', ink:'#1a1a1a', acc:'#ccf23f', bg:'#eceae3', sub:'#d8ccae', soft:0, grad:0, g2:'#3d3d3a' },
+    { n:'現行（青×赤）', ink:'#2e4db0', acc:'#e5312b', bg:'#eef1f8', sub:'#c7d2ea', soft:0, grad:0, g2:'#4a6fd0' },
+    { n:'旧（黒×ライム）', ink:'#1a1a1a', acc:'#ccf23f', bg:'#eceae3', sub:'#d8ccae', soft:0, grad:0, g2:'#3d3d3a' },
     { n:'紺×赤', ink:'#14286b', acc:'#ff4b4b', bg:'#e9eef7', sub:'#c5d3ee', soft:0, grad:0, g2:'#2f4a8f' },
     { n:'ブルー×レッド（競馬サイト風）', ink:'#2e4db0', acc:'#e5312b', bg:'#eef1f8', sub:'#c7d2ea', soft:0, grad:0, g2:'#4a6fd0' },
     { n:'ブルー×レッド（やわらか）', ink:'#3556b8', acc:'#ef5a52', bg:'#f0f3f9', sub:'#cbd6ec', soft:20, grad:1, g2:'#5a7fd6' },
