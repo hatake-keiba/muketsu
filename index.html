@@ -40,14 +40,14 @@
       transform:translateX(-105%); transition:transform .28s cubic-bezier(.4,0,.2,1);
       display:flex; flex-direction:column; overflow-y:auto; }
     #mk-menu-panel.open{ transform:translateX(0); }
-    .mk-menu-hd{ background:var(--p-ink); color:var(--p-acc); font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif;
+    .mk-menu-hd{ background:var(--p-ink); color:#fff; font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif;
       font-weight:900; font-size:26px; letter-spacing:.06em; padding:64px 22px 20px; line-height:1; }
-    .mk-menu-hd small{ display:block; font-size:9px; color:#8a9a3a; letter-spacing:.24em; font-weight:800; margin-bottom:8px; }
+    .mk-menu-hd small{ display:block; font-size:9px; color:#fff; opacity:.75; letter-spacing:.24em; font-weight:800; margin-bottom:8px; }
     .mk-menu-item{ display:flex; align-items:center; gap:14px; padding:18px 22px; cursor:pointer;
       font-family:'BIZ UDPGothic','BIZ UDGothic',sans-serif; font-weight:700; font-size:16px; color:var(--p-ink);
       border:none; border-bottom:1px solid #e4e2d9; background:none; text-align:left; width:100%; transition:background .15s; }
     .mk-menu-item:hover, .mk-menu-item:active{ background:var(--p-bg); }
-    .mk-menu-item.active{ background:var(--p-ink); color:var(--p-acc); }
+    .mk-menu-item.active{ background:var(--p-ink); color:#fff; }
     .mk-menu-item .ic{ font-size:22px; width:28px; text-align:center; }
     .mk-menu-item .ar{ margin-left:auto; color:var(--p-mute2); font-size:15px; }
     .mk-menu-item.active .ar{ color:var(--p-acc); }
@@ -107,7 +107,7 @@
     .race-btn.active { background: var(--p-ink); color: #fff; border-color: #1557b0; }
     /* レース質タグ：モノ＋ライムで統一（非アクティブ=ペーパー / アクティブ=黒＋ライム縁） */
     .race-btn[class*="status-"] { background: var(--p-tint); border-color: var(--p-line); color: var(--p-soft2); }
-    .race-btn[class*="status-"].active { background: var(--p-ink); color: var(--p-tint); border-color: var(--p-ink); }
+    .race-btn[class*="status-"].active { background: var(--p-ink); color:#fff; border-color: var(--p-ink); }
     .race-btn.has-star { border-top: 2px solid #ff9800; }
    .tab-venue { font-size: 13px; font-weight: bold; }
     .tab-time { font-size: 10px; color: var(--p-mute); margin-top: 1px; }
@@ -869,7 +869,7 @@ input[type=number], input[type=text], textarea, select {
     .plan-card li svg{ width:15px; height:15px; flex:none; margin-top:3px; }
     .plan-card li.no{ color:#a8a69e; }
     .plan-btn{ display:block; width:100%; margin-top:13px; text-align:center; text-decoration:none;
-               border:2px solid var(--p-ink); background:var(--p-ink); color:var(--p-acc); border-radius:10px;
+               border:2px solid var(--p-ink); background:var(--p-ink); color:#fff; border-radius:10px;
                font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:14.5px;
                padding:12px 16px; cursor:pointer; }
     .plan-btn.ghost{ background:#fff; color:var(--p-ink); }
@@ -939,7 +939,7 @@ input[type=number], input[type=text], textarea, select {
                 color:var(--p-ink); text-align:center; text-align-last:center; cursor:pointer;
                 -webkit-appearance:none; appearance:none; padding:0; margin:auto; display:block; }
     .mark-pick:focus{ outline:none; border-color:var(--p-ink); box-shadow:0 0 0 2px rgba(26,26,26,.12); }
-    .mark-pick.on{ background:var(--p-ink); color:var(--p-acc); border-color:var(--p-ink); }
+    .mark-pick.on{ background:var(--p-ink); color:#fff; border-color:var(--p-ink); }
     .mark-pick.honmei{ background:var(--p-acc); color:var(--p-ink); border-color:var(--p-ink); }
 
     /* ===== 日付一覧ページ ===== */
@@ -961,7 +961,7 @@ input[type=number], input[type=text], textarea, select {
     .mk-day.sel{ border-color:var(--p-ink); }
     .mk-day .d{ display:flex; align-items:baseline; gap:8px; }
     .mk-day .d b{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:26px; color:var(--p-ink); letter-spacing:-.01em; font-variant-numeric:tabular-nums; }
-    .mk-day .d .dow{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:13px; padding:2px 8px; border-radius:6px; background:var(--p-ink); color:var(--p-acc); }
+    .mk-day .d .dow{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:13px; padding:2px 8px; border-radius:6px; background:var(--p-ink); color:#fff; }
     .mk-day .d .dow.sun{ background:#c2410c; color:#fff; }
     .mk-day .d .tag{ margin-left:auto; font-size:10px; font-weight:800; letter-spacing:.12em; color:var(--p-mute3); }
     .mk-day .v{ margin-top:6px; font-size:13px; color:var(--p-soft); }
@@ -974,7 +974,7 @@ input[type=number], input[type=text], textarea, select {
     #mk-daybar .lbl{ font-size:10px; font-weight:800; letter-spacing:.14em; color:var(--p-mute3); }
     #mk-daybar b{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:16px; color:var(--p-ink); }
     #mk-daybar .v{ font-size:12px; color:var(--p-soft); }
-    #mk-daybar button{ margin-left:auto; background:var(--p-ink); color:var(--p-acc); border:none; border-radius:8px; padding:7px 12px; font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:12px; cursor:pointer; white-space:nowrap; }
+    #mk-daybar button{ margin-left:auto; background:var(--p-ink); color:#fff; border:none; border-radius:8px; padding:7px 12px; font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:12px; cursor:pointer; white-space:nowrap; }
 
     /* 3タブとも行の高さを同じにする（タブを切り替えても左の固定列の厚みが変わらない） */
     :root{ --hd-row:70px; }
@@ -1000,7 +1000,7 @@ input[type=number], input[type=text], textarea, select {
     .tb-status{ font-size:10.5px; color:var(--p-mute); font-weight:700; margin-left:auto; }
     .seg{ display:flex; background:var(--p-tint4); border-radius:9px; padding:3px; gap:2px; }
     .seg button{ flex:1; border:none; background:transparent; padding:8px 0; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:11px; font-weight:700; color:var(--p-mute); border-radius:7px; cursor:pointer; }
-    .seg button.active{ background:var(--p-ink); color:var(--p-acc); }
+    .seg button.active{ background:var(--p-ink); color:#fff; }
     .tb-note{ font-size:10px; color:var(--p-mute); margin-top:6px; line-height:1.5; }
     .pb-wrap{ position:relative; }
     .pb-badge{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:8px; font-weight:800; padding:1px 4px; border-radius:6px; line-height:1.2; white-space:nowrap; margin-top:1px; }
@@ -1010,7 +1010,7 @@ input[type=number], input[type=text], textarea, select {
     .pb-wrap.open .pb-pop{ display:flex; }
     /* バッジ（K-buddyの配色：黒・ライム・ベージュ・グレー） */
     .fb{ display:inline-block; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:8.5px; font-weight:800; padding:1px 4px; border-radius:3px; line-height:1.25; white-space:nowrap; }
-    .fb-t2{ background:var(--p-ink); color:var(--p-acc); } .fb-t1{ background:var(--p-acc); color:var(--p-ink); }
+    .fb-t2{ background:var(--p-ink); color:#fff; } .fb-t1{ background:var(--p-acc); color:var(--p-ink); }
     .fb-m1{ background:var(--p-line); color:var(--p-soft); } .fb-m2{ background:var(--p-mute4); color:#fff; }
     .fb-deki{ background:var(--p-ink); color:#fff; } .fb-shisu{ background:#fff; color:var(--p-ink); border:1px solid var(--p-ink); } .fb-course{ background:var(--p-sub); color:var(--p-soft); }
     .hr-badges{ display:flex; flex-wrap:wrap; gap:2px; margin-top:2px; }
@@ -1019,7 +1019,7 @@ input[type=number], input[type=text], textarea, select {
     .fx-dd{ position:relative; }
     .fx-btn{ display:inline-flex; align-items:center; gap:4px; background:#fff; color:var(--p-ink); border:2px solid var(--p-ink); border-radius:8px; padding:6px 10px; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:11px; font-weight:700; cursor:pointer; }
     .fx-btn .mk-ic{ width:12px; height:12px; }
-    .fx-apply{ background:var(--p-ink); color:var(--p-acc); margin-left:auto; }
+    .fx-apply{ background:var(--p-ink); color:#fff; margin-left:auto; }
     .fx-menu{ position:absolute; top:calc(100% + 4px); left:0; background:#fff; width:260px; border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,.15); border:1px solid var(--p-line3); display:none; flex-direction:column; z-index:80; }
     .fx-menu.show{ display:flex; }
     .fx-menu label{ padding:10px 12px; font-size:12px; font-weight:700; color:var(--p-ink); border-bottom:1px solid var(--p-tint4); display:flex; align-items:center; gap:8px; line-height:1.4; }
@@ -1052,7 +1052,7 @@ input[type=number], input[type=text], textarea, select {
     .zoom-btn{ width:30px; height:28px; display:inline-flex; align-items:center; justify-content:center; background:#fff; border:1.5px solid var(--p-line2); border-radius:8px; color:var(--p-ink); cursor:pointer; }
     .zoom-btn .mk-ic{ width:14px; height:14px; }
     .zoom-val{ min-width:44px; text-align:center; font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:12px; font-variant-numeric:tabular-nums; }
-    .zoom-fit{ background:var(--p-ink); color:var(--p-acc); border:none; border-radius:999px; padding:6px 11px; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:11.5px; cursor:pointer; }
+    .zoom-fit{ background:var(--p-ink); color:#fff; border:none; border-radius:999px; padding:6px 11px; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:11.5px; cursor:pointer; }
     .zoom-fit + .zoom-fit{ background:#fff; color:var(--p-ink); border:1.5px solid var(--p-line2); }
     .pastwrap, .campwrap, .table-scroll{ touch-action:pan-x pan-y pinch-zoom; }
     .zoom-bar{ padding:0 8px 8px; }
@@ -1060,7 +1060,7 @@ input[type=number], input[type=text], textarea, select {
     #reportModal{ background:var(--p-bg) !important; padding:0 !important; z-index:100000 !important; }
     .report-page{ width:100% !important; max-width:960px !important; margin:0 auto !important; background:var(--p-bg) !important; border:none !important; box-shadow:none !important; border-radius:0 !important; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; color:var(--p-ink); }
     .rep-header{ background:var(--p-ink) !important; color:#fff !important; padding:14px 16px !important; border-radius:0 !important; position:sticky; top:0; z-index:5; }
-    #repHeaderTitle{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:15px; color:var(--p-acc); line-height:1.3; }
+    #repHeaderTitle{ font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:15px; color:#fff; line-height:1.3; }
     .rep-header-btn{ background:#fff !important; color:var(--p-ink) !important; border:1.5px solid #fff !important; border-radius:999px !important; padding:7px 12px !important; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700 !important; font-size:12px !important; display:inline-flex; align-items:center; gap:4px; }
     .rep-header-btn .mk-ic{ width:14px; height:14px; }
     .rep-back{ background:var(--p-acc) !important; color:var(--p-ink) !important; border-color:var(--p-acc) !important; }
@@ -1073,7 +1073,7 @@ input[type=number], input[type=text], textarea, select {
     .rep-box{ background:var(--p-tint2) !important; border:1.5px solid var(--p-line3) !important; border-radius:12px !important; color:var(--p-ink) !important; }
     .rg-b1{ background:var(--p-ink) !important; } .rg-b2{ background:var(--p-mute4) !important; } .rg-b3{ background:var(--p-acc) !important; }
     .rg-b3 .rg-val{ color:var(--p-ink) !important; }
-    .rep-mode{ display:inline-block; background:var(--p-ink); color:var(--p-acc); font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:13px; padding:6px 12px; border-radius:8px; }
+    .rep-mode{ display:inline-block; background:var(--p-ink); color:#fff; font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:13px; padding:6px 12px; border-radius:8px; }
     .rep-foot{ display:flex; justify-content:center; padding:6px 12px 30px; }
     .rep-foot .rep-back{ border-radius:999px; padding:12px 22px; font-family:'Noto Sans JP',sans-serif; font-weight:900; font-size:14px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px; }
     .rep-foot .rep-back .mk-ic{ width:16px; height:16px; }
@@ -1084,7 +1084,7 @@ input[type=number], input[type=text], textarea, select {
     @media (max-width:480px){ .data-table .td-name .nm-clip{ max-width:54px; } .data-table td.td-name{ padding-right:1px !important; padding-left:2px !important; } }
     /* 印プルダウンの色：.data-table select の白背景指定に負けないようにする */
     .data-table .mark-pick, .horse-row .mark-pick{ padding:0 !important; font-size:12px !important; line-height:1 !important; }
-    .data-table .mark-pick.on, .horse-row .mark-pick.on{ background:var(--p-ink) !important; color:var(--p-acc) !important; border-color:var(--p-ink) !important; }
+    .data-table .mark-pick.on, .horse-row .mark-pick.on{ background:var(--p-ink) !important; color:#fff !important; border-color:var(--p-ink) !important; }
     .data-table .mark-pick.honmei, .horse-row .mark-pick.honmei{ background:var(--p-acc) !important; color:var(--p-ink) !important; border-color:var(--p-ink) !important; }
 
     /* ===== 固定列：印 ＋ 馬（上段：枠番・単勝／下段：馬名）。馬名は全文表示 ===== */
@@ -1139,7 +1139,7 @@ input[type=number], input[type=text], textarea, select {
              background:#fff; color:var(--p-subink); border:2px solid var(--p-line3); border-radius:20px;
              padding:7px 15px; cursor:pointer; white-space:nowrap; transition:.15s; }
     .hd-tab:hover{ border-color:var(--p-sub); }
-    .hd-tab.active{ background:var(--p-ink); color:var(--p-acc); border-color:var(--p-ink); }
+    .hd-tab.active{ background:var(--p-ink); color:#fff; border-color:var(--p-ink); }
     .hd-pane{ display:none; }
     .hd-pane.active{ display:block; }
     .hd-note{ font-size:11px; color:var(--p-mute3); padding:0 10px 6px; line-height:1.6; }
@@ -1241,12 +1241,12 @@ input[type=number], input[type=text], textarea, select {
     .mk-guide .lead{ font-size:14px; font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif; font-weight:800; color:var(--p-ink); margin-bottom:12px; }
     .mk-guide ol.steps{ list-style:none; counter-reset:st; margin:6px 0 14px; padding:0; display:flex; flex-direction:column; gap:8px; }
     .mk-guide ol.steps li{ counter-increment:st; position:relative; padding:10px 12px 10px 46px; background:var(--p-tint2); border:1px solid var(--p-line); border-radius:10px; }
-    .mk-guide ol.steps li::before{ content:counter(st); position:absolute; left:12px; top:10px; width:24px; height:24px; border-radius:50%; background:var(--p-ink); color:var(--p-acc); font-weight:900; font-size:12px; display:flex; align-items:center; justify-content:center; font-family:'BIZ UDPGothic','BIZ UDGothic',sans-serif; }
+    .mk-guide ol.steps li::before{ content:counter(st); position:absolute; left:12px; top:10px; width:24px; height:24px; border-radius:50%; background:var(--p-ink); color:#fff; font-weight:900; font-size:12px; display:flex; align-items:center; justify-content:center; font-family:'BIZ UDPGothic','BIZ UDGothic',sans-serif; }
     .mk-guide ol.steps b{ display:block; font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif; font-weight:900; color:var(--p-ink); margin-bottom:2px; }
     .mk-guide ul.pts{ margin:4px 0 12px; padding-left:18px; }
     .mk-guide ul.pts li{ margin:3px 0; }
     .mk-guide .kw{ display:inline-block; background:var(--p-sub); color:var(--p-subink); border-radius:4px; padding:0 6px; font-size:12px; font-weight:800; line-height:1.7; margin:0 1px; }
-    .mk-guide .kw.dark{ background:var(--p-ink); color:var(--p-acc); }
+    .mk-guide .kw.dark{ background:var(--p-ink); color:#fff; }
     .mk-guide .tip{ display:flex; gap:10px; align-items:flex-start; background:#fff; border:2px solid var(--p-ink); border-radius:10px; padding:10px 12px; margin:10px 0 4px; font-size:12.5px; }
     .mk-guide .tip .ic{ flex:none; width:22px; height:22px; border-radius:50%; background:var(--p-acc); display:flex; align-items:center; justify-content:center; }
     .mk-guide .tip .ic .mk-ic{ width:14px; height:14px; }
@@ -1303,7 +1303,7 @@ input[type=number], input[type=text], textarea, select {
 
   /* 大カードの丸番号 */
   .bc-num{ display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px;
-    border-radius:50%; background:var(--mk-dark); color:var(--p-tint); font-size:11px; font-weight:800;
+    border-radius:50%; background:var(--mk-dark); color:#fff; font-size:11px; font-weight:800;
     flex:0 0 auto; }
 
   /* #main-tool は透明コンテナ（大カードを束ねるだけ・自身はカードにしない） */
@@ -1348,7 +1348,7 @@ input[type=number], input[type=text], textarea, select {
   .odds-update-title{ font-size:12px; font-weight:700; color:var(--mk-dark); letter-spacing:.03em; }
   .odds-update-note{ font-size:10px; color:var(--p-mute); }
   .odds-update-btn{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:12.5px; font-weight:700;
-    color:var(--p-tint); background:var(--mk-dark); border:none; border-radius:999px; padding:9px 20px;
+    color:#fff; background:var(--mk-dark); border:none; border-radius:999px; padding:9px 20px;
     cursor:pointer; box-shadow:none; transition:opacity .2s; white-space:nowrap; }
   .odds-update-btn:hover{ opacity:.88; }
 
@@ -1357,7 +1357,7 @@ input[type=number], input[type=text], textarea, select {
     color:var(--mk-dark); background:var(--p-tint); border:1px solid var(--mk-line) !important;
     border-radius:999px !important; padding:6px 14px !important; cursor:pointer;
     box-shadow:none !important; transition:background .2s,border-color .2s,color .2s; }
-  .pill-btn:hover{ background:var(--mk-dark); color:var(--p-tint); border-color:var(--mk-dark) !important; }
+  .pill-btn:hover{ background:var(--mk-dark); color:#fff; border-color:var(--mk-dark) !important; }
   /* 小ピル・バリエーション（買い目/勝率設定の操作用） */
   .pill-sm{ font-size:10.5px !important; padding:5px 12px !important; }
   .pill-ghost{ background:#fff !important; color:#8a9483 !important; }
@@ -1366,8 +1366,8 @@ input[type=number], input[type=text], textarea, select {
   .pill-beige{ background:var(--p-sub) !important; color:var(--p-subink) !important; border-color:var(--p-sub) !important; font-weight:700 !important; }
   .pill-beige:hover{ background:#ccbf9b !important; color:#4a4234 !important; border-color:#bcac82 !important; }
   /* 主要アクション（確定・買い目を作る）＝黒地に蛍光文字でハイライト */
-  .pill-accent{ background:var(--p-ink) !important; color:var(--p-acc) !important; border-color:var(--p-ink) !important; font-weight:800 !important; }
-  .pill-accent:hover{ opacity:.92; background:var(--p-ink) !important; color:var(--p-acc) !important; }
+  .pill-accent{ background:var(--p-ink) !important; color:#fff !important; border-color:var(--p-ink) !important; font-weight:800 !important; }
+  .pill-accent:hover{ opacity:.92; background:var(--p-ink) !important; color:#fff !important; }
 
   /* 中タイトル：線を引かず、頭に短い蛍光バー＋太字（おしゃれな見出し感） */
   .sub-head{ display:flex; align-items:center; gap:9px; padding:18px 18px 8px !important;
@@ -1378,7 +1378,7 @@ input[type=number], input[type=text], textarea, select {
     color:var(--mk-dark); letter-spacing:.04em; }
   .sub-head-btn{ margin-left:auto; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:10.5px; font-weight:700;
     color:var(--p-mute); background:var(--p-tint); border:1px solid var(--mk-line); border-radius:999px; padding:5px 12px; cursor:pointer; }
-  .sub-head-btn:hover{ background:var(--mk-dark); color:var(--p-tint); }
+  .sub-head-btn:hover{ background:var(--mk-dark); color:#fff; }
 
   /* レース情報のデータリンク行（シミュレーター下） */
   .race-data-links{ display:flex; gap:8px; flex-wrap:wrap; padding:2px 14px 14px; }
@@ -1404,7 +1404,7 @@ input[type=number], input[type=text], textarea, select {
     transition:background .2s, border-color .2s, color .2s; }
   .race-quality-tab:hover{ border-color:var(--mk-accent2); background-color:#e6efe0; }
   /* 何か選択された状態＝アクセントで“タブが立っている”見た目に */
-  .race-quality-tab.is-active{ background-color:var(--mk-dark); color:var(--p-acc); border-color:var(--mk-dark);
+  .race-quality-tab.is-active{ background-color:var(--mk-dark); color:#fff; border-color:var(--mk-dark);
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'><path d='M1 1l4 4 4-4' fill='none' stroke='%23ccf23f' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>"); }
 
   /* 大カードの中の“旧カード”は装飾を解除して素の帯にする（＝二重カード禁止） */
@@ -1538,7 +1538,7 @@ input[type=number], input[type=text], textarea, select {
     box-shadow:0 0 0 3px rgba(0,0,0,.28); flex:0 0 auto; }
   .ai-talk-body{ padding:0 14px 12px; }
   .ai-talk-lead{ font-size:11.5px; color:var(--p-mute); line-height:1.6; margin:0 0 9px; }
-  .ai-talk-btn{ background:var(--p-ink) !important; color:var(--p-acc) !important; border:none !important;
+  .ai-talk-btn{ background:var(--p-ink) !important; color:#fff !important; border:none !important;
     border-radius:20px !important; padding:8px 18px !important; font-size:12px; font-weight:800;
     cursor:pointer; box-shadow:none !important; }
   .ai-talk-note{ font-size:9.5px; color:#a9b3a0; margin:8px 0 0; }
@@ -1552,12 +1552,12 @@ input[type=number], input[type=text], textarea, select {
     min-height:70px; max-height:320px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; }
   .ai-chat-empty{ font-size:11px; color:#a9b3a0; line-height:1.6; text-align:center; padding:12px 6px; }
   .ai-summary-bar{ padding:12px 0 10px; }
-  .ai-summary-btn{ width:100%; display:flex; align-items:center; justify-content:center; gap:6px; background:var(--p-ink); color:var(--p-acc);
+  .ai-summary-btn{ width:100%; display:flex; align-items:center; justify-content:center; gap:6px; background:var(--p-ink); color:#fff;
     border:none; border-radius:10px; padding:9px 10px; font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:12px; cursor:pointer; }
   .ai-summary-btn .mk-ic{ width:14px; height:14px; }
   .ai-summary-btn:active{ opacity:.85; }
   .ai-msg{ font-family:"BIZ UDPGothic","BIZ UDGothic",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif; font-size:13px; line-height:1.7; padding:8px 11px; border-radius:12px; max-width:88%; white-space:pre-wrap; word-break:break-word; letter-spacing:.01em; }
-  .ai-msg.user{ align-self:flex-end; background:var(--mk-dark); color:var(--p-tint); border-bottom-right-radius:4px; }
+  .ai-msg.user{ align-self:flex-end; background:var(--mk-dark); color:#fff; border-bottom-right-radius:4px; }
   .ai-msg.bot{ align-self:flex-start; background:var(--p-tint); color:#243021; border-bottom-left-radius:4px;
     font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; }
   .ai-msg.bot.loading{ color:var(--p-mute); font-style:italic; }
@@ -1575,7 +1575,7 @@ input[type=number], input[type=text], textarea, select {
     display:flex; align-items:center; justify-content:center; color:var(--p-ink); }
   .ai-mic-chat-btn svg{ display:block; }
   .ai-mic-chat-btn:hover{ background:var(--p-tint); }
-  .ai-mic-chat-btn.recording{ background:var(--p-ink); border-color:var(--p-ink); color:var(--p-acc); animation:mic-pulse 1.2s infinite; }
+  .ai-mic-chat-btn.recording{ background:var(--p-ink); border-color:var(--p-ink); color:#fff; animation:mic-pulse 1.2s infinite; }
   @keyframes mic-pulse{ 0%,100%{ box-shadow:0 0 0 0 rgba(0,0,0,.25);} 50%{ box-shadow:0 0 0 5px rgba(0,0,0,0);} }
 
   /* AI課金ロック：未課金はグレーアウト＋オーバーレイ、課金者はアクティベート */
@@ -1590,7 +1590,7 @@ input[type=number], input[type=text], textarea, select {
   .ai-lock-ttl{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-weight:700; font-size:15px; color:var(--mk-dark); letter-spacing:.04em; }
   .ai-lock-desc{ font-size:11px; color:var(--p-mute); line-height:1.6; margin:6px 0 12px; }
   .ai-lock-btn{ font-family:"BIZ UDPGothic","BIZ UDGothic",sans-serif; font-size:12.5px; font-weight:700;
-    color:var(--p-tint); background:var(--mk-dark); border:none; border-radius:999px; padding:9px 22px; cursor:pointer; }
+    color:#fff; background:var(--mk-dark); border:none; border-radius:999px; padding:9px 22px; cursor:pointer; }
   .ai-lock-btn:hover{ opacity:.9; }
   /* ロック中は中身を触れなくする＋褪せさせる */
   .ai-talk-slot.locked .ai-talk-inner{ filter:grayscale(1) opacity(.5); pointer-events:none; user-select:none; }
@@ -1666,17 +1666,17 @@ input[type=number], input[type=text], textarea, select {
   .data-table tbody tr td.rank-2, .rank-2{ background:var(--p-acc4) !important; }
 
   /* ボタン群をダーク緑ピル/セージに（機能色は個別維持されるものは後段で調整可） */
-  .btn-primary{ background:var(--mk-dark) !important; color:var(--p-tint) !important; border:none !important; border-radius:20px !important; }
-  .btn-success{ background:var(--p-ink) !important; color:var(--p-tint) !important; border:none !important; border-radius:20px !important; font-weight:700 !important; }
+  .btn-primary{ background:var(--mk-dark) !important; color:#fff !important; border:none !important; border-radius:20px !important; }
+  .btn-success{ background:var(--p-ink) !important; color:#fff !important; border:none !important; border-radius:20px !important; font-weight:700 !important; }
   .btn-danger{ background:#b06a5e !important; color:#fff !important; border:none !important; border-radius:20px !important; }
   .sync-btn{ background:var(--mk-dark) !important; border-radius:16px !important; }
   .baba-btn{ border-radius:16px !important; border-color:var(--mk-line) !important; }
-  .baba-btn.active{ background:var(--p-ink) !important; border-color:var(--p-ink) !important; color:var(--p-tint) !important; }
+  .baba-btn.active{ background:var(--p-ink) !important; border-color:var(--p-ink) !important; color:#fff !important; }
 
   /* レース選択ボタン：白＋淡緑、選択は淡緑 */
   .nav-race-btn{ background:var(--p-tile) !important; border:1px solid var(--mk-line) !important; color:var(--p-soft) !important; border-radius:10px !important;
     min-height:42px !important; box-sizing:border-box !important; display:flex !important; flex-direction:column !important; align-items:center !important; justify-content:center !important; border-bottom-width:1px !important; }
-  .nav-race-btn.active{ background:var(--mk-dark) !important; color:var(--p-tint) !important; border-color:var(--mk-dark) !important; }
+  .nav-race-btn.active{ background:var(--mk-dark) !important; color:#fff !important; border-color:var(--mk-dark) !important; }
 
   /* AIツールバー（レース分析上部）を緑基調に */
   #race-toolbar{ background:#fff !important; border:1px solid var(--mk-line) !important; border-radius:16px !important; }
@@ -1703,6 +1703,13 @@ button.active{color:#ffffff !important;}
 /* 改行：バッジは折らない。説明文は短い最終行を避ける（対応ブラウザのみ） */
 .ai-lock-badge, .rep-mode, .fb, .pb-badge{ white-space:nowrap !important; }
 .mk-guide p, .mk-guide td, .hm-note, .ai-lock-desc, .mk-day-empty, .note, .sub-note{ text-wrap:pretty; }
+/* ラベルは途中で折らない。日付バーと小見出しは要素ごとに改行 */
+#mk-daybar{ flex-wrap:wrap; row-gap:6px; }
+#mk-daybar b, #mk-daybar .v, #mk-daybar .lbl, #mk-daybar button, .sub-head-ttl, .tb-status, .hd-tab, .pill-btn, .acc-btn, .metric-lbl, .rs-k, .lg-col span,
+.mk-eyebrow, .tab-time, .r-time, .r-num, .pb-val, .fx-btn, .ai-summary-btn, .ai-talk-btn, .mark-pick, .fb, .pb-badge, .rep-mode, .zoom-fit, .baba-btn, .race-quality-tab,
+.mk-day .d, .mk-day .m span, .btn-primary, .btn-success, .btn-danger{ white-space:nowrap !important; }
+.sub-head{ flex-wrap:wrap; row-gap:2px; }
+.sub-head .tb-status{ white-space:normal !important; }
 /* 見出しのマーカーは薄い蛍光ピンク */
 .mk-mk, .mk-mark, .mk-placeholder h2 .mk-mk, .mk-room-hd h2 .mk-mk{ background:linear-gradient(transparent 55%, #ffb0ab 55%) !important; }
 </style>
@@ -1853,7 +1860,7 @@ button.active{color:#ffffff !important;}
       <dl class="mk-faq">
         <dt>Q. どんな質問が向いていますか？</dt>
         <dd>「自分の勝率で見落としはないか」「この展開なら誰が浮上するか」「陣営データで気になる数字は」など、自分の考えを検証する質問。買い目の断定は求めても返しません。</dd>
-        <dt>Q. 「そのデータは渡されていません」と言われた</dt>
+        <dt>Q. 「そのデータは渡されていません」<br>と言われた</dt>
         <dd>その馬の陣営データが今週分に含まれていない状態です。AIは持っていない数字を作りません。別の切り口で聞くか、運営のデータ更新をお待ちください。</dd>
         <dt>Q. 音声が途中で止まる</dt>
         <dd>Chrome推奨です。読み上げ中にマイクを押すと停止し、もう一度押すと会話が再開します。マイク権限を求められたら「許可」を選んでください。</dd>
@@ -1869,7 +1876,7 @@ button.active{color:#ffffff !important;}
     <div class="mk-room-hd">
       <span class="ph-eyebrow">CONTACT</span>
       <h2><span class="mk-mk">お問い合わせ</span></h2>
-      <p>ご質問・ご要望はこちらから。（フォームは準備中）</p>
+      <p>ご質問・ご要望はこちらから。<br>（フォームは準備中）</p>
     </div>
     <section class="mk-sec" id="contact-form"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>お問い合わせフォーム</h3><div class="ph-box">準備中</div></section>
     <section class="mk-sec" id="contact-info"><h3><span class="ic"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span>運営情報</h3><div class="ph-box">準備中</div></section>
@@ -1908,10 +1915,7 @@ button.active{color:#ffffff !important;}
 </div>
 
 <div class="app-container mk-page active" id="page-race">
-  <div id="site-title" style="text-align:center;padding:40px 18px 32px;background:var(--p-ink);border-radius:22px;margin:12px;position:relative;">
-    <div style="font-family:'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif;font-weight:900;color:var(--p-acc);font-size:clamp(46px,13vw,92px);letter-spacing:.04em;line-height:1;white-space:nowrap;">K-buddy</div>
-    <div style="color:var(--p-mute2);font-size:13px;letter-spacing:.1em;font-weight:700;margin-top:20px;">新しい競馬の楽しみ方を</div>
-  </div>
+  <div id="site-title" style="text-align:center;padding:26px 18px 22px;background:var(--p-ink);border-radius:22px;margin:12px;position:relative;"><svg class="kb-logo" viewBox="0 0 600 118" width="100%" style="display:block;" role="img" aria-label="K-buddy"><text x="300" y="100" text-anchor="middle" textLength="576" lengthAdjust="spacingAndGlyphs" font-family="'Noto Sans JP','BIZ UDPGothic','BIZ UDGothic',sans-serif" font-weight="900" font-size="116" fill="#ffffff">K-buddy</text></svg></div>
   <div id="mk-daybar" style="display:none;">
     <span class="lbl">DATE</span><b id="mk-daybar-date">—</b><span class="v" id="mk-daybar-venues"></span>
     <button onclick="showMkPage('dates')">日付を変える</button>
@@ -1990,7 +1994,7 @@ button.active{color:#ffffff !important;}
           <div style="font-size:11px;font-weight:bold;margin-bottom:2px;">出馬表データの新規取り込み</div>
           <textarea id="data-input" placeholder="出馬表データ(TARGET形式など)を貼り付け..."></textarea>
           <button class="btn-primary" style="width:100%;margin-top:4px;" onclick="importData()">データを読み込んでツールを作成</button>
-          <button class="btn-primary" style="width:100%;margin-top:6px;background:var(--p-ink);color:var(--p-acc);border-color:var(--p-ink);" onclick="loadRaceCardFromGAS()">スプレッドシートから出馬表を取得</button>
+          <button class="btn-primary" style="width:100%;margin-top:6px;background:var(--p-ink);color:#fff;border-color:var(--p-ink);" onclick="loadRaceCardFromGAS()">スプレッドシートから出馬表を取得</button>
           <div id="racecard-status" style="font-size:10px;color:var(--p-mute3);margin-top:4px;text-align:center;"></div>
         </div>
         <div style="border-top:1px dashed #ccc;padding-top:8px;margin-bottom:8px;">
@@ -2186,7 +2190,7 @@ button.active{color:#ffffff !important;}
 
 
          <div class="tb-wrap">
-           <div class="sub-head tb-head"><span class="sub-head-ttl">トラックバイアス</span><span class="tb-status" id="tb-status">フラット（自由に設定できます）</span></div>
+           <div class="sub-head tb-head"><span class="sub-head-ttl">トラックバイアス</span><span class="tb-status" id="tb-status">フラット（変更できます）</span></div>
            <div class="seg" id="tb-seg">
              <button type="button" data-i="0" onclick="setTrackBias(0)">内前</button>
              <button type="button" data-i="1" onclick="setTrackBias(1)">やや内前</button>
@@ -2511,7 +2515,7 @@ button.active{color:#ffffff !important;}
 
        <!-- ▼▼ 追加：レポート出力ボタン ▼▼ -->
           <div style="text-align: center; margin-top: 15px; margin-bottom: 10px;">
-              <button style="background:var(--p-ink); color:var(--p-acc); font-weight:800; width: 100%; max-width: 400px; font-size: 14px; padding: 10px; border-radius: 6px; border:1px solid var(--p-ink); box-shadow: none; cursor:pointer;" id="btn-final-report" onclick="openFinalReport()">最終見解レポートを出力</button>
+              <button style="background:var(--p-ink); color:#fff; font-weight:800; width: 100%; max-width: 400px; font-size: 14px; padding: 10px; border-radius: 6px; border:1px solid var(--p-ink); box-shadow: none; cursor:pointer;" id="btn-final-report" onclick="openFinalReport()">最終見解レポートを出力</button>
           </div>
           <!-- ▲▲ ここまで ▲▲ -->
 
@@ -2767,7 +2771,7 @@ button.active{color:#ffffff !important;}
           <div id="chat-messages" style="background: var(--p-tint); border: 1px solid var(--p-line2); border-radius: 4px; padding: 10px; height: 320px; overflow-y: auto; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px;"></div>
           <div style="display: flex; gap: 5px;">
             <input type="text" id="chat-input" placeholder="テキストを入力..." style="flex-grow: 1; padding: 8px; border: 1px solid var(--p-line2); border-radius: 4px; font-size: 12px;" onkeypress="if(event.key==='Enter') sendChatMessage()">
-            <button class="btn-primary" style="padding: 8px 16px; border-radius: 4px; box-shadow:none; background:var(--p-ink); border-color:var(--p-ink); color:var(--p-acc); font-weight:800;" onclick="sendChatMessage()">送信</button>
+            <button class="btn-primary" style="padding: 8px 16px; border-radius: 4px; box-shadow:none; background:var(--p-ink); border-color:var(--p-ink); color:#fff; font-weight:800;" onclick="sendChatMessage()">送信</button>
           </div>
           <div style="text-align: left; margin-top:8px;"><button class="btn-danger" style="background:var(--p-mute); border:none; box-shadow:none;" onclick="backToModeSelection()">◀ 中止して戻る</button></div>
         </div>
@@ -2840,7 +2844,7 @@ button.active{color:#ffffff !important;}
           
           <div style="display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid var(--p-line); padding-top: 10px;">
             <button class="btn-danger" style="background:var(--p-mute); border:none; box-shadow:none;" onclick="backToModeSelection()">◀ 戻る</button>
-            <button class="btn-success" style="background:var(--p-ink); border-color:var(--p-ink); color:var(--p-acc); font-weight:800; font-size:13px; padding:6px 20px; box-shadow:none;" onclick="saveTuningAI()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg> この設定で確定</button>
+            <button class="btn-success" style="background:var(--p-ink); border-color:var(--p-ink); color:#fff; font-weight:800; font-size:13px; padding:6px 20px; box-shadow:none;" onclick="saveTuningAI()"><svg class="mk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg> この設定で確定</button>
           </div>
         </div>
 
@@ -5945,7 +5949,7 @@ window.drawOaChartModal = function() {
     }
 
     /* ===== 展開の印（トラックバイアス） ===== */
-    const _TB_TEXT = ['内前有利', 'やや内前有利', 'フラット（自由に設定できます）', 'やや外差し有利', '外差し有利'];
+    const _TB_TEXT = ['内前有利', 'やや内前有利', 'フラット（変更できます）', 'やや外差し有利', '外差し有利'];
     function _tenkaiLabel(v){ return ({'-2':'不利大','-1':'不利','0':'なし','1':'展○','2':'展◎'})[String(v||0)] || 'なし'; }
     function _tenkaiCls(v){ return v === 2 ? 'fb-t2' : v === 1 ? 'fb-t1' : v === -1 ? 'fb-m1' : v === -2 ? 'fb-m2' : ''; }
     function _tenkaiMult(v){ return v === 2 ? 1.2 : v === 1 ? 1.1 : v === -1 ? 0.9 : v === -2 ? 0.8 : 1; }
